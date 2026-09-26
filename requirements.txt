@@ -1,0 +1,9 @@
+transformers>=4.51,<6
+datasets>=3.3,<5
+kiwipiepy>=0.21,<1
+pyarrow>=19
+pandas>=2.2
+statsmodels>=0.14
+matplotlib>=3.9
+PyYAML>=6
+pytest>=8
