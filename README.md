@@ -89,6 +89,6 @@ Mỗi lần chạy tạo `runs/<run_id>/` với các bảng chính:
 - `teacher_forced_tokens.parquet`: draft-target predictions, disagreement, log probabilities và entropy cho từng token của continuation tham chiếu.
 - `eojeols.parquet`: số hình vị/token, boundary offsets, fragmentation bin, boundary F1 và misalignment theo từng occurrence.
 
-Lệnh `scripts/analyze.py` ghi các summary CSV, logistic regression report vào thư mục run và hình vào `figures/<run_id>/`. Dữ liệu tải về, model cache, run artifacts và hình được loại khỏi Git bởi `.gitignore`; chúng được tạo cục bộ khi chạy.
+Lệnh `scripts/analyze.py` ghi các summary CSV, logistic regression report vào thư mục run và hình vào `figures/<run_id>/`. Dataset đã chuẩn bị, log và kết quả chạy được lưu trong Git để tiện tái lập và xem lại; model cache (`.hf_home/`) và cache cục bộ vẫn được loại khỏi Git.
 
 Thiết kế chi tiết, semantics của event log, quy tắc alignment và giới hạn thực nghiệm nằm trong [implementation.md](implementation.md).

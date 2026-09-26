@@ -1,0 +1,58 @@
+SD proposal logistic regression
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:               rejected   No. Observations:                 2324
+Model:                          Logit   Df Residuals:                     2318
+Method:                           MLE   Df Model:                            5
+Date:                Sat, 26 Sep 2026   Pseudo R-squ.:                  0.3221
+Time:                        18:20:52   Log-Likelihood:                -724.52
+converged:                       True   LL-Null:                       -1068.8
+Covariance Type:              cluster   LLR p-value:                1.442e-146
+=====================================================================================
+                        coef    std err          z      P>|z|      [0.025      0.975]
+-------------------------------------------------------------------------------------
+Intercept            -3.4184      0.369     -9.253      0.000      -4.143      -2.694
+misalignment         -0.0572      0.302     -0.190      0.850      -0.649       0.535
+fragmentation         0.0342      0.079      0.432      0.666      -0.121       0.189
+draft_entropy         0.8029      0.085      9.420      0.000       0.636       0.970
+target_entropy        0.2298      0.086      2.679      0.007       0.062       0.398
+proposal_position    -0.0922      0.090     -1.020      0.308      -0.269       0.085
+=====================================================================================
+
+Coefficients and p-values:
+,coefficient,p_value
+Intercept,-3.418440793954647,2.1765619939991372e-20
+misalignment,-0.057244569361370484,0.8496905049205155
+fragmentation,0.03417357250387754,0.6657344460507414
+draft_entropy,0.8029114195076209,4.529920124368826e-21
+target_entropy,0.22976469382905176,0.007380135289712214
+proposal_position,-0.09215109700550142,0.30790719882943296
+
+
+Teacher-forced disagreement logistic regression
+                               Logit Regression Results                              
+=====================================================================================
+Dep. Variable:     draft_target_disagreement   No. Observations:                 2324
+Model:                                 Logit   Df Residuals:                     2318
+Method:                                  MLE   Df Model:                            5
+Date:                       Sat, 26 Sep 2026   Pseudo R-squ.:                  0.3228
+Time:                               18:20:52   Log-Likelihood:                -724.91
+converged:                              True   LL-Null:                       -1070.4
+Covariance Type:                     cluster   LLR p-value:                4.461e-147
+=========================================================================================
+                            coef    std err          z      P>|z|      [0.025      0.975]
+-----------------------------------------------------------------------------------------
+Intercept                -3.2743      0.391     -8.371      0.000      -4.041      -2.508
+misalignment              0.0622      0.330      0.189      0.850      -0.585       0.709
+fragmentation             0.0229      0.081      0.284      0.777      -0.135       0.181
+draft_entropy             0.7811      0.100      7.827      0.000       0.586       0.977
+target_entropy            0.2159      0.088      2.467      0.014       0.044       0.387
+output_token_position    -0.0051      0.003     -1.571      0.116      -0.012       0.001
+=========================================================================================
+,coefficient,p_value
+Intercept,-3.2743264695446856,5.695333559730758e-17
+misalignment,0.06222880667220472,0.8504689588949692
+fragmentation,0.022892925060821228,0.7765639062374264
+draft_entropy,0.7811148685159317,5.013694863475653e-15
+target_entropy,0.21591873301728212,0.013632401242286511
+output_token_position,-0.005127338795728703,0.11629104858909008

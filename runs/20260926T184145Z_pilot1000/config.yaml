@@ -1,0 +1,20 @@
+experiment:
+  name: korean-eojeol-boundary-speculation
+  seed: 3090
+  draft_model: Qwen/Qwen3-0.6B-Base
+  target_model: Qwen/Qwen3-4B-Base
+  precision: float16
+  device: cuda
+  batch_size: 1
+  speculative_k: 4
+  max_prompt_tokens: 128
+  max_new_tokens: 128
+  pilot_prompts: 1000
+  dataset_id: wikimedia/wikipedia
+  dataset_config: 20231101.ko
+  dataset_split: train
+  data_cache: data/korean_wikipedia_20231101_ko.jsonl
+  runs_dir: runs
+  figures_dir: figures
+  limit: 1000
+  run_id: 20260926T184145Z_pilot1000

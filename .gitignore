@@ -5,6 +5,3 @@ __pycache__/
 .env
 .hf_home/
 .cache/
-data/
-runs/
-figures/

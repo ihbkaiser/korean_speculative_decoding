@@ -1,0 +1,15 @@
+{
+  "run_id": "20260926T180220Z_pilot20",
+  "prompt_count": 20,
+  "all_target_sd_outputs_equal": true,
+  "tokenizer_compatible": true,
+  "tokenizer_roundtrip_fallback_prompt_ids": [
+    8
+  ],
+  "peak_vram_allocated_gb": 8.89895248413086,
+  "peak_vram_reserved_gb": 10.166015625,
+  "elapsed_seconds": 584.4833536148071,
+  "torch_version": "2.11.0+cu128",
+  "torch_cuda_version": "12.8",
+  "gpu_name": "NVIDIA GeForce RTX 3090"
+}
