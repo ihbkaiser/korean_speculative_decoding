@@ -1,4 +1,4 @@
-# E1 Token-Frequency Confounding Analysis Plan
+# E1 Token-Frequency Confounding Analysis Plan and Results
 
 **Goal:** Determine whether token rarity explains the higher SD rejection of `CROSS_MORPHEME` tokens than `WITHIN_SPLIT` tokens in the existing 1,000-prompt run.
 
@@ -18,3 +18,18 @@
 **Verification command:** `python scripts/analyze_e1.py runs/20260926T184145Z_pilot1000 --prompt-cache data/korean_wikipedia_20231101_ko.jsonl`
 
 **Review focus:** tokenizer revision or corpus changes invalidate the cache; zero-count tokens require finite `log1p` values; ties can reduce available quantile bins; the decile robustness and spline models must use the same eligible rows as M3; predictions must average over a documented covariate sample; token frequency is estimated only from the local 1,000-document cache and is not an external corpus frequency.
+
+## Results
+
+The complete report and generated tables are in [`runs/20260926T184145Z_pilot1000/e1_frequency_control_summary.md`](runs/20260926T184145Z_pilot1000/e1_frequency_control_summary.md). The analysis used the saved run and H2 artifacts; speculative decoding was not rerun.
+
+- **Classification: A — frequency does not explain the pooled H2 result.** The CROSS coefficient stayed positive under linear and nonlinear frequency adjustment, and the frequency-stratified estimate remained positive.
+- Corpus coverage: 1,000 locally cached Korean Wikipedia texts, 3,425,737 Qwen tokenizer tokens. The primary set contained 73,143 tokens across 997 prompts; 86 tokens (0.118%) were unseen.
+- Original M3: coefficient **0.5687**, OR **1.766** (95% CI 1.475–2.115), p=6.342e-10.
+- M4, linear log frequency: coefficient **0.5594**, OR **1.750** (95% CI 1.457–2.101), p=2.107e-09.
+- M5, nonlinear spline frequency: coefficient **0.6387**, OR **1.894** (95% CI 1.542–2.327), p=1.176e-09. The coefficient increased **12.3%** relative to M3; the confidence interval still excludes OR=1.
+- Frequency-stratified robustness: OR **1.961** (95% CI 1.614–2.381), p=1.110e-11, using 44,158 tokens across 992 prompts in frequency deciles with both classes.
+- M6 was not fit: only 86 analyzed tokens were unseen (28 prompts), which did not meet the prespecified support threshold.
+- Exploratory interaction: conditional CROSS OR was 2.57 (95% CI 2.04–3.24) at the 10th frequency percentile, 1.36 (1.07–1.72) at the median, and 0.64 (0.45–0.93) at the 90th percentile. The pooled M5 result persists, while the interaction suggests the CROSS excess is concentrated among rarer tokens.
+
+These results describe associations in this generated-continuation sample and do not establish causality.
