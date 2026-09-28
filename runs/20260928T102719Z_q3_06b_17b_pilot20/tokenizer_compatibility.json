@@ -1,0 +1,78 @@
+{
+  "compatible": true,
+  "draft_class": "transformers.models.qwen2.tokenization_qwen2.Qwen2Tokenizer",
+  "target_class": "transformers.models.qwen2.tokenization_qwen2.Qwen2Tokenizer",
+  "backend_serialization_equal": true,
+  "backend_sha256": {
+    "draft": "41e00eccf531cffc2e562d38bdd879d41e5044ea279af5b73c6a32aabcc8fe04",
+    "target": "41e00eccf531cffc2e562d38bdd879d41e5044ea279af5b73c6a32aabcc8fe04"
+  },
+  "vocab_size_draft": 151669,
+  "vocab_size_target": 151669,
+  "vocab_equal": true,
+  "added_vocab_equal": true,
+  "special_tokens_equal": true,
+  "draft_special_tokens": {
+    "bos_token": null,
+    "bos_token_id": null,
+    "eos_token": "<|endoftext|>",
+    "eos_token_id": 151643,
+    "unk_token": null,
+    "unk_token_id": null,
+    "sep_token": null,
+    "sep_token_id": null,
+    "pad_token": "<|endoftext|>",
+    "pad_token_id": 151643,
+    "cls_token": null,
+    "cls_token_id": null,
+    "mask_token": null,
+    "mask_token_id": null,
+    "additional_special_tokens": null,
+    "additional_special_tokens_id": null
+  },
+  "target_special_tokens": {
+    "bos_token": null,
+    "bos_token_id": null,
+    "eos_token": "<|endoftext|>",
+    "eos_token_id": 151643,
+    "unk_token": null,
+    "unk_token_id": null,
+    "sep_token": null,
+    "sep_token_id": null,
+    "pad_token": "<|endoftext|>",
+    "pad_token_id": 151643,
+    "cls_token": null,
+    "cls_token_id": null,
+    "mask_token": null,
+    "mask_token_id": null,
+    "additional_special_tokens": null,
+    "additional_special_tokens_id": null
+  },
+  "probes": [
+    {
+      "text": "한국어 형태소 분석과 토큰 경계",
+      "ids_equal": true,
+      "offsets_equal": true,
+      "error": null
+    },
+    {
+      "text": "서울은 대한민국의 수도이다.",
+      "ids_equal": true,
+      "offsets_equal": true,
+      "error": null
+    },
+    {
+      "text": "English mixed with 한글 and numbers 3090.",
+      "ids_equal": true,
+      "offsets_equal": true,
+      "error": null
+    },
+    {
+      "text": "띄어쓰기\n여러 줄 테스트",
+      "ids_equal": true,
+      "offsets_equal": true,
+      "error": null
+    }
+  ],
+  "reasons": []
+}
