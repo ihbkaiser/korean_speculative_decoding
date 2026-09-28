@@ -1,0 +1,58 @@
+SD proposal logistic regression
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:               rejected   No. Observations:               114853
+Model:                          Logit   Df Residuals:                   114847
+Method:                           MLE   Df Model:                            5
+Date:                Sun, 27 Sep 2026   Pseudo R-squ.:                  0.3334
+Time:                        03:18:11   Log-Likelihood:                -36766.
+converged:                       True   LL-Null:                       -55158.
+Covariance Type:              cluster   LLR p-value:                     0.000
+=====================================================================================
+                        coef    std err          z      P>|z|      [0.025      0.975]
+-------------------------------------------------------------------------------------
+Intercept            -3.1235      0.037    -84.140      0.000      -3.196      -3.051
+misalignment         -0.0785      0.045     -1.727      0.084      -0.168       0.011
+fragmentation        -0.0053      0.004     -1.430      0.153      -0.012       0.002
+draft_entropy         0.8921      0.013     67.369      0.000       0.866       0.918
+target_entropy        0.1240      0.014      8.715      0.000       0.096       0.152
+proposal_position    -0.1470      0.010    -14.704      0.000      -0.167      -0.127
+=====================================================================================
+
+Coefficients and p-values:
+,coefficient,p_value
+Intercept,-3.12348901185803,0.0
+misalignment,-0.07849999857261479,0.08414303463683029
+fragmentation,-0.005262832210610331,0.15275013162085171
+draft_entropy,0.8921461231251842,0.0
+target_entropy,0.1239686241800587,2.901921722713029e-18
+proposal_position,-0.14699071975019343,6.062844032110282e-49
+
+
+Teacher-forced disagreement logistic regression
+                               Logit Regression Results                              
+=====================================================================================
+Dep. Variable:     draft_target_disagreement   No. Observations:               114853
+Model:                                 Logit   Df Residuals:                   114847
+Method:                                  MLE   Df Model:                            5
+Date:                       Sun, 27 Sep 2026   Pseudo R-squ.:                  0.3355
+Time:                               03:18:26   Log-Likelihood:                -36654.
+converged:                              True   LL-Null:                       -55159.
+Covariance Type:                     cluster   LLR p-value:                     0.000
+=========================================================================================
+                            coef    std err          z      P>|z|      [0.025      0.975]
+-----------------------------------------------------------------------------------------
+Intercept                -3.0427      0.040    -76.263      0.000      -3.121      -2.965
+misalignment             -0.0498      0.047     -1.056      0.291      -0.142       0.043
+fragmentation            -0.0063      0.004     -1.669      0.095      -0.014       0.001
+draft_entropy             0.8757      0.014     64.452      0.000       0.849       0.902
+target_entropy            0.1078      0.014      7.451      0.000       0.079       0.136
+output_token_position    -0.0062      0.000    -14.102      0.000      -0.007      -0.005
+=========================================================================================
+,coefficient,p_value
+Intercept,-3.042729408151384,0.0
+misalignment,-0.04978826354737908,0.29118413219747064
+fragmentation,-0.006287095184596205,0.09510936106883863
+draft_entropy,0.8757090800107435,0.0
+target_entropy,0.10777026947716803,9.282693917349086e-14
+output_token_position,-0.006159075942619585,3.670152220772115e-45

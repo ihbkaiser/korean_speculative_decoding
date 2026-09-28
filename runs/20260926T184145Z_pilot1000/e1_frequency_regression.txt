@@ -1,0 +1,224 @@
+E1 token-frequency confounding analysis
+Run: 20260926T184145Z_pilot1000
+Corpus: Local Korean Wikipedia prompt cache (wikimedia/wikipedia, config 20231101.ko, train; first 1,000 non-empty articles)
+Documents/texts: 1,000; total tokenizer tokens: 3,425,737; tokenizer: Qwen/Qwen3-4B-Base (Qwen2Tokenizer), revision 906bfd4b4dc7f14ee4320094d8b41684abff8539.
+Tokenizer backend SHA256 (verified against H2): 41e00eccf531cffc2e562d38bdd879d41e5044ea279af5b73c6a32aabcc8fe04.
+Corpus SHA256: 6f5a90e25f62ba84f49cfd84285aab17b6f91c6c3c6a06ebb4c129059d72563e
+Primary population: sd_valid=True, fragmentation in ['2', '3', '4', '5', '6', '7', '8+'], morph_class in ['WITHIN_SPLIT', 'CROSS_MORPHEME']; N=73,143, prompts=997.
+Token-frequency bins available: 10; bins with both classes: D1, D2, D3, D4, D5, D6.
+Primary-population unseen token proportion: 86/73,143 (0.118%).
+Reference categories: WITHIN_SPLIT and fragmentation=2. Cluster-robust standard errors by prompt_id; two-sided Wald p-values.
+
+M3: sd_rejected ~ C(morph_class, Treatment(reference='WITHIN_SPLIT')) + C(fragmentation_bin, Treatment(reference='2')) + relative_position + first_token + last_token + proposal_slot + generation_position + token_char_length + eojeol_char_length + draft_entropy + target_entropy
+status=fit; n_tokens=73,143; n_prompts=997
+beta_CROSS-SPLIT=0.568699235; OR=1.765968; OR_95_CI=[1.474601, 2.114908]; two_sided_p=6.34232986e-10
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:            sd_rejected   No. Observations:                73143
+Model:                          Logit   Df Residuals:                    73126
+Method:                           MLE   Df Model:                           16
+Date:                Mon, 28 Sep 2026   Pseudo R-squ.:                  0.3929
+Time:                        08:59:53   Log-Likelihood:                -21400.
+converged:                       True   LL-Null:                       -35251.
+Covariance Type:              cluster   LLR p-value:                     0.000
+=========================================================================================================================================
+                                                                            coef    std err          z      P>|z|      [0.025      0.975]
+-----------------------------------------------------------------------------------------------------------------------------------------
+Intercept                                                                -2.6659      0.110    -24.168      0.000      -2.882      -2.450
+C(morph_class, Treatment(reference='WITHIN_SPLIT'))[T.CROSS_MORPHEME]     0.5687      0.092      6.182      0.000       0.388       0.749
+C(fragmentation_bin, Treatment(reference='2'))[T.3]                      -0.1397      0.071     -1.981      0.048      -0.278      -0.002
+C(fragmentation_bin, Treatment(reference='2'))[T.4]                      -0.0962      0.072     -1.334      0.182      -0.238       0.045
+C(fragmentation_bin, Treatment(reference='2'))[T.5]                      -0.0151      0.079     -0.192      0.848      -0.169       0.139
+C(fragmentation_bin, Treatment(reference='2'))[T.6]                      -0.0026      0.089     -0.030      0.976      -0.177       0.172
+C(fragmentation_bin, Treatment(reference='2'))[T.7]                      -0.1896      0.123     -1.543      0.123      -0.430       0.051
+C(fragmentation_bin, Treatment(reference='2'))[T.8+]                     -0.1595      0.126     -1.261      0.207      -0.407       0.088
+relative_position                                                        -0.1181      0.109     -1.087      0.277      -0.331       0.095
+first_token                                                              -1.0231      0.076    -13.390      0.000      -1.173      -0.873
+last_token                                                               -0.2719      0.079     -3.432      0.001      -0.427      -0.117
+proposal_slot                                                            -0.1399      0.013    -11.106      0.000      -0.165      -0.115
+generation_position                                                      -0.0048      0.001     -9.315      0.000      -0.006      -0.004
+token_char_length                                                        -0.0579      0.059     -0.983      0.326      -0.173       0.058
+eojeol_char_length                                                       -0.0111      0.005     -2.227      0.026      -0.021      -0.001
+draft_entropy                                                             0.9752      0.017     57.374      0.000       0.942       1.008
+target_entropy                                                            0.2622      0.019     13.651      0.000       0.225       0.300
+=========================================================================================================================================
+
+M4: sd_rejected ~ C(morph_class, Treatment(reference='WITHIN_SPLIT')) + C(fragmentation_bin, Treatment(reference='2')) + relative_position + first_token + last_token + proposal_slot + generation_position + token_char_length + eojeol_char_length + draft_entropy + target_entropy + log_token_count
+status=fit; n_tokens=73,143; n_prompts=997
+beta_CROSS-SPLIT=0.559381454; OR=1.749590; OR_95_CI=[1.456926, 2.101043]; two_sided_p=2.10671981e-09
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:            sd_rejected   No. Observations:                73143
+Model:                          Logit   Df Residuals:                    73125
+Method:                           MLE   Df Model:                           17
+Date:                Mon, 28 Sep 2026   Pseudo R-squ.:                  0.3930
+Time:                        09:00:01   Log-Likelihood:                -21399.
+converged:                       True   LL-Null:                       -35251.
+Covariance Type:              cluster   LLR p-value:                     0.000
+=========================================================================================================================================
+                                                                            coef    std err          z      P>|z|      [0.025      0.975]
+-----------------------------------------------------------------------------------------------------------------------------------------
+Intercept                                                                -2.7886      0.174    -15.993      0.000      -3.130      -2.447
+C(morph_class, Treatment(reference='WITHIN_SPLIT'))[T.CROSS_MORPHEME]     0.5594      0.093      5.989      0.000       0.376       0.742
+C(fragmentation_bin, Treatment(reference='2'))[T.3]                      -0.1408      0.070     -1.998      0.046      -0.279      -0.003
+C(fragmentation_bin, Treatment(reference='2'))[T.4]                      -0.0982      0.072     -1.362      0.173      -0.239       0.043
+C(fragmentation_bin, Treatment(reference='2'))[T.5]                      -0.0260      0.079     -0.331      0.741      -0.180       0.128
+C(fragmentation_bin, Treatment(reference='2'))[T.6]                      -0.0084      0.089     -0.095      0.924      -0.182       0.165
+C(fragmentation_bin, Treatment(reference='2'))[T.7]                      -0.1947      0.123     -1.583      0.113      -0.436       0.046
+C(fragmentation_bin, Treatment(reference='2'))[T.8+]                     -0.1582      0.126     -1.253      0.210      -0.406       0.089
+relative_position                                                        -0.1241      0.108     -1.143      0.253      -0.337       0.089
+first_token                                                              -1.0218      0.076    -13.364      0.000      -1.172      -0.872
+last_token                                                               -0.2675      0.079     -3.371      0.001      -0.423      -0.112
+proposal_slot                                                            -0.1403      0.013    -11.131      0.000      -0.165      -0.116
+generation_position                                                      -0.0048      0.001     -9.312      0.000      -0.006      -0.004
+token_char_length                                                        -0.0404      0.062     -0.657      0.511      -0.161       0.080
+eojeol_char_length                                                       -0.0111      0.005     -2.197      0.028      -0.021      -0.001
+draft_entropy                                                             0.9779      0.017     57.273      0.000       0.944       1.011
+target_entropy                                                            0.2599      0.019     13.424      0.000       0.222       0.298
+log_token_count                                                           0.0126      0.013      0.944      0.345      -0.014       0.039
+=========================================================================================================================================
+
+M5: sd_rejected ~ C(morph_class, Treatment(reference='WITHIN_SPLIT')) + C(fragmentation_bin, Treatment(reference='2')) + relative_position + first_token + last_token + proposal_slot + generation_position + token_char_length + eojeol_char_length + draft_entropy + target_entropy + bs(log_token_count, df=4, degree=3, include_intercept=False)
+status=fit; n_tokens=73,143; n_prompts=997
+beta_CROSS-SPLIT=0.638718099; OR=1.894051; OR_95_CI=[1.541777, 2.326816]; two_sided_p=1.17636363e-09
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:            sd_rejected   No. Observations:                73143
+Model:                          Logit   Df Residuals:                    73122
+Method:                           MLE   Df Model:                           20
+Date:                Mon, 28 Sep 2026   Pseudo R-squ.:                  0.3932
+Time:                        09:00:09   Log-Likelihood:                -21389.
+converged:                       True   LL-Null:                       -35251.
+Covariance Type:              cluster   LLR p-value:                     0.000
+=========================================================================================================================================
+                                                                            coef    std err          z      P>|z|      [0.025      0.975]
+-----------------------------------------------------------------------------------------------------------------------------------------
+Intercept                                                                -2.5522      0.433     -5.896      0.000      -3.401      -1.704
+C(morph_class, Treatment(reference='WITHIN_SPLIT'))[T.CROSS_MORPHEME]     0.6387      0.105      6.083      0.000       0.433       0.845
+C(fragmentation_bin, Treatment(reference='2'))[T.3]                      -0.1367      0.070     -1.945      0.052      -0.275       0.001
+C(fragmentation_bin, Treatment(reference='2'))[T.4]                      -0.0927      0.072     -1.289      0.197      -0.234       0.048
+C(fragmentation_bin, Treatment(reference='2'))[T.5]                      -0.0511      0.079     -0.647      0.518      -0.206       0.104
+C(fragmentation_bin, Treatment(reference='2'))[T.6]                      -0.0163      0.088     -0.185      0.854      -0.189       0.157
+C(fragmentation_bin, Treatment(reference='2'))[T.7]                      -0.2033      0.122     -1.660      0.097      -0.443       0.037
+C(fragmentation_bin, Treatment(reference='2'))[T.8+]                     -0.1750      0.125     -1.405      0.160      -0.419       0.069
+relative_position                                                        -0.1532      0.108     -1.422      0.155      -0.364       0.058
+first_token                                                              -1.0278      0.077    -13.336      0.000      -1.179      -0.877
+last_token                                                               -0.2606      0.080     -3.273      0.001      -0.417      -0.105
+proposal_slot                                                            -0.1417      0.013    -11.265      0.000      -0.166      -0.117
+generation_position                                                      -0.0047      0.001     -9.228      0.000      -0.006      -0.004
+token_char_length                                                        -0.0875      0.070     -1.244      0.213      -0.225       0.050
+eojeol_char_length                                                       -0.0121      0.005     -2.500      0.012      -0.022      -0.003
+draft_entropy                                                             0.9820      0.017     57.032      0.000       0.948       1.016
+target_entropy                                                            0.2608      0.019     13.496      0.000       0.223       0.299
+bs(log_token_count, df=4, degree=3, include_intercept=False)[0]           0.3992      0.532      0.750      0.453      -0.644       1.442
+bs(log_token_count, df=4, degree=3, include_intercept=False)[1]          -0.3403      0.397     -0.857      0.392      -1.119       0.438
+bs(log_token_count, df=4, degree=3, include_intercept=False)[2]          -0.0239      0.396     -0.060      0.952      -0.800       0.752
+bs(log_token_count, df=4, degree=3, include_intercept=False)[3]           0.1269      0.388      0.327      0.744      -0.634       0.888
+=========================================================================================================================================
+
+M6: sd_rejected ~ C(morph_class, Treatment(reference='WITHIN_SPLIT')) + C(fragmentation_bin, Treatment(reference='2')) + relative_position + first_token + last_token + proposal_slot + generation_position + token_char_length + eojeol_char_length + draft_entropy + target_entropy + bs(log_token_count, df=4, degree=3, include_intercept=False) + token_is_unseen
+status=not_fit:unseen support insufficient (n=86, prompts=28); n_tokens=73,143; n_prompts=997
+
+Frequency-stratified: sd_rejected ~ C(morph_class, Treatment(reference='WITHIN_SPLIT')) + C(fragmentation_bin, Treatment(reference='2')) + relative_position + first_token + last_token + proposal_slot + generation_position + token_char_length + eojeol_char_length + draft_entropy + target_entropy + C(frequency_decile, Treatment(reference='D1'))
+status=fit; n_tokens=44,158; n_prompts=992
+beta_CROSS-SPLIT=0.673211862; OR=1.960524; OR_95_CI=[1.614344, 2.380940]; two_sided_p=1.10992188e-11
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:            sd_rejected   No. Observations:                44158
+Model:                          Logit   Df Residuals:                    44136
+Method:                           MLE   Df Model:                           21
+Date:                Mon, 28 Sep 2026   Pseudo R-squ.:                  0.4261
+Time:                        09:00:13   Log-Likelihood:                -13104.
+converged:                       True   LL-Null:                       -22832.
+Covariance Type:              cluster   LLR p-value:                     0.000
+=========================================================================================================================================
+                                                                            coef    std err          z      P>|z|      [0.025      0.975]
+-----------------------------------------------------------------------------------------------------------------------------------------
+Intercept                                                                -2.5175      0.143    -17.648      0.000      -2.797      -2.238
+C(morph_class, Treatment(reference='WITHIN_SPLIT'))[T.CROSS_MORPHEME]     0.6732      0.099      6.791      0.000       0.479       0.867
+C(fragmentation_bin, Treatment(reference='2'))[T.3]                      -0.0866      0.074     -1.166      0.244      -0.232       0.059
+C(fragmentation_bin, Treatment(reference='2'))[T.4]                      -0.0211      0.076     -0.277      0.782      -0.170       0.128
+C(fragmentation_bin, Treatment(reference='2'))[T.5]                       0.0722      0.086      0.835      0.404      -0.097       0.242
+C(fragmentation_bin, Treatment(reference='2'))[T.6]                      -0.0977      0.100     -0.979      0.328      -0.293       0.098
+C(fragmentation_bin, Treatment(reference='2'))[T.7]                       0.1024      0.143      0.717      0.473      -0.178       0.382
+C(fragmentation_bin, Treatment(reference='2'))[T.8+]                     -0.0811      0.139     -0.585      0.559      -0.353       0.191
+C(frequency_decile, Treatment(reference='D1'))[T.D2]                     -0.0591      0.070     -0.841      0.400      -0.197       0.079
+C(frequency_decile, Treatment(reference='D1'))[T.D3]                     -0.1236      0.069     -1.784      0.074      -0.259       0.012
+C(frequency_decile, Treatment(reference='D1'))[T.D4]                     -0.2526      0.067     -3.794      0.000      -0.383      -0.122
+C(frequency_decile, Treatment(reference='D1'))[T.D5]                     -0.1899      0.070     -2.728      0.006      -0.326      -0.053
+C(frequency_decile, Treatment(reference='D1'))[T.D6]                     -0.1407      0.073     -1.917      0.055      -0.284       0.003
+relative_position                                                        -0.6219      0.163     -3.811      0.000      -0.942      -0.302
+first_token                                                              -1.0338      0.100    -10.320      0.000      -1.230      -0.837
+last_token                                                                0.2087      0.102      2.043      0.041       0.008       0.409
+proposal_slot                                                            -0.1557      0.016     -9.794      0.000      -0.187      -0.125
+generation_position                                                      -0.0051      0.001     -8.124      0.000      -0.006      -0.004
+token_char_length                                                        -0.0323      0.063     -0.511      0.610      -0.156       0.092
+eojeol_char_length                                                       -0.0139      0.004     -3.211      0.001      -0.022      -0.005
+draft_entropy                                                             1.0117      0.020     49.558      0.000       0.972       1.052
+target_entropy                                                            0.2263      0.022     10.307      0.000       0.183       0.269
+=========================================================================================================================================
+
+Descriptive token-frequency summary:
+   morph_class  n_tokens  n_prompts  median_token_count  mean_log_token_count  unseen_percentage  rejection_rate
+         EXACT     39546        991             18964.0              9.362568           0.159308        0.178703
+  WITHIN_SPLIT     69343        997              6315.0              8.707548           0.121137        0.183494
+CROSS_MORPHEME      3800        725              3268.0              7.615597           0.052632        0.252368
+
+CROSS - WITHIN_SPLIT rarity contrast:
+{
+  "cross_minus_split_mean_log_token_count": -1.091950308487541,
+  "cross_to_split_median_token_count_ratio": 0.5174980205859065,
+  "cross_minus_split_unseen_percentage_points": -0.0685053779192223
+}
+Adjusted log_token_count model: log_token_count ~ C(morph_class, Treatment(reference='WITHIN_SPLIT')) + C(fragmentation_bin, Treatment(reference='2')) + relative_position + first_token + last_token + proposal_slot + generation_position + token_char_length + eojeol_char_length
+{
+  "formula": "log_token_count ~ C(morph_class, Treatment(reference='WITHIN_SPLIT')) + C(fragmentation_bin, Treatment(reference='2')) + relative_position + first_token + last_token + proposal_slot + generation_position + token_char_length + eojeol_char_length",
+  "n_tokens": 73143,
+  "n_prompts": 997,
+  "coefficient_cross_minus_split": 1.070623078264996,
+  "std_error": 0.20641808585125193,
+  "ci_low": 0.6660510642388453,
+  "ci_high": 1.4751950922911465,
+  "p_value": 2.1408434114361843e-07
+}
+
+Exploratory morphology × log_token_count interaction:
+sd_rejected ~ C(morph_class, Treatment(reference='WITHIN_SPLIT')) + C(fragmentation_bin, Treatment(reference='2')) + relative_position + first_token + last_token + proposal_slot + generation_position + token_char_length + eojeol_char_length + draft_entropy + target_entropy + log_token_count * C(morph_class, Treatment(reference='WITHIN_SPLIT'))
+{
+  "label": "Exploratory morphology by frequency interaction",
+  "formula": "sd_rejected ~ C(morph_class, Treatment(reference='WITHIN_SPLIT')) + C(fragmentation_bin, Treatment(reference='2')) + relative_position + first_token + last_token + proposal_slot + generation_position + token_char_length + eojeol_char_length + draft_entropy + target_entropy + log_token_count * C(morph_class, Treatment(reference='WITHIN_SPLIT'))",
+  "n_tokens": 73143,
+  "n_prompts": 997,
+  "beta_cross": 3.5613989037283726,
+  "std_error": 0.40236848471420766,
+  "ci_low": 2.7727711651745706,
+  "ci_high": 4.350026642282175,
+  "odds_ratio": 35.21242149473012,
+  "or_ci_low": 16.00291935325622,
+  "or_ci_high": 77.48052715583036,
+  "p_value": 8.667011252928758e-19,
+  "status": "fit",
+  "model_summary": "                           Logit Regression Results                           \n==============================================================================\nDep. Variable:            sd_rejected   No. Observations:                73143\nModel:                          Logit   Df Residuals:                    73124\nMethod:                           MLE   Df Model:                           18\nDate:                Mon, 28 Sep 2026   Pseudo R-squ.:                  0.3944\nTime:                        09:00:21   Log-Likelihood:                -21349.\nconverged:                       True   LL-Null:                       -35251.\nCovariance Type:              cluster   LLR p-value:                     0.000\n=========================================================================================================================================================\n                                                                                            coef    std err          z      P>|z|      [0.025      0.975]\n---------------------------------------------------------------------------------------------------------------------------------------------------------\nIntercept                                                                                -2.8638      0.187    -15.333      0.000      -3.230      -2.498\nC(morph_class, Treatment(reference='WITHIN_SPLIT'))[T.CROSS_MORPHEME]                     3.5614      0.402      8.851      0.000       2.773       4.350\nC(fragmentation_bin, Treatment(reference='2'))[T.3]                                      -0.1422      0.070     -2.022      0.043      -0.280      -0.004\nC(fragmentation_bin, Treatment(reference='2'))[T.4]                                      -0.0960      0.072     -1.329      0.184      -0.238       0.046\nC(fragmentation_bin, Treatment(reference='2'))[T.5]                                      -0.0531      0.079     -0.670      0.503      -0.208       0.102\nC(fragmentation_bin, Treatment(reference='2'))[T.6]                                      -0.0219      0.089     -0.246      0.806      -0.196       0.153\nC(fragmentation_bin, Treatment(reference='2'))[T.7]                                      -0.2147      0.123     -1.744      0.081      -0.456       0.027\nC(fragmentation_bin, Treatment(reference='2'))[T.8+]                                     -0.1792      0.127     -1.412      0.158      -0.428       0.069\nrelative_position                                                                        -0.0963      0.109     -0.883      0.377      -0.310       0.117\nfirst_token                                                                              -1.0203      0.077    -13.300      0.000      -1.171      -0.870\nlast_token                                                                               -0.3171      0.080     -3.944      0.000      -0.475      -0.160\nproposal_slot                                                                            -0.1412      0.013    -11.185      0.000      -0.166      -0.116\ngeneration_position                                                                      -0.0047      0.001     -9.261      0.000      -0.006      -0.004\ntoken_char_length                                                                        -0.1372      0.077     -1.778      0.075      -0.288       0.014\neojeol_char_length                                                                       -0.0112      0.005     -2.185      0.029      -0.021      -0.001\ndraft_entropy                                                                             0.9827      0.017     57.187      0.000       0.949       1.016\ntarget_entropy                                                                            0.2608      0.019     13.450      0.000       0.223       0.299\nlog_token_count                                                                           0.0316      0.014      2.279      0.023       0.004       0.059\nlog_token_count:C(morph_class, Treatment(reference='WITHIN_SPLIT'))[T.CROSS_MORPHEME]    -0.3755      0.050     -7.461      0.000      -0.474      -0.277\n=========================================================================================================================================================",
+  "cross_frequency_interaction": -0.37550663063415596,
+  "interaction_std_error": 0.050328778433928155,
+  "interaction_ci_low": -0.47414922375055135,
+  "interaction_ci_high": -0.27686403751776056,
+  "interaction_p_value": 8.58214505307906e-14,
+  "cross_beta_p10": 0.9445493787636248,
+  "cross_or_p10": 2.571654275420569,
+  "cross_or_p10_ci_low": 2.0438201832618734,
+  "cross_or_p10_ci_high": 3.2358060491085388,
+  "log_count_p10": 6.968850378341948,
+  "cross_beta_p50": 0.3055308350108623,
+  "cross_or_p50": 1.3573453382270932,
+  "cross_or_p50_ci_low": 1.0682526753524808,
+  "cross_or_p50_ci_high": 1.7246728322949516,
+  "log_count_p50": 8.67060073804555,
+  "cross_beta_p90": -0.44011022012724776,
+  "cross_or_p90": 0.6439654392187443,
+  "cross_or_p90_ci_low": 0.4465853370054073,
+  "cross_or_p90_ci_high": 0.9285828542623403,
+  "log_count_p90": 10.656294183401949
+}
+
+Frequency decile edges on log1p token counts: [-inf, 6.968850378341948, 7.580699752224563, 7.969011781106478, 8.30844552038576, 8.67060073804555, 9.05543941075822, 9.44311737225863, 9.864122829013851, 10.656294183401949, inf]

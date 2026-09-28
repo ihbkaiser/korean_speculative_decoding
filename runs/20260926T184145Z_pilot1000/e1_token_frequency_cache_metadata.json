@@ -1,0 +1,16 @@
+{
+  "cache_key": "15d29735986b8591103f9c1b23b6f879f5ec7f55b0061d0909dc2915b1dff7fd",
+  "corpus_path": "data/korean_wikipedia_20231101_ko.jsonl",
+  "corpus_sha256": "6f5a90e25f62ba84f49cfd84285aab17b6f91c6c3c6a06ebb4c129059d72563e",
+  "corpus": "Local Korean Wikipedia prompt cache (wikimedia/wikipedia, config 20231101.ko, train; first 1,000 non-empty articles)",
+  "document_count": 1000,
+  "total_corpus_tokens": 3425737,
+  "distinct_eojeol_surfaces": 270763,
+  "token_frequency_rows": 151669,
+  "tokenizer_name": "Qwen/Qwen3-4B-Base",
+  "tokenizer_class": "Qwen2Tokenizer",
+  "tokenizer_revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+  "tokenizer_backend_sha256": "41e00eccf531cffc2e562d38bdd879d41e5044ea279af5b73c6a32aabcc8fe04",
+  "vocab_size": 151669,
+  "use_fast": true
+}
