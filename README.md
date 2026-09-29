@@ -20,11 +20,13 @@
 
 ## 설치 및 실행
 
-RTX 3090의 CUDA가 포함된 PyTorch 환경을 준비한 뒤:
+로컬 가상환경과 CUDA 12.8 PyTorch를 설치합니다:
 
 ```bash
-source /venv/main/bin/activate
-uv pip install -r requirements.txt
+uv venv --seed --python python3.13 .venv
+uv pip install --python .venv/bin/python --index-url https://download.pytorch.org/whl/cu128 'torch==2.11.0+cu128'
+uv pip install --python .venv/bin/python -r requirements.txt
+source .venv/bin/activate
 ```
 
 요청된 검증 순서:

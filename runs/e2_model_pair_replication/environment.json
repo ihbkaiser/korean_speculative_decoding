@@ -1,0 +1,21 @@
+{
+  "captured_at_utc": "2026-09-29T03:01:29.058095+00:00",
+  "python": "3.13.13 | packaged by Anaconda, Inc. | (main, Apr 14 2026, 06:19:41) [GCC 14.3.0]",
+  "platform": "Linux-6.17.0-1011-oracle-x86_64-with-glibc2.39",
+  "torch": "2.11.0+cu128",
+  "torch_cuda_runtime": "12.8",
+  "transformers": "5.17.0",
+  "attention_backend": "sdpa",
+  "dtype": "torch.float16",
+  "physical_gpu": 7,
+  "cuda_visible_devices": "7",
+  "process_device": "cuda:0",
+  "process_device_count": 1,
+  "gpu_name": "NVIDIA A100-SXM4-80GB",
+  "gpu_total_memory_bytes": 85094825984,
+  "tf32_matmul": true,
+  "tf32_cudnn": true,
+  "pytorch_cuda_alloc_conf": "expandable_segments:True",
+  "tokenizers_parallelism": "true",
+  "physical_gpu7_nvidia_smi": "NVIDIA A100-SXM4-80GB, 580.105.08, 81920 MiB, 26691 MiB, 99 %"
+}

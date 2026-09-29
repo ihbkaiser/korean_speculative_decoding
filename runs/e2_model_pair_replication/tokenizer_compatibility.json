@@ -1,0 +1,360 @@
+{
+  "checked_at_utc": "2026-09-29T03:01:24.569968+00:00",
+  "model_tokenizers": {
+    "0.6B": {
+      "model_id": "Qwen/Qwen3-0.6B-Base",
+      "requested_revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+      "resolved_revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+      "resolved_revision_source": "pinned full commit SHA",
+      "tokenizer_class": "transformers.models.qwen2.tokenization_qwen2.Qwen2Tokenizer",
+      "is_fast": true,
+      "vocab_size": 151669,
+      "vocab_mapping_sha256": "6e949d8fec10c504f4207a43cdeac7d7961f7fd9894d256f14a8153bb5479b63",
+      "added_vocab": {
+        "</think>": 151668,
+        "</tool_call>": 151658,
+        "</tool_response>": 151666,
+        "<think>": 151667,
+        "<tool_call>": 151657,
+        "<tool_response>": 151665,
+        "<|box_end|>": 151649,
+        "<|box_start|>": 151648,
+        "<|endoftext|>": 151643,
+        "<|file_sep|>": 151664,
+        "<|fim_middle|>": 151660,
+        "<|fim_pad|>": 151662,
+        "<|fim_prefix|>": 151659,
+        "<|fim_suffix|>": 151661,
+        "<|im_end|>": 151645,
+        "<|im_start|>": 151644,
+        "<|image_pad|>": 151655,
+        "<|object_ref_end|>": 151647,
+        "<|object_ref_start|>": 151646,
+        "<|quad_end|>": 151651,
+        "<|quad_start|>": 151650,
+        "<|repo_name|>": 151663,
+        "<|video_pad|>": 151656,
+        "<|vision_end|>": 151653,
+        "<|vision_pad|>": 151654,
+        "<|vision_start|>": 151652
+      },
+      "special_tokens": {
+        "bos_token": null,
+        "bos_token_id": null,
+        "eos_token": "<|endoftext|>",
+        "eos_token_id": 151643,
+        "unk_token": null,
+        "unk_token_id": null,
+        "sep_token": null,
+        "sep_token_id": null,
+        "pad_token": "<|endoftext|>",
+        "pad_token_id": 151643,
+        "cls_token": null,
+        "cls_token_id": null,
+        "mask_token": null,
+        "mask_token_id": null,
+        "additional_special_tokens": null,
+        "additional_special_tokens_id": null
+      },
+      "backend_sha256": "41e00eccf531cffc2e562d38bdd879d41e5044ea279af5b73c6a32aabcc8fe04",
+      "normalizer": {
+        "type": "NFC"
+      },
+      "pre_tokenizer": {
+        "type": "Sequence",
+        "pretokenizers": [
+          {
+            "type": "Split",
+            "pattern": {
+              "Regex": "(?i:'s|'t|'re|'ve|'m|'ll|'d)|[^\\r\\n\\p{L}\\p{N}]?\\p{L}+|\\p{N}| ?[^\\s\\p{L}\\p{N}]+[\\r\\n]*|\\s*[\\r\\n]+|\\s+(?!\\S)|\\s+"
+            },
+            "behavior": "Isolated",
+            "invert": false
+          },
+          {
+            "type": "ByteLevel",
+            "add_prefix_space": false,
+            "trim_offsets": true,
+            "use_regex": false
+          }
+        ]
+      }
+    },
+    "1.7B": {
+      "model_id": "Qwen/Qwen3-1.7B-Base",
+      "requested_revision": "ea980cb0a6c2ae4b936e82123acc929f1cec04c1",
+      "resolved_revision": "ea980cb0a6c2ae4b936e82123acc929f1cec04c1",
+      "resolved_revision_source": "pinned full commit SHA",
+      "tokenizer_class": "transformers.models.qwen2.tokenization_qwen2.Qwen2Tokenizer",
+      "is_fast": true,
+      "vocab_size": 151669,
+      "vocab_mapping_sha256": "6e949d8fec10c504f4207a43cdeac7d7961f7fd9894d256f14a8153bb5479b63",
+      "added_vocab": {
+        "</think>": 151668,
+        "</tool_call>": 151658,
+        "</tool_response>": 151666,
+        "<think>": 151667,
+        "<tool_call>": 151657,
+        "<tool_response>": 151665,
+        "<|box_end|>": 151649,
+        "<|box_start|>": 151648,
+        "<|endoftext|>": 151643,
+        "<|file_sep|>": 151664,
+        "<|fim_middle|>": 151660,
+        "<|fim_pad|>": 151662,
+        "<|fim_prefix|>": 151659,
+        "<|fim_suffix|>": 151661,
+        "<|im_end|>": 151645,
+        "<|im_start|>": 151644,
+        "<|image_pad|>": 151655,
+        "<|object_ref_end|>": 151647,
+        "<|object_ref_start|>": 151646,
+        "<|quad_end|>": 151651,
+        "<|quad_start|>": 151650,
+        "<|repo_name|>": 151663,
+        "<|video_pad|>": 151656,
+        "<|vision_end|>": 151653,
+        "<|vision_pad|>": 151654,
+        "<|vision_start|>": 151652
+      },
+      "special_tokens": {
+        "bos_token": null,
+        "bos_token_id": null,
+        "eos_token": "<|endoftext|>",
+        "eos_token_id": 151643,
+        "unk_token": null,
+        "unk_token_id": null,
+        "sep_token": null,
+        "sep_token_id": null,
+        "pad_token": "<|endoftext|>",
+        "pad_token_id": 151643,
+        "cls_token": null,
+        "cls_token_id": null,
+        "mask_token": null,
+        "mask_token_id": null,
+        "additional_special_tokens": null,
+        "additional_special_tokens_id": null
+      },
+      "backend_sha256": "41e00eccf531cffc2e562d38bdd879d41e5044ea279af5b73c6a32aabcc8fe04",
+      "normalizer": {
+        "type": "NFC"
+      },
+      "pre_tokenizer": {
+        "type": "Sequence",
+        "pretokenizers": [
+          {
+            "type": "Split",
+            "pattern": {
+              "Regex": "(?i:'s|'t|'re|'ve|'m|'ll|'d)|[^\\r\\n\\p{L}\\p{N}]?\\p{L}+|\\p{N}| ?[^\\s\\p{L}\\p{N}]+[\\r\\n]*|\\s*[\\r\\n]+|\\s+(?!\\S)|\\s+"
+            },
+            "behavior": "Isolated",
+            "invert": false
+          },
+          {
+            "type": "ByteLevel",
+            "add_prefix_space": false,
+            "trim_offsets": true,
+            "use_regex": false
+          }
+        ]
+      }
+    },
+    "4B": {
+      "model_id": "Qwen/Qwen3-4B-Base",
+      "requested_revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+      "resolved_revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+      "resolved_revision_source": "pinned full commit SHA",
+      "tokenizer_class": "transformers.models.qwen2.tokenization_qwen2.Qwen2Tokenizer",
+      "is_fast": true,
+      "vocab_size": 151669,
+      "vocab_mapping_sha256": "6e949d8fec10c504f4207a43cdeac7d7961f7fd9894d256f14a8153bb5479b63",
+      "added_vocab": {
+        "</think>": 151668,
+        "</tool_call>": 151658,
+        "</tool_response>": 151666,
+        "<think>": 151667,
+        "<tool_call>": 151657,
+        "<tool_response>": 151665,
+        "<|box_end|>": 151649,
+        "<|box_start|>": 151648,
+        "<|endoftext|>": 151643,
+        "<|file_sep|>": 151664,
+        "<|fim_middle|>": 151660,
+        "<|fim_pad|>": 151662,
+        "<|fim_prefix|>": 151659,
+        "<|fim_suffix|>": 151661,
+        "<|im_end|>": 151645,
+        "<|im_start|>": 151644,
+        "<|image_pad|>": 151655,
+        "<|object_ref_end|>": 151647,
+        "<|object_ref_start|>": 151646,
+        "<|quad_end|>": 151651,
+        "<|quad_start|>": 151650,
+        "<|repo_name|>": 151663,
+        "<|video_pad|>": 151656,
+        "<|vision_end|>": 151653,
+        "<|vision_pad|>": 151654,
+        "<|vision_start|>": 151652
+      },
+      "special_tokens": {
+        "bos_token": null,
+        "bos_token_id": null,
+        "eos_token": "<|endoftext|>",
+        "eos_token_id": 151643,
+        "unk_token": null,
+        "unk_token_id": null,
+        "sep_token": null,
+        "sep_token_id": null,
+        "pad_token": "<|endoftext|>",
+        "pad_token_id": 151643,
+        "cls_token": null,
+        "cls_token_id": null,
+        "mask_token": null,
+        "mask_token_id": null,
+        "additional_special_tokens": null,
+        "additional_special_tokens_id": null
+      },
+      "backend_sha256": "41e00eccf531cffc2e562d38bdd879d41e5044ea279af5b73c6a32aabcc8fe04",
+      "normalizer": {
+        "type": "NFC"
+      },
+      "pre_tokenizer": {
+        "type": "Sequence",
+        "pretokenizers": [
+          {
+            "type": "Split",
+            "pattern": {
+              "Regex": "(?i:'s|'t|'re|'ve|'m|'ll|'d)|[^\\r\\n\\p{L}\\p{N}]?\\p{L}+|\\p{N}| ?[^\\s\\p{L}\\p{N}]+[\\r\\n]*|\\s*[\\r\\n]+|\\s+(?!\\S)|\\s+"
+            },
+            "behavior": "Isolated",
+            "invert": false
+          },
+          {
+            "type": "ByteLevel",
+            "add_prefix_space": false,
+            "trim_offsets": true,
+            "use_regex": false
+          }
+        ]
+      }
+    }
+  },
+  "comparisons_to_4B": {
+    "0.6B": {
+      "compatible_with_4B": true,
+      "reasons": [],
+      "probes": [
+        {
+          "text": "한국어 형태소 분석과 토큰 경계",
+          "ids_equal": true,
+          "offsets_equal": true,
+          "error": null
+        },
+        {
+          "text": "서울은 대한민국의 수도이다.",
+          "ids_equal": true,
+          "offsets_equal": true,
+          "error": null
+        },
+        {
+          "text": "English mixed with 한글 and numbers 3090.",
+          "ids_equal": true,
+          "offsets_equal": true,
+          "error": null
+        },
+        {
+          "text": "띄어쓰기\n여러 줄 테스트",
+          "ids_equal": true,
+          "offsets_equal": true,
+          "error": null
+        },
+        {
+          "text": "한국어의 형태소 경계는 중요하다.",
+          "ids_equal": true,
+          "offsets_equal": true,
+          "error": null
+        }
+      ]
+    },
+    "1.7B": {
+      "compatible_with_4B": true,
+      "reasons": [],
+      "probes": [
+        {
+          "text": "한국어 형태소 분석과 토큰 경계",
+          "ids_equal": true,
+          "offsets_equal": true,
+          "error": null
+        },
+        {
+          "text": "서울은 대한민국의 수도이다.",
+          "ids_equal": true,
+          "offsets_equal": true,
+          "error": null
+        },
+        {
+          "text": "English mixed with 한글 and numbers 3090.",
+          "ids_equal": true,
+          "offsets_equal": true,
+          "error": null
+        },
+        {
+          "text": "띄어쓰기\n여러 줄 테스트",
+          "ids_equal": true,
+          "offsets_equal": true,
+          "error": null
+        },
+        {
+          "text": "한국어의 형태소 경계는 중요하다.",
+          "ids_equal": true,
+          "offsets_equal": true,
+          "error": null
+        }
+      ]
+    },
+    "4B": {
+      "compatible_with_4B": true,
+      "reasons": [],
+      "probes": [
+        {
+          "text": "한국어 형태소 분석과 토큰 경계",
+          "ids_equal": true,
+          "offsets_equal": true,
+          "error": null
+        },
+        {
+          "text": "서울은 대한민국의 수도이다.",
+          "ids_equal": true,
+          "offsets_equal": true,
+          "error": null
+        },
+        {
+          "text": "English mixed with 한글 and numbers 3090.",
+          "ids_equal": true,
+          "offsets_equal": true,
+          "error": null
+        },
+        {
+          "text": "띄어쓰기\n여러 줄 테스트",
+          "ids_equal": true,
+          "offsets_equal": true,
+          "error": null
+        },
+        {
+          "text": "한국어의 형태소 경계는 중요하다.",
+          "ids_equal": true,
+          "offsets_equal": true,
+          "error": null
+        }
+      ]
+    }
+  },
+  "p3_frequency_cache_identity": {
+    "tokenizer_name": "Qwen/Qwen3-4B-Base",
+    "revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+    "backend_sha256": "41e00eccf531cffc2e562d38bdd879d41e5044ea279af5b73c6a32aabcc8fe04",
+    "vocab_size": 151669,
+    "matches_pinned_4B": true
+  },
+  "shared_tokenizer": true
+}

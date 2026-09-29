@@ -1,0 +1,342 @@
+{
+  "p3_run_id": "20260926T184145Z_pilot1000",
+  "run_id_start_utc": "2026-09-26T18:41:45+00:00",
+  "run_elapsed_seconds_recorded": 30934.50831770897,
+  "estimated_end_utc_from_run_id_plus_elapsed": "2026-09-27T03:17:19.508318+00:00",
+  "estimated_end_method_note": "The run ID encodes the start time; estimated end adds recorded elapsed_seconds. Treat as approximate if that elapsed field excludes setup or postprocessing.",
+  "p3_config": "experiment:\n  name: korean-eojeol-boundary-speculation\n  seed: 3090\n  draft_model: Qwen/Qwen3-0.6B-Base\n  target_model: Qwen/Qwen3-4B-Base\n  precision: float16\n  device: cuda\n  batch_size: 1\n  speculative_k: 4\n  max_prompt_tokens: 128\n  max_new_tokens: 128\n  pilot_prompts: 1000\n  dataset_id: wikimedia/wikipedia\n  dataset_config: 20231101.ko\n  dataset_split: train\n  data_cache: data/korean_wikipedia_20231101_ko.jsonl\n  runs_dir: runs\n  figures_dir: figures\n  limit: 1000\n  run_id: 20260926T184145Z_pilot1000\n",
+  "p3_run_metadata": {
+    "elapsed_seconds": 30934.50831770897,
+    "torch_version": "2.11.0+cu128",
+    "cuda_version": null,
+    "device": null,
+    "seed": null,
+    "model_load_elapsed_seconds": null,
+    "target_model": null,
+    "draft_model": null,
+    "model_revisions": null
+  },
+  "p3_e1_tokenizer_metadata": {
+    "cache_key": "15d29735986b8591103f9c1b23b6f879f5ec7f55b0061d0909dc2915b1dff7fd",
+    "corpus_path": "data/korean_wikipedia_20231101_ko.jsonl",
+    "corpus_sha256": "6f5a90e25f62ba84f49cfd84285aab17b6f91c6c3c6a06ebb4c129059d72563e",
+    "corpus": "Local Korean Wikipedia prompt cache (wikimedia/wikipedia, config 20231101.ko, train; first 1,000 non-empty articles)",
+    "document_count": 1000,
+    "total_corpus_tokens": 3425737,
+    "distinct_eojeol_surfaces": 270763,
+    "token_frequency_rows": 151669,
+    "tokenizer_name": "Qwen/Qwen3-4B-Base",
+    "tokenizer_class": "Qwen2Tokenizer",
+    "tokenizer_revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+    "tokenizer_backend_sha256": "41e00eccf531cffc2e562d38bdd879d41e5044ea279af5b73c6a32aabcc8fe04",
+    "vocab_size": 151669,
+    "use_fast": true
+  },
+  "cache": {
+    "configured_cache_environment": {
+      "HF_HOME": null,
+      "HUGGINGFACE_HUB_CACHE": null,
+      "TRANSFORMERS_CACHE": null,
+      "XDG_CACHE_HOME": null
+    },
+    "candidate_cache_paths": [
+      "/home/nvidia/.cache/huggingface/hub"
+    ],
+    "accessible_cache_paths": [
+      "/ephemeral/cache/huggingface/hub"
+    ],
+    "cache_reports": [
+      {
+        "model_id": "Qwen/Qwen3-0.6B-Base",
+        "cache_path": "/ephemeral/cache/huggingface/hub/models--Qwen--Qwen3-0.6B-Base",
+        "exists": true,
+        "refs": {},
+        "snapshots": [
+          {
+            "commit_sha": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+            "snapshot_mtime_utc": "2026-09-28T18:21:43.156161+00:00",
+            "files": {
+              "config.json": {
+                "is_symlink": true,
+                "blob_path": "/ephemeral/cache/huggingface/hub/models--Qwen--Qwen3-0.6B-Base/blobs/43c79dcb3766612b23cbed17d0a56ce63efe4e74",
+                "bytes": 727,
+                "blob_mtime_utc": "2026-09-28T18:20:00.717672+00:00",
+                "sha256": "504a6b58c4271583724e66584b6b7698aea18450209df6b2f7582df0e89cee59"
+              },
+              "tokenizer.json": {
+                "is_symlink": true,
+                "blob_path": "/ephemeral/cache/huggingface/hub/models--Qwen--Qwen3-0.6B-Base/blobs/443909a61d429dff23010e5bddd28ff530edda00",
+                "bytes": 7031645,
+                "blob_mtime_utc": "2026-09-28T18:20:01.527683+00:00",
+                "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+              },
+              "tokenizer_config.json": {
+                "is_symlink": true,
+                "blob_path": "/ephemeral/cache/huggingface/hub/models--Qwen--Qwen3-0.6B-Base/blobs/6a3829ee9491f36113e64df37573be81df0366f5",
+                "bytes": 9678,
+                "blob_mtime_utc": "2026-09-28T18:20:00.794673+00:00",
+                "sha256": "3c04ed3ca964ea2f6b2b5faf0dc4d31aec1cb1e8b4bcf63f402d295046b422b5"
+              }
+            },
+            "weights": [
+              {
+                "name": "model.safetensors",
+                "bytes": 1192135096,
+                "snapshot_link_mtime_utc": "2026-09-28T18:21:42.738371+00:00",
+                "blob_mtime_utc": "2026-09-28T18:21:32.077934+00:00",
+                "blob_path": "/ephemeral/cache/huggingface/hub/blobs/2c/2c465b10ceca99084a7d3d8451bd593ac1ea835f3516b7ccc7279b177351021f"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "model_id": "Qwen/Qwen3-4B-Base",
+        "cache_path": "/ephemeral/cache/huggingface/hub/models--Qwen--Qwen3-4B-Base",
+        "exists": true,
+        "refs": {},
+        "snapshots": [
+          {
+            "commit_sha": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+            "snapshot_mtime_utc": "2026-09-28T18:23:51.521998+00:00",
+            "files": {
+              "config.json": {
+                "is_symlink": true,
+                "blob_path": "/ephemeral/cache/huggingface/hub/models--Qwen--Qwen3-4B-Base/blobs/df6b6d9d0d1ce7d1456641adb64a5aefe1c4c9bc",
+                "bytes": 727,
+                "blob_mtime_utc": "2026-09-28T18:20:03.999717+00:00",
+                "sha256": "304b2545a258d35620f1d4bf46940c0471d9baa00715ff8e77f84c2fca5057c1"
+              },
+              "tokenizer.json": {
+                "is_symlink": true,
+                "blob_path": "/ephemeral/cache/huggingface/hub/models--Qwen--Qwen3-4B-Base/blobs/443909a61d429dff23010e5bddd28ff530edda00",
+                "bytes": 7031645,
+                "blob_mtime_utc": "2026-09-28T18:20:04.997731+00:00",
+                "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+              },
+              "tokenizer_config.json": {
+                "is_symlink": true,
+                "blob_path": "/ephemeral/cache/huggingface/hub/models--Qwen--Qwen3-4B-Base/blobs/6a3829ee9491f36113e64df37573be81df0366f5",
+                "bytes": 9678,
+                "blob_mtime_utc": "2026-09-28T18:20:04.116719+00:00",
+                "sha256": "3c04ed3ca964ea2f6b2b5faf0dc4d31aec1cb1e8b4bcf63f402d295046b422b5"
+              },
+              "model.safetensors.index.json": {
+                "is_symlink": true,
+                "blob_path": "/ephemeral/cache/huggingface/hub/models--Qwen--Qwen3-4B-Base/blobs/4747b0297d3109f14db49886972e3369c9a00b2a",
+                "bytes": 32819,
+                "blob_mtime_utc": "2026-09-28T18:22:24.549659+00:00",
+                "sha256": "d6c42883a895dfef5b0080ed2116a1bcd764f558406b98923d675978a1abf29c"
+              }
+            },
+            "weights": [
+              {
+                "name": "model-00001-of-00003.safetensors",
+                "bytes": 3957900840,
+                "snapshot_link_mtime_utc": "2026-09-28T18:23:50.714877+00:00",
+                "blob_mtime_utc": "2026-09-28T18:22:31.104750+00:00",
+                "blob_path": "/ephemeral/cache/huggingface/hub/blobs/5c/5ce2c21cd6643568258b5f339a1069bd27bc74f4e10db9732bd0795fd67f2c0e"
+              },
+              {
+                "name": "model-00002-of-00003.safetensors",
+                "bytes": 3987450520,
+                "snapshot_link_mtime_utc": "2026-09-28T18:23:50.088854+00:00",
+                "blob_mtime_utc": "2026-09-28T18:22:31.200751+00:00",
+                "blob_path": "/ephemeral/cache/huggingface/hub/blobs/06/06334f44342b0ca51d6a936fd4ddc69b6bef1a52aef8e2887531207afd724ca7"
+              },
+              {
+                "name": "model-00003-of-00003.safetensors",
+                "bytes": 99630640,
+                "snapshot_link_mtime_utc": "2026-09-28T18:22:27.128952+00:00",
+                "blob_mtime_utc": "2026-09-28T18:22:26.916692+00:00",
+                "blob_path": "/ephemeral/cache/huggingface/hub/blobs/91/91ccda833766cc1b12e03e1126e75fe5a968f51ae0854c7e90335ab9b0491217"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "shell_history_search": {
+    "files_scanned": [
+      "/home/nvidia/.bash_history",
+      "/home/nvidia/.python_history"
+    ],
+    "matching_entries": []
+  },
+  "p3_local_log_files": [],
+  "p3_git_tracked_files": [
+    "runs/20260926T184145Z_pilot1000/COMPLETE",
+    "runs/20260926T184145Z_pilot1000/config.yaml",
+    "runs/20260926T184145Z_pilot1000/e1_eojeol_frequency_cache.parquet",
+    "runs/20260926T184145Z_pilot1000/e1_frequency_cache_metadata.json",
+    "runs/20260926T184145Z_pilot1000/e1_frequency_class_summary.csv",
+    "runs/20260926T184145Z_pilot1000/e1_frequency_control_summary.md",
+    "runs/20260926T184145Z_pilot1000/e1_frequency_distribution_by_morph_class.png",
+    "runs/20260926T184145Z_pilot1000/e1_frequency_regression.txt",
+    "runs/20260926T184145Z_pilot1000/e1_frequency_table.parquet",
+    "runs/20260926T184145Z_pilot1000/e1_interaction_estimate.csv",
+    "runs/20260926T184145Z_pilot1000/e1_model_estimates.csv",
+    "runs/20260926T184145Z_pilot1000/e1_predicted_probability_grid.csv",
+    "runs/20260926T184145Z_pilot1000/e1_predicted_rejection_by_frequency.png",
+    "runs/20260926T184145Z_pilot1000/e1_token_frequency_cache.parquet",
+    "runs/20260926T184145Z_pilot1000/e1_token_frequency_cache_metadata.json",
+    "runs/20260926T184145Z_pilot1000/eojeol_counts.csv",
+    "runs/20260926T184145Z_pilot1000/eojeols.parquet",
+    "runs/20260926T184145Z_pilot1000/five_plus_nested_sensitivity.csv",
+    "runs/20260926T184145Z_pilot1000/fragmentation_bin_summary.csv",
+    "runs/20260926T184145Z_pilot1000/h2_class_counts.csv",
+    "runs/20260926T184145Z_pilot1000/h2_forest_cross_vs_split.png",
+    "runs/20260926T184145Z_pilot1000/h2_forest_estimates.csv",
+    "runs/20260926T184145Z_pilot1000/h2_fragmentation_summary.csv",
+    "runs/20260926T184145Z_pilot1000/h2_regression.txt",
+    "runs/20260926T184145Z_pilot1000/h2_rejection_by_morphology_fragmentation.png",
+    "runs/20260926T184145Z_pilot1000/h2_summary.md",
+    "runs/20260926T184145Z_pilot1000/h2_token_table.parquet",
+    "runs/20260926T184145Z_pilot1000/h2_tokenizer_alignment_audit.csv",
+    "runs/20260926T184145Z_pilot1000/logistic_regression.txt",
+    "runs/20260926T184145Z_pilot1000/posthoc_adjusted_bin_sensitivity.csv",
+    "runs/20260926T184145Z_pilot1000/primary_bin_slopes_with_ci.csv",
+    "runs/20260926T184145Z_pilot1000/reference_outputs.jsonl",
+    "runs/20260926T184145Z_pilot1000/results_review.md",
+    "runs/20260926T184145Z_pilot1000/run_metadata.json",
+    "runs/20260926T184145Z_pilot1000/sd_events.parquet",
+    "runs/20260926T184145Z_pilot1000/sd_logistic_input.csv",
+    "runs/20260926T184145Z_pilot1000/teacher_forced_logistic_input.csv",
+    "runs/20260926T184145Z_pilot1000/teacher_forced_tokens.parquet",
+    "runs/20260926T184145Z_pilot1000/tokenizer_compatibility.json"
+  ],
+  "models": {
+    "draft": {
+      "model_id": "Qwen/Qwen3-0.6B-Base",
+      "recovered_revision": null,
+      "confidence": "unresolved",
+      "evidence_source": [
+        "P3 config.yaml records the model ID but no immutable revision.",
+        "P3 run_metadata.json records no model revision or model snapshot path.",
+        "No matching revision was found in readable local shell history or P3 log files.",
+        "The only accessible local Hugging Face snapshot metadata is timestamped after the historical P3 run interval, so it cannot identify which snapshot P3 used."
+      ],
+      "local_cache_refs": {},
+      "local_cache_snapshots": [
+        {
+          "commit_sha": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+          "snapshot_mtime_utc": "2026-09-28T18:21:43.156161+00:00",
+          "files": {
+            "config.json": {
+              "is_symlink": true,
+              "blob_path": "/ephemeral/cache/huggingface/hub/models--Qwen--Qwen3-0.6B-Base/blobs/43c79dcb3766612b23cbed17d0a56ce63efe4e74",
+              "bytes": 727,
+              "blob_mtime_utc": "2026-09-28T18:20:00.717672+00:00",
+              "sha256": "504a6b58c4271583724e66584b6b7698aea18450209df6b2f7582df0e89cee59"
+            },
+            "tokenizer.json": {
+              "is_symlink": true,
+              "blob_path": "/ephemeral/cache/huggingface/hub/models--Qwen--Qwen3-0.6B-Base/blobs/443909a61d429dff23010e5bddd28ff530edda00",
+              "bytes": 7031645,
+              "blob_mtime_utc": "2026-09-28T18:20:01.527683+00:00",
+              "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+            },
+            "tokenizer_config.json": {
+              "is_symlink": true,
+              "blob_path": "/ephemeral/cache/huggingface/hub/models--Qwen--Qwen3-0.6B-Base/blobs/6a3829ee9491f36113e64df37573be81df0366f5",
+              "bytes": 9678,
+              "blob_mtime_utc": "2026-09-28T18:20:00.794673+00:00",
+              "sha256": "3c04ed3ca964ea2f6b2b5faf0dc4d31aec1cb1e8b4bcf63f402d295046b422b5"
+            }
+          },
+          "weights": [
+            {
+              "name": "model.safetensors",
+              "bytes": 1192135096,
+              "snapshot_link_mtime_utc": "2026-09-28T18:21:42.738371+00:00",
+              "blob_mtime_utc": "2026-09-28T18:21:32.077934+00:00",
+              "blob_path": "/ephemeral/cache/huggingface/hub/blobs/2c/2c465b10ceca99084a7d3d8451bd593ac1ea835f3516b7ccc7279b177351021f"
+            }
+          ]
+        }
+      ],
+      "current_e2_pinned_revision_not_attributed_to_p3": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd"
+    },
+    "target": {
+      "model_id": "Qwen/Qwen3-4B-Base",
+      "recovered_revision": null,
+      "confidence": "unresolved",
+      "evidence_source": [
+        "P3 config.yaml records the model ID but no immutable revision.",
+        "P3 run_metadata.json records no model revision or model snapshot path.",
+        "No matching revision was found in readable local shell history or P3 log files.",
+        "The only accessible local Hugging Face snapshot metadata is timestamped after the historical P3 run interval, so it cannot identify which snapshot P3 used."
+      ],
+      "local_cache_refs": {},
+      "local_cache_snapshots": [
+        {
+          "commit_sha": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+          "snapshot_mtime_utc": "2026-09-28T18:23:51.521998+00:00",
+          "files": {
+            "config.json": {
+              "is_symlink": true,
+              "blob_path": "/ephemeral/cache/huggingface/hub/models--Qwen--Qwen3-4B-Base/blobs/df6b6d9d0d1ce7d1456641adb64a5aefe1c4c9bc",
+              "bytes": 727,
+              "blob_mtime_utc": "2026-09-28T18:20:03.999717+00:00",
+              "sha256": "304b2545a258d35620f1d4bf46940c0471d9baa00715ff8e77f84c2fca5057c1"
+            },
+            "tokenizer.json": {
+              "is_symlink": true,
+              "blob_path": "/ephemeral/cache/huggingface/hub/models--Qwen--Qwen3-4B-Base/blobs/443909a61d429dff23010e5bddd28ff530edda00",
+              "bytes": 7031645,
+              "blob_mtime_utc": "2026-09-28T18:20:04.997731+00:00",
+              "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+            },
+            "tokenizer_config.json": {
+              "is_symlink": true,
+              "blob_path": "/ephemeral/cache/huggingface/hub/models--Qwen--Qwen3-4B-Base/blobs/6a3829ee9491f36113e64df37573be81df0366f5",
+              "bytes": 9678,
+              "blob_mtime_utc": "2026-09-28T18:20:04.116719+00:00",
+              "sha256": "3c04ed3ca964ea2f6b2b5faf0dc4d31aec1cb1e8b4bcf63f402d295046b422b5"
+            },
+            "model.safetensors.index.json": {
+              "is_symlink": true,
+              "blob_path": "/ephemeral/cache/huggingface/hub/models--Qwen--Qwen3-4B-Base/blobs/4747b0297d3109f14db49886972e3369c9a00b2a",
+              "bytes": 32819,
+              "blob_mtime_utc": "2026-09-28T18:22:24.549659+00:00",
+              "sha256": "d6c42883a895dfef5b0080ed2116a1bcd764f558406b98923d675978a1abf29c"
+            }
+          },
+          "weights": [
+            {
+              "name": "model-00001-of-00003.safetensors",
+              "bytes": 3957900840,
+              "snapshot_link_mtime_utc": "2026-09-28T18:23:50.714877+00:00",
+              "blob_mtime_utc": "2026-09-28T18:22:31.104750+00:00",
+              "blob_path": "/ephemeral/cache/huggingface/hub/blobs/5c/5ce2c21cd6643568258b5f339a1069bd27bc74f4e10db9732bd0795fd67f2c0e"
+            },
+            {
+              "name": "model-00002-of-00003.safetensors",
+              "bytes": 3987450520,
+              "snapshot_link_mtime_utc": "2026-09-28T18:23:50.088854+00:00",
+              "blob_mtime_utc": "2026-09-28T18:22:31.200751+00:00",
+              "blob_path": "/ephemeral/cache/huggingface/hub/blobs/06/06334f44342b0ca51d6a936fd4ddc69b6bef1a52aef8e2887531207afd724ca7"
+            },
+            {
+              "name": "model-00003-of-00003.safetensors",
+              "bytes": 99630640,
+              "snapshot_link_mtime_utc": "2026-09-28T18:22:27.128952+00:00",
+              "blob_mtime_utc": "2026-09-28T18:22:26.916692+00:00",
+              "blob_path": "/ephemeral/cache/huggingface/hub/blobs/91/91ccda833766cc1b12e03e1126e75fe5a968f51ae0854c7e90335ab9b0491217"
+            }
+          ]
+        }
+      ],
+      "current_e2_pinned_revision_not_attributed_to_p3": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+      "tokenizer_only_revision_evidence": {
+        "revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+        "source": "/data/hoang/korean_speculative_decoding/runs/20260926T184145Z_pilot1000/e1_token_frequency_cache_metadata.json",
+        "limitation": "E1 recorded a tokenizer revision after H2/P3; this is not evidence for the target weight revision used in P3."
+      }
+    }
+  },
+  "overall_confidence": "unresolved",
+  "conclusion": "Neither the P3 0.6B draft weight revision nor the P3 4B target weight revision can be recovered reliably from the accessible local artifacts. Current cache snapshots and the E1 tokenizer revision are not attributed to P3 weights.",
+  "recommended_future_action": "If exact historical revisions are required for model-level replication, run one future comparison with both model revisions pinned and recorded; do not rerun now."
+}

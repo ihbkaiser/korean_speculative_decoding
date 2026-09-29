@@ -1,0 +1,55 @@
+{
+  "experiment": "E2 robustness across Korean draft-target model pairs",
+  "models": {
+    "0.6B": {
+      "id": "Qwen/Qwen3-0.6B-Base",
+      "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd"
+    },
+    "1.7B": {
+      "id": "Qwen/Qwen3-1.7B-Base",
+      "revision": "ea980cb0a6c2ae4b936e82123acc929f1cec04c1"
+    },
+    "4B": {
+      "id": "Qwen/Qwen3-4B-Base",
+      "revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539"
+    }
+  },
+  "pairs": {
+    "P1": {
+      "draft": "0.6B",
+      "target": "1.7B",
+      "slug": "p1_06b_to_17b"
+    },
+    "P2": {
+      "draft": "1.7B",
+      "target": "4B",
+      "slug": "p2_17b_to_4b"
+    },
+    "P3": {
+      "draft": "0.6B",
+      "target": "4B",
+      "slug": "p3_06b_to_4b"
+    }
+  },
+  "p3_run_id": "20260926T184145Z_pilot1000",
+  "p3_run_dir": "/data/hoang/korean_speculative_decoding/runs/20260926T184145Z_pilot1000",
+  "precision": "float16",
+  "attention_backend": "sdpa",
+  "physical_gpu": 7,
+  "cuda_device_inside_process": "cuda:0",
+  "visible_cuda_devices": "7",
+  "seed": 3090,
+  "prompt_cache": "/data/hoang/korean_speculative_decoding/data/korean_wikipedia_20231101_ko.jsonl",
+  "prompt_cache_sha256": "6f5a90e25f62ba84f49cfd84285aab17b6f91c6c3c6a06ebb4c129059d72563e",
+  "ordered_prompt_set_sha256": "7ee8810367bbf808818eb30613d3f2e18837285d62bbe14c211241104c34a7d9",
+  "num_prompts": 1000,
+  "max_prompt_tokens": 128,
+  "max_new_tokens": 128,
+  "speculative_k": 4,
+  "eos_token_id": 151643,
+  "prompt_encoding": "add_special_tokens=False; tokenizer truncation to max_prompt_tokens",
+  "generation": "greedy, no sampling; per-prompt deterministic cache path",
+  "shared_tokenizer": true,
+  "teacher_forcing": "batched full-sequence FP16; SD rejection labels remain from Pass A",
+  "resume": true
+}

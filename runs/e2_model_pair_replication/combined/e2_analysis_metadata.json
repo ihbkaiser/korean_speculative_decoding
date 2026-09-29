@@ -1,0 +1,110 @@
+{
+  "decision": "A — strong replication",
+  "decision_explanation": "Both new pairs show the prespecified positive CROSS association under M3 and M5, and the pooled frequency-controlled interaction model keeps all pair contrasts positive. P3's saved H2 M3 OR is 1.766; the pooled frequency-controlled interaction is reported as exploratory.",
+  "pooled_m3": {
+    "formula": "sd_rejected ~ C(model_pair, Treatment(reference='P3')) * C(morph_class, Treatment(reference='WITHIN_SPLIT')) + C(fragmentation_bin, Treatment(reference='2')) + relative_position + first_token + last_token + proposal_slot + generation_position + token_char_length + eojeol_char_length + draft_entropy + target_entropy",
+    "n_tokens": 219401,
+    "n_prompts": 999,
+    "converged": true,
+    "pair_effects": {
+      "P3": {
+        "beta": 0.5711695114735447,
+        "std_error": 0.08509046091334774,
+        "odds_ratio": 1.7703362697901335,
+        "or_ci_low": 1.4983915129900005,
+        "or_ci_high": 2.091636585608023,
+        "p_value": 1.913210010798956e-11
+      },
+      "P1": {
+        "beta": 0.7838401558363729,
+        "std_error": 0.08882235994164818,
+        "odds_ratio": 2.1898655644238474,
+        "or_ci_low": 1.8399682763363996,
+        "or_ci_high": 2.6063010172098293,
+        "p_value": 1.0964905020667525e-18
+      },
+      "P2": {
+        "beta": 0.5187482847514824,
+        "std_error": 0.08669576834221657,
+        "odds_ratio": 1.6799235471846548,
+        "or_ci_low": 1.4174005264319818,
+        "or_ci_high": 1.9910696177668608,
+        "p_value": 2.183287574957013e-09
+      }
+    },
+    "heterogeneity_test": {
+      "chi_square": 13.395223429307666,
+      "df": 2,
+      "p_value": 0.0012338551848328665,
+      "interaction_terms": [
+        "C(model_pair, Treatment(reference='P3'))[T.P1]:C(morph_class, Treatment(reference='WITHIN_SPLIT'))[T.CROSS_MORPHEME]",
+        "C(model_pair, Treatment(reference='P3'))[T.P2]:C(morph_class, Treatment(reference='WITHIN_SPLIT'))[T.CROSS_MORPHEME]"
+      ]
+    }
+  },
+  "pooled_m5": {
+    "formula": "sd_rejected ~ C(model_pair, Treatment(reference='P3')) * C(morph_class, Treatment(reference='WITHIN_SPLIT')) + C(fragmentation_bin, Treatment(reference='2')) + relative_position + first_token + last_token + proposal_slot + generation_position + token_char_length + eojeol_char_length + draft_entropy + target_entropy + bs(log_token_count, df=4, degree=3, include_intercept=False)",
+    "n_tokens": 219401,
+    "n_prompts": 999,
+    "converged": true,
+    "pair_effects": {
+      "P3": {
+        "beta": 0.6624452871597943,
+        "std_error": 0.08659759071904208,
+        "odds_ratio": 1.9395292464489804,
+        "or_ci_low": 1.6367523585771218,
+        "or_ci_high": 2.2983157336649103,
+        "p_value": 2.014542051515685e-14
+      },
+      "P1": {
+        "beta": 0.8730745903399685,
+        "std_error": 0.08924745245510128,
+        "odds_ratio": 2.3942609200085148,
+        "or_ci_low": 2.0100298717505094,
+        "or_ci_high": 2.851940378422173,
+        "p_value": 1.3369379064547938e-22
+      },
+      "P2": {
+        "beta": 0.6099282648836689,
+        "std_error": 0.08766739294035436,
+        "odds_ratio": 1.840299379956396,
+        "or_ci_low": 1.549760146433493,
+        "or_ci_high": 2.185307071976143,
+        "p_value": 3.4685831068426334e-12
+      }
+    },
+    "heterogeneity_test": {
+      "chi_square": 13.154252002900067,
+      "df": 2,
+      "p_value": 0.001391843708917554,
+      "interaction_terms": [
+        "C(model_pair, Treatment(reference='P3'))[T.P1]:C(morph_class, Treatment(reference='WITHIN_SPLIT'))[T.CROSS_MORPHEME]",
+        "C(model_pair, Treatment(reference='P3'))[T.P2]:C(morph_class, Treatment(reference='WITHIN_SPLIT'))[T.CROSS_MORPHEME]"
+      ]
+    }
+  },
+  "teacher_forcing_diagnostic_p3": {
+    "rows": 127245,
+    "sd_valid_cached_vs_full_sequence_rows": 127245,
+    "draft_entropy_mean_absolute_difference_cached_vs_full_sequence": 0.0015542601279563478,
+    "draft_entropy_max_absolute_difference_cached_vs_full_sequence": 0.047119855880737305,
+    "target_entropy_mean_absolute_difference_cached_vs_full_sequence": 0.0021397853697806214,
+    "target_entropy_max_absolute_difference_cached_vs_full_sequence": 0.9521242352202535,
+    "draft_entropy_correlation_cached_vs_full_sequence": 0.9999978370702036,
+    "target_entropy_correlation_cached_vs_full_sequence": 0.9999942837788769,
+    "draft_argmax_match_count_cached_vs_full_sequence": 127141,
+    "target_argmax_match_count_cached_vs_full_sequence": 127078,
+    "draft_argmax_match_percentage_cached_vs_full_sequence": 99.91826790836575,
+    "target_argmax_match_percentage_cached_vs_full_sequence": 99.86875712208732,
+    "disagreement_match_count": 127093,
+    "disagreement_match_percentage": 99.88054540453456
+  },
+  "p3_reproduction_checks": {
+    "h2_primary_tokens_saved": 73143,
+    "h2_primary_tokens_recomputed": 73143,
+    "h2_m1_saved_or": 1.425912530466511,
+    "h2_m1_recomputed_or": 1.425912530466511,
+    "e1_m5_saved_or": 1.8940513365460867,
+    "e1_m5_recomputed_or": 1.8940513365460867
+  }
+}

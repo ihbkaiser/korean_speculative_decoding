@@ -1,0 +1,25 @@
+{
+  "attention_backend": "sdpa",
+  "flash_attention_2_available": false,
+  "target_generation_batch_size": 1,
+  "teacher_forcing_batch_size": 1,
+  "benchmark_prompt_count": 32,
+  "p1_target_generation_parity_by_batch": {
+    "1": true,
+    "4": false,
+    "8": false,
+    "16": false
+  },
+  "teacher_forcing_prediction_parity_by_batch": {
+    "1": true,
+    "4": false,
+    "8": false,
+    "16": false
+  },
+  "p3_4b_target_exact_on_first_32": false,
+  "sd_parity_by_pair": {
+    "P1": true,
+    "P2": true
+  },
+  "models_resident": true
+}
