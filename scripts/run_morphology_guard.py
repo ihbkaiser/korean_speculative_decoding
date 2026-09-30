@@ -41,6 +41,13 @@ SD_VARIANTS = VARIANTS[1:]
 WORKLOADS = ["WIKIPEDIA", "FLORES"]
 REPEATS = 3
 BOOTSTRAP_SEED = 3091
+PARITY_EVENT_FIELDS = [
+    "round_index", "proposal_slot", "output_token_position", "draft_proposed_token_id",
+    "target_verification_token_id", "accepted", "rejected", "sd_valid",
+    "is_first_rejection", "invalidated_after_first_rejection", "accepted_prefix_length",
+    "first_rejection_output_position", "guard_triggered", "guard_cut_slot",
+    "guard_applied", "guard_unverified", "reference_target_token_id",
+]
 
 
 def atomic_csv(frame: pd.DataFrame, path: Path) -> None:
@@ -62,6 +69,46 @@ def atomic_parquet(frame: pd.DataFrame, path: Path) -> None:
     tmp = path.with_suffix(path.suffix + ".tmp")
     frame.to_parquet(tmp, index=False, engine="pyarrow")
     tmp.replace(path)
+
+
+AUDIT_KEY_COLUMNS = [
+    "stage", "repetition", "workload", "variant", "pair", "prompt_id", "round_index", "proposal_slot",
+]
+
+
+def persist_audit_chunk(records: list[dict[str, Any]], stage: str, workload: str, pair: str, variant: str, repetition: int) -> None:
+    """Durably checkpoint morphology decisions before prompt progress is committed."""
+    if not records:
+        return
+    frame = pd.DataFrame(records)
+    prompt_ids = sorted(frame.prompt_id.astype(int).unique().tolist())
+    shard_dir = OUT / "audit_checkpoints" / stage
+    shard = shard_dir / (
+        f"{workload.lower()}_{pair.lower()}_{variant.lower()}_rep{repetition}_"
+        f"{prompt_ids[0]}-{prompt_ids[-1]}.parquet"
+    )
+    if shard.exists():
+        frame = pd.concat([pd.read_parquet(shard), frame], ignore_index=True)
+    frame = frame.drop_duplicates(AUDIT_KEY_COLUMNS, keep="last")
+    atomic_parquet(frame, shard)
+
+
+def consolidate_audit_chunks(stages: list[str], destination: Path) -> None:
+    """Build the requested audit artifact from durable per-chunk shards."""
+    frames: list[pd.DataFrame] = []
+    if destination.exists():
+        reader = pd.read_csv if destination.suffix == ".csv" else pd.read_parquet
+        frames.append(reader(destination))
+    for stage in stages:
+        for shard in sorted((OUT / "audit_checkpoints" / stage).glob("*.parquet")):
+            frames.append(pd.read_parquet(shard))
+    if not frames:
+        return
+    frame = pd.concat(frames, ignore_index=True).drop_duplicates(AUDIT_KEY_COLUMNS, keep="last")
+    if destination.suffix == ".csv":
+        atomic_csv(frame, destination)
+    else:
+        atomic_parquet(frame, destination)
 
 
 def markdown_table(frame: pd.DataFrame) -> str:
@@ -287,6 +334,7 @@ def run_prompt(
         output, events = e2.speculative_greedy_fast(
             draft, target, prompt["prompt_ids"], 128, 151643, 4, int(prompt["prompt_id"]),
             guard_controller=controller, runtime_stats=stats,
+            batch_target_verification=bool(config.get("batch_target_verification", False)),
         )
         stats_summary = _sd_summary(stats, len(output))
         stats_summary["events"] = events
@@ -322,6 +370,7 @@ def warm_up(torch: Any, models: dict[str, Any], tokenizer: Any, kiwi: Any, pair:
         e2.speculative_greedy_fast(
             models[e2.PAIRS[pair]["draft"]], models[e2.PAIRS[pair]["target"]],
             prompt["prompt_ids"], 4, 151643, 4, int(prompt["prompt_id"]), guard_controller=controller,
+            batch_target_verification=bool(config.get("batch_target_verification", False)),
         )
     torch.cuda.synchronize(0)
 
@@ -408,7 +457,16 @@ def run_combo(
         return done, json.loads(summary_path.read_text(encoding="utf-8")), []
     torch.cuda.reset_peak_memory_stats(0)
     torch.cuda.synchronize(0)
-    saved_elapsed = float(json.loads(state_path.read_text(encoding="utf-8")).get("elapsed_seconds", 0.0)) if state_path.exists() else 0.0
+    checkpoint_state = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
+    saved_elapsed = float(checkpoint_state.get("elapsed_seconds", 0.0))
+    state_completed = int(checkpoint_state.get("completed_prompts", 0))
+    if state_completed > len(rows):
+        raise RuntimeError(f"Checkpoint state is ahead of prompt rows for {stage}/{workload}/{pair}/{variant}")
+    if len(rows) > state_completed:
+        # The prompt CSV is atomically replaced before the state JSON. Recover a
+        # crash in that narrow window from the newly committed prompt timings.
+        recovered = rows[state_completed:]
+        saved_elapsed += sum(float(row.get("prompt_wall_seconds", 0.0)) for row in recovered)
     segment_start = time.perf_counter()
     for ordinal, record in enumerate(selected.to_dict("records"), start=1):
         pid = int(record["prompt_id"])
@@ -425,6 +483,10 @@ def run_combo(
         rows.append(prompt_result)
         audits.extend(prompt_audit)
         if ordinal % 10 == 0 or ordinal == len(selected):
+            # Persist decision evidence first. If interrupted before the prompt
+            # checkpoint, the same chunk is replayed and its stable keys dedupe.
+            persist_audit_chunk(audits, stage, workload, pair, variant, repetition)
+            audits.clear()
             atomic_csv(pd.DataFrame(rows), path)
             saved_elapsed += time.perf_counter() - segment_start
             atomic_json(state_path, {"elapsed_seconds": saved_elapsed, "completed_prompts": len(rows), "updated_at_utc": datetime.now(timezone.utc).isoformat()})
@@ -458,6 +520,116 @@ Repository source audit (`src/e2_model_pairs.py`, `src/speculative_decoding.py`)
 """
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
+
+
+def _event_signature(events: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return [{key: event.get(key) for key in PARITY_EVENT_FIELDS} for event in events]
+
+
+def _sha_json(value: Any) -> str:
+    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+
+
+def verify_batched_target_parity(
+    torch: Any,
+    models: dict[str, Any],
+    tokenizer: Any,
+    kiwi: Any,
+    config: dict[str, Any],
+    prompts: pd.DataFrame,
+    references: dict[tuple[str, str, int], list[int]],
+) -> None:
+    """Compare one-call causal block verification with the sequential reference path.
+
+    The fixed 8 prompt subset comes from the already frozen correctness sample,
+    in source order. All five SD variants, both workloads, and all three pairs
+    are checked before enabling the batched path for the official suite.
+    """
+    out_path = OUT / "correctness/batched_target_verification_parity.csv"
+    if out_path.exists():
+        existing = pd.read_csv(out_path)
+        failures = existing.loc[existing.result.ne("PASS")]
+        if len(failures):
+            raise RuntimeError("A prior batched-verification parity run contains failures")
+    else:
+        existing = pd.DataFrame()
+    completed = {
+        (str(row.workload), str(row.model_pair), str(row.variant), int(row.prompt_id))
+        for row in existing.itertuples(index=False)
+        if str(row.result) == "PASS"
+    }
+    prompts = prompts.copy()
+    prompts["prompt_ids"] = prompts.prompt_ids_json.map(json.loads)
+    for workload in WORKLOADS:
+        for pair in e2.PAIRS:
+            subset = prompts.loc[
+                prompts.workload.eq(workload) & prompts.correctness_selected.astype(bool)
+            ].sort_values("source_index").head(8)
+            if len(subset) != 8:
+                raise RuntimeError(f"Need 8 frozen correctness prompts for {workload}/{pair}; found {len(subset)}")
+            for variant in SD_VARIANTS:
+                for record in subset.to_dict("records"):
+                    pid = int(record["prompt_id"])
+                    key = (workload, pair, variant, pid)
+                    if key in completed:
+                        continue
+                    reference = references[(workload, pair, pid)]
+                    signatures: dict[str, Any] = {}
+                    outputs: dict[str, list[int]] = {}
+                    durations: dict[str, float] = {}
+                    for mode, batched in [("sequential", False), ("batched", True)]:
+                        controller = make_controller(variant, tokenizer, kiwi, pair, config)
+                        stats: dict[str, Any] = {}
+                        torch.cuda.synchronize(0)
+                        started = time.perf_counter()
+                        output, events = e2.speculative_greedy_fast(
+                            models[e2.PAIRS[pair]["draft"]], models[e2.PAIRS[pair]["target"]],
+                            record["prompt_ids"], 128, 151643, 4, pid,
+                            guard_controller=controller, runtime_stats=stats,
+                            batch_target_verification=batched,
+                        )
+                        torch.cuda.synchronize(0)
+                        durations[mode] = time.perf_counter() - started
+                        outputs[mode] = output
+                        signatures[mode] = _event_signature(events)
+                    output_equal = outputs["sequential"] == outputs["batched"]
+                    events_equal = signatures["sequential"] == signatures["batched"]
+                    target_equal = outputs["sequential"] == reference and outputs["batched"] == reference
+                    passed = output_equal and events_equal and target_equal
+                    row = {
+                        "workload": workload, "model_pair": pair, "variant": variant, "prompt_id": pid,
+                        "result": "PASS" if passed else "FAIL",
+                        "sequential_equals_batched": output_equal,
+                        "event_decisions_equal": events_equal,
+                        "both_equal_target_reference": target_equal,
+                        "sequential_output_sha256": _sha_json(outputs["sequential"]),
+                        "batched_output_sha256": _sha_json(outputs["batched"]),
+                        "sequential_events_sha256": _sha_json(signatures["sequential"]),
+                        "batched_events_sha256": _sha_json(signatures["batched"]),
+                        "sequential_seconds": durations["sequential"], "batched_seconds": durations["batched"],
+                        "output_tokens": len(outputs["sequential"]),
+                    }
+                    _store_prompt_rows(
+                        [row], out_path,
+                        ["workload", "model_pair", "variant", "prompt_id"],
+                    )
+                    if not passed:
+                        raise RuntimeError(f"Batched target verification parity failed: {key}")
+                print(f"batched-target parity {workload}/{pair}/{variant}: 8/8 PASS", flush=True)
+    final = pd.read_csv(out_path)
+    expected = len(WORKLOADS) * len(e2.PAIRS) * len(SD_VARIANTS) * 8
+    if len(final) != expected or not final.result.eq("PASS").all():
+        raise RuntimeError(f"Incomplete batched target verification parity: {len(final)}/{expected} cases")
+    config["batch_target_verification"] = True
+    config["batched_verification_parity"] = {
+        "artifact": str(out_path.relative_to(ROOT)), "cases": int(len(final)),
+        "prompts_per_workload_pair_variant": 8, "all_variants": SD_VARIANTS,
+        "outputs_match_sequential_and_target_reference": bool(final.both_equal_target_reference.astype(bool).all()),
+        "proposal_and_accept_reject_events_match_sequential": bool(final.event_decisions_equal.astype(bool).all()),
+        "cache_rollback": "DynamicCache.crop removes every uncommitted proposal after the first rejection; cache length is asserted before correction.",
+    }
+    config["stage"] = "Batched target verification parity passed; official correctness suite ready"
+    atomic_json(OUT / "method_config.json", config)
 
 
 def _store_audits(records: list[dict[str, Any]], path: Path) -> None:
@@ -529,7 +701,7 @@ def write_pilot_report(frame: pd.DataFrame, full_gate: bool) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", choices=["all", "correctness", "pilot", "full"], default="all")
+    parser.add_argument("--mode", choices=["all", "correctness", "pilot", "full", "verify-batched-target"], default="all")
     parser.add_argument("--resume", action="store_true")
     args = parser.parse_args()
     if os.environ.get("CUDA_VISIBLE_DEVICES") != "3":
@@ -554,6 +726,9 @@ def main() -> None:
         from kiwipiepy import Kiwi
         kiwi = Kiwi()
         write_sampling_audit()
+        if args.mode == "verify-batched-target":
+            verify_batched_target_parity(torch, models, tokenizer, kiwi, config, prompts, references)
+            return
         correctness_rows: list[dict[str, Any]] = []
         pilot_rows: list[dict[str, Any]] = []
         full_rows: list[dict[str, Any]] = []
@@ -578,6 +753,7 @@ def main() -> None:
                             row_frame.to_dict("records"), OUT / "correctness/greedy_equality.csv",
                             ["workload", "pair", "variant", "prompt_id"],
                         )
+            consolidate_audit_chunks(["correctness"], OUT / "correctness/guard_decision_audit.csv")
             config["stage"] = "Correctness suite passed"
             atomic_json(config_path, config)
             if args.mode == "correctness":
@@ -600,6 +776,7 @@ def main() -> None:
                             )
                             aggregate_results(pilot_rows, result_path)
             pilot_frame = aggregate_results(pilot_rows, result_path)
+            consolidate_audit_chunks(["correctness", "pilot"], OUT / "correctness/guard_decision_audit.csv")
             np_rows = pilot_frame.loc[pilot_frame.variant.eq("NP_BOUNDARY_GUARD")]
             ratios = np_rows.merge(
                 pilot_frame.loc[pilot_frame.variant.eq("FIXED_K_SD"), ["workload", "model_pair", "repetition", "wall_clock_seconds"]],
@@ -611,11 +788,13 @@ def main() -> None:
             # Full stage is barred only if every pair/workload cell is >2% slower.
             full_gate = not bool((cell_min >= 1.02).all()) and bool(np_rows.all_outputs_exact.astype(bool).all())
             write_pilot_report(pilot_frame, full_gate)
+            write_cpu_analysis_report("pilot")
             if not full_gate:
                 config["stage"] = "PILOT_NEGATIVE; full benchmark not launched by prespecified gate"
                 config["pilot_gate"] = {"np_to_fixed_mean_wall_ratio_by_cell": {f"{w}/{p}": float(v) for (w, p), v in cell_min.items()}, "full_benchmark_launched": False}
                 atomic_json(config_path, config)
                 write_final_summary(pilot_frame, pd.DataFrame(), "NEGATIVE", "Pilot did not meet the full-run gate or exactness failed.")
+                write_cpu_analysis_report("pilot")
                 return
             config["stage"] = "PILOT_GATE_PASSED; full benchmark starting"
             config["pilot_gate"] = {"np_to_fixed_mean_wall_ratio_by_cell": {f"{w}/{p}": float(v) for (w, p), v in cell_min.items()}, "full_benchmark_launched": True}
@@ -637,10 +816,12 @@ def main() -> None:
                             )
                             aggregate_results(full_rows, result_path)
             full_frame = aggregate_results(full_rows, result_path)
+            consolidate_audit_chunks(["full"], OUT / "full_benchmark/guard_events.parquet")
             prompt_checkpoints = [pd.read_csv(p) for p in (OUT / "full_benchmark/checkpoints").glob("*.csv")]
             if prompt_checkpoints:
                 atomic_parquet(pd.concat(prompt_checkpoints, ignore_index=True), OUT / "full_benchmark/per_prompt_metrics.parquet")
             write_final_summary(pilot_frame if len(pilot_rows) else pd.read_csv(OUT / "pilot/benchmark_results.csv"), full_frame, "INCONCLUSIVE", "Full benchmark completed; apply the frozen decision rule in the CPU report generator.")
+            write_cpu_analysis_report("full")
     finally:
         monitor.stop()
 
@@ -659,6 +840,16 @@ def write_final_summary(pilot: pd.DataFrame, full: pd.DataFrame, result: str, se
         "", "GPU allocation and software versions are recorded in `method_config.json`; utilization samples are in `gpu3_utilization.csv`.",
     ]
     (OUT / "method_summary.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def write_cpu_analysis_report(stage: str) -> None:
+    try:
+        from scripts.summarize_morphology_guard import generate_report
+        generate_report(stage)
+    except Exception as exc:
+        # The benchmark checkpoints/results remain complete and resumable; the
+        # report can be regenerated independently with the same CPU-only CLI.
+        print(f"CPU report generation failed for stage={stage}: {type(exc).__name__}: {exc}", flush=True)
 
 
 if __name__ == "__main__":

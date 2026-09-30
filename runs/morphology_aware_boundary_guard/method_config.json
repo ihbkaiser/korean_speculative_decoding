@@ -59,7 +59,7 @@
   "entropy_thresholds_wikipedia_only": {
     "P1": {
       "threshold": 5.291721978187556,
-      "matched_blocks": 171,
+      "matched_blocks": 217,
       "eligible_blocks_before_thinning": 500,
       "eligible_slot_histogram": {
         "3": 96,
@@ -67,28 +67,28 @@
         "2": 129
       },
       "target_np_slot_histogram": {
-        "1": 72,
-        "2": 59,
-        "3": 40
+        "1": 74,
+        "2": 80,
+        "3": 63
       },
       "slot_thinning_probabilities": {
-        "1": 0.26181818181818184,
-        "2": 0.4573643410852713,
-        "3": 0.4166666666666667
+        "1": 0.2690909090909091,
+        "2": 0.6201550387596899,
+        "3": 0.65625
       },
-      "extra_eligible_blocks": 329,
+      "extra_eligible_blocks": 283,
       "score": [
-        -171,
-        329,
+        -217,
+        283,
         -5.291721978187556
       ],
-      "target_np_activation_blocks": 171,
+      "target_np_activation_blocks": 217,
       "calibration_source": "WIKIPEDIA only; saved teacher-forced draft entropy at positions with accepted preceding proposal prefix",
       "method": "201 empirical entropy quantiles; choose the cutoff maximizing slotwise-supported NP activations and freeze deterministic slotwise thinning probabilities"
     },
     "P2": {
       "threshold": 5.098802773952483,
-      "matched_blocks": 192,
+      "matched_blocks": 246,
       "eligible_blocks_before_thinning": 504,
       "eligible_slot_histogram": {
         "1": 277,
@@ -96,28 +96,28 @@
         "2": 125
       },
       "target_np_slot_histogram": {
-        "2": 52,
-        "1": 87,
-        "3": 53
+        "2": 78,
+        "3": 79,
+        "1": 89
       },
       "slot_thinning_probabilities": {
-        "2": 0.416,
-        "1": 0.3140794223826715,
-        "3": 0.5196078431372549
+        "2": 0.624,
+        "3": 0.7745098039215687,
+        "1": 0.3212996389891697
       },
-      "extra_eligible_blocks": 312,
+      "extra_eligible_blocks": 258,
       "score": [
-        -192,
-        312,
+        -246,
+        258,
         -5.098802773952483
       ],
-      "target_np_activation_blocks": 192,
+      "target_np_activation_blocks": 246,
       "calibration_source": "WIKIPEDIA only; saved teacher-forced draft entropy at positions with accepted preceding proposal prefix",
       "method": "201 empirical entropy quantiles; choose the cutoff maximizing slotwise-supported NP activations and freeze deterministic slotwise thinning probabilities"
     },
     "P3": {
       "threshold": 5.329163768291475,
-      "matched_blocks": 174,
+      "matched_blocks": 236,
       "eligible_blocks_before_thinning": 511,
       "eligible_slot_histogram": {
         "1": 299,
@@ -125,22 +125,22 @@
         "3": 92
       },
       "target_np_slot_histogram": {
-        "1": 75,
-        "3": 34,
-        "2": 65
+        "2": 83,
+        "3": 76,
+        "1": 77
       },
       "slot_thinning_probabilities": {
-        "1": 0.2508361204013378,
-        "3": 0.3695652173913043,
-        "2": 0.5416666666666666
+        "2": 0.6916666666666667,
+        "3": 0.8260869565217391,
+        "1": 0.25752508361204013
       },
-      "extra_eligible_blocks": 337,
+      "extra_eligible_blocks": 275,
       "score": [
-        -174,
-        337,
+        -236,
+        275,
         -5.329163768291475
       ],
-      "target_np_activation_blocks": 174,
+      "target_np_activation_blocks": 236,
       "calibration_source": "WIKIPEDIA only; saved teacher-forced draft entropy at positions with accepted preceding proposal prefix",
       "method": "201 empirical entropy quantiles; choose the cutoff maximizing slotwise-supported NP activations and freeze deterministic slotwise thinning probabilities"
     }
@@ -148,19 +148,19 @@
   "entropy_policy": "earliest internal slot with online draft entropy >= frozen pair-specific threshold; a deterministic slotwise thinning probability calibrated on WIKIPEDIA matches the approximate NP activation and slot distribution; both remain frozen on FLORES",
   "wikipedia_pilot_slot_distributions": {
     "P1": {
-      "1": 0.42105263157894735,
-      "2": 0.34502923976608185,
-      "3": 0.23391812865497075
+      "1": 0.34101382488479265,
+      "2": 0.3686635944700461,
+      "3": 0.2903225806451613
     },
     "P2": {
-      "2": 0.2708333333333333,
-      "1": 0.453125,
-      "3": 0.2760416666666667
+      "2": 0.3170731707317073,
+      "3": 0.32113821138211385,
+      "1": 0.3617886178861789
     },
     "P3": {
-      "1": 0.43103448275862066,
-      "3": 0.19540229885057472,
-      "2": 0.3735632183908046
+      "2": 0.3516949152542373,
+      "3": 0.3220338983050847,
+      "1": 0.326271186440678
     }
   },
   "gpu_requirement": {
@@ -171,7 +171,7 @@
     "inventory_and_versions_recorded_before_first_GPU_job": true
   },
   "gpu_metadata": {
-    "captured_at_utc": "2026-09-30T10:50:49.503174+00:00",
+    "captured_at_utc": "2026-09-30T13:07:23.766934+00:00",
     "nvidia_smi_L_output": "GPU 0: NVIDIA A100-SXM4-80GB (UUID: GPU-27923608-cc6c-c435-7749-ce40279def74)\nGPU 1: NVIDIA A100-SXM4-80GB (UUID: GPU-63b0791c-50f8-402d-bd24-b1cd053c4bfc)\nGPU 2: NVIDIA A100-SXM4-80GB (UUID: GPU-47aca084-3f4d-01f5-4ad0-b67cfbcde54d)\nGPU 3: NVIDIA A100-SXM4-80GB (UUID: GPU-51e0dbfc-062c-3371-4d23-f5795c8f4ba5)\nGPU 4: NVIDIA A100-SXM4-80GB (UUID: GPU-02b89280-20c6-087c-2b7c-0a24db5d86f5)\nGPU 5: NVIDIA A100-SXM4-80GB (UUID: GPU-88b886b0-71f1-c3a9-eb82-3f21b6db00b4)\nGPU 6: NVIDIA A100-SXM4-80GB (UUID: GPU-d37350cd-d939-bd98-faea-d961b1899464)\nGPU 7: NVIDIA A100-SXM4-80GB (UUID: GPU-341ddf4d-bb4e-d40e-a484-9d8ea889936e)",
     "nvidia_smi_physical_gpu3": "NVIDIA A100-SXM4-80GB, 580.105.08, 81920 MiB, 4 MiB, 81150 MiB",
     "physical_gpu_index": 3,
@@ -191,7 +191,7 @@
     "tf32_cudnn": true,
     "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
     "TOKENIZERS_PARALLELISM": "true",
-    "pid": 156851,
+    "pid": 391410,
     "python": "3.13.13 | packaged by Anaconda, Inc. | (main, Apr 14 2026, 06:19:41) [GCC 14.3.0]",
     "platform": "Linux-6.17.0-1011-oracle-x86_64-with-glibc2.39",
     "all_model_weights_allocated_gb": 11.807527542114258,
@@ -235,5 +235,48 @@
     "pandas": "3.0.6",
     "pyarrow": "25.0.1"
   },
-  "stage": "Correctness suite in progress"
+  "stage": "Correctness suite in progress",
+  "batch_target_verification": false,
+  "batched_verification_experiment": {
+    "status": "REJECTED: exact parity failed; disabled in official runs",
+    "artifact": "correctness/batched_target_verification_parity.csv",
+    "cases_completed": 8,
+    "cases_passed": 7,
+    "cases_failed": 1,
+    "first_failure": {
+      "workload": "WIKIPEDIA",
+      "model_pair": "P1",
+      "variant": "FIXED_K_SD",
+      "prompt_id": 25,
+      "result": "FAIL",
+      "sequential_equals_batched": false,
+      "event_decisions_equal": false,
+      "both_equal_target_reference": false,
+      "sequential_output_sha256": "a1524f56766bb102046153e8ab47f3d648bb5e74f6af9935b52ee11b367fe499",
+      "batched_output_sha256": "a97ff83d5f23e7c948a9d0acd178e80928c611a28c30c3aa87ec1f38dabde8c5",
+      "sequential_events_sha256": "524964fdbbaaffc5736d77267ce3b6beddd2c7ed52ec656e925c4913caf0ab15",
+      "batched_events_sha256": "30363c35aad43dede8c0f98f5fae8e9e8456850d0b4051a4c19ff9bf3803fd5c",
+      "sequential_seconds": 9.831154292449355,
+      "batched_seconds": 6.665315376594663,
+      "output_tokens": 128
+    },
+    "used_in_official_benchmark": false,
+    "decision": "Retain the validated sequential target-verification path for all correctness and timing runs."
+  },
+  "checkpointing": {
+    "prompts_per_chunk": 10,
+    "prompt_rows": "atomic CSV checkpoints",
+    "runtime_state": "atomic JSON with elapsed_seconds and completed_prompts; recover prompt times if state trails CSV",
+    "morphology_audit": "atomic per-chunk Parquet shards written before prompt checkpoint and consolidated by stage",
+    "resume_deduplication_keys": [
+      "stage",
+      "repetition",
+      "workload",
+      "variant",
+      "pair",
+      "prompt_id",
+      "round_index",
+      "proposal_slot"
+    ]
+  }
 }

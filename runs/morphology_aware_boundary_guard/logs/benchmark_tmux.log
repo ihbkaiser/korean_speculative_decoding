@@ -10,3 +10,202 @@ correctness WIKIPEDIA/P1/TARGET_ONLY/rep0: 10/100 prompts
 correctness WIKIPEDIA/P1/TARGET_ONLY/rep0: 20/100 prompts
 correctness WIKIPEDIA/P1/TARGET_ONLY/rep0: 30/100 prompts
 correctness WIKIPEDIA/P1/TARGET_ONLY/rep0: 40/100 prompts
+GPU preflight passed: physical GPU 3 -> NVIDIA A100-SXM4-80GB / cuda:0
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 3230.38it/s]
+Loaded 0.6B @ pinned revision da87bfb608c14b7cf20ba1ce41287e8de496c0cd on cuda:0
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights:  36%|███▋      | 113/310 [00:00<00:00, 1113.91it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 1543.21it/s]
+Loaded 1.7B @ pinned revision ea980cb0a6c2ae4b936e82123acc929f1cec04c1 on cuda:0
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights:  28%|██▊       | 110/398 [00:00<00:00, 1059.66it/s]Loading weights:  55%|█████▍    | 218/398 [00:00<00:00, 1061.69it/s]Loading weights:  83%|████████▎ | 331/398 [00:00<00:00, 1089.12it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 1130.41it/s]
+Loaded 4B @ pinned revision 906bfd4b4dc7f14ee4320094d8b41684abff8539 on cuda:0
+correctness WIKIPEDIA/P1/TARGET_ONLY/rep0: 50/100 prompts
+correctness WIKIPEDIA/P1/TARGET_ONLY/rep0: 60/100 prompts
+correctness WIKIPEDIA/P1/TARGET_ONLY/rep0: 70/100 prompts
+correctness WIKIPEDIA/P1/TARGET_ONLY/rep0: 80/100 prompts
+correctness WIKIPEDIA/P1/TARGET_ONLY/rep0: 90/100 prompts
+correctness WIKIPEDIA/P1/TARGET_ONLY/rep0: 100/100 prompts
+correctness WIKIPEDIA/P1/FIXED_K_SD/rep0: 10/100 prompts
+correctness WIKIPEDIA/P1/FIXED_K_SD/rep0: 20/100 prompts
+correctness WIKIPEDIA/P1/FIXED_K_SD/rep0: 30/100 prompts
+GPU preflight passed: physical GPU 3 -> NVIDIA A100-SXM4-80GB / cuda:0
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 3248.43it/s]
+Loaded 0.6B @ pinned revision da87bfb608c14b7cf20ba1ce41287e8de496c0cd on cuda:0
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights:  36%|███▌      | 111/310 [00:00<00:00, 1087.42it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 1567.84it/s]
+Loaded 1.7B @ pinned revision ea980cb0a6c2ae4b936e82123acc929f1cec04c1 on cuda:0
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights:  27%|██▋       | 108/398 [00:00<00:00, 1065.57it/s]Loading weights:  54%|█████▍    | 215/398 [00:00<00:00, 1047.61it/s]Loading weights:  81%|████████  | 323/398 [00:00<00:00, 1060.00it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 1125.33it/s]
+Loaded 4B @ pinned revision 906bfd4b4dc7f14ee4320094d8b41684abff8539 on cuda:0
+[transformers] Calling `crop` with a positive value is deprecated and will be removed in version 5.18. Please use a negative integer to remove that number of tokens from the cache instead.
+Traceback (most recent call last):
+  File "/data/hoang/korean_speculative_decoding/scripts/run_morphology_guard.py", line 787, in <module>
+    main()
+    ~~~~^^
+  File "/data/hoang/korean_speculative_decoding/scripts/run_morphology_guard.py", line 677, in main
+    verify_batched_target_parity(torch, models, tokenizer, kiwi, config, prompts, references)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/hoang/korean_speculative_decoding/scripts/run_morphology_guard.py", line 532, in verify_batched_target_parity
+    output, events = e2.speculative_greedy_fast(
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        models[e2.PAIRS[pair]["draft"]], models[e2.PAIRS[pair]["target"]],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        batch_target_verification=batched,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/data/hoang/korean_speculative_decoding/src/e2_model_pairs.py", line 728, in speculative_greedy_fast
+    raise RuntimeError(
+    ...<2 lines>...
+    )
+RuntimeError: Target cache rollback mismatch after batched rejection: expected 133, got 3
+GPU preflight passed: physical GPU 3 -> NVIDIA A100-SXM4-80GB / cuda:0
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights:  70%|███████   | 218/310 [00:00<00:00, 2168.42it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 2447.09it/s]
+Loaded 0.6B @ pinned revision da87bfb608c14b7cf20ba1ce41287e8de496c0cd on cuda:0
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights:  35%|███▌      | 110/310 [00:00<00:00, 1077.45it/s]Loading weights:  96%|█████████▌| 297/310 [00:00<00:00, 1531.32it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 1497.14it/s]
+Loaded 1.7B @ pinned revision ea980cb0a6c2ae4b936e82123acc929f1cec04c1 on cuda:0
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights:  27%|██▋       | 108/398 [00:00<00:00, 1067.73it/s]Loading weights:  54%|█████▍    | 215/398 [00:00<00:00, 1011.07it/s]Loading weights:  80%|████████  | 320/398 [00:00<00:00, 1023.77it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 1102.27it/s]
+Loaded 4B @ pinned revision 906bfd4b4dc7f14ee4320094d8b41684abff8539 on cuda:0
+Traceback (most recent call last):
+  File "/data/hoang/korean_speculative_decoding/scripts/run_morphology_guard.py", line 787, in <module>
+    main()
+    ~~~~^^
+  File "/data/hoang/korean_speculative_decoding/scripts/run_morphology_guard.py", line 677, in main
+    verify_batched_target_parity(torch, models, tokenizer, kiwi, config, prompts, references)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/hoang/korean_speculative_decoding/scripts/run_morphology_guard.py", line 564, in verify_batched_target_parity
+    raise RuntimeError(f"Batched target verification parity failed: {key}")
+RuntimeError: Batched target verification parity failed: ('WIKIPEDIA', 'P1', 'FIXED_K_SD', 25)
+GPU preflight passed: physical GPU 3 -> NVIDIA A100-SXM4-80GB / cuda:0
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 3400.03it/s]
+Loaded 0.6B @ pinned revision da87bfb608c14b7cf20ba1ce41287e8de496c0cd on cuda:0
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights:  36%|███▋      | 113/310 [00:00<00:00, 1125.37it/s]Loading weights:  97%|█████████▋| 300/310 [00:00<00:00, 1556.16it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 1522.54it/s]
+Loaded 1.7B @ pinned revision ea980cb0a6c2ae4b936e82123acc929f1cec04c1 on cuda:0
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights:  28%|██▊       | 110/398 [00:00<00:00, 1055.03it/s]Loading weights:  54%|█████▍    | 216/398 [00:00<00:00, 1047.38it/s]Loading weights:  82%|████████▏ | 328/398 [00:00<00:00, 1069.78it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 1104.23it/s]
+Loaded 4B @ pinned revision 906bfd4b4dc7f14ee4320094d8b41684abff8539 on cuda:0
+correctness WIKIPEDIA/P1/FIXED_K_SD/rep0: 40/100 prompts
+correctness WIKIPEDIA/P1/FIXED_K_SD/rep0: 50/100 prompts
+correctness WIKIPEDIA/P1/FIXED_K_SD/rep0: 60/100 prompts
+correctness WIKIPEDIA/P1/FIXED_K_SD/rep0: 70/100 prompts
+correctness WIKIPEDIA/P1/FIXED_K_SD/rep0: 80/100 prompts
+correctness WIKIPEDIA/P1/FIXED_K_SD/rep0: 90/100 prompts
+correctness WIKIPEDIA/P1/FIXED_K_SD/rep0: 100/100 prompts
+correctness WIKIPEDIA/P1/NP_BOUNDARY_GUARD/rep0: 10/100 prompts
+correctness WIKIPEDIA/P1/NP_BOUNDARY_GUARD/rep0: 20/100 prompts
+correctness WIKIPEDIA/P1/NP_BOUNDARY_GUARD/rep0: 30/100 prompts
+correctness WIKIPEDIA/P1/NP_BOUNDARY_GUARD/rep0: 40/100 prompts
+correctness WIKIPEDIA/P1/NP_BOUNDARY_GUARD/rep0: 50/100 prompts
+correctness WIKIPEDIA/P1/NP_BOUNDARY_GUARD/rep0: 60/100 prompts
+correctness WIKIPEDIA/P1/NP_BOUNDARY_GUARD/rep0: 70/100 prompts
+correctness WIKIPEDIA/P1/NP_BOUNDARY_GUARD/rep0: 80/100 prompts
+correctness WIKIPEDIA/P1/NP_BOUNDARY_GUARD/rep0: 90/100 prompts
+correctness WIKIPEDIA/P1/NP_BOUNDARY_GUARD/rep0: 100/100 prompts
+correctness WIKIPEDIA/P1/ALL_MORPH_BOUNDARY_GUARD/rep0: 10/100 prompts
+correctness WIKIPEDIA/P1/ALL_MORPH_BOUNDARY_GUARD/rep0: 20/100 prompts
+correctness WIKIPEDIA/P1/ALL_MORPH_BOUNDARY_GUARD/rep0: 30/100 prompts
+correctness WIKIPEDIA/P1/ALL_MORPH_BOUNDARY_GUARD/rep0: 40/100 prompts
+correctness WIKIPEDIA/P1/ALL_MORPH_BOUNDARY_GUARD/rep0: 50/100 prompts
+correctness WIKIPEDIA/P1/ALL_MORPH_BOUNDARY_GUARD/rep0: 60/100 prompts
+correctness WIKIPEDIA/P1/ALL_MORPH_BOUNDARY_GUARD/rep0: 70/100 prompts
+correctness WIKIPEDIA/P1/ALL_MORPH_BOUNDARY_GUARD/rep0: 80/100 prompts
+correctness WIKIPEDIA/P1/ALL_MORPH_BOUNDARY_GUARD/rep0: 90/100 prompts
+correctness WIKIPEDIA/P1/ALL_MORPH_BOUNDARY_GUARD/rep0: 100/100 prompts
+correctness WIKIPEDIA/P1/RANDOM_MATCHED_GUARD/rep0: 10/100 prompts
+correctness WIKIPEDIA/P1/RANDOM_MATCHED_GUARD/rep0: 20/100 prompts
+correctness WIKIPEDIA/P1/RANDOM_MATCHED_GUARD/rep0: 30/100 prompts
+correctness WIKIPEDIA/P1/RANDOM_MATCHED_GUARD/rep0: 40/100 prompts
+correctness WIKIPEDIA/P1/RANDOM_MATCHED_GUARD/rep0: 50/100 prompts
+correctness WIKIPEDIA/P1/RANDOM_MATCHED_GUARD/rep0: 60/100 prompts
+correctness WIKIPEDIA/P1/RANDOM_MATCHED_GUARD/rep0: 70/100 prompts
+correctness WIKIPEDIA/P1/RANDOM_MATCHED_GUARD/rep0: 80/100 prompts
+correctness WIKIPEDIA/P1/RANDOM_MATCHED_GUARD/rep0: 90/100 prompts
+correctness WIKIPEDIA/P1/RANDOM_MATCHED_GUARD/rep0: 100/100 prompts
+correctness WIKIPEDIA/P1/ENTROPY_MATCHED_GUARD/rep0: 10/100 prompts
+correctness WIKIPEDIA/P1/ENTROPY_MATCHED_GUARD/rep0: 20/100 prompts
+correctness WIKIPEDIA/P1/ENTROPY_MATCHED_GUARD/rep0: 30/100 prompts
+correctness WIKIPEDIA/P1/ENTROPY_MATCHED_GUARD/rep0: 40/100 prompts
+correctness WIKIPEDIA/P1/ENTROPY_MATCHED_GUARD/rep0: 50/100 prompts
+correctness WIKIPEDIA/P1/ENTROPY_MATCHED_GUARD/rep0: 60/100 prompts
+correctness WIKIPEDIA/P1/ENTROPY_MATCHED_GUARD/rep0: 70/100 prompts
+correctness WIKIPEDIA/P1/ENTROPY_MATCHED_GUARD/rep0: 80/100 prompts
+correctness WIKIPEDIA/P1/ENTROPY_MATCHED_GUARD/rep0: 90/100 prompts
+correctness WIKIPEDIA/P1/ENTROPY_MATCHED_GUARD/rep0: 100/100 prompts
+correctness WIKIPEDIA/P2/TARGET_ONLY/rep0: 10/100 prompts
+correctness WIKIPEDIA/P2/TARGET_ONLY/rep0: 20/100 prompts
+correctness WIKIPEDIA/P2/TARGET_ONLY/rep0: 30/100 prompts
+correctness WIKIPEDIA/P2/TARGET_ONLY/rep0: 40/100 prompts
+correctness WIKIPEDIA/P2/TARGET_ONLY/rep0: 50/100 prompts
+correctness WIKIPEDIA/P2/TARGET_ONLY/rep0: 60/100 prompts
+correctness WIKIPEDIA/P2/TARGET_ONLY/rep0: 70/100 prompts
+correctness WIKIPEDIA/P2/TARGET_ONLY/rep0: 80/100 prompts
+correctness WIKIPEDIA/P2/TARGET_ONLY/rep0: 90/100 prompts
+correctness WIKIPEDIA/P2/TARGET_ONLY/rep0: 100/100 prompts
+correctness WIKIPEDIA/P2/FIXED_K_SD/rep0: 10/100 prompts
+correctness WIKIPEDIA/P2/FIXED_K_SD/rep0: 20/100 prompts
+correctness WIKIPEDIA/P2/FIXED_K_SD/rep0: 30/100 prompts
+correctness WIKIPEDIA/P2/FIXED_K_SD/rep0: 40/100 prompts
+correctness WIKIPEDIA/P2/FIXED_K_SD/rep0: 50/100 prompts
+GPU preflight passed: physical GPU 3 -> NVIDIA A100-SXM4-80GB / cuda:0
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 3157.17it/s]
+Loaded 0.6B @ pinned revision da87bfb608c14b7cf20ba1ce41287e8de496c0cd on cuda:0
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights:  31%|███       | 96/310 [00:00<00:00, 958.79it/s]Loading weights:  90%|████████▉ | 278/310 [00:00<00:00, 1446.09it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 1438.36it/s]
+Loaded 1.7B @ pinned revision ea980cb0a6c2ae4b936e82123acc929f1cec04c1 on cuda:0
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights:  28%|██▊       | 110/398 [00:00<00:00, 1055.12it/s]Loading weights:  54%|█████▍    | 216/398 [00:00<00:00, 1026.79it/s]Loading weights:  81%|████████  | 322/398 [00:00<00:00, 1030.93it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 1094.14it/s]
+Loaded 4B @ pinned revision 906bfd4b4dc7f14ee4320094d8b41684abff8539 on cuda:0
+correctness WIKIPEDIA/P2/FIXED_K_SD/rep0: 60/100 prompts
+correctness WIKIPEDIA/P2/FIXED_K_SD/rep0: 70/100 prompts
+correctness WIKIPEDIA/P2/FIXED_K_SD/rep0: 80/100 prompts
+correctness WIKIPEDIA/P2/FIXED_K_SD/rep0: 90/100 prompts
+correctness WIKIPEDIA/P2/FIXED_K_SD/rep0: 100/100 prompts
+correctness WIKIPEDIA/P2/NP_BOUNDARY_GUARD/rep0: 10/100 prompts
+correctness WIKIPEDIA/P2/NP_BOUNDARY_GUARD/rep0: 20/100 prompts
+correctness WIKIPEDIA/P2/NP_BOUNDARY_GUARD/rep0: 30/100 prompts
+correctness WIKIPEDIA/P2/NP_BOUNDARY_GUARD/rep0: 40/100 prompts
+correctness WIKIPEDIA/P2/NP_BOUNDARY_GUARD/rep0: 50/100 prompts
+correctness WIKIPEDIA/P2/NP_BOUNDARY_GUARD/rep0: 60/100 prompts
+correctness WIKIPEDIA/P2/NP_BOUNDARY_GUARD/rep0: 70/100 prompts
+correctness WIKIPEDIA/P2/NP_BOUNDARY_GUARD/rep0: 80/100 prompts
+correctness WIKIPEDIA/P2/NP_BOUNDARY_GUARD/rep0: 90/100 prompts
+correctness WIKIPEDIA/P2/NP_BOUNDARY_GUARD/rep0: 100/100 prompts
+correctness WIKIPEDIA/P2/ALL_MORPH_BOUNDARY_GUARD/rep0: 10/100 prompts
+correctness WIKIPEDIA/P2/ALL_MORPH_BOUNDARY_GUARD/rep0: 20/100 prompts
+correctness WIKIPEDIA/P2/ALL_MORPH_BOUNDARY_GUARD/rep0: 30/100 prompts
+correctness WIKIPEDIA/P2/ALL_MORPH_BOUNDARY_GUARD/rep0: 40/100 prompts
+correctness WIKIPEDIA/P2/ALL_MORPH_BOUNDARY_GUARD/rep0: 50/100 prompts
+correctness WIKIPEDIA/P2/ALL_MORPH_BOUNDARY_GUARD/rep0: 60/100 prompts
+correctness WIKIPEDIA/P2/ALL_MORPH_BOUNDARY_GUARD/rep0: 70/100 prompts
+correctness WIKIPEDIA/P2/ALL_MORPH_BOUNDARY_GUARD/rep0: 80/100 prompts
+correctness WIKIPEDIA/P2/ALL_MORPH_BOUNDARY_GUARD/rep0: 90/100 prompts
+correctness WIKIPEDIA/P2/ALL_MORPH_BOUNDARY_GUARD/rep0: 100/100 prompts
+correctness WIKIPEDIA/P2/RANDOM_MATCHED_GUARD/rep0: 10/100 prompts
+correctness WIKIPEDIA/P2/RANDOM_MATCHED_GUARD/rep0: 20/100 prompts
+correctness WIKIPEDIA/P2/RANDOM_MATCHED_GUARD/rep0: 30/100 prompts
+correctness WIKIPEDIA/P2/RANDOM_MATCHED_GUARD/rep0: 40/100 prompts
+correctness WIKIPEDIA/P2/RANDOM_MATCHED_GUARD/rep0: 50/100 prompts
+correctness WIKIPEDIA/P2/RANDOM_MATCHED_GUARD/rep0: 60/100 prompts
+correctness WIKIPEDIA/P2/RANDOM_MATCHED_GUARD/rep0: 70/100 prompts
+correctness WIKIPEDIA/P2/RANDOM_MATCHED_GUARD/rep0: 80/100 prompts
+correctness WIKIPEDIA/P2/RANDOM_MATCHED_GUARD/rep0: 90/100 prompts
+correctness WIKIPEDIA/P2/RANDOM_MATCHED_GUARD/rep0: 100/100 prompts
+correctness WIKIPEDIA/P2/ENTROPY_MATCHED_GUARD/rep0: 10/100 prompts
+correctness WIKIPEDIA/P2/ENTROPY_MATCHED_GUARD/rep0: 20/100 prompts
+correctness WIKIPEDIA/P2/ENTROPY_MATCHED_GUARD/rep0: 30/100 prompts
+correctness WIKIPEDIA/P2/ENTROPY_MATCHED_GUARD/rep0: 40/100 prompts
+correctness WIKIPEDIA/P2/ENTROPY_MATCHED_GUARD/rep0: 50/100 prompts
+correctness WIKIPEDIA/P2/ENTROPY_MATCHED_GUARD/rep0: 60/100 prompts
+correctness WIKIPEDIA/P2/ENTROPY_MATCHED_GUARD/rep0: 70/100 prompts
+correctness WIKIPEDIA/P2/ENTROPY_MATCHED_GUARD/rep0: 80/100 prompts
+correctness WIKIPEDIA/P2/ENTROPY_MATCHED_GUARD/rep0: 90/100 prompts
+correctness WIKIPEDIA/P2/ENTROPY_MATCHED_GUARD/rep0: 100/100 prompts
+Traceback (most recent call last):
+  File "/data/hoang/korean_speculative_decoding/scripts/run_morphology_guard.py", line 856, in <module>
+    main()
+    ~~~~^^
+  File "/data/hoang/korean_speculative_decoding/scripts/run_morphology_guard.py", line 743, in main
+    _, row, audits = run_combo(torch, models, tokenizer, kiwi, config, prompts, references, "correctness", workload, pair, variant, 0)
+                     ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/hoang/korean_speculative_decoding/scripts/run_morphology_guard.py", line 497, in run_combo
+    raise RuntimeError(f"Greedy exactness failed for {workload}/{pair}/{variant}/prompt_id={pid}")
+RuntimeError: Greedy exactness failed for WIKIPEDIA/P3/TARGET_ONLY/prompt_id=12

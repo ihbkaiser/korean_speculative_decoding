@@ -508,10 +508,14 @@ def speculative_greedy_fast(
     prompt_id: int,
     guard_controller: Any | None = None,
     runtime_stats: dict[str, Any] | None = None,
+    batch_target_verification: bool = False,
 ) -> tuple[list[int], list[dict[str, Any]]]:
     """Exact cached-path greedy SD, with an optional exact proposal scheduler.
 
     With ``guard_controller=None`` this follows the original FIXED_K path.
+    ``batch_target_verification`` evaluates a whole candidate block in one
+    causal target forward. It is optional because FP16 kernels can produce
+    different argmaxes than incremental verification on near-tie logits.
     Guard controllers may shorten verification only before an unverified
     proposal. The unchanged target argmax is then emitted as the correction /
     bonus token, and the target cache is advanced exactly as in the baseline
@@ -633,8 +637,25 @@ def speculative_greedy_fast(
             accepted_prefix = 0
             mismatch_index: int | None = None
             target_eos_accepted = False
+            batched_verification_logits = None
+            verification_cache_length = None
+            if batch_target_verification and verify_slots > 0:
+                if not hasattr(target_past, "crop") or not hasattr(target_past, "get_seq_length"):
+                    raise RuntimeError("Batched target verification requires a crop-capable Transformers Cache")
+                verification_cache_length = int(target_past.get_seq_length())
+                target_result = target_model(
+                    input_ids=torch.tensor([proposals[:verify_slots]], dtype=torch.long, device=target_device),
+                    past_key_values=target_past, use_cache=True,
+                )
+                target_past = target_result.past_key_values
+                batched_verification_logits = target_result.logits[0]
+                if runtime_stats is not None:
+                    runtime_stats["target_forward_calls"] += 1
             for j, proposal_id in enumerate(proposals[:verify_slots]):
-                decision = int(torch.argmax(target_next_logits, dim=-1).item())
+                decision_logits = (
+                    target_next_logits if j == 0 else batched_verification_logits[j - 1]
+                ) if batch_target_verification else target_next_logits
+                decision = int(torch.argmax(decision_logits, dim=-1).item())
                 target_decisions[j] = decision
                 if runtime_stats is not None:
                     runtime_stats["target_proposal_positions_verified"] += 1
@@ -647,14 +668,19 @@ def speculative_greedy_fast(
                 if proposal_id == eos_token_id:
                     target_eos_accepted = True
                     break
-                target_result = target_model(
-                    input_ids=torch.tensor([[proposal_id]], dtype=torch.long, device=target_device),
-                    past_key_values=target_past, use_cache=True,
-                )
-                target_past = target_result.past_key_values
-                target_next_logits = target_result.logits[0, -1]
-                if runtime_stats is not None:
-                    runtime_stats["target_forward_calls"] += 1
+                if not batch_target_verification:
+                    target_result = target_model(
+                        input_ids=torch.tensor([[proposal_id]], dtype=torch.long, device=target_device),
+                        past_key_values=target_past, use_cache=True,
+                    )
+                    target_past = target_result.past_key_values
+                    target_next_logits = target_result.logits[0, -1]
+                    if runtime_stats is not None:
+                        runtime_stats["target_forward_calls"] += 1
+
+            if batch_target_verification and batched_verification_logits is not None and mismatch_index is None:
+                if accepted_prefix == verify_slots and not target_eos_accepted and verify_slots > 0:
+                    target_next_logits = batched_verification_logits[verify_slots - 1]
 
             rejection_position = None if mismatch_index is None else base_position + mismatch_index
             for j, proposal_id in enumerate(proposals):
@@ -689,6 +715,20 @@ def speculative_greedy_fast(
             if mismatch_index is not None:
                 if runtime_stats is not None:
                     runtime_stats["rejected_draft_tokens"] += 1
+                if batch_target_verification and verify_slots > accepted_prefix:
+                    # The vectorized call appended every verified draft token,
+                    # including the rejecting token and any later positions.
+                    # Remove all uncommitted positions, retaining only the
+                    # safely accepted prefix before applying the ordinary
+                    # target correction.
+                    target_past.crop(-(verify_slots - accepted_prefix))
+                    expected_cache_length = int(verification_cache_length) + accepted_prefix
+                    actual_cache_length = int(target_past.get_seq_length())
+                    if actual_cache_length != expected_cache_length:
+                        raise RuntimeError(
+                            "Target cache rollback mismatch after batched rejection: "
+                            f"expected {expected_cache_length}, got {actual_cache_length}"
+                        )
                 generated.extend(proposals[:mismatch_index])
                 correction = int(target_decisions[mismatch_index])
                 generated.append(correction)

@@ -69,6 +69,7 @@ def _load_sources(tokenizer: Any) -> tuple[pd.DataFrame, pd.DataFrame, dict[str,
     records: list[dict[str, Any]] = []
     references: list[dict[str, Any]] = []
     prompt_hashes: dict[str, str] = {}
+    target_reference_resolution: dict[str, Any] = {}
     with (WIKI / "prompt_ids.jsonl").open(encoding="utf-8") as f:
         wiki_prompts = [json.loads(line) for line in f if line.strip()]
     if len(wiki_prompts) != 1000:
@@ -105,15 +106,73 @@ def _load_sources(tokenizer: Any) -> tuple[pd.DataFrame, pd.DataFrame, dict[str,
         slug = spec["slug"]
         for workload in ["WIKIPEDIA", "FLORES"]:
             if workload == "WIKIPEDIA" and pair == "P3":
-                with (LEGACY / "reference_outputs.jsonl").open(encoding="utf-8") as f:
-                    outputs = [json.loads(line) for line in f if line.strip()]
-                by_prompt = {int(r["prompt_id"]): r for r in outputs}
+                # P2 and P3 share the same target ID/revision (the pinned 4B).
+                # The old P3 reference cache came from the historical 3090 run
+                # and is not token-identical to the current pinned target on
+                # 160/1,000 prompts. Canonicalize P3 to the current P2 target
+                # continuations after checking prompt identity.
+                historical_path = LEGACY / "reference_outputs.jsonl"
+                with historical_path.open(encoding="utf-8") as f:
+                    historical = [json.loads(line) for line in f if line.strip()]
+                historical_by_prompt = {int(r["prompt_id"]): r for r in historical}
+                wiki_prompt_by_id = {int(r["prompt_id"]): r for r in wiki_prompts}
                 prompt_hash_by_id = {int(r["prompt_id"]): str(r["prompt_hash"]) for r in wiki_prompts}
-                for pid, out in by_prompt.items():
+                p2_base = WIKI / PAIRS["P2"]["slug"]
+                p2_continuations = pd.read_parquet(p2_base / "continuations.parquet")
+                p2_by_prompt = {int(r.prompt_id): r for r in p2_continuations.itertuples(index=False)}
+                expected_ids = set(prompt_hash_by_id)
+                if set(p2_by_prompt) != expected_ids or set(historical_by_prompt) != expected_ids:
+                    raise AssertionError("P2 and historical P3 references must cover the same exact Wikipedia prompt IDs")
+                if any(str(p2_by_prompt[pid].prompt_hash) != prompt_hash_by_id[pid] for pid in expected_ids):
+                    raise AssertionError("P2 target continuation hashes do not match the frozen Wikipedia prompt manifest")
+
+                exact_historical_matches = 0
+                historical_prompt_metadata_matches = 0
+                first_mismatch: dict[str, Any] | None = None
+                for pid in sorted(expected_ids):
+                    current_ids = [int(x) for x in p2_by_prompt[pid].reference_token_ids]
+                    historical_row = historical_by_prompt[pid]
+                    historical_ids = [int(x) for x in historical_row["reference_token_ids"]]
+                    current_prompt = wiki_prompt_by_id[pid]
+                    if (
+                        int(historical_row.get("source_index", -1)) == int(current_prompt["source_index"])
+                        and str(historical_row.get("title", "")) == str(current_prompt.get("title", ""))
+                    ):
+                        historical_prompt_metadata_matches += 1
+                    if current_ids == historical_ids:
+                        exact_historical_matches += 1
+                    elif first_mismatch is None:
+                        mismatch_pos = next(
+                            (i for i, (a, b) in enumerate(zip(current_ids, historical_ids)) if a != b),
+                            min(len(current_ids), len(historical_ids)),
+                        )
+                        first_mismatch = {
+                            "prompt_id": pid,
+                            "first_differing_output_position_zero_based": mismatch_pos,
+                            "p2_pinned_target_token_id": current_ids[mismatch_pos] if mismatch_pos < len(current_ids) else None,
+                            "historical_p3_token_id": historical_ids[mismatch_pos] if mismatch_pos < len(historical_ids) else None,
+                        }
+                target_reference_resolution["WIKIPEDIA_P3"] = {
+                    "canonical_reference_pair": "P2",
+                    "target_model_id": MODELS["4B"]["id"],
+                    "target_revision": MODELS["4B"]["revision"],
+                    "canonical_source": str(p2_base / "continuations.parquet"),
+                    "rejected_legacy_source": str(historical_path),
+                    "shared_prompt_ids": len(expected_ids),
+                    "p2_prompt_hash_matches_frozen_manifest": len(expected_ids),
+                    "legacy_source_indices_and_titles_match_current_manifest": historical_prompt_metadata_matches,
+                    "historical_token_continuations_equal_to_pinned_p2": exact_historical_matches,
+                    "historical_token_continuations_differ_from_pinned_p2": len(expected_ids) - exact_historical_matches,
+                    "first_historical_mismatch": first_mismatch,
+                    "resolution": "P2 references are reused for P3 because both pairs use the same pinned 4B target and identical prompt IDs/hashes; the historical P3 cache is not compatible with the current target outputs.",
+                }
+                for pid in sorted(expected_ids):
+                    row = p2_by_prompt[pid]
                     references.append({
                         "workload": workload, "pair": pair, "prompt_id": pid,
-                        "target_token_ids": [int(x) for x in out["reference_token_ids"]],
-                        "prompt_hash": prompt_hash_by_id[pid], "target_reference_source": "historical_P3_reference_outputs.jsonl",
+                        "target_token_ids": [int(x) for x in row.reference_token_ids],
+                        "prompt_hash": str(row.prompt_hash),
+                        "target_reference_source": f"{p2_base / 'continuations.parquet'} (canonical current 4B target reference reused for P3)",
                     })
             else:
                 base = WIKI / slug if workload == "WIKIPEDIA" else FLORES / "traces" / slug
@@ -136,7 +195,12 @@ def _load_sources(tokenizer: Any) -> tuple[pd.DataFrame, pd.DataFrame, dict[str,
         expected = 1000 if workload == "WIKIPEDIA" else 1012
         if len(group) != expected:
             raise AssertionError(f"{workload}/{pair}: expected {expected} saved target references, found {len(group)}")
-    return prompt_frame, ref_frame, {"prompt_count_wikipedia": len(wiki_prompts), "prompt_count_flores": len(flores_manifest), "prompt_hashes": prompt_hashes}
+    return prompt_frame, ref_frame, {
+        "prompt_count_wikipedia": len(wiki_prompts),
+        "prompt_count_flores": len(flores_manifest),
+        "prompt_hashes": prompt_hashes,
+        "target_reference_resolution": target_reference_resolution,
+    }
 
 
 def _event_groups(path: Path, pair: str, workload: str):
@@ -483,6 +547,8 @@ def main() -> None:
         "speculative_k": K,
         "eos_token_id": EOS,
         "generation": "greedy, no sampling, use_cache=True",
+        "batch_target_verification": False,
+        "verification_optimization": "Enable causal block target verification only after exact token/event parity against the original sequential verifier is established on 8 frozen prompts per workload/model-pair/SD-variant.",
         "prompt_counts": {"WIKIPEDIA": 1000, "FLORES": 1012},
         "prompt_order": "source order; pilot uses seed 3090 choice without replacement then returns to source order; 100 selected pilot IDs per workload are correctness suite",
         "target_references_reused": True,
@@ -498,6 +564,7 @@ def main() -> None:
         "gpu_metadata": None,
         "source_artifact_sha256": artifact_hashes,
         "prompt_summary": {k: v for k, v in prompt_summary.items() if k != "prompt_hashes"},
+        "target_reference_resolution": prompt_summary.get("target_reference_resolution", {}),
         "prompt_hashes_sha256": hashlib.sha256("\n".join(prompt_summary["prompt_hashes"].values()).encode()).hexdigest(),
         "software": {
             name: (importlib.metadata.version(name) if _has_dist(name) else None)
@@ -506,6 +573,11 @@ def main() -> None:
         "stage": "CPU preprocessing and offline opportunity analysis complete; GPU stages not started",
     }
     atomic_json(OUT / "method_config.json", config_out)
+    if prompt_summary.get("target_reference_resolution"):
+        atomic_json(
+            OUT / "correctness/target_reference_compatibility.json",
+            prompt_summary["target_reference_resolution"],
+        )
     summary = opportunities.groupby(["workload", "pair", "policy"], dropna=False).agg(
         candidate_blocks=("prompt_id", "size"), prompts=("prompt_id", "nunique"),
         mean_guard_slot=("guard_slot", "mean"), mean_positions_after=("verifier_positions_after_candidate", "mean"),
