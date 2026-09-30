@@ -1,0 +1,12 @@
+{
+  "pair": "P1",
+  "generated_tokens": 50454,
+  "exactly_aligned_tokens": 49411,
+  "cross_eojeol_excluded": 0,
+  "kiwi_complex_excluded": 4225,
+  "exact_retokenization_failures": 97,
+  "percentage_excluded_cross_eojeol_or_kiwi_complex": 8.373964403218775,
+  "roundtrip_exact_prompts": 967,
+  "roundtrip_fallback_prompts": 45,
+  "elapsed_seconds_this_invocation": 12.522298553958535
+}

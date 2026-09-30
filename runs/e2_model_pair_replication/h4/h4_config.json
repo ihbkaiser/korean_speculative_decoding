@@ -1,0 +1,129 @@
+{
+  "taxonomy_version": "H4-particle-types-v1",
+  "particle_mapping": {
+    "taxonomy_version": "H4-particle-types-v1",
+    "particle_categories": {
+      "CASE_SUBJECT": [
+        "JKS"
+      ],
+      "CASE_OBJECT": [
+        "JKO"
+      ],
+      "CASE_ADVERBIAL": [
+        "JKB"
+      ],
+      "CASE_GENITIVE": [
+        "JKG"
+      ],
+      "OTHER_CASE": [
+        "JKC",
+        "JKV",
+        "JKQ"
+      ],
+      "AUXILIARY_PARTICLE": [
+        "JX"
+      ],
+      "CONJUNCTIVE_PARTICLE": [
+        "JC"
+      ]
+    },
+    "additional_tags": "H3-mapped PARTICLE tags not in the prespecified groups are OTHER_PARTICLE; unrecognized tags are UNMAPPED_PARTICLE and retained in audits.",
+    "nominal_tags": [
+      "NNB",
+      "NNG",
+      "NNP",
+      "NP",
+      "NR"
+    ],
+    "source": "H3 tag_to_coarse_group from saved h3_pos_mapping.json; exact particle fine POS retained."
+  },
+  "population": "H2/E2 eligible population, saved H3 NOMINAL_TO_PARTICLE; CROSS exactly one boundary; SPLIT uses exact H3 nearest-adjacent boundary rule",
+  "span_validation": "Exact H2 token spans are intersected with H3 Kiwi full morpheme spans; H3 crossed POS sequence and local split assignment are independently checked. Unverifiable rows are listed and excluded from H4 feature models.",
+  "geometry_precedence": [
+    "FULL_NOMINAL_PLUS_FULL_PARTICLE",
+    "NOMINAL_SUFFIX_PLUS_FULL_PARTICLE",
+    "FULL_NOMINAL_PLUS_PARTICLE",
+    "PARTIAL_BOTH",
+    "OTHER_GEOMETRY"
+  ],
+  "geometry_definitions": {
+    "NOMINAL_SUFFIX_PLUS_FULL_PARTICLE": "partial nominal and complete particle",
+    "FULL_NOMINAL_PLUS_PARTICLE": "complete nominal and partial particle",
+    "PARTIAL_BOTH": "both partial",
+    "FULL_NOMINAL_PLUS_FULL_PARTICLE": "both complete",
+    "OTHER_GEOMETRY": "all remaining or unverifiable combinations"
+  },
+  "formulas": {
+    "H4a": "rejection ~ morph_class * particle_category + fragmentation FE + E2 structural + entropy + bs(log_token_count, df=4, degree=3, include_intercept=False)",
+    "H4b": "CROSS-only rejection ~ geometry class + particle category + nominal POS + H3 M5 controls; continuous coverage model includes nominal fraction * particle fraction",
+    "L1": "H3 M5 restricted to Nominal→Particle",
+    "L2": "L1 + particle category + nominal POS + nominal/particle surface lengths; H3 eojeol_char_length is retained because it is the identical eojeol surface length measure",
+    "L3": "L2 + cubic 4-df splines of log nominal, particle, and eojeol frequency"
+  },
+  "references": {
+    "morph_class": "WITHIN_SPLIT",
+    "particle_category": "CASE_SUBJECT where supported; otherwise first prespecified level with both classes",
+    "geometry_class": "most-supported observed geometry, chosen by support only"
+  },
+  "uncertainty": "prompt-clustered covariance and delta-method adjusted probabilities/AMEs; two-sided tests",
+  "multiple_testing": "Holm across all seven prespecified particle categories within each pair; non-estimable/unsupported categories enter as p=1",
+  "support_thresholds": {
+    "warn": "class count <100 or class prompt count <50",
+    "exact_particle_FE": "total >=100, CROSS >=30, prompts >=30",
+    "recurrent_pattern": "CROSS >=20, prompts >=10"
+  },
+  "matching": {
+    "method": "coarsened exact matching; 1:1 without replacement inside strata; clustered LPM with stratum FE",
+    "features": [
+      "pair",
+      "particle_category",
+      "fragmentation_bin",
+      "token length 1/2/3/4+",
+      "nominal surface length 1/2/3/4+",
+      "token frequency decile",
+      "draft entropy decile",
+      "generation position quartile"
+    ],
+    "seed": 20260929
+  },
+  "frequency": {
+    "token": "existing E1 cache",
+    "eojeol": "existing E1 cache",
+    "nominal_particle": "runs/e2_model_pair_replication/h4/h4_morpheme_frequency_cache.parquet",
+    "source_corpus_sha256": "6f5a90e25f62ba84f49cfd84285aab17b6f91c6c3c6a06ebb4c129059d72563e",
+    "no_outcomes_used": true
+  },
+  "common_prompt_ids": {
+    "source": "runs/e2_model_pair_replication/combined/e2_prompt_overlap_audit.json",
+    "count": 993
+  },
+  "seed": 20260929,
+  "software": {
+    "python": "3.13.13",
+    "pandas": "3.0.6",
+    "numpy": "2.5.3",
+    "statsmodels": "0.15.0",
+    "scipy": "1.18.1",
+    "kiwipiepy": "0.24.0",
+    "matplotlib": "3.11.2"
+  },
+  "input_sha256": {
+    "runs/e2_model_pair_replication/h3/h3_token_environment.parquet": "cf867e74e44c140994732fad0e50937d307e838ca3c10ba18e0788347615c33b",
+    "runs/e2_model_pair_replication/h3/h3_eojeol_morphemes.parquet": "7a3f99c87434ed6640152d584a384b8766226ae71ecb50796b6b0336cf4ab91d",
+    "runs/e2_model_pair_replication/h3/h3_config.json": "117dffcf85b9915f159501495595f7794565b8593810e6252c7af30789c5afb9",
+    "runs/e2_model_pair_replication/h3/h3_pos_mapping.json": "fedbccfa9ddab4c8a5b24b93893d65958dbfc8a6e989b61c61a6265e32bff38c",
+    "runs/20260926T184145Z_pilot1000/e1_token_frequency_cache.parquet": "d5093700c1ffbf504131bebf24a5704f6456358b3be41e877ee56682a66af98c",
+    "runs/20260926T184145Z_pilot1000/e1_eojeol_frequency_cache.parquet": "8c27aa6d5fbca4ac0ee3b9a2b68b48003fc4700adbfc6669796263b3823bd2ab",
+    "runs/20260926T184145Z_pilot1000/e1_frequency_cache_metadata.json": "f9bf9e0601240643d761adbcb3d613dec5de20747a3d47ef0e66c83864f5b706",
+    "data/korean_wikipedia_20231101_ko.jsonl": "6f5a90e25f62ba84f49cfd84285aab17b6f91c6c3c6a06ebb4c129059d72563e",
+    "runs/e2_model_pair_replication/combined/e2_prompt_overlap_audit.json": "040ef32b3179319c181111c81e8835e58adfa95933bfe831da7efd2d6bebf37a",
+    "runs/20260926T184145Z_pilot1000/teacher_forced_tokens.parquet": "b41a2a275fea5d83ab47755ec26a500e3fa7fa2cd95df63e22b278f0802492f6",
+    "runs/20260926T184145Z_pilot1000/sd_events.parquet": "1bf4d3264f031fbd206722aa0fbf3df0363fb8e2ccfd125263b3af794c697a61",
+    "runs/e2_model_pair_replication/p1_06b_to_17b/token_table.parquet": "9ac377ac3e5ad7dafe044a37c40a15294fd92056966952ba1825b5b735929687",
+    "runs/e2_model_pair_replication/p1_06b_to_17b/continuations.parquet": "d4c23bb3a6676ad420bed0b9d96ed01109159ea756a1351bb887eaa4a77dfaf6",
+    "runs/e2_model_pair_replication/p2_17b_to_4b/token_table.parquet": "5311b45b990a7b6576e9bbe05f964eef86e6b52521f44e1d5c6699d1fa4333f3",
+    "runs/e2_model_pair_replication/p2_17b_to_4b/continuations.parquet": "56700ee562395edf84e7915824546fde9f85a41c552e3bb59675b42c7b62c08e",
+    "runs/20260926T184145Z_pilot1000/h2_token_table.parquet": "16e8c9524892a2e0e0a83106f4daca9cf7890690c2b7935a100d6ad9125d605f"
+  },
+  "execution": "CPU analysis only; no GPU, weights, target generation, speculative decoding, or teacher-forced scoring"
+}

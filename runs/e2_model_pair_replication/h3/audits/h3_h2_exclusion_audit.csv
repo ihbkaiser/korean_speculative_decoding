@@ -1,0 +1,4 @@
+pair,generated_token_rows,span_exact_false_all,exact_retokenization_failures_non_special,cross_eojeol_excluded,kiwi_complex_excluded,sd_valid_false,fragmentation_outside_primary_bins,morph_class_outside_primary_classes,h2_eligible_tokens,h2_eligible_prompts
+P1,127118,348,338,0,10145,0,11851,53597,73001,995
+P2,127245,153,140,0,9698,0,11633,53438,73257,997
+P3,127245,148,135,0,9660,0,11669,53549,73143,997

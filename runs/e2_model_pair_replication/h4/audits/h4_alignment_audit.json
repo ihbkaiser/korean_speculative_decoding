@@ -1,0 +1,44 @@
+{
+  "P1": {
+    "pair": "P1",
+    "h3_n_to_p_rows": 22423,
+    "verified_rows": 22422,
+    "alignment_failures": 1,
+    "issue_counts": {
+      "ADJACENT_BOUNDARY": 22211,
+      "CROSSED_BOUNDARY": 212,
+      "POS_mismatch=ETN->JX": 1
+    },
+    "h3_saved_morpheme_sequence_mismatch_rows": 0
+  },
+  "P2": {
+    "pair": "P2",
+    "h3_n_to_p_rows": 22226,
+    "verified_rows": 22210,
+    "alignment_failures": 16,
+    "issue_counts": {
+      "ADJACENT_BOUNDARY": 22014,
+      "CROSSED_BOUNDARY": 203,
+      "POS_mismatch=XSN->JX": 2,
+      "POS_mismatch=ETN->JX": 1,
+      "cross_boundary_count=0": 9,
+      "exact_span_check_failed": 4
+    },
+    "h3_saved_morpheme_sequence_mismatch_rows": 0
+  },
+  "P3": {
+    "pair": "P3",
+    "h3_n_to_p_rows": 22047,
+    "verified_rows": 22029,
+    "alignment_failures": 18,
+    "issue_counts": {
+      "ADJACENT_BOUNDARY": 21829,
+      "CROSSED_BOUNDARY": 209,
+      "POS_mismatch=ETN->JX": 2,
+      "POS_mismatch=XSN->JX": 2,
+      "cross_boundary_count=0": 9,
+      "exact_span_check_failed": 5
+    },
+    "h3_saved_morpheme_sequence_mismatch_rows": 0
+  }
+}

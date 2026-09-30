@@ -1,0 +1,1096 @@
+GPU allocation verified: physical=3 local=cuda:0 name=NVIDIA A100-SXM4-80GB
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 3374.97it/s]
+Loaded 0.6B Qwen/Qwen3-0.6B-Base@da87bfb608c14b7cf20ba1ce41287e8de496c0cd on cuda:0 (sdpa)
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights:  40%|████      | 124/310 [00:00<00:00, 1215.87it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 1546.93it/s]
+Loaded 1.7B Qwen/Qwen3-1.7B-Base@ea980cb0a6c2ae4b936e82123acc929f1cec04c1 on cuda:0 (sdpa)
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights:  28%|██▊       | 113/398 [00:00<00:00, 1109.66it/s]Loading weights:  56%|█████▋    | 224/398 [00:00<00:00, 1049.07it/s]Loading weights:  83%|████████▎ | 331/398 [00:00<00:00, 1053.56it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 1110.86it/s]
+Loaded 4B Qwen/Qwen3-4B-Base@906bfd4b4dc7f14ee4320094d8b41684abff8539 on cuda:0 (sdpa)
+4B target-only 8/1012 row=8
+4B target-only 16/1012 row=16
+4B target-only 24/1012 row=24
+4B target-only 32/1012 row=32
+4B target-only 40/1012 row=40
+4B target-only 48/1012 row=48
+4B target-only 56/1012 row=56
+4B target-only 64/1012 row=64
+4B target-only 72/1012 row=72
+4B target-only 80/1012 row=80
+4B target-only 88/1012 row=88
+4B target-only 96/1012 row=96
+4B target-only 104/1012 row=104
+4B target-only 112/1012 row=112
+4B target-only 120/1012 row=120
+4B target-only 128/1012 row=128
+4B target-only 136/1012 row=136
+4B target-only 144/1012 row=144
+4B target-only 152/1012 row=152
+4B target-only 160/1012 row=160
+4B target-only 168/1012 row=168
+4B target-only 176/1012 row=176
+4B target-only 184/1012 row=184
+4B target-only 192/1012 row=192
+4B target-only 200/1012 row=200
+4B target-only 208/1012 row=208
+4B target-only 216/1012 row=216
+4B target-only 224/1012 row=224
+4B target-only 232/1012 row=232
+4B target-only 240/1012 row=240
+4B target-only 248/1012 row=248
+4B target-only 256/1012 row=256
+4B target-only 264/1012 row=264
+4B target-only 272/1012 row=272
+4B target-only 280/1012 row=280
+4B target-only 288/1012 row=288
+4B target-only 296/1012 row=296
+4B target-only 304/1012 row=304
+4B target-only 312/1012 row=312
+4B target-only 320/1012 row=320
+4B target-only 328/1012 row=328
+4B target-only 336/1012 row=336
+4B target-only 344/1012 row=344
+4B target-only 352/1012 row=352
+4B target-only 360/1012 row=360
+4B target-only 368/1012 row=368
+4B target-only 376/1012 row=376
+4B target-only 384/1012 row=384
+4B target-only 392/1012 row=392
+4B target-only 400/1012 row=400
+4B target-only 408/1012 row=408
+4B target-only 416/1012 row=416
+4B target-only 424/1012 row=424
+4B target-only 432/1012 row=432
+4B target-only 440/1012 row=440
+4B target-only 448/1012 row=448
+4B target-only 456/1012 row=456
+4B target-only 464/1012 row=464
+4B target-only 472/1012 row=472
+4B target-only 480/1012 row=480
+4B target-only 488/1012 row=488
+4B target-only 496/1012 row=496
+4B target-only 504/1012 row=504
+4B target-only 512/1012 row=512
+4B target-only 520/1012 row=520
+4B target-only 528/1012 row=528
+4B target-only 536/1012 row=536
+4B target-only 544/1012 row=544
+4B target-only 552/1012 row=552
+4B target-only 560/1012 row=560
+4B target-only 568/1012 row=568
+4B target-only 576/1012 row=576
+4B target-only 584/1012 row=584
+4B target-only 592/1012 row=592
+4B target-only 600/1012 row=600
+4B target-only 608/1012 row=608
+4B target-only 616/1012 row=616
+4B target-only 624/1012 row=624
+4B target-only 632/1012 row=632
+4B target-only 640/1012 row=640
+4B target-only 648/1012 row=648
+4B target-only 656/1012 row=656
+4B target-only 664/1012 row=664
+4B target-only 672/1012 row=672
+4B target-only 680/1012 row=680
+4B target-only 688/1012 row=688
+4B target-only 696/1012 row=696
+4B target-only 704/1012 row=704
+4B target-only 712/1012 row=712
+4B target-only 720/1012 row=720
+4B target-only 728/1012 row=728
+4B target-only 736/1012 row=736
+4B target-only 744/1012 row=744
+4B target-only 752/1012 row=752
+4B target-only 760/1012 row=760
+4B target-only 768/1012 row=768
+4B target-only 776/1012 row=776
+4B target-only 784/1012 row=784
+4B target-only 792/1012 row=792
+4B target-only 800/1012 row=800
+4B target-only 808/1012 row=808
+4B target-only 816/1012 row=816
+4B target-only 824/1012 row=824
+4B target-only 832/1012 row=832
+4B target-only 840/1012 row=840
+4B target-only 848/1012 row=848
+4B target-only 856/1012 row=856
+4B target-only 864/1012 row=864
+4B target-only 872/1012 row=872
+4B target-only 880/1012 row=880
+4B target-only 888/1012 row=888
+4B target-only 896/1012 row=896
+4B target-only 904/1012 row=904
+4B target-only 912/1012 row=912
+4B target-only 920/1012 row=920
+4B target-only 928/1012 row=928
+4B target-only 936/1012 row=936
+4B target-only 944/1012 row=944
+4B target-only 952/1012 row=952
+4B target-only 960/1012 row=960
+4B target-only 968/1012 row=968
+4B target-only 976/1012 row=976
+4B target-only 984/1012 row=984
+4B target-only 992/1012 row=992
+4B target-only 1000/1012 row=1000
+4B target-only 1008/1012 row=1008
+4B target-only 1012/1012 row=1012
+  SD 8/16 prompt=8 tokens=128 fallback=False elapsed=47.1s
+  SD 16/16 prompt=16 tokens=64 fallback=False elapsed=78.3s
+P1 committed prompts=16/1012
+  SD 8/16 prompt=24 tokens=71 fallback=False elapsed=39.3s
+  SD 16/16 prompt=32 tokens=78 fallback=False elapsed=77.1s
+P1 committed prompts=32/1012
+  SD 8/16 prompt=40 tokens=17 fallback=False elapsed=28.8s
+  SD 16/16 prompt=48 tokens=39 fallback=False elapsed=60.6s
+P1 committed prompts=48/1012
+  SD 8/16 prompt=56 tokens=98 fallback=False elapsed=44.4s
+  SD 16/16 prompt=64 tokens=77 fallback=False elapsed=85.4s
+P1 committed prompts=64/1012
+  SD 8/16 prompt=72 tokens=88 fallback=False elapsed=35.5s
+  SD 16/16 prompt=80 tokens=54 fallback=False elapsed=78.6s
+P1 committed prompts=80/1012
+  SD 8/16 prompt=88 tokens=62 fallback=False elapsed=36.9s
+  SD 16/16 prompt=96 tokens=43 fallback=False elapsed=65.3s
+P1 committed prompts=96/1012
+  SD 8/16 prompt=104 tokens=24 fallback=False elapsed=33.4s
+  SD 16/16 prompt=112 tokens=23 fallback=False elapsed=71.9s
+P1 committed prompts=112/1012
+  SD 8/16 prompt=120 tokens=54 fallback=False elapsed=27.8s
+  SD 16/16 prompt=128 tokens=59 fallback=False elapsed=62.3s
+P1 committed prompts=128/1012
+  SD 8/16 prompt=136 tokens=128 fallback=False elapsed=33.7s
+  SD 16/16 prompt=144 tokens=33 fallback=False elapsed=82.8s
+P1 committed prompts=144/1012
+  SD 8/16 prompt=152 tokens=63 fallback=False elapsed=29.9s
+  SD 16/16 prompt=160 tokens=45 fallback=False elapsed=65.3s
+P1 committed prompts=160/1012
+  SD 8/16 prompt=168 tokens=51 fallback=False elapsed=41.2s
+  SD 16/16 prompt=176 tokens=34 fallback=False elapsed=75.8s
+P1 committed prompts=176/1012
+  SD 8/16 prompt=184 tokens=56 fallback=False elapsed=26.5s
+  SD 16/16 prompt=192 tokens=23 fallback=False elapsed=58.7s
+P1 committed prompts=192/1012
+  SD 8/16 prompt=200 tokens=32 fallback=False elapsed=46.3s
+  SD 16/16 prompt=208 tokens=60 fallback=False elapsed=90.8s
+P1 committed prompts=208/1012
+  SD 8/16 prompt=216 tokens=44 fallback=False elapsed=37.8s
+  SD 16/16 prompt=224 tokens=42 fallback=False elapsed=69.2s
+P1 committed prompts=224/1012
+  SD 8/16 prompt=232 tokens=31 fallback=False elapsed=29.1s
+  SD 16/16 prompt=240 tokens=33 fallback=False elapsed=62.8s
+P1 committed prompts=240/1012
+  SD 8/16 prompt=248 tokens=109 fallback=False elapsed=50.3s
+  SD 16/16 prompt=256 tokens=56 fallback=False elapsed=84.5s
+P1 committed prompts=256/1012
+  SD 8/16 prompt=264 tokens=19 fallback=False elapsed=26.3s
+  SD 16/16 prompt=272 tokens=68 fallback=False elapsed=65.7s
+P1 committed prompts=272/1012
+  SD 8/16 prompt=280 tokens=43 fallback=False elapsed=31.6s
+  SD 16/16 prompt=288 tokens=49 fallback=False elapsed=55.7s
+P1 committed prompts=288/1012
+  SD 8/16 prompt=296 tokens=71 fallback=False elapsed=40.9s
+  SD 16/16 prompt=304 tokens=43 fallback=False elapsed=72.7s
+P1 committed prompts=304/1012
+  SD 8/16 prompt=312 tokens=27 fallback=False elapsed=28.6s
+  SD 16/16 prompt=320 tokens=22 fallback=False elapsed=55.4s
+P1 committed prompts=320/1012
+  SD 8/16 prompt=328 tokens=32 fallback=False elapsed=37.5s
+  SD 16/16 prompt=336 tokens=57 fallback=False elapsed=71.5s
+P1 committed prompts=336/1012
+  SD 8/16 prompt=344 tokens=54 fallback=False elapsed=41.5s
+  SD 16/16 prompt=352 tokens=47 fallback=False elapsed=72.9s
+P1 committed prompts=352/1012
+  SD 8/16 prompt=360 tokens=42 fallback=False elapsed=33.0s
+  SD 16/16 prompt=368 tokens=128 fallback=False elapsed=67.2s
+P1 committed prompts=368/1012
+  SD 8/16 prompt=376 tokens=41 fallback=False elapsed=36.0s
+  SD 16/16 prompt=384 tokens=56 fallback=False elapsed=66.4s
+P1 committed prompts=384/1012
+  SD 8/16 prompt=392 tokens=45 fallback=False elapsed=32.0s
+  SD 16/16 prompt=400 tokens=30 fallback=False elapsed=54.8s
+P1 committed prompts=400/1012
+  SD 8/16 prompt=408 tokens=61 fallback=False elapsed=28.1s
+  SD 16/16 prompt=416 tokens=57 fallback=False elapsed=59.1s
+P1 committed prompts=416/1012
+  SD 8/16 prompt=424 tokens=44 fallback=False elapsed=27.0s
+  SD 16/16 prompt=432 tokens=38 fallback=False elapsed=62.3s
+P1 committed prompts=432/1012
+  SD 8/16 prompt=440 tokens=23 fallback=False elapsed=34.4s
+  SD 16/16 prompt=448 tokens=36 fallback=False elapsed=66.1s
+P1 committed prompts=448/1012
+  SD 8/16 prompt=456 tokens=44 fallback=False elapsed=37.7s
+  SD 16/16 prompt=464 tokens=29 fallback=False elapsed=67.9s
+P1 committed prompts=464/1012
+  SD 8/16 prompt=472 tokens=111 fallback=False elapsed=42.5s
+  SD 16/16 prompt=480 tokens=56 fallback=False elapsed=84.9s
+P1 committed prompts=480/1012
+  SD 8/16 prompt=488 tokens=80 fallback=False elapsed=36.1s
+  SD 16/16 prompt=496 tokens=57 fallback=False elapsed=61.4s
+P1 committed prompts=496/1012
+  SD 8/16 prompt=504 tokens=71 fallback=False elapsed=29.2s
+  SD 16/16 prompt=512 tokens=60 fallback=False elapsed=62.6s
+P1 committed prompts=512/1012
+  SD 8/16 prompt=520 tokens=41 fallback=False elapsed=18.8s
+  SD 16/16 prompt=528 tokens=34 fallback=False elapsed=43.7s
+P1 committed prompts=528/1012
+  SD 8/16 prompt=536 tokens=45 fallback=False elapsed=27.4s
+  SD 16/16 prompt=544 tokens=65 fallback=False elapsed=57.3s
+P1 committed prompts=544/1012
+  SD 8/16 prompt=552 tokens=62 fallback=False elapsed=43.6s
+  SD 16/16 prompt=560 tokens=128 fallback=False elapsed=78.2s
+P1 committed prompts=560/1012
+  SD 8/16 prompt=568 tokens=55 fallback=False elapsed=44.2s
+  SD 16/16 prompt=576 tokens=109 fallback=False elapsed=77.3s
+P1 committed prompts=576/1012
+  SD 8/16 prompt=584 tokens=45 fallback=False elapsed=29.4s
+  SD 16/16 prompt=592 tokens=49 fallback=False elapsed=51.3s
+P1 committed prompts=592/1012
+  SD 8/16 prompt=600 tokens=32 fallback=False elapsed=28.8s
+  SD 16/16 prompt=608 tokens=47 fallback=False elapsed=61.8s
+P1 committed prompts=608/1012
+  SD 8/16 prompt=616 tokens=44 fallback=False elapsed=26.4s
+  SD 16/16 prompt=624 tokens=58 fallback=False elapsed=50.6s
+P1 committed prompts=624/1012
+  SD 8/16 prompt=632 tokens=41 fallback=False elapsed=32.5s
+  SD 16/16 prompt=640 tokens=28 fallback=False elapsed=56.2s
+P1 committed prompts=640/1012
+  SD 8/16 prompt=648 tokens=36 fallback=False elapsed=24.1s
+  SD 16/16 prompt=656 tokens=33 fallback=False elapsed=50.4s
+P1 committed prompts=656/1012
+  SD 8/16 prompt=664 tokens=35 fallback=False elapsed=30.3s
+  SD 16/16 prompt=672 tokens=41 fallback=False elapsed=55.0s
+P1 committed prompts=672/1012
+  SD 8/16 prompt=680 tokens=32 fallback=False elapsed=24.6s
+  SD 16/16 prompt=688 tokens=92 fallback=False elapsed=62.1s
+P1 committed prompts=688/1012
+  SD 8/16 prompt=696 tokens=28 fallback=False elapsed=35.0s
+  SD 16/16 prompt=704 tokens=23 fallback=False elapsed=66.0s
+P1 committed prompts=704/1012
+  SD 8/16 prompt=712 tokens=71 fallback=False elapsed=34.2s
+  SD 16/16 prompt=720 tokens=35 fallback=False elapsed=63.6s
+P1 committed prompts=720/1012
+  SD 8/16 prompt=728 tokens=36 fallback=False elapsed=25.2s
+  SD 16/16 prompt=736 tokens=44 fallback=False elapsed=61.3s
+P1 committed prompts=736/1012
+  SD 8/16 prompt=744 tokens=52 fallback=False elapsed=34.5s
+  SD 16/16 prompt=752 tokens=128 fallback=False elapsed=71.2s
+P1 committed prompts=752/1012
+  SD 8/16 prompt=760 tokens=52 fallback=False elapsed=27.9s
+  SD 16/16 prompt=768 tokens=60 fallback=False elapsed=57.9s
+P1 committed prompts=768/1012
+  SD 8/16 prompt=776 tokens=40 fallback=False elapsed=28.7s
+  SD 16/16 prompt=784 tokens=33 fallback=False elapsed=58.9s
+P1 committed prompts=784/1012
+  SD 8/16 prompt=792 tokens=35 fallback=False elapsed=34.3s
+  SD 16/16 prompt=800 tokens=53 fallback=False elapsed=61.9s
+P1 committed prompts=800/1012
+  SD 8/16 prompt=808 tokens=42 fallback=False elapsed=33.6s
+  SD 16/16 prompt=816 tokens=58 fallback=False elapsed=59.5s
+P1 committed prompts=816/1012
+  SD 8/16 prompt=824 tokens=24 fallback=False elapsed=30.6s
+  SD 16/16 prompt=832 tokens=51 fallback=False elapsed=65.1s
+P1 committed prompts=832/1012
+  SD 8/16 prompt=840 tokens=45 fallback=False elapsed=31.8s
+  SD 16/16 prompt=848 tokens=51 fallback=False elapsed=71.5s
+P1 committed prompts=848/1012
+  SD 8/16 prompt=856 tokens=26 fallback=False elapsed=44.9s
+  SD 16/16 prompt=864 tokens=34 fallback=False elapsed=74.9s
+P1 committed prompts=864/1012
+  SD 8/16 prompt=872 tokens=21 fallback=False elapsed=25.6s
+  SD 16/16 prompt=880 tokens=34 fallback=False elapsed=54.1s
+P1 committed prompts=880/1012
+  SD 8/16 prompt=888 tokens=44 fallback=False elapsed=24.9s
+  SD 16/16 prompt=896 tokens=37 fallback=False elapsed=50.2s
+P1 committed prompts=896/1012
+  SD 8/16 prompt=904 tokens=47 fallback=False elapsed=30.8s
+  SD 16/16 prompt=912 tokens=44 fallback=False elapsed=68.3s
+P1 committed prompts=912/1012
+  SD 8/16 prompt=920 tokens=48 fallback=False elapsed=23.7s
+  SD 16/16 prompt=928 tokens=40 fallback=False elapsed=55.2s
+P1 committed prompts=928/1012
+  SD 8/16 prompt=936 tokens=35 fallback=False elapsed=32.7s
+  SD 16/16 prompt=944 tokens=52 fallback=False elapsed=64.0s
+P1 committed prompts=944/1012
+  SD 8/16 prompt=952 tokens=48 fallback=False elapsed=36.4s
+  SD 16/16 prompt=960 tokens=20 fallback=False elapsed=65.9s
+P1 committed prompts=960/1012
+  SD 8/16 prompt=968 tokens=61 fallback=False elapsed=34.7s
+  SD 16/16 prompt=976 tokens=36 fallback=False elapsed=63.6s
+P1 committed prompts=976/1012
+  SD 8/16 prompt=984 tokens=57 fallback=False elapsed=23.1s
+  SD 16/16 prompt=992 tokens=53 fallback=False elapsed=49.6s
+P1 committed prompts=992/1012
+  SD 8/16 prompt=1000 tokens=23 fallback=False elapsed=31.1s
+  SD 16/16 prompt=1008 tokens=42 fallback=False elapsed=67.6s
+P1 committed prompts=1008/1012
+  SD 4/4 prompt=1012 tokens=42 fallback=False elapsed=14.0s
+P1 committed prompts=1012/1012
+P1 teacher forcing committed prompts=16/1012
+P1 teacher forcing committed prompts=32/1012
+P1 teacher forcing committed prompts=48/1012
+P1 teacher forcing committed prompts=64/1012
+P1 teacher forcing committed prompts=80/1012
+P1 teacher forcing committed prompts=96/1012
+P1 teacher forcing committed prompts=112/1012
+P1 teacher forcing committed prompts=128/1012
+P1 teacher forcing committed prompts=144/1012
+P1 teacher forcing committed prompts=160/1012
+P1 teacher forcing committed prompts=176/1012
+P1 teacher forcing committed prompts=192/1012
+P1 teacher forcing committed prompts=208/1012
+P1 teacher forcing committed prompts=224/1012
+P1 teacher forcing committed prompts=240/1012
+P1 teacher forcing committed prompts=256/1012
+P1 teacher forcing committed prompts=272/1012
+P1 teacher forcing committed prompts=288/1012
+P1 teacher forcing committed prompts=304/1012
+P1 teacher forcing committed prompts=320/1012
+P1 teacher forcing committed prompts=336/1012
+P1 teacher forcing committed prompts=352/1012
+P1 teacher forcing committed prompts=368/1012
+P1 teacher forcing committed prompts=384/1012
+P1 teacher forcing committed prompts=400/1012
+P1 teacher forcing committed prompts=416/1012
+P1 teacher forcing committed prompts=432/1012
+P1 teacher forcing committed prompts=448/1012
+P1 teacher forcing committed prompts=464/1012
+P1 teacher forcing committed prompts=480/1012
+P1 teacher forcing committed prompts=496/1012
+P1 teacher forcing committed prompts=512/1012
+P1 teacher forcing committed prompts=528/1012
+P1 teacher forcing committed prompts=544/1012
+P1 teacher forcing committed prompts=560/1012
+P1 teacher forcing committed prompts=576/1012
+P1 teacher forcing committed prompts=592/1012
+P1 teacher forcing committed prompts=608/1012
+P1 teacher forcing committed prompts=624/1012
+P1 teacher forcing committed prompts=640/1012
+P1 teacher forcing committed prompts=656/1012
+P1 teacher forcing committed prompts=672/1012
+P1 teacher forcing committed prompts=688/1012
+P1 teacher forcing committed prompts=704/1012
+P1 teacher forcing committed prompts=720/1012
+P1 teacher forcing committed prompts=736/1012
+P1 teacher forcing committed prompts=752/1012
+P1 teacher forcing committed prompts=768/1012
+P1 teacher forcing committed prompts=784/1012
+P1 teacher forcing committed prompts=800/1012
+P1 teacher forcing committed prompts=816/1012
+P1 teacher forcing committed prompts=832/1012
+P1 teacher forcing committed prompts=848/1012
+P1 teacher forcing committed prompts=864/1012
+P1 teacher forcing committed prompts=880/1012
+P1 teacher forcing committed prompts=896/1012
+P1 teacher forcing committed prompts=912/1012
+P1 teacher forcing committed prompts=928/1012
+P1 teacher forcing committed prompts=944/1012
+P1 teacher forcing committed prompts=960/1012
+P1 teacher forcing committed prompts=976/1012
+P1 teacher forcing committed prompts=992/1012
+P1 teacher forcing committed prompts=1008/1012
+P1 teacher forcing committed prompts=1012/1012
+P1 morphology committed prompts=16/1012
+P1 morphology committed prompts=32/1012
+P1 morphology committed prompts=48/1012
+P1 morphology committed prompts=64/1012
+P1 morphology committed prompts=80/1012
+P1 morphology committed prompts=96/1012
+P1 morphology committed prompts=112/1012
+P1 morphology committed prompts=128/1012
+P1 morphology committed prompts=144/1012
+P1 morphology committed prompts=160/1012
+P1 morphology committed prompts=176/1012
+P1 morphology committed prompts=192/1012
+P1 morphology committed prompts=208/1012
+P1 morphology committed prompts=224/1012
+P1 morphology committed prompts=240/1012
+P1 morphology committed prompts=256/1012
+P1 morphology committed prompts=272/1012
+P1 morphology committed prompts=288/1012
+P1 morphology committed prompts=304/1012
+P1 morphology committed prompts=320/1012
+P1 morphology committed prompts=336/1012
+P1 morphology committed prompts=352/1012
+P1 morphology committed prompts=368/1012
+P1 morphology committed prompts=384/1012
+P1 morphology committed prompts=400/1012
+P1 morphology committed prompts=416/1012
+P1 morphology committed prompts=432/1012
+P1 morphology committed prompts=448/1012
+P1 morphology committed prompts=464/1012
+P1 morphology committed prompts=480/1012
+P1 morphology committed prompts=496/1012
+P1 morphology committed prompts=512/1012
+P1 morphology committed prompts=528/1012
+P1 morphology committed prompts=544/1012
+P1 morphology committed prompts=560/1012
+P1 morphology committed prompts=576/1012
+P1 morphology committed prompts=592/1012
+P1 morphology committed prompts=608/1012
+P1 morphology committed prompts=624/1012
+P1 morphology committed prompts=640/1012
+P1 morphology committed prompts=656/1012
+P1 morphology committed prompts=672/1012
+P1 morphology committed prompts=688/1012
+P1 morphology committed prompts=704/1012
+P1 morphology committed prompts=720/1012
+P1 morphology committed prompts=736/1012
+P1 morphology committed prompts=752/1012
+P1 morphology committed prompts=768/1012
+P1 morphology committed prompts=784/1012
+P1 morphology committed prompts=800/1012
+P1 morphology committed prompts=816/1012
+P1 morphology committed prompts=832/1012
+P1 morphology committed prompts=848/1012
+P1 morphology committed prompts=864/1012
+P1 morphology committed prompts=880/1012
+P1 morphology committed prompts=896/1012
+P1 morphology committed prompts=912/1012
+P1 morphology committed prompts=928/1012
+P1 morphology committed prompts=944/1012
+P1 morphology committed prompts=960/1012
+P1 morphology committed prompts=976/1012
+P1 morphology committed prompts=992/1012
+P1 morphology committed prompts=1008/1012
+P1 morphology committed prompts=1012/1012
+P1 complete; rows=50454 exact parity=True
+  SD 8/16 prompt=8 tokens=65 fallback=False elapsed=49.1s
+  SD 16/16 prompt=16 tokens=56 fallback=False elapsed=84.0s
+P2 committed prompts=16/1012
+  SD 8/16 prompt=24 tokens=67 fallback=False elapsed=48.1s
+  SD 16/16 prompt=32 tokens=128 fallback=False elapsed=97.3s
+P2 committed prompts=32/1012
+  SD 8/16 prompt=40 tokens=18 fallback=False elapsed=27.4s
+  SD 16/16 prompt=48 tokens=29 fallback=False elapsed=61.9s
+P2 committed prompts=48/1012
+  SD 8/16 prompt=56 tokens=76 fallback=False elapsed=40.6s
+  SD 16/16 prompt=64 tokens=57 fallback=False elapsed=74.8s
+P2 committed prompts=64/1012
+  SD 8/16 prompt=72 tokens=84 fallback=False elapsed=39.5s
+  SD 16/16 prompt=80 tokens=50 fallback=False elapsed=75.5s
+P2 committed prompts=80/1012
+  SD 8/16 prompt=88 tokens=83 fallback=False elapsed=36.0s
+  SD 16/16 prompt=96 tokens=36 fallback=False elapsed=60.5s
+P2 committed prompts=96/1012
+  SD 8/16 prompt=104 tokens=26 fallback=False elapsed=31.3s
+  SD 16/16 prompt=112 tokens=22 fallback=False elapsed=66.1s
+P2 committed prompts=112/1012
+  SD 8/16 prompt=120 tokens=59 fallback=False elapsed=26.8s
+  SD 16/16 prompt=128 tokens=50 fallback=False elapsed=56.4s
+P2 committed prompts=128/1012
+  SD 8/16 prompt=136 tokens=35 fallback=False elapsed=35.7s
+  SD 16/16 prompt=144 tokens=23 fallback=False elapsed=60.1s
+P2 committed prompts=144/1012
+  SD 8/16 prompt=152 tokens=58 fallback=False elapsed=26.3s
+  SD 16/16 prompt=160 tokens=20 fallback=False elapsed=60.0s
+P2 committed prompts=160/1012
+  SD 8/16 prompt=168 tokens=53 fallback=False elapsed=36.5s
+  SD 16/16 prompt=176 tokens=16 fallback=False elapsed=59.6s
+P2 committed prompts=176/1012
+  SD 8/16 prompt=184 tokens=53 fallback=False elapsed=26.3s
+  SD 16/16 prompt=192 tokens=65 fallback=False elapsed=58.8s
+P2 committed prompts=192/1012
+  SD 8/16 prompt=200 tokens=35 fallback=False elapsed=40.7s
+  SD 16/16 prompt=208 tokens=67 fallback=False elapsed=82.2s
+P2 committed prompts=208/1012
+  SD 8/16 prompt=216 tokens=46 fallback=False elapsed=28.1s
+  SD 16/16 prompt=224 tokens=35 fallback=False elapsed=53.1s
+P2 committed prompts=224/1012
+  SD 8/16 prompt=232 tokens=35 fallback=False elapsed=18.7s
+  SD 16/16 prompt=240 tokens=33 fallback=False elapsed=53.1s
+P2 committed prompts=240/1012
+  SD 8/16 prompt=248 tokens=117 fallback=False elapsed=41.0s
+  SD 16/16 prompt=256 tokens=59 fallback=False elapsed=72.5s
+P2 committed prompts=256/1012
+  SD 8/16 prompt=264 tokens=24 fallback=False elapsed=20.7s
+  SD 16/16 prompt=272 tokens=69 fallback=False elapsed=67.1s
+P2 committed prompts=272/1012
+  SD 8/16 prompt=280 tokens=30 fallback=False elapsed=32.0s
+  SD 16/16 prompt=288 tokens=45 fallback=False elapsed=54.4s
+P2 committed prompts=288/1012
+  SD 8/16 prompt=296 tokens=56 fallback=False elapsed=42.1s
+  SD 16/16 prompt=304 tokens=34 fallback=False elapsed=67.5s
+P2 committed prompts=304/1012
+  SD 8/16 prompt=312 tokens=28 fallback=False elapsed=25.7s
+  SD 16/16 prompt=320 tokens=20 fallback=False elapsed=56.0s
+P2 committed prompts=320/1012
+  SD 8/16 prompt=328 tokens=35 fallback=False elapsed=48.6s
+  SD 16/16 prompt=336 tokens=54 fallback=False elapsed=77.0s
+P2 committed prompts=336/1012
+  SD 8/16 prompt=344 tokens=99 fallback=False elapsed=42.9s
+  SD 16/16 prompt=352 tokens=35 fallback=False elapsed=65.6s
+P2 committed prompts=352/1012
+  SD 8/16 prompt=360 tokens=44 fallback=False elapsed=28.1s
+  SD 16/16 prompt=368 tokens=93 fallback=False elapsed=70.4s
+P2 committed prompts=368/1012
+  SD 8/16 prompt=376 tokens=40 fallback=False elapsed=30.5s
+  SD 16/16 prompt=384 tokens=68 fallback=False elapsed=61.1s
+P2 committed prompts=384/1012
+  SD 8/16 prompt=392 tokens=20 fallback=False elapsed=27.0s
+  SD 16/16 prompt=400 tokens=18 fallback=False elapsed=46.7s
+P2 committed prompts=400/1012
+  SD 8/16 prompt=408 tokens=53 fallback=False elapsed=24.4s
+  SD 16/16 prompt=416 tokens=66 fallback=False elapsed=55.7s
+P2 committed prompts=416/1012
+  SD 8/16 prompt=424 tokens=46 fallback=False elapsed=25.0s
+  SD 16/16 prompt=432 tokens=42 fallback=False elapsed=60.9s
+P2 committed prompts=432/1012
+  SD 8/16 prompt=440 tokens=22 fallback=False elapsed=23.0s
+  SD 16/16 prompt=448 tokens=34 fallback=False elapsed=54.4s
+P2 committed prompts=448/1012
+  SD 8/16 prompt=456 tokens=23 fallback=False elapsed=31.6s
+  SD 16/16 prompt=464 tokens=34 fallback=False elapsed=64.9s
+P2 committed prompts=464/1012
+  SD 8/16 prompt=472 tokens=128 fallback=False elapsed=44.0s
+  SD 16/16 prompt=480 tokens=67 fallback=False elapsed=74.7s
+P2 committed prompts=480/1012
+  SD 8/16 prompt=488 tokens=70 fallback=False elapsed=37.3s
+  SD 16/16 prompt=496 tokens=58 fallback=False elapsed=66.4s
+P2 committed prompts=496/1012
+  SD 8/16 prompt=504 tokens=62 fallback=False elapsed=31.9s
+  SD 16/16 prompt=512 tokens=49 fallback=False elapsed=71.4s
+P2 committed prompts=512/1012
+  SD 8/16 prompt=520 tokens=39 fallback=False elapsed=21.3s
+  SD 16/16 prompt=528 tokens=31 fallback=False elapsed=46.3s
+P2 committed prompts=528/1012
+  SD 8/16 prompt=536 tokens=36 fallback=False elapsed=30.1s
+  SD 16/16 prompt=544 tokens=128 fallback=False elapsed=65.1s
+P2 committed prompts=544/1012
+  SD 8/16 prompt=552 tokens=63 fallback=False elapsed=41.4s
+  SD 16/16 prompt=560 tokens=64 fallback=False elapsed=72.2s
+P2 committed prompts=560/1012
+  SD 8/16 prompt=568 tokens=55 fallback=False elapsed=34.3s
+  SD 16/16 prompt=576 tokens=15 fallback=False elapsed=67.7s
+P2 committed prompts=576/1012
+  SD 8/16 prompt=584 tokens=42 fallback=False elapsed=27.8s
+  SD 16/16 prompt=592 tokens=43 fallback=False elapsed=51.5s
+P2 committed prompts=592/1012
+  SD 8/16 prompt=600 tokens=31 fallback=False elapsed=31.6s
+  SD 16/16 prompt=608 tokens=46 fallback=False elapsed=54.6s
+P2 committed prompts=608/1012
+  SD 8/16 prompt=616 tokens=49 fallback=False elapsed=28.9s
+  SD 16/16 prompt=624 tokens=87 fallback=False elapsed=58.6s
+P2 committed prompts=624/1012
+  SD 8/16 prompt=632 tokens=37 fallback=False elapsed=22.7s
+  SD 16/16 prompt=640 tokens=35 fallback=False elapsed=50.9s
+P2 committed prompts=640/1012
+  SD 8/16 prompt=648 tokens=43 fallback=False elapsed=29.3s
+  SD 16/16 prompt=656 tokens=23 fallback=False elapsed=48.9s
+P2 committed prompts=656/1012
+  SD 8/16 prompt=664 tokens=35 fallback=False elapsed=32.7s
+  SD 16/16 prompt=672 tokens=24 fallback=False elapsed=56.7s
+P2 committed prompts=672/1012
+  SD 8/16 prompt=680 tokens=31 fallback=False elapsed=25.1s
+  SD 16/16 prompt=688 tokens=79 fallback=False elapsed=64.0s
+P2 committed prompts=688/1012
+  SD 8/16 prompt=696 tokens=37 fallback=False elapsed=35.7s
+  SD 16/16 prompt=704 tokens=29 fallback=False elapsed=60.2s
+P2 committed prompts=704/1012
+  SD 8/16 prompt=712 tokens=73 fallback=False elapsed=41.4s
+  SD 16/16 prompt=720 tokens=28 fallback=False elapsed=80.8s
+P2 committed prompts=720/1012
+  SD 8/16 prompt=728 tokens=36 fallback=False elapsed=26.7s
+  SD 16/16 prompt=736 tokens=32 fallback=False elapsed=54.5s
+P2 committed prompts=736/1012
+  SD 8/16 prompt=744 tokens=57 fallback=False elapsed=34.8s
+  SD 16/16 prompt=752 tokens=21 fallback=False elapsed=59.6s
+P2 committed prompts=752/1012
+  SD 8/16 prompt=760 tokens=28 fallback=False elapsed=29.8s
+  SD 16/16 prompt=768 tokens=52 fallback=False elapsed=57.4s
+P2 committed prompts=768/1012
+  SD 8/16 prompt=776 tokens=34 fallback=False elapsed=27.4s
+  SD 16/16 prompt=784 tokens=26 fallback=False elapsed=57.1s
+P2 committed prompts=784/1012
+  SD 8/16 prompt=792 tokens=31 fallback=False elapsed=25.6s
+  SD 16/16 prompt=800 tokens=50 fallback=False elapsed=54.4s
+P2 committed prompts=800/1012
+  SD 8/16 prompt=808 tokens=33 fallback=False elapsed=25.5s
+  SD 16/16 prompt=816 tokens=100 fallback=False elapsed=63.2s
+P2 committed prompts=816/1012
+  SD 8/16 prompt=824 tokens=29 fallback=False elapsed=23.6s
+  SD 16/16 prompt=832 tokens=61 fallback=False elapsed=60.0s
+P2 committed prompts=832/1012
+  SD 8/16 prompt=840 tokens=51 fallback=False elapsed=28.7s
+  SD 16/16 prompt=848 tokens=48 fallback=False elapsed=63.8s
+P2 committed prompts=848/1012
+  SD 8/16 prompt=856 tokens=19 fallback=False elapsed=37.6s
+  SD 16/16 prompt=864 tokens=42 fallback=False elapsed=67.1s
+P2 committed prompts=864/1012
+  SD 8/16 prompt=872 tokens=19 fallback=False elapsed=23.6s
+  SD 16/16 prompt=880 tokens=28 fallback=False elapsed=58.2s
+P2 committed prompts=880/1012
+  SD 8/16 prompt=888 tokens=43 fallback=False elapsed=23.7s
+  SD 16/16 prompt=896 tokens=38 fallback=False elapsed=52.3s
+P2 committed prompts=896/1012
+  SD 8/16 prompt=904 tokens=49 fallback=False elapsed=20.9s
+  SD 16/16 prompt=912 tokens=34 fallback=False elapsed=57.2s
+P2 committed prompts=912/1012
+  SD 8/16 prompt=920 tokens=30 fallback=False elapsed=38.4s
+  SD 16/16 prompt=928 tokens=29 fallback=False elapsed=65.5s
+P2 committed prompts=928/1012
+  SD 8/16 prompt=936 tokens=29 fallback=False elapsed=26.5s
+  SD 16/16 prompt=944 tokens=62 fallback=False elapsed=56.6s
+P2 committed prompts=944/1012
+  SD 8/16 prompt=952 tokens=37 fallback=False elapsed=28.6s
+  SD 16/16 prompt=960 tokens=26 fallback=False elapsed=53.4s
+P2 committed prompts=960/1012
+  SD 8/16 prompt=968 tokens=51 fallback=False elapsed=37.9s
+  SD 16/16 prompt=976 tokens=34 fallback=False elapsed=72.0s
+P2 committed prompts=976/1012
+  SD 8/16 prompt=984 tokens=61 fallback=False elapsed=23.8s
+  SD 16/16 prompt=992 tokens=40 fallback=False elapsed=53.7s
+P2 committed prompts=992/1012
+  SD 8/16 prompt=1000 tokens=55 fallback=False elapsed=26.0s
+  SD 16/16 prompt=1008 tokens=36 fallback=False elapsed=57.5s
+P2 committed prompts=1008/1012
+  SD 4/4 prompt=1012 tokens=37 fallback=False elapsed=10.7s
+P2 committed prompts=1012/1012
+P2 teacher forcing committed prompts=16/1012
+P2 teacher forcing committed prompts=32/1012
+P2 teacher forcing committed prompts=48/1012
+P2 teacher forcing committed prompts=64/1012
+P2 teacher forcing committed prompts=80/1012
+P2 teacher forcing committed prompts=96/1012
+P2 teacher forcing committed prompts=112/1012
+P2 teacher forcing committed prompts=128/1012
+P2 teacher forcing committed prompts=144/1012
+P2 teacher forcing committed prompts=160/1012
+P2 teacher forcing committed prompts=176/1012
+P2 teacher forcing committed prompts=192/1012
+P2 teacher forcing committed prompts=208/1012
+P2 teacher forcing committed prompts=224/1012
+P2 teacher forcing committed prompts=240/1012
+P2 teacher forcing committed prompts=256/1012
+P2 teacher forcing committed prompts=272/1012
+P2 teacher forcing committed prompts=288/1012
+P2 teacher forcing committed prompts=304/1012
+P2 teacher forcing committed prompts=320/1012
+P2 teacher forcing committed prompts=336/1012
+P2 teacher forcing committed prompts=352/1012
+P2 teacher forcing committed prompts=368/1012
+P2 teacher forcing committed prompts=384/1012
+P2 teacher forcing committed prompts=400/1012
+P2 teacher forcing committed prompts=416/1012
+P2 teacher forcing committed prompts=432/1012
+P2 teacher forcing committed prompts=448/1012
+P2 teacher forcing committed prompts=464/1012
+P2 teacher forcing committed prompts=480/1012
+P2 teacher forcing committed prompts=496/1012
+P2 teacher forcing committed prompts=512/1012
+P2 teacher forcing committed prompts=528/1012
+P2 teacher forcing committed prompts=544/1012
+P2 teacher forcing committed prompts=560/1012
+P2 teacher forcing committed prompts=576/1012
+P2 teacher forcing committed prompts=592/1012
+P2 teacher forcing committed prompts=608/1012
+P2 teacher forcing committed prompts=624/1012
+P2 teacher forcing committed prompts=640/1012
+P2 teacher forcing committed prompts=656/1012
+P2 teacher forcing committed prompts=672/1012
+P2 teacher forcing committed prompts=688/1012
+P2 teacher forcing committed prompts=704/1012
+P2 teacher forcing committed prompts=720/1012
+P2 teacher forcing committed prompts=736/1012
+P2 teacher forcing committed prompts=752/1012
+P2 teacher forcing committed prompts=768/1012
+P2 teacher forcing committed prompts=784/1012
+P2 teacher forcing committed prompts=800/1012
+P2 teacher forcing committed prompts=816/1012
+P2 teacher forcing committed prompts=832/1012
+P2 teacher forcing committed prompts=848/1012
+P2 teacher forcing committed prompts=864/1012
+P2 teacher forcing committed prompts=880/1012
+P2 teacher forcing committed prompts=896/1012
+P2 teacher forcing committed prompts=912/1012
+P2 teacher forcing committed prompts=928/1012
+P2 teacher forcing committed prompts=944/1012
+P2 teacher forcing committed prompts=960/1012
+P2 teacher forcing committed prompts=976/1012
+P2 teacher forcing committed prompts=992/1012
+P2 teacher forcing committed prompts=1008/1012
+P2 teacher forcing committed prompts=1012/1012
+P2 morphology committed prompts=16/1012
+P2 morphology committed prompts=32/1012
+P2 morphology committed prompts=48/1012
+P2 morphology committed prompts=64/1012
+P2 morphology committed prompts=80/1012
+P2 morphology committed prompts=96/1012
+P2 morphology committed prompts=112/1012
+P2 morphology committed prompts=128/1012
+P2 morphology committed prompts=144/1012
+P2 morphology committed prompts=160/1012
+P2 morphology committed prompts=176/1012
+P2 morphology committed prompts=192/1012
+P2 morphology committed prompts=208/1012
+P2 morphology committed prompts=224/1012
+P2 morphology committed prompts=240/1012
+P2 morphology committed prompts=256/1012
+P2 morphology committed prompts=272/1012
+P2 morphology committed prompts=288/1012
+P2 morphology committed prompts=304/1012
+P2 morphology committed prompts=320/1012
+P2 morphology committed prompts=336/1012
+P2 morphology committed prompts=352/1012
+P2 morphology committed prompts=368/1012
+P2 morphology committed prompts=384/1012
+P2 morphology committed prompts=400/1012
+P2 morphology committed prompts=416/1012
+P2 morphology committed prompts=432/1012
+P2 morphology committed prompts=448/1012
+P2 morphology committed prompts=464/1012
+P2 morphology committed prompts=480/1012
+P2 morphology committed prompts=496/1012
+P2 morphology committed prompts=512/1012
+P2 morphology committed prompts=528/1012
+P2 morphology committed prompts=544/1012
+P2 morphology committed prompts=560/1012
+P2 morphology committed prompts=576/1012
+P2 morphology committed prompts=592/1012
+P2 morphology committed prompts=608/1012
+P2 morphology committed prompts=624/1012
+P2 morphology committed prompts=640/1012
+P2 morphology committed prompts=656/1012
+P2 morphology committed prompts=672/1012
+P2 morphology committed prompts=688/1012
+P2 morphology committed prompts=704/1012
+P2 morphology committed prompts=720/1012
+P2 morphology committed prompts=736/1012
+P2 morphology committed prompts=752/1012
+P2 morphology committed prompts=768/1012
+P2 morphology committed prompts=784/1012
+P2 morphology committed prompts=800/1012
+P2 morphology committed prompts=816/1012
+P2 morphology committed prompts=832/1012
+P2 morphology committed prompts=848/1012
+P2 morphology committed prompts=864/1012
+P2 morphology committed prompts=880/1012
+P2 morphology committed prompts=896/1012
+P2 morphology committed prompts=912/1012
+P2 morphology committed prompts=928/1012
+P2 morphology committed prompts=944/1012
+P2 morphology committed prompts=960/1012
+P2 morphology committed prompts=976/1012
+P2 morphology committed prompts=992/1012
+P2 morphology committed prompts=1008/1012
+P2 morphology committed prompts=1012/1012
+P2 complete; rows=46523 exact parity=True
+  SD 8/16 prompt=8 tokens=65 fallback=False elapsed=47.3s
+  SD 16/16 prompt=16 tokens=56 fallback=False elapsed=83.6s
+P3 committed prompts=16/1012
+  SD 8/16 prompt=24 tokens=67 fallback=False elapsed=49.8s
+  SD 16/16 prompt=32 tokens=128 fallback=False elapsed=97.9s
+P3 committed prompts=32/1012
+  SD 8/16 prompt=40 tokens=18 fallback=False elapsed=28.0s
+  SD 16/16 prompt=48 tokens=29 fallback=False elapsed=63.9s
+P3 committed prompts=48/1012
+  SD 8/16 prompt=56 tokens=76 fallback=False elapsed=43.2s
+  SD 16/16 prompt=64 tokens=57 fallback=False elapsed=80.1s
+P3 committed prompts=64/1012
+  SD 8/16 prompt=72 tokens=84 fallback=False elapsed=41.9s
+  SD 16/16 prompt=80 tokens=50 fallback=False elapsed=81.0s
+P3 committed prompts=80/1012
+  SD 8/16 prompt=88 tokens=83 fallback=False elapsed=38.9s
+  SD 16/16 prompt=96 tokens=36 fallback=False elapsed=65.5s
+P3 committed prompts=96/1012
+  SD 8/16 prompt=104 tokens=26 fallback=False elapsed=34.4s
+  SD 16/16 prompt=112 tokens=22 fallback=False elapsed=71.4s
+P3 committed prompts=112/1012
+  SD 8/16 prompt=120 tokens=59 fallback=False elapsed=30.4s
+  SD 16/16 prompt=128 tokens=50 fallback=False elapsed=61.7s
+P3 committed prompts=128/1012
+  SD 8/16 prompt=136 tokens=35 fallback=False elapsed=38.9s
+  SD 16/16 prompt=144 tokens=23 fallback=False elapsed=65.4s
+P3 committed prompts=144/1012
+  SD 8/16 prompt=152 tokens=58 fallback=False elapsed=30.0s
+  SD 16/16 prompt=160 tokens=20 fallback=False elapsed=67.0s
+P3 committed prompts=160/1012
+  SD 8/16 prompt=168 tokens=53 fallback=False elapsed=39.3s
+  SD 16/16 prompt=176 tokens=16 fallback=False elapsed=63.4s
+P3 committed prompts=176/1012
+  SD 8/16 prompt=184 tokens=53 fallback=False elapsed=27.1s
+  SD 16/16 prompt=192 tokens=65 fallback=False elapsed=62.9s
+P3 committed prompts=192/1012
+  SD 8/16 prompt=200 tokens=35 fallback=False elapsed=45.6s
+  SD 16/16 prompt=208 tokens=67 fallback=False elapsed=89.8s
+P3 committed prompts=208/1012
+  SD 8/16 prompt=216 tokens=46 fallback=False elapsed=27.6s
+  SD 16/16 prompt=224 tokens=35 fallback=False elapsed=53.1s
+P3 committed prompts=224/1012
+  SD 8/16 prompt=232 tokens=35 fallback=False elapsed=20.9s
+  SD 16/16 prompt=240 tokens=33 fallback=False elapsed=59.6s
+P3 committed prompts=240/1012
+  SD 8/16 prompt=248 tokens=117 fallback=False elapsed=45.0s
+  SD 16/16 prompt=256 tokens=59 fallback=False elapsed=81.0s
+P3 committed prompts=256/1012
+  SD 8/16 prompt=264 tokens=24 fallback=False elapsed=21.3s
+  SD 16/16 prompt=272 tokens=69 fallback=False elapsed=71.4s
+P3 committed prompts=272/1012
+  SD 8/16 prompt=280 tokens=30 fallback=False elapsed=35.8s
+  SD 16/16 prompt=288 tokens=45 fallback=False elapsed=59.3s
+P3 committed prompts=288/1012
+  SD 8/16 prompt=296 tokens=56 fallback=False elapsed=41.7s
+  SD 16/16 prompt=304 tokens=34 fallback=False elapsed=65.5s
+P3 committed prompts=304/1012
+  SD 8/16 prompt=312 tokens=28 fallback=False elapsed=24.9s
+  SD 16/16 prompt=320 tokens=20 fallback=False elapsed=52.7s
+P3 committed prompts=320/1012
+  SD 8/16 prompt=328 tokens=35 fallback=False elapsed=45.1s
+  SD 16/16 prompt=336 tokens=54 fallback=False elapsed=73.3s
+P3 committed prompts=336/1012
+  SD 8/16 prompt=344 tokens=99 fallback=False elapsed=44.3s
+  SD 16/16 prompt=352 tokens=35 fallback=False elapsed=68.5s
+P3 committed prompts=352/1012
+  SD 8/16 prompt=360 tokens=44 fallback=False elapsed=27.7s
+  SD 16/16 prompt=368 tokens=93 fallback=False elapsed=68.1s
+P3 committed prompts=368/1012
+  SD 8/16 prompt=376 tokens=40 fallback=False elapsed=32.8s
+  SD 16/16 prompt=384 tokens=68 fallback=False elapsed=66.5s
+P3 committed prompts=384/1012
+  SD 8/16 prompt=392 tokens=20 fallback=False elapsed=28.1s
+  SD 16/16 prompt=400 tokens=18 fallback=False elapsed=49.8s
+P3 committed prompts=400/1012
+  SD 8/16 prompt=408 tokens=53 fallback=False elapsed=23.5s
+  SD 16/16 prompt=416 tokens=66 fallback=False elapsed=55.7s
+P3 committed prompts=416/1012
+  SD 8/16 prompt=424 tokens=46 fallback=False elapsed=24.4s
+  SD 16/16 prompt=432 tokens=42 fallback=False elapsed=60.2s
+P3 committed prompts=432/1012
+  SD 8/16 prompt=440 tokens=22 fallback=False elapsed=23.1s
+  SD 16/16 prompt=448 tokens=34 fallback=False elapsed=54.5s
+P3 committed prompts=448/1012
+  SD 8/16 prompt=456 tokens=23 fallback=False elapsed=31.1s
+  SD 16/16 prompt=464 tokens=34 fallback=False elapsed=67.2s
+P3 committed prompts=464/1012
+  SD 8/16 prompt=472 tokens=128 fallback=False elapsed=41.9s
+  SD 16/16 prompt=480 tokens=67 fallback=False elapsed=72.3s
+P3 committed prompts=480/1012
+  SD 8/16 prompt=488 tokens=70 fallback=False elapsed=37.3s
+  SD 16/16 prompt=496 tokens=58 fallback=False elapsed=66.7s
+P3 committed prompts=496/1012
+  SD 8/16 prompt=504 tokens=62 fallback=False elapsed=32.4s
+  SD 16/16 prompt=512 tokens=49 fallback=False elapsed=74.3s
+P3 committed prompts=512/1012
+  SD 8/16 prompt=520 tokens=39 fallback=False elapsed=22.4s
+  SD 16/16 prompt=528 tokens=31 fallback=False elapsed=49.1s
+P3 committed prompts=528/1012
+  SD 8/16 prompt=536 tokens=36 fallback=False elapsed=30.9s
+  SD 16/16 prompt=544 tokens=128 fallback=False elapsed=69.0s
+P3 committed prompts=544/1012
+  SD 8/16 prompt=552 tokens=63 fallback=False elapsed=44.4s
+  SD 16/16 prompt=560 tokens=64 fallback=False elapsed=76.8s
+P3 committed prompts=560/1012
+  SD 8/16 prompt=568 tokens=55 fallback=False elapsed=37.2s
+  SD 16/16 prompt=576 tokens=15 fallback=False elapsed=72.2s
+P3 committed prompts=576/1012
+  SD 8/16 prompt=584 tokens=42 fallback=False elapsed=28.5s
+  SD 16/16 prompt=592 tokens=43 fallback=False elapsed=53.0s
+P3 committed prompts=592/1012
+  SD 8/16 prompt=600 tokens=31 fallback=False elapsed=31.8s
+  SD 16/16 prompt=608 tokens=46 fallback=False elapsed=57.1s
+P3 committed prompts=608/1012
+  SD 8/16 prompt=616 tokens=49 fallback=False elapsed=29.4s
+  SD 16/16 prompt=624 tokens=87 fallback=False elapsed=61.8s
+P3 committed prompts=624/1012
+  SD 8/16 prompt=632 tokens=37 fallback=False elapsed=24.7s
+  SD 16/16 prompt=640 tokens=35 fallback=False elapsed=53.9s
+P3 committed prompts=640/1012
+  SD 8/16 prompt=648 tokens=43 fallback=False elapsed=30.9s
+  SD 16/16 prompt=656 tokens=23 fallback=False elapsed=51.6s
+P3 committed prompts=656/1012
+  SD 8/16 prompt=664 tokens=35 fallback=False elapsed=35.8s
+  SD 16/16 prompt=672 tokens=24 fallback=False elapsed=59.8s
+P3 committed prompts=672/1012
+  SD 8/16 prompt=680 tokens=31 fallback=False elapsed=26.1s
+  SD 16/16 prompt=688 tokens=79 fallback=False elapsed=64.2s
+P3 committed prompts=688/1012
+  SD 8/16 prompt=696 tokens=37 fallback=False elapsed=35.3s
+  SD 16/16 prompt=704 tokens=29 fallback=False elapsed=61.2s
+P3 committed prompts=704/1012
+  SD 8/16 prompt=712 tokens=73 fallback=False elapsed=44.3s
+  SD 16/16 prompt=720 tokens=28 fallback=False elapsed=84.4s
+P3 committed prompts=720/1012
+  SD 8/16 prompt=728 tokens=36 fallback=False elapsed=28.4s
+  SD 16/16 prompt=736 tokens=32 fallback=False elapsed=58.3s
+P3 committed prompts=736/1012
+  SD 8/16 prompt=744 tokens=57 fallback=False elapsed=36.7s
+  SD 16/16 prompt=752 tokens=21 fallback=False elapsed=61.9s
+P3 committed prompts=752/1012
+  SD 8/16 prompt=760 tokens=28 fallback=False elapsed=32.9s
+  SD 16/16 prompt=768 tokens=52 fallback=False elapsed=62.7s
+P3 committed prompts=768/1012
+  SD 8/16 prompt=776 tokens=34 fallback=False elapsed=29.7s
+  SD 16/16 prompt=784 tokens=26 fallback=False elapsed=63.2s
+P3 committed prompts=784/1012
+  SD 8/16 prompt=792 tokens=31 fallback=False elapsed=27.3s
+  SD 16/16 prompt=800 tokens=50 fallback=False elapsed=56.1s
+P3 committed prompts=800/1012
+  SD 8/16 prompt=808 tokens=33 fallback=False elapsed=26.9s
+  SD 16/16 prompt=816 tokens=100 fallback=False elapsed=65.9s
+P3 committed prompts=816/1012
+  SD 8/16 prompt=824 tokens=29 fallback=False elapsed=23.5s
+  SD 16/16 prompt=832 tokens=61 fallback=False elapsed=61.5s
+P3 committed prompts=832/1012
+  SD 8/16 prompt=840 tokens=51 fallback=False elapsed=32.0s
+  SD 16/16 prompt=848 tokens=48 fallback=False elapsed=71.6s
+P3 committed prompts=848/1012
+  SD 8/16 prompt=856 tokens=19 fallback=False elapsed=42.4s
+  SD 16/16 prompt=864 tokens=42 fallback=False elapsed=73.8s
+P3 committed prompts=864/1012
+  SD 8/16 prompt=872 tokens=19 fallback=False elapsed=25.2s
+  SD 16/16 prompt=880 tokens=28 fallback=False elapsed=61.1s
+P3 committed prompts=880/1012
+  SD 8/16 prompt=888 tokens=43 fallback=False elapsed=24.6s
+  SD 16/16 prompt=896 tokens=38 fallback=False elapsed=56.3s
+P3 committed prompts=896/1012
+  SD 8/16 prompt=904 tokens=49 fallback=False elapsed=23.7s
+  SD 16/16 prompt=912 tokens=34 fallback=False elapsed=62.6s
+P3 committed prompts=912/1012
+  SD 8/16 prompt=920 tokens=30 fallback=False elapsed=41.2s
+  SD 16/16 prompt=928 tokens=29 fallback=False elapsed=71.9s
+P3 committed prompts=928/1012
+  SD 8/16 prompt=936 tokens=29 fallback=False elapsed=29.4s
+  SD 16/16 prompt=944 tokens=62 fallback=False elapsed=63.8s
+P3 committed prompts=944/1012
+  SD 8/16 prompt=952 tokens=37 fallback=False elapsed=30.1s
+  SD 16/16 prompt=960 tokens=26 fallback=False elapsed=58.1s
+P3 committed prompts=960/1012
+  SD 8/16 prompt=968 tokens=51 fallback=False elapsed=41.9s
+  SD 16/16 prompt=976 tokens=34 fallback=False elapsed=79.5s
+P3 committed prompts=976/1012
+  SD 8/16 prompt=984 tokens=61 fallback=False elapsed=26.4s
+  SD 16/16 prompt=992 tokens=40 fallback=False elapsed=60.6s
+P3 committed prompts=992/1012
+  SD 8/16 prompt=1000 tokens=55 fallback=False elapsed=29.8s
+  SD 16/16 prompt=1008 tokens=36 fallback=False elapsed=65.0s
+P3 committed prompts=1008/1012
+  SD 4/4 prompt=1012 tokens=37 fallback=False elapsed=11.5s
+P3 committed prompts=1012/1012
+P3 teacher forcing committed prompts=16/1012
+P3 teacher forcing committed prompts=32/1012
+P3 teacher forcing committed prompts=48/1012
+P3 teacher forcing committed prompts=64/1012
+P3 teacher forcing committed prompts=80/1012
+P3 teacher forcing committed prompts=96/1012
+P3 teacher forcing committed prompts=112/1012
+P3 teacher forcing committed prompts=128/1012
+P3 teacher forcing committed prompts=144/1012
+P3 teacher forcing committed prompts=160/1012
+P3 teacher forcing committed prompts=176/1012
+P3 teacher forcing committed prompts=192/1012
+P3 teacher forcing committed prompts=208/1012
+P3 teacher forcing committed prompts=224/1012
+P3 teacher forcing committed prompts=240/1012
+P3 teacher forcing committed prompts=256/1012
+P3 teacher forcing committed prompts=272/1012
+P3 teacher forcing committed prompts=288/1012
+P3 teacher forcing committed prompts=304/1012
+P3 teacher forcing committed prompts=320/1012
+P3 teacher forcing committed prompts=336/1012
+P3 teacher forcing committed prompts=352/1012
+P3 teacher forcing committed prompts=368/1012
+P3 teacher forcing committed prompts=384/1012
+P3 teacher forcing committed prompts=400/1012
+P3 teacher forcing committed prompts=416/1012
+P3 teacher forcing committed prompts=432/1012
+P3 teacher forcing committed prompts=448/1012
+P3 teacher forcing committed prompts=464/1012
+P3 teacher forcing committed prompts=480/1012
+P3 teacher forcing committed prompts=496/1012
+P3 teacher forcing committed prompts=512/1012
+P3 teacher forcing committed prompts=528/1012
+P3 teacher forcing committed prompts=544/1012
+P3 teacher forcing committed prompts=560/1012
+P3 teacher forcing committed prompts=576/1012
+P3 teacher forcing committed prompts=592/1012
+P3 teacher forcing committed prompts=608/1012
+P3 teacher forcing committed prompts=624/1012
+P3 teacher forcing committed prompts=640/1012
+P3 teacher forcing committed prompts=656/1012
+P3 teacher forcing committed prompts=672/1012
+P3 teacher forcing committed prompts=688/1012
+P3 teacher forcing committed prompts=704/1012
+P3 teacher forcing committed prompts=720/1012
+P3 teacher forcing committed prompts=736/1012
+P3 teacher forcing committed prompts=752/1012
+P3 teacher forcing committed prompts=768/1012
+P3 teacher forcing committed prompts=784/1012
+P3 teacher forcing committed prompts=800/1012
+P3 teacher forcing committed prompts=816/1012
+P3 teacher forcing committed prompts=832/1012
+P3 teacher forcing committed prompts=848/1012
+P3 teacher forcing committed prompts=864/1012
+P3 teacher forcing committed prompts=880/1012
+P3 teacher forcing committed prompts=896/1012
+P3 teacher forcing committed prompts=912/1012
+P3 teacher forcing committed prompts=928/1012
+P3 teacher forcing committed prompts=944/1012
+P3 teacher forcing committed prompts=960/1012
+P3 teacher forcing committed prompts=976/1012
+P3 teacher forcing committed prompts=992/1012
+P3 teacher forcing committed prompts=1008/1012
+P3 teacher forcing committed prompts=1012/1012
+P3 morphology committed prompts=16/1012
+P3 morphology committed prompts=32/1012
+P3 morphology committed prompts=48/1012
+P3 morphology committed prompts=64/1012
+P3 morphology committed prompts=80/1012
+P3 morphology committed prompts=96/1012
+P3 morphology committed prompts=112/1012
+P3 morphology committed prompts=128/1012
+P3 morphology committed prompts=144/1012
+P3 morphology committed prompts=160/1012
+P3 morphology committed prompts=176/1012
+P3 morphology committed prompts=192/1012
+P3 morphology committed prompts=208/1012
+P3 morphology committed prompts=224/1012
+P3 morphology committed prompts=240/1012
+P3 morphology committed prompts=256/1012
+P3 morphology committed prompts=272/1012
+P3 morphology committed prompts=288/1012
+P3 morphology committed prompts=304/1012
+P3 morphology committed prompts=320/1012
+P3 morphology committed prompts=336/1012
+P3 morphology committed prompts=352/1012
+P3 morphology committed prompts=368/1012
+P3 morphology committed prompts=384/1012
+P3 morphology committed prompts=400/1012
+P3 morphology committed prompts=416/1012
+P3 morphology committed prompts=432/1012
+P3 morphology committed prompts=448/1012
+P3 morphology committed prompts=464/1012
+P3 morphology committed prompts=480/1012
+P3 morphology committed prompts=496/1012
+P3 morphology committed prompts=512/1012
+P3 morphology committed prompts=528/1012
+P3 morphology committed prompts=544/1012
+P3 morphology committed prompts=560/1012
+P3 morphology committed prompts=576/1012
+P3 morphology committed prompts=592/1012
+P3 morphology committed prompts=608/1012
+P3 morphology committed prompts=624/1012
+P3 morphology committed prompts=640/1012
+P3 morphology committed prompts=656/1012
+P3 morphology committed prompts=672/1012
+P3 morphology committed prompts=688/1012
+P3 morphology committed prompts=704/1012
+P3 morphology committed prompts=720/1012
+P3 morphology committed prompts=736/1012
+P3 morphology committed prompts=752/1012
+P3 morphology committed prompts=768/1012
+P3 morphology committed prompts=784/1012
+P3 morphology committed prompts=800/1012
+P3 morphology committed prompts=816/1012
+P3 morphology committed prompts=832/1012
+P3 morphology committed prompts=848/1012
+P3 morphology committed prompts=864/1012
+P3 morphology committed prompts=880/1012
+P3 morphology committed prompts=896/1012
+P3 morphology committed prompts=912/1012
+P3 morphology committed prompts=928/1012
+P3 morphology committed prompts=944/1012
+P3 morphology committed prompts=960/1012
+P3 morphology committed prompts=976/1012
+P3 morphology committed prompts=992/1012
+P3 morphology committed prompts=1008/1012
+P3 morphology committed prompts=1012/1012
+P3 complete; rows=46523 exact parity=True
+FLORES SD, teacher-forced scoring, and H2 morphology stages completed.

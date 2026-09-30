@@ -1,0 +1,30 @@
+captured_at_utc: 2026-09-29T14:35:03.267212+00:00
+nvidia_smi_L_output: GPU 0: NVIDIA A100-SXM4-80GB (UUID: GPU-27923608-cc6c-c435-7749-ce40279def74)
+GPU 1: NVIDIA A100-SXM4-80GB (UUID: GPU-63b0791c-50f8-402d-bd24-b1cd053c4bfc)
+GPU 2: NVIDIA A100-SXM4-80GB (UUID: GPU-47aca084-3f4d-01f5-4ad0-b67cfbcde54d)
+GPU 3: NVIDIA A100-SXM4-80GB (UUID: GPU-51e0dbfc-062c-3371-4d23-f5795c8f4ba5)
+GPU 4: NVIDIA A100-SXM4-80GB (UUID: GPU-02b89280-20c6-087c-2b7c-0a24db5d86f5)
+GPU 5: NVIDIA A100-SXM4-80GB (UUID: GPU-88b886b0-71f1-c3a9-eb82-3f21b6db00b4)
+GPU 6: NVIDIA A100-SXM4-80GB (UUID: GPU-d37350cd-d939-bd98-faea-d961b1899464)
+GPU 7: NVIDIA A100-SXM4-80GB (UUID: GPU-341ddf4d-bb4e-d40e-a484-9d8ea889936e)
+nvidia_smi_physical_gpu3: NVIDIA A100-SXM4-80GB, 580.105.08, 81920 MiB, 23555 MiB, 57599 MiB
+physical_gpu_index: 3
+GPU_name: NVIDIA A100-SXM4-80GB
+driver_version: 580.105.08
+nvidia_smi_cuda_version: 13.0
+torch_cuda_runtime_version: 12.8
+torch_version: 2.11.0+cu128
+transformers_version: 5.17.0
+attention_backend: sdpa
+dtype: torch.float16
+CUDA_VISIBLE_DEVICES: 3
+framework_local_device: cuda:0
+visible_device_count: 1
+device_total_memory_bytes: 85094825984
+tf32_matmul: True
+tf32_cudnn: True
+PYTORCH_CUDA_ALLOC_CONF: expandable_segments:True
+TOKENIZERS_PARALLELISM: true
+pid: 3576813
+python: 3.13.13 | packaged by Anaconda, Inc. | (main, Apr 14 2026, 06:19:41) [GCC 14.3.0]
+platform: Linux-6.17.0-1011-oracle-x86_64-with-glibc2.39

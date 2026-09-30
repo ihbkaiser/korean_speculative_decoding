@@ -1,0 +1,37 @@
+{
+  "taxonomy_version": "H4-particle-types-v1",
+  "particle_categories": {
+    "CASE_SUBJECT": [
+      "JKS"
+    ],
+    "CASE_OBJECT": [
+      "JKO"
+    ],
+    "CASE_ADVERBIAL": [
+      "JKB"
+    ],
+    "CASE_GENITIVE": [
+      "JKG"
+    ],
+    "OTHER_CASE": [
+      "JKC",
+      "JKV",
+      "JKQ"
+    ],
+    "AUXILIARY_PARTICLE": [
+      "JX"
+    ],
+    "CONJUNCTIVE_PARTICLE": [
+      "JC"
+    ]
+  },
+  "additional_tags": "H3-mapped PARTICLE tags not in the prespecified groups are OTHER_PARTICLE; unrecognized tags are UNMAPPED_PARTICLE and retained in audits.",
+  "nominal_tags": [
+    "NNB",
+    "NNG",
+    "NNP",
+    "NP",
+    "NR"
+  ],
+  "source": "H3 tag_to_coarse_group from saved h3_pos_mapping.json; exact particle fine POS retained."
+}

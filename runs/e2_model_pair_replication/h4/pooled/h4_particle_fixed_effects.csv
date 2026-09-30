@@ -1,0 +1,7 @@
+pair,specification,supported_surfaces,support_rule,n_tokens,n_prompts,converged,rank_deficient,fit_error,estimable
+P1,surface_FE,,">=100 total, >=30 CROSS, >=30 prompts",0,0,False,,no particle surface met the prespecified support threshold,
+P1,surface_interaction,,">=100 total, >=30 CROSS, >=30 prompts",0,0,False,,no particle surface met the prespecified support threshold,
+P2,surface_FE,,">=100 total, >=30 CROSS, >=30 prompts",0,0,False,,no particle surface met the prespecified support threshold,
+P2,surface_interaction,,">=100 total, >=30 CROSS, >=30 prompts",0,0,False,,no particle surface met the prespecified support threshold,
+P3,surface_FE,는,">=100 total, >=30 CROSS, >=30 prompts",1546,192,True,1.0,,False
+P3,surface_interaction,는,">=100 total, >=30 CROSS, >=30 prompts",1546,192,True,1.0,,False

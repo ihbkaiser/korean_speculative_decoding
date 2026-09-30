@@ -1,0 +1,183 @@
+{
+  "primary_model": {
+    "formula": "sd_rejected ~ C(morph_class, Treatment(reference='WITHIN_SPLIT')) * C(morph_environment, Treatment(reference='LEXICAL_TO_LEXICAL')) + C(fragmentation_bin, Treatment(reference='2')) + relative_position + first_token + last_token + proposal_slot + generation_position + token_char_length + eojeol_char_length + draft_entropy + target_entropy + bs(log_token_count, df=4, degree=3, include_intercept=False)",
+    "n_tokens": 72653,
+    "n_prompts": 997,
+    "references": {
+      "morph_environment": "LEXICAL_TO_LEXICAL",
+      "fragmentation_bin": "2"
+    },
+    "converged": true,
+    "rank": 29,
+    "n_columns": 29,
+    "max_abs_coefficient": 1.744646263299964,
+    "warnings": [],
+    "fit_error": null,
+    "optimizer_attempts": [
+      {
+        "method": "newton",
+        "converged": true,
+        "warnflag": 0,
+        "iterations": 8,
+        "objective": 0.26033676432807906,
+        "score_norm": 9.75098231617919e-16
+      }
+    ],
+    "condition_number": 6684.605660969073,
+    "extreme_coefficient_warning": false,
+    "rank_deficient": false,
+    "cluster_count": 997
+  },
+  "primary_interaction_test": {
+    "wald_chi2": 47.81038273719922,
+    "wald_df": 4,
+    "wald_p": 1.0337063471371875e-09,
+    "wald_terms": [
+      "C(morph_class, Treatment(reference='WITHIN_SPLIT'))[T.CROSS_MORPHEME]:C(morph_environment, Treatment(reference='LEXICAL_TO_LEXICAL'))[T.NOMINAL_TO_PARTICLE]",
+      "C(morph_class, Treatment(reference='WITHIN_SPLIT'))[T.CROSS_MORPHEME]:C(morph_environment, Treatment(reference='LEXICAL_TO_LEXICAL'))[T.PREDICATE_TO_ENDING]",
+      "C(morph_class, Treatment(reference='WITHIN_SPLIT'))[T.CROSS_MORPHEME]:C(morph_environment, Treatment(reference='LEXICAL_TO_LEXICAL'))[T.ENDING_TO_ENDING]",
+      "C(morph_class, Treatment(reference='WITHIN_SPLIT'))[T.CROSS_MORPHEME]:C(morph_environment, Treatment(reference='LEXICAL_TO_LEXICAL'))[T.OTHER]"
+    ]
+  },
+  "h3a_model": {
+    "formula": "sd_rejected ~ C(boundary_type, Treatment(reference='OTHER')) + C(fragmentation_bin, Treatment(reference='2')) + relative_position + first_token + last_token + proposal_slot + generation_position + token_char_length + eojeol_char_length + draft_entropy + target_entropy + bs(log_token_count, df=4, degree=3, include_intercept=False)",
+    "n_tokens": 3158,
+    "n_prompts": 667,
+    "references": {
+      "boundary_type": "OTHER",
+      "fragmentation_bin": "2"
+    },
+    "converged": true,
+    "rank": 24,
+    "n_columns": 24,
+    "max_abs_coefficient": 3.626658012667916,
+    "warnings": [],
+    "fit_error": null,
+    "optimizer_attempts": [
+      {
+        "method": "newton",
+        "converged": true,
+        "warnflag": 0,
+        "iterations": 7,
+        "objective": 0.3555725097506701,
+        "score_norm": 5.80220781096641e-16
+      }
+    ],
+    "condition_number": 4042.5303132083604,
+    "extreme_coefficient_warning": false,
+    "rank_deficient": false,
+    "cluster_count": 667
+  },
+  "h3a_omnibus": {
+    "wald_chi2": 8.436909586479072,
+    "wald_df": 4,
+    "wald_p": 0.07682282735659157,
+    "wald_terms": [
+      "C(boundary_type, Treatment(reference='OTHER'))[T.NOMINAL_TO_PARTICLE]",
+      "C(boundary_type, Treatment(reference='OTHER'))[T.PREDICATE_TO_ENDING]",
+      "C(boundary_type, Treatment(reference='OTHER'))[T.ENDING_TO_ENDING]",
+      "C(boundary_type, Treatment(reference='OTHER'))[T.LEXICAL_TO_LEXICAL]"
+    ]
+  },
+  "sensitivity_model": {
+    "formula": "sd_rejected ~ C(morph_class, Treatment(reference='WITHIN_SPLIT')) + C(morph_environment, Treatment(reference='NOMINAL_TO_PARTICLE')) + h3_cross_env_PREDICATE_TO_ENDING + h3_cross_env_LEXICAL_TO_LEXICAL + h3_cross_env_OTHER + C(fragmentation_bin, Treatment(reference='2')) + relative_position + first_token + last_token + proposal_slot + generation_position + token_char_length + eojeol_char_length + draft_entropy + target_entropy + bs(log_token_count, df=4, degree=3, include_intercept=False)",
+    "n_tokens": 54942,
+    "n_prompts": 996,
+    "references": {
+      "morph_environment": "NOMINAL_TO_PARTICLE",
+      "fragmentation_bin": "2"
+    },
+    "converged": true,
+    "rank": 28,
+    "n_columns": 28,
+    "max_abs_coefficient": 2.0480839693675317,
+    "warnings": [],
+    "fit_error": null,
+    "optimizer_attempts": [
+      {
+        "method": "newton",
+        "converged": true,
+        "warnflag": 0,
+        "iterations": 8,
+        "objective": 0.2501978874584007,
+        "score_norm": 5.622198835378236e-16
+      }
+    ],
+    "condition_number": 5756.930138229144,
+    "extreme_coefficient_warning": false,
+    "rank_deficient": false,
+    "cluster_count": 996,
+    "nonestimable_interaction_environments": [
+      "ENDING_TO_ENDING"
+    ],
+    "all_sensitivity_rows_retained_except_multi_env": true
+  },
+  "sensitivity_interaction_test": {
+    "wald_chi2": 13.453596862959117,
+    "wald_df": 3,
+    "wald_p": 0.003751634306764745,
+    "wald_terms": [
+      "h3_cross_env_PREDICATE_TO_ENDING",
+      "h3_cross_env_LEXICAL_TO_LEXICAL",
+      "h3_cross_env_OTHER"
+    ]
+  },
+  "multiboundary_model": {
+    "formula": "sd_rejected ~ C(boundary_count_band, Treatment(reference='1')) + C(fragmentation_bin, Treatment(reference='2')) + relative_position + first_token + last_token + proposal_slot + generation_position + token_char_length + eojeol_char_length + draft_entropy + target_entropy + bs(log_token_count, df=4, degree=3, include_intercept=False)",
+    "n_tokens": 3762,
+    "n_prompts": 730,
+    "references": {
+      "boundary_count_band": "1",
+      "fragmentation_bin": "2"
+    },
+    "converged": true,
+    "rank": 21,
+    "n_columns": 21,
+    "max_abs_coefficient": 3.0550823602374693,
+    "warnings": [],
+    "fit_error": null,
+    "optimizer_attempts": [
+      {
+        "method": "newton",
+        "converged": true,
+        "warnflag": 0,
+        "iterations": 7,
+        "objective": 0.35402881195359975,
+        "score_norm": 2.1753611665328356e-16
+      }
+    ],
+    "condition_number": 4312.400750682701,
+    "extreme_coefficient_warning": false,
+    "rank_deficient": false,
+    "cluster_count": 730
+  },
+  "fine_pos_model": {
+    "formula": "sd_rejected ~ C(crossed_fine_pos_sequence, Treatment(reference='XSV→EC')) + C(fragmentation_bin, Treatment(reference='2')) + relative_position + first_token + last_token + proposal_slot + generation_position + token_char_length + eojeol_char_length + draft_entropy + target_entropy + bs(log_token_count, df=4, degree=3, include_intercept=False)",
+    "n_tokens": 1918,
+    "n_prompts": 552,
+    "references": {
+      "crossed_fine_pos_sequence": "XSV→EC",
+      "fragmentation_bin": "2"
+    },
+    "converged": true,
+    "rank": 26,
+    "n_columns": 26,
+    "max_abs_coefficient": 11.896033789415128,
+    "warnings": [],
+    "fit_error": null,
+    "optimizer_attempts": [
+      {
+        "method": "newton",
+        "converged": true,
+        "warnflag": 0,
+        "iterations": 8,
+        "objective": 0.32084382446251714,
+        "score_norm": 6.394733280331e-16
+      }
+    ],
+    "condition_number": 6080.95887247136,
+    "extreme_coefficient_warning": true,
+    "rank_deficient": false,
+    "cluster_count": 552
+  }
+}

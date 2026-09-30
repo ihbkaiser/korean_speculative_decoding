@@ -1,0 +1,96 @@
+audit_group,pair,prompt_id,generation_pos,context_excerpt,context_source,eojeol,kiwi_segmentation,tokenization,highlighted_token,nominal_surface,nominal_pos,particle_surface,particle_pos,particle_category,geometry_class,draft_entropy,target_entropy,token_frequency,sd_rejected,seed
+REJECTED_CROSS,P1,339,84,"다. 선천적으로 발달이 가능한 범위는 발달의 기본적인 기능과 능⟦력을⟧ 나타내며, 이 범위는 생물학적 기초에 의해 결정된다. 환경 풍",saved target continuation,능력을,능력/NNG | 을/JKO, 능 | 능 | ⟦력을⟧,⟦력을⟧,능력,NNG,을,JKO,CASE_OBJECT,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,0.6695835590362549,0.6994974613189697,526,1,20260929
+REJECTED_CROSS,P1,844,30,"야구는 19세기 미국에서 시작되었으며, 1845년에 처음으로 경⟦기를⟧ 치렀다. 야구는 1876년에 미국에서 처음으로 정규 경기 규정",saved target continuation,경기를,경기/NNG | 를/JKO, 경 | ⟦기를⟧,⟦기를⟧,경기,NNG,를,JKO,CASE_OBJECT,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,2.1564276218414307,1.3328884840011597,897,1,20260929
+REJECTED_CROSS,P1,516,27,덜란드의 1955년 총선에서 약 100만명의 유권⟦자가⟧ 참여하여 1955년 총선에서 약 100만명의 유권자가 참여하여,saved target continuation,유권자가,유권자/NNG | 가/JKS, 유 | 권 | ⟦자가⟧,⟦자가⟧,유권자,NNG,가,JKS,CASE_SUBJECT,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,1.1654974222183228,0.8626348972320557,704,1,20260929
+REJECTED_CROSS,P1,212,57,"는 전하를 가지지 않기 때문에, 원자는 전기적으로 중립이다. 원⟦자는⟧ 전하를 가지지 않기 때문에, 원자는 전기적으로 중립이다. 원자",saved target continuation,원자는,원자/NNG | 는/JX, 원 | ⟦자는⟧,⟦자는⟧,원자,NNG,는,JX,AUXILIARY_PARTICLE,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,1.3104636669158936,1.3470289707183838,477,1,20260929
+REJECTED_CROSS,P1,635,7, 103호 비행⟦기가⟧ 소련 우주선 11번과 충돌해 소련 우주선 11번이 붕괴하고 대,saved target continuation,비행기가,비행기/NNG | 가/JKS, 비 | 행 | ⟦기가⟧,⟦기가⟧,비행기,NNG,가,JKS,CASE_SUBJECT,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,1.2594279050827026,1.1935491561889648,567,1,20260929
+REJECTED_CROSS,P1,345,18,". 리보솜은 세포의 세포질 내에서 단백질 합⟦성을⟧ 담당하며, 세포의 내부에서 단백질 합성을 담당하는 세포소기관으",saved target continuation,합성을,합성/NNG | 을/JKO, 합 | 합 | ⟦성을⟧,⟦성을⟧,합성,NNG,을,JKO,CASE_OBJECT,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,0.7059577703475952,0.7319815754890442,699,1,20260929
+REJECTED_CROSS,P1,178,29," 운영자와 같은 역할을 하는데, 시삽이 운영자와 다른 점은 운영⟦자가⟧ 사용자에게 직접 서비스를 제공하는 반면, 시삽은 사용자에게 직",saved target continuation,운영자가,운영자/NNG | 가/JKS, 운영 | ⟦자가⟧,⟦자가⟧,운영자,NNG,가,JKS,CASE_SUBJECT,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,1.9730545282363887,1.552626132965088,704,1,20260929
+REJECTED_CROSS,P2,385,21," 글꼴: 글자들의 외곽선을 점으로 구성하여 표시한다. 크⟦기를⟧ 조절할 수 있지만, 외곽선의 점이 많아 처리 속도가 느리다.
+",saved target continuation,크기를,크기/NNG | 를/JKO, 크 | ⟦기를⟧,⟦기를⟧,크기,NNG,를,JKO,CASE_OBJECT,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,1.3463202714920044,1.538281798362732,897,1,20260929
+REJECTED_CROSS,P2,209,32,"원자핵이 양성자와 중성자로 이루어져 있지만, 원자핵 외부에는 전⟦자가⟧ 존재하지 않아서 원자량이 0이다. 헬륨은 원자핵이 양성자와 중",saved target continuation,전자가,전자/NNG | 가/JKS, 전 | ⟦자가⟧,⟦자가⟧,전자,NNG,가,JKS,CASE_SUBJECT,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,1.8231756687164309,0.518485426902771,704,1,20260929
+REJECTED_CROSS,P2,427,18,. rRNA는 세포질 내의 리보솜에서 단백질 합⟦성을⟧ 촉진하는 역할을 한다. rRNA는 세포질 내의 리보솜에서 단백,saved target continuation,합성을,합성/NNG | 을/JKO, 합 | 합 | ⟦성을⟧,⟦성을⟧,합성,NNG,을,JKO,CASE_OBJECT,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,0.738762617111206,0.6777471303939819,699,1,20260929
+REJECTED_CROSS,P2,312,13, 패턴을 만들어내는 게임으로서의 매⟦력을⟧ 보여주었다. 이 게임은 1970년대 초반부터 1980년대 초반,saved target continuation,매력을,매력/NNG | 을/JKO, 매 | ⟦력을⟧,⟦력을⟧,매력,NNG,을,JKO,CASE_OBJECT,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,0.788365364074707,0.6464658379554749,526,1,20260929
+REJECTED_CROSS,P2,174,50," 는 각각 x, y, z축의 단위벡터이다.
+
+선형대수학에서 스칼⟦라는⟧ 체의 원소이다. 예를 들어, 실수체에서 스칼라는 실수이다.
+
+",saved target continuation,스칼라는,스칼라/NNP | 는/JX, 스 | 칼 | ⟦라는⟧,⟦라는⟧,스칼라,NNP,는,JX,AUXILIARY_PARTICLE,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,0.6965444087982178,0.7429206371307373,1087,1,20260929
+REJECTED_CROSS,P3,407,38,. 1911년 10월 10일에   민국 임시정부가  립되자  성⟦수가⟧   민국 임시정부의  육부장관으로 임명되어   민국 임시정부 ,reconstructed from exact saved H2 token spans,김성수가,김성수/NNP | 가/JKS, 김 | 성 | ⟦수가⟧,⟦수가⟧,김성수,NNP,가,JKS,CASE_SUBJECT,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,0.8612504601478577,0.7624737024307251,503,1,20260929
+REJECTED_CROSS,P3,165,45,"  파리의  전체는 12개의 염색체로   되어   ,  전체  ⟦기가⟧ 120Mb로   적  아서  전체  석에  합하다.  파리의 ",reconstructed from exact saved H2 token spans,크기가,크기/NNG | 가/JKS, 크 | ⟦기가⟧,⟦기가⟧,크기,NNG,가,JKS,CASE_SUBJECT,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,0.853704571723938,1.4609274864196775,567,1,20260929
+REJECTED_CROSS,P3,879,86,",   에서    째로    제력과   에서    째로   군사⟦력을⟧  유하고   .   은   에서       구를  유하고   ",reconstructed from exact saved H2 token spans,군사력을,군사력/NNG | 을/JKO, 군 | 군 | 사 | ⟦력을⟧,⟦력을⟧,군사력,NNG,을,JKO,CASE_OBJECT,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,0.4773902893066406,0.7293444275856018,526,1,20260929
+REJECTED_CROSS,P3,195,16,"이     합족   의      가   한다   이  ⟦리는⟧      가   한다는  만을  장하지만,      가  일하",reconstructed from exact saved H2 token spans,공리는,공리/NNG | 는/JX, 공 | ⟦리는⟧,⟦리는⟧,공리,NNG,는,JX,AUXILIARY_PARTICLE,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,0.6891001462936401,1.054060935974121,643,1,20260929
+REJECTED_CROSS,P3,342,4,에     전⟦자의⟧   를  전자   라고   .  전자는    의  조  위인 ,reconstructed from exact saved H2 token spans,유전자의,유전자/NNG | 의/JKG, 유 | 전 | ⟦자의⟧,⟦자의⟧,유전자,NNG,의,JKG,CASE_GENITIVE,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,1.905528545379639,1.3171117305755615,611,1,20260929
+REJECTED_CROSS,P3,437,77,"  태계의  강을   하는 데      할을   .   ,  고⟦기는⟧   의 식량  급원으로도      할을  며,  업과  산물 ",reconstructed from exact saved H2 token spans,물고기는,물고기/NNG | 는/JX, 물 | 고 | ⟦기는⟧,⟦기는⟧,물고기,NNG,는,JX,AUXILIARY_PARTICLE,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,1.0403292179107666,0.1515749543905258,511,1,20260929
+REJECTED_CROSS,P3,429,32,"  자의  유  운동량임을  여준다.  핀은  자의  질로,  ⟦자의⟧  량과  하와는 달리  자의  동과  관하다.  핀은  자의 ",reconstructed from exact saved H2 token spans,입자의,입자/NNG | 의/JKG, 입 | ⟦자의⟧,⟦자의⟧,입자,NNG,의,JKG,CASE_GENITIVE,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,1.386444091796875,1.2180719375610352,611,1,20260929
+REJECTED_CROSS,P3,860,118,"""이라는  후  대가 출생하면서  제가  성화되었습니다.    ⟦기는⟧  2차     전   의  ",reconstructed from exact saved H2 token spans,시기는,시기/NNG | 는/JX, 시 | ⟦기는⟧,⟦기는⟧,시기,NNG,는,JX,AUXILIARY_PARTICLE,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,1.39443039894104,0.8134456872940063,511,1,20260929
+ACCEPTED_CROSS,P1,151,43,계급이다. 노동조합은 노동자들이 권리를 쟁취하기 위해 만든 노동⟦자의⟧ 사회단체를 말한다. 노동조합은 노동자들이 권리를 쟁취하기 위해,saved target continuation,노동자의,노동자/NNG | 의/JKG, 노 | 동 | ⟦자의⟧,⟦자의⟧,노동자,NNG,의,JKG,CASE_GENITIVE,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,1.3257843255996704,0.8329883813858032,611,0,20260929
+ACCEPTED_CROSS,P1,151,116,위해 만든 노동자의 사회단체를 말한다. 노동조합은 노동자들이 권⟦리를⟧ 쟁취하기 위해 만든 노동자의,saved target continuation,권리를,권리/NNG | 를/JKO, 권 | ⟦리를⟧,⟦리를⟧,권리,NNG,를,JKO,CASE_OBJECT,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,0.011073007248342,0.0008236418943852,593,0,20260929
+ACCEPTED_CROSS,P1,342,81,을 때는 다중 유전자(multiple gene)라고 한다. 유전⟦자는⟧ 단일 유전자일 때는 단일 유전자 유형(single gene t,saved target continuation,유전자는,유전자/NNG | 는/JX, 유 | 전 | ⟦자는⟧,⟦자는⟧,유전자,NNG,는,JX,AUXILIARY_PARTICLE,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,0.8342732191085815,0.8698707222938538,477,0,20260929
+ACCEPTED_CROSS,P1,260,69,하며 명예와는 미래에서 잊히지 않는 과거의 사실을 의미한다. 역⟦사는⟧ 시간의 흐름으로써 어떤 사람이 겪은 일에서 중요한 일들 중 후,saved target continuation,역사는,역사/NNG | 는/JX, 역 | ⟦사는⟧,⟦사는⟧,역사,NNG,는,JX,AUXILIARY_PARTICLE,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,0.2494566887617111,0.4933499097824096,243,0,20260929
+ACCEPTED_CROSS,P1,902,59,"전역학은 물체의 운동을 설명하는 데 사용되는 기본적인 법칙과 원⟦리를⟧ 포함한다. 이 법칙들은 물체의 질량, 가속도, 힘과 같은 개념",saved target continuation,원리를,원리/NNG | 를/JKO, 원 | ⟦리를⟧,⟦리를⟧,원리,NNG,를,JKO,CASE_OBJECT,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,0.9192289113998412,1.076713800430298,593,0,20260929
+ACCEPTED_CROSS,P1,111,68,"가 중간자의 존재를 실험적으로 증명한 후, 물리학자들은 이 중간⟦자의⟧ 존재를 입증했다. 이는 1949년에 물리학자 헨리 헤리엇 헤이",saved target continuation,중간자의,중간자/NNG | 의/JKG, 중 | 간 | ⟦자의⟧,⟦자의⟧,중간자,NNG,의,JKG,CASE_GENITIVE,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,1.4923040866851809,1.7232298851013184,611,0,20260929
+ACCEPTED_CROSS,P1,865,44,"는 색 표시계를 말한다.
+
+색 공간의 특징 
+색 공간은 색의 특⟦성을⟧ 나타내는 3차원 좌표계이다. 색 공간에서 색은 3개의 좌표로 ",saved target continuation,특성을,특성/NNG | 을/JKO, 특 | ⟦성을⟧,⟦성을⟧,특성,NNG,을,JKO,CASE_OBJECT,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,1.5188305377960205,1.4160239696502686,699,0,20260929
+ACCEPTED_CROSS,P2,940,107,"4년 (2000년 5월 30일 ~ 2004년 5월 29일)
+
+국⟦회의⟧ 구성
+
+의장·부의장
+
+정당별 구성
+
+상임위원회
+
+의석",saved target continuation,국회의,국회/NNG | 의/JKG,국 | ⟦회의⟧,⟦회의⟧,국회,NNG,의,JKG,CASE_GENITIVE,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,0.0320645608007907,0.0083179902285337,815,0,20260929
+ACCEPTED_CROSS,P2,134,44,신언어의 일종으로 컴퓨터 문서상에서 쓰이는 한국어의 변칙적인 표⟦기를⟧ 통칭하는 용어이다. 2000년대 초 정보화의 발달과 PC통신과,saved target continuation,표기를,표기/NNG | 를/JKO, 표 | ⟦기를⟧,⟦기를⟧,표기,NNG,를,JKO,CASE_OBJECT,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,0.1037624478340148,0.2892401814460754,897,0,20260929
+ACCEPTED_CROSS,P2,326,32,"약자이다.
+ f는 물리학에서 힘의 약자이다.
+ f는 화학에서 분⟦자의⟧ 약자이다.
+ f는 컴퓨터에서 파일의 약자이다.
+ f는 컴퓨터에",saved target continuation,분자의,분자/NNG | 의/JKG, 분 | ⟦자의⟧,⟦자의⟧,분자,NNG,의,JKG,CASE_GENITIVE,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,1.0980465412139893,0.9922246932983398,611,0,20260929
+ACCEPTED_CROSS,P2,382,19,"에서는 10월 9일을 한글날로 지정하여 태극⟦기를⟧ 게양하며, 법정 공휴일로 지정되어 있다. 대한민국과 조선민주주",saved target continuation,태극기를,태극기/NNG | 를/JKO, 태 | 태 | 극 | ⟦기를⟧,⟦기를⟧,태극기,NNG,를,JKO,CASE_OBJECT,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,0.3683331906795501,0.8307950496673584,897,0,20260929
+ACCEPTED_CROSS,P2,927,48,"컵누들이 인기를 끌게 되었다. 이후 1972년 1월 1일, 컵누⟦들이⟧ 일본 라면시장에 등장하게 되었다. 이후 1972년 1월 1일,",saved target continuation,컵누들이,컵누들/NNP | 이/JKS, 컵 | 컵 | 누 | ⟦들이⟧,⟦들이⟧,컵누들,NNP,이,JKS,CASE_SUBJECT,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,2.857350826263428,2.6259684562683105,1896,0,20260929
+ACCEPTED_CROSS,P2,362,85,"어는 기업의 생산성을 높이고, 생산성의 증대를 통해 기업의 경쟁⟦력을⟧ 높인다.
+협업 소프트웨어는 기업의 생산성을 높이는 데 중요한 ",saved target continuation,경쟁력을,경쟁력/NNG | 을/JKO, 경 | 쟁 | ⟦력을⟧,⟦력을⟧,경쟁력,NNG,을,JKO,CASE_OBJECT,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,0.5462613105773926,0.4826684892177582,526,0,20260929
+ACCEPTED_CROSS,P2,209,76,"원자핵이 양성자와 중성자로 이루어져 있지만, 원자핵 외부에는 전⟦자가⟧ 존재하지 않아서 원자량이 0이다. 헬륨은 원자핵이 양성자와 중",saved target continuation,전자가,전자/NNG | 가/JKS, 전 | ⟦자가⟧,⟦자가⟧,전자,NNG,가,JKS,CASE_SUBJECT,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,0.0166342593729496,0.0231284666806459,704,0,20260929
+ACCEPTED_CROSS,P2,407,109,였다. 1919년 3월 1일에 대한민국 임시정부가 청산되자 김성⟦수가⟧ 대한민국 임시정부 교육부장관으로 재직하던,saved target continuation,김성수가,김성수/NNP | 가/JKS, 김 | 성 | ⟦수가⟧,⟦수가⟧,김성수,NNP,가,JKS,CASE_SUBJECT,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,2.092179536819458,0.5420931577682495,503,0,20260929
+ACCEPTED_CROSS,P3,165,116,"  파리의  전체는 12개의 염색체로   되어   ,  전체  ⟦기가⟧ 120Mb로   적  아서",reconstructed from exact saved H2 token spans,크기가,크기/NNG | 가/JKS, 크 | ⟦기가⟧,⟦기가⟧,크기,NNG,가,JKS,CASE_SUBJECT,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,0.4154036045074463,0.0908370986580848,567,0,20260929
+ACCEPTED_CROSS,P3,264,24,스트리아의 브라우엔부르크에서 태어났다.  의  버⟦지는⟧ 브라우엔부르크의  회에서  사로  했다.  는 1860년에 브,reconstructed from exact saved H2 token spans,아버지는,아버지/NNG | 는/JX, 아 | 버 | ⟦지는⟧,⟦지는⟧,아버지,NNG,는,JX,AUXILIARY_PARTICLE,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,0.6777786016464233,0.6584700345993042,661,0,20260929
+ACCEPTED_CROSS,P3,45,60,"려는  도가   되었다. 1742년에 레온하르트  일러는    ⟦리를⟧ 증명하려고  도했지만,  의 증명은   되었다. 1746년에 ",reconstructed from exact saved H2 token spans,정리를,정리/NNG | 를/JKO, 정 | ⟦리를⟧,⟦리를⟧,정리,NNG,를,JKO,CASE_OBJECT,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,0.5789092779159546,0.4476907253265381,593,0,20260929
+ACCEPTED_CROSS,P3,362,126,성을 높이는 데      할을   .    프트웨어는      ⟦자가⟧    ,reconstructed from exact saved H2 token spans,사용자가,사용자/NNG | 가/JKS, 사용 | ⟦자가⟧,⟦자가⟧,사용자,NNG,가,JKS,CASE_SUBJECT,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,0.4028204083442688,0.4310446977615356,704,0,20260929
+ACCEPTED_CROSS,P3,312,91,"      임으로서의  기가 떨어지면서,  학자들   에서만  ⟦기를⟧  렸다. 1980년대  반   에는      임으로서의  기가",reconstructed from exact saved H2 token spans,인기를,인기/NNG | 를/JKO, 인 | ⟦기를⟧,⟦기를⟧,인기,NNG,를,JKO,CASE_OBJECT,NOMINAL_SUFFIX_PLUS_FULL_PARTICLE,1.7494866847991943,0.9803112149238586,897,0,20260929
+MATCHED_WITHIN_SPLIT,P1,203,20,"년에 처음 사용되었다. 1960년대에 파일을 사용하는 컴퓨터 프⟦로그⟧램이 처음 등장했으며, 파일은 컴퓨터의 데이터를 저장하는 방법으",saved target continuation,프로그램이,프로그램/NNG | 이/JKS, 프 | ⟦로그⟧ | 램 | 이,⟦로그⟧,프로그램,NNG,이,JKS,CASE_SUBJECT,NOT_CROSS,0.594388484954834,0.0523673743009567,973,0,20260929
+MATCHED_WITHIN_SPLIT,P1,330,41,"하지 않고 있다면, 원운동을 하려는 힘으로 작용하는 힘이다. 원⟦운동⟧을 하는 물체가 원운동을 하지 않고 있다면, 원운동을 하려는 힘",saved target continuation,원운동을,원운동/NNG | 을/JKO, 원 | ⟦운동⟧ | 을,⟦운동⟧,원운동,NNG,을,JKO,CASE_OBJECT,NOT_CROSS,1.4111738204956057,1.5582594871520996,945,0,20260929
+MATCHED_WITHIN_SPLIT,P1,330,82,"운동을 하려는 힘으로 작용하는 힘이다. 원운동을 하는 물체가 원⟦운동⟧을 하지 않고 있다면, 원운동을 하려는 힘으로 작용하는 힘이다.",saved target continuation,원운동을,원운동/NNG | 을/JKO, 원 | ⟦운동⟧ | 을,⟦운동⟧,원운동,NNG,을,JKO,CASE_OBJECT,NOT_CROSS,0.0581833012402057,0.0558623000979423,945,0,20260929
+MATCHED_WITHIN_SPLIT,P1,329,86,"치에 따라 달라지므로 원운동하는 물체의 중심에 작용하는 힘이 원⟦운동⟧의 중심력이라고 한다.
+
+원운동하는 물체의 경우 힘의 방향은 원",saved target continuation,원운동의,원운동/NNG | 의/JKG, 원 | ⟦운동⟧ | 의,⟦운동⟧,원운동,NNG,의,JKG,CASE_GENITIVE,NOT_CROSS,0.2270967066287994,0.907257318496704,945,0,20260929
+MATCHED_WITHIN_SPLIT,P1,962,16,"스트 파일은 단순한 텍스트 파일로, 텍스트 프⟦로그⟧램을 사용하여 텍스트를 입력하고 저장할 수 있다. 텍스트 파일은",saved target continuation,프로그램을,프로그램/NNG | 을/JKO, 프 | ⟦로그⟧ | 램 | 을,⟦로그⟧,프로그램,NNG,을,JKO,CASE_OBJECT,NOT_CROSS,1.2854485511779783,0.9879304766654968,973,1,20260929
+MATCHED_WITHIN_SPLIT,P2,931,123,분식점의 운영을 위한 교육 및 훈련 프로그램을 제공하여 분식점 ⟦운영⟧자의 기술을,saved target continuation,운영자의,운영자/NNG | 의/JKG,⟦ 운영⟧ | 자의,⟦ 운영⟧,운영자,NNG,의,JKG,CASE_GENITIVE,NOT_CROSS,2.457941055297852,1.90128231048584,790,1,20260929
+MATCHED_WITHIN_SPLIT,P2,827,112,제공하는 웹 사이트를 RSS 피드라고 한다. RSS 피드는 웹 ⟦사이⟧트의 정보를 RSS 형식으로 제공하는 웹 사이트를,saved target continuation,사이트의,사이트/NNG | 의/JKG,⟦ 사이⟧ | 트 | 의,⟦ 사이⟧,사이트,NNG,의,JKG,CASE_GENITIVE,NOT_CROSS,0.0279313568025827,0.0563194788992404,1008,0,20260929
+MATCHED_WITHIN_SPLIT,P2,346,45, 등 모든 유기체에 감염할 수 있다. 바이러스는 숙주 세포의 유⟦전자⟧를 이용하여 복제하는 방법으로 증식한다. 바이러스는 숙주 세포의,saved target continuation,유전자를,유전자/NNG | 를/JKO, 유 | ⟦전자⟧ | 를,⟦전자⟧,유전자,NNG,를,JKO,CASE_OBJECT,NOT_CROSS,1.2580726146697998,0.850183367729187,247,0,20260929
+MATCHED_WITHIN_SPLIT,P2,517,43,"를 점령하고 광주 전투가 시작됨
+ 1960년 - 한국전쟁 당시 ⟦북한⟧군이 남한의 전남 광주를 점령하고 광주 전투가 시작됨
+ 1962",saved target continuation,북한군이,북한군/NNG | 이/JKS,⟦ 북한⟧ | 군 | 이,⟦ 북한⟧,북한군,NNG,이,JKS,CASE_SUBJECT,NOT_CROSS,2.360527515411377,3.0979504585266118,230,0,20260929
+MATCHED_WITHIN_SPLIT,P2,238,25,"적으로 돌보아왔다. 1979년에는 인도의 콜카타에서 사랑의 선⟦교회⟧를 통해 빈민과 병자, 고아, 그리고 죽어가는 이들을 다른 나라",saved target continuation,선교회를,선교회/NNG | 를/JKO, 선 | ⟦교회⟧ | 를,⟦교회⟧,선교회,NNG,를,JKO,CASE_OBJECT,NOT_CROSS,0.3477216362953186,0.074864849448204,229,0,20260929
+MATCHED_WITHIN_SPLIT,P2,590,107,"군이 북한군을 격퇴한다.
+ 1954년 - 한국전쟁에서 남한군이 ⟦북한⟧군을 격퇴한다.
+ 1955년 - 한국전쟁에서 남한",saved target continuation,북한군을,북한군/NNG | 을/JKO,⟦ 북한⟧ | 군 | 을,⟦ 북한⟧,북한군,NNG,을,JKO,CASE_OBJECT,NOT_CROSS,0.701249361038208,1.2456343173980713,230,0,20260929
+MATCHED_WITHIN_SPLIT,P2,346,72,이용하여 복제하는 방법으로 증식한다. 바이러스는 숙주 세포의 유⟦전자⟧를 이용하여 복제하는 방법으로 증식한다. 바이러스는 숙주 세포의,saved target continuation,유전자를,유전자/NNG | 를/JKO, 유 | ⟦전자⟧ | 를,⟦전자⟧,유전자,NNG,를,JKO,CASE_OBJECT,NOT_CROSS,0.6179825663566589,0.9631695747375488,247,0,20260929
+MATCHED_WITHIN_SPLIT,P2,80,66,"통해 발견하였다.
+
+정의 
+전류가 흐르는 도체에 의해 생성되는 ⟦자기⟧장은 다음과 같이 정의된다.
+
+여기서  는 전류가 흐르는 도체의",saved target continuation,자기장은,자기장/NNG | 은/JX,⟦ 자기⟧ | 장 | 은,⟦ 자기⟧,자기장,NNG,은,JX,AUXILIARY_PARTICLE,NOT_CROSS,1.140236496925354,1.0861408710479736,340,0,20260929
+MATCHED_WITHIN_SPLIT,P3,285,22,"       3  일,      일을   고  는 데      ⟦로그⟧램을   하여   하는   AP  일  이      이메일은  ",reconstructed from exact saved H2 token spans,프로그램을,프로그램/NNG | 을/JKO, 프 | ⟦로그⟧ | 램 | 을,⟦로그⟧,프로그램,NNG,을,JKO,CASE_OBJECT,NOT_CROSS,0.6667851209640503,0.2172275483608245,973,0,20260929
+MATCHED_WITHIN_SPLIT,P3,80,66,"     하였다   정의 
+전류가 흐르는  체에      되는 ⟦  ⟧장은         의된다   여기서  는  류가 흐르는  체의",reconstructed from exact saved H2 token spans,자기장은,자기장/NNG | 은/JX,⟦ 자기⟧ | 장 | 은,⟦ 자기⟧,자기장,NNG,은,JX,AUXILIARY_PARTICLE,NOT_CROSS,0.4444822669029236,1.0835416316986084,340,0,20260929
+MATCHED_WITHIN_SPLIT,P3,765,104,"  을 침공하려는  획을  립   1955년     전쟁  , ⟦  ⟧군이   을 침공하려는  획을  립   1956년  ",reconstructed from exact saved H2 token spans,북한군이,북한군/NNG | 이/JKS,⟦ 북한⟧ | 군 | 이,⟦ 북한⟧,북한군,NNG,이,JKS,CASE_SUBJECT,NOT_CROSS,2.199914693832397,2.5405774116516118,230,0,20260929
+MATCHED_WITHIN_SPLIT,P3,619,118,쟁에서   군이   을 침공하다   1954년     전쟁에서 ⟦  ⟧군이   을 침공하다 ,reconstructed from exact saved H2 token spans,북한군이,북한군/NNG | 이/JKS,⟦ 북한⟧ | 군 | 이,⟦ 북한⟧,북한군,NNG,이,JKS,CASE_SUBJECT,NOT_CROSS,1.6834123134613037,0.9891531467437744,230,0,20260929
+MATCHED_WITHIN_SPLIT,P3,698,56, 전쟁:   군이   을 침공한다   1950년     전쟁: ⟦  ⟧군이   을 침공한다   1950년     전쟁:   군이   ,reconstructed from exact saved H2 token spans,북한군이,북한군/NNG | 이/JKS,⟦ 북한⟧ | 군 | 이,⟦ 북한⟧,북한군,NNG,이,JKS,CASE_SUBJECT,NOT_CROSS,3.3632476329803467,3.760495185852051,230,0,20260929
+MATCHED_WITHIN_SPLIT,P3,931,123, 식점의   을     육   훈련  로그램을   하여  식점 ⟦  ⟧자의  량을,reconstructed from exact saved H2 token spans,운영자의,운영자/NNG | 의/JKG,⟦ 운영⟧ | 자의,⟦ 운영⟧,운영자,NNG,의,JKG,CASE_GENITIVE,NOT_CROSS,2.4343483448028564,1.904619216918945,790,1,20260929
+MATCHED_WITHIN_SPLIT,P3,698,98, 전쟁:   군이   을 침공한다   1950년     전쟁: ⟦  ⟧군이   을 침공한다   1950년     전쟁:   군이   ,reconstructed from exact saved H2 token spans,북한군이,북한군/NNG | 이/JKS,⟦ 북한⟧ | 군 | 이,⟦ 북한⟧,북한군,NNG,이,JKS,CASE_SUBJECT,NOT_CROSS,0.7227748036384583,2.040447473526001,230,0,20260929

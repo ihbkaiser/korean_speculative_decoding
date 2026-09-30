@@ -1,0 +1,9 @@
+{
+  "pair": "P3",
+  "prompt_count": 1012,
+  "teacher_forced_token_count": 46523,
+  "batch_size": 1,
+  "peak_allocated_vram_gb": 11.959804058074951,
+  "peak_reserved_vram_gb": 12.064453125,
+  "elapsed_seconds_this_invocation": 67.72373061813414
+}

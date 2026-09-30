@@ -1,0 +1,7 @@
+pair,feature,comparison,n_rows,q25,q75,adjusted_probability_before,adjusted_probability_after,probability_difference,ci_low,ci_high,p_value,coefficient,estimator,estimable,fit_error
+P1,nominal_fraction_covered,"+10pp, capped at full coverage",190,0.3333333333333333,0.5,0.23859738515983145,0.35540095598088783,0.11680357082105638,0.012990900224357574,0.2206162414177552,0.02743797491172247,1.1680357082105643,clustered_LPM_fallback,True,
+P1,particle_fraction_covered,,0,1.0,1.0,,,,,,,,,False,no observed coverage variation below 100%
+P2,nominal_fraction_covered,"+10pp, capped at full coverage",189,0.3333333333333333,0.5,0.2280137078235422,0.1702865692746246,-0.05772713854891759,-0.13724172047175903,0.02178744337392384,0.15475853252686195,-0.577271385489177,clustered_LPM_fallback,True,
+P2,particle_fraction_covered,,0,1.0,1.0,,,,,,,,,False,no observed coverage variation below 100%
+P3,nominal_fraction_covered,"+10pp, capped at full coverage",194,0.3333333333333333,0.5,0.3473921379788266,0.38324972891383335,0.03585759093500673,-0.10764720220058571,0.17936238407059918,0.6243201151142704,0.3585759093500661,clustered_LPM_fallback,True,
+P3,particle_fraction_covered,,0,1.0,1.0,,,,,,,,,False,no observed coverage variation below 100%
