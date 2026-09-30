@@ -24,6 +24,7 @@ Model pairs and pinned revisions come from `runs/e2_model_pair_replication/confi
 
 P3's historical Wikipedia draft revision is unresolved in the original run. This experiment uses the pinned E2/FLORES 0.6B revision above for its new P3 runs and will preserve that limitation in the report.
 
+* **P3 Wikipedia target reference reconciliation:** the historical P3 output cache matches the current P2 pinned-4B continuations on 840/1,000 prompts, while all 1,000 prompt identities and source metadata match. The historical model revision is unresolved, so the mismatch cause is not guessed. This isolated run uses P2’s current pinned-4B target continuations as P3 references because P2/P3 share the same target revision and prompt hashes; no historical H2/E2 artifact is modified. Evidence is recorded in `correctness/target_reference_compatibility.json`.
 * **Wikipedia:** exact pretokenized E2 prompt IDs and hashes from `runs/e2_model_pair_replication/prompt_ids.jsonl` and `prompt_hashes.json`; 1,000 prompts in source order.
 * **FLORES:** all 1,012 included prompt IDs and rendered prompt hashes from `runs/flores200_en_ko_replication/data_manifest.csv`; reuse the exact English→Korean prompt template and tokenizer path recorded in `flores_config.json`. Korean references remain provenance-only.
 * Both workloads keep their saved `max_new_tokens=128`, greedy/no-sampling mode, `K=4`, EOS `151643`, `torch.float16`, SDPA, `use_cache=True`, and seed `3090`. The tokenizer files are not modified. No chat template is used in either existing path.

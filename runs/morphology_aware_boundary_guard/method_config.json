@@ -171,7 +171,7 @@
     "inventory_and_versions_recorded_before_first_GPU_job": true
   },
   "gpu_metadata": {
-    "captured_at_utc": "2026-09-30T13:07:23.766934+00:00",
+    "captured_at_utc": "2026-09-30T14:43:54.299905+00:00",
     "nvidia_smi_L_output": "GPU 0: NVIDIA A100-SXM4-80GB (UUID: GPU-27923608-cc6c-c435-7749-ce40279def74)\nGPU 1: NVIDIA A100-SXM4-80GB (UUID: GPU-63b0791c-50f8-402d-bd24-b1cd053c4bfc)\nGPU 2: NVIDIA A100-SXM4-80GB (UUID: GPU-47aca084-3f4d-01f5-4ad0-b67cfbcde54d)\nGPU 3: NVIDIA A100-SXM4-80GB (UUID: GPU-51e0dbfc-062c-3371-4d23-f5795c8f4ba5)\nGPU 4: NVIDIA A100-SXM4-80GB (UUID: GPU-02b89280-20c6-087c-2b7c-0a24db5d86f5)\nGPU 5: NVIDIA A100-SXM4-80GB (UUID: GPU-88b886b0-71f1-c3a9-eb82-3f21b6db00b4)\nGPU 6: NVIDIA A100-SXM4-80GB (UUID: GPU-d37350cd-d939-bd98-faea-d961b1899464)\nGPU 7: NVIDIA A100-SXM4-80GB (UUID: GPU-341ddf4d-bb4e-d40e-a484-9d8ea889936e)",
     "nvidia_smi_physical_gpu3": "NVIDIA A100-SXM4-80GB, 580.105.08, 81920 MiB, 4 MiB, 81150 MiB",
     "physical_gpu_index": 3,
@@ -191,7 +191,7 @@
     "tf32_cudnn": true,
     "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
     "TOKENIZERS_PARALLELISM": "true",
-    "pid": 391410,
+    "pid": 548660,
     "python": "3.13.13 | packaged by Anaconda, Inc. | (main, Apr 14 2026, 06:19:41) [GCC 14.3.0]",
     "platform": "Linux-6.17.0-1011-oracle-x86_64-with-glibc2.39",
     "all_model_weights_allocated_gb": 11.807527542114258,
@@ -278,5 +278,33 @@
       "round_index",
       "proposal_slot"
     ]
-  }
+  },
+  "target_reference_resolution": {
+    "WIKIPEDIA_P3": {
+      "model_id": "Qwen/Qwen3-4B-Base",
+      "pinned_revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+      "historical_revision": "unresolved in historical run metadata",
+      "canonical_reference_pair": "P2",
+      "canonical_source": "runs/e2_model_pair_replication/p2_17b_to_4b/continuations.parquet",
+      "rejected_legacy_source": "runs/20260926T184145Z_pilot1000/reference_outputs.jsonl",
+      "shared_prompt_ids": 1000,
+      "prompt_hashes_identical_P2_P3": true,
+      "legacy_source_indices_and_titles_matching_current_manifest": 1000,
+      "historical_token_continuations_equal_to_pinned_P2": 840,
+      "historical_token_continuations_differing_from_pinned_P2": 160,
+      "first_historical_mismatch": {
+        "prompt_id": 8,
+        "position_zero_based": 14,
+        "pinned_p2_token_id": 20401,
+        "historical_token_id": 129360,
+        "pinned_length": 128,
+        "historical_length": 128
+      },
+      "partial_P3_target_only_rows_reconciled": 4,
+      "partial_P3_target_only_rows_all_match_pinned_P2": true,
+      "resolution": "For this isolated method run, reuse current P2 target-only continuations for P3 because both use the same pinned 4B target and identical prompts. The historical P3 cache differs on 160/1000 sequences; the cause is not inferable from available evidence and is not attributed to a specific revision or hardware difference.",
+      "scope": "Only runs/morphology_aware_boundary_guard/source_target_references.parquet was changed. Historical H2/E2/P3 artifacts were not modified."
+    }
+  },
+  "reference_artifact_sha256": "7ac645a8a355793e505b035fe2f6622c00c0b2658f78711320f129f6a87ea2ee"
 }
