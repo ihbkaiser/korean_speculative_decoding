@@ -506,8 +506,17 @@ def speculative_greedy_fast(
     eos_token_id: int,
     k: int,
     prompt_id: int,
+    guard_controller: Any | None = None,
+    runtime_stats: dict[str, Any] | None = None,
 ) -> tuple[list[int], list[dict[str, Any]]]:
-    """Exact cached-path greedy SD with minimal in-loop statistics/logging."""
+    """Exact cached-path greedy SD, with an optional exact proposal scheduler.
+
+    With ``guard_controller=None`` this follows the original FIXED_K path.
+    Guard controllers may shorten verification only before an unverified
+    proposal. The unchanged target argmax is then emitted as the correction /
+    bonus token, and the target cache is advanced exactly as in the baseline
+    rejection path.
+    """
     import torch
 
     if not prompt_ids:
@@ -520,10 +529,29 @@ def speculative_greedy_fast(
     events: list[dict[str, Any]] = []
     round_index = 0
     finished = False
+    if runtime_stats is not None:
+        runtime_stats.setdefault("rounds", 0)
+        runtime_stats.setdefault("draft_forward_calls", 0)
+        runtime_stats.setdefault("target_forward_calls", 0)
+        runtime_stats.setdefault("draft_tokens_proposed", 0)
+        runtime_stats.setdefault("target_proposal_positions_verified", 0)
+        runtime_stats.setdefault("accepted_draft_tokens", 0)
+        runtime_stats.setdefault("rejected_draft_tokens", 0)
+        runtime_stats.setdefault("guard_triggered_rounds", 0)
+        runtime_stats.setdefault("guard_applied_rounds", 0)
+        runtime_stats.setdefault("guard_positions", [])
+        runtime_stats.setdefault("guard_audit", [])
+        runtime_stats.setdefault("candidate_positions_checked", 0)
+        runtime_stats.setdefault("invalid_candidate_positions", 0)
+        runtime_stats.setdefault("morphology_seconds", 0.0)
+        runtime_stats.setdefault("controller_seconds", 0.0)
+        runtime_stats.setdefault("draft_resynchronization_seconds", 0.0)
     with torch.inference_mode():
         target_result = target_model(
             input_ids=torch.tensor([prompt_ids], dtype=torch.long, device=target_device), use_cache=True,
         )
+        if runtime_stats is not None:
+            runtime_stats["target_forward_calls"] += 1
         target_past = target_result.past_key_values
         target_next_logits = target_result.logits[0, -1]
 
@@ -531,12 +559,21 @@ def speculative_greedy_fast(
             current = prompt_ids + generated
             base_position = len(generated)
             proposal_limit = min(k, max_new_tokens - base_position)
+            draft_prefill_started = time.perf_counter() if runtime_stats is not None else None
             draft_result = draft_model(
                 input_ids=torch.tensor([current], dtype=torch.long, device=draft_device), use_cache=True,
             )
+            if runtime_stats is not None:
+                runtime_stats["draft_forward_calls"] += 1
+                runtime_stats["draft_resynchronization_seconds"] += time.perf_counter() - draft_prefill_started
             draft_past = draft_result.past_key_values
             proposals: list[int] = []
+            proposal_entropies: list[float] = []
             for _ in range(proposal_limit):
+                if guard_controller is not None and bool(getattr(guard_controller, "requires_entropy", False)):
+                    log_probs = torch.log_softmax(draft_result.logits[0, -1].float(), dim=-1)
+                    entropy = float((-(log_probs.exp() * log_probs).sum()).item())
+                    proposal_entropies.append(entropy)
                 proposal_id = int(torch.argmax(draft_result.logits[0, -1], dim=-1).item())
                 proposals.append(proposal_id)
                 if proposal_id == eos_token_id:
@@ -546,18 +583,67 @@ def speculative_greedy_fast(
                     past_key_values=draft_past, use_cache=True,
                 )
                 draft_past = draft_result.past_key_values
+                if runtime_stats is not None:
+                    runtime_stats["draft_forward_calls"] += 1
+
+            guard_decision: dict[str, Any] | None = None
+            verify_slots = len(proposals)
+            if guard_controller is not None:
+                guard_decision = guard_controller.inspect(
+                    prompt_ids=prompt_ids,
+                    committed_ids=generated,
+                    proposal_ids=proposals,
+                    proposal_entropies=proposal_entropies if proposal_entropies else None,
+                    prompt_id=prompt_id,
+                    round_index=round_index,
+                )
+                if guard_decision.get("triggered"):
+                    verify_slots = int(guard_decision["verify_slots"])
+                if runtime_stats is not None:
+                    runtime_stats["controller_seconds"] += float(guard_decision.get("controller_seconds", 0.0))
+                    runtime_stats["morphology_seconds"] += float(guard_decision.get("projection_seconds", 0.0))
+                    runtime_stats["candidate_positions_checked"] += int(guard_decision.get("candidate_count", 0))
+                    runtime_stats["invalid_candidate_positions"] += int(guard_decision.get("invalid_candidates", 0))
+                    if guard_decision.get("triggered"):
+                        runtime_stats["guard_triggered_rounds"] += 1
+                        runtime_stats["guard_positions"].append(int(guard_decision["guard_slot"]))
+                    chosen = guard_decision.get("chosen_record")
+                    activation = guard_decision.get("activation_evidence")
+                    audit_records = [chosen] if chosen is not None else [
+                        r for r in guard_decision.get("candidate_records", []) if r.get("detector_status") != "VALID"
+                    ]
+                    runtime_stats["guard_audit"].extend({
+                        **record,
+                        "guard_variant": getattr(guard_controller, "variant", "UNKNOWN"),
+                        "selected": bool(chosen is not None and int(record["proposal_slot"]) == int(chosen["proposal_slot"])),
+                        "guard_reason": guard_decision.get("reason"),
+                        "activation_evidence": activation,
+                    } for record in audit_records)
+                    if chosen is None and guard_decision.get("triggered") and activation is not None:
+                        runtime_stats["guard_audit"].append({
+                            "pair": getattr(guard_controller, "pair", None),
+                            "prompt_id": int(prompt_id), "round_index": int(round_index),
+                            "proposal_slot": int(guard_decision["guard_slot"]),
+                            "guard_variant": getattr(guard_controller, "variant", "UNKNOWN"),
+                            "selected": True, "guard_reason": guard_decision.get("reason"),
+                            "activation_evidence": activation,
+                        })
 
             target_decisions: list[int | None] = [None] * len(proposals)
             accepted_prefix = 0
             mismatch_index: int | None = None
             target_eos_accepted = False
-            for j, proposal_id in enumerate(proposals):
+            for j, proposal_id in enumerate(proposals[:verify_slots]):
                 decision = int(torch.argmax(target_next_logits, dim=-1).item())
                 target_decisions[j] = decision
+                if runtime_stats is not None:
+                    runtime_stats["target_proposal_positions_verified"] += 1
                 if proposal_id != decision:
                     mismatch_index = j
                     break
                 accepted_prefix += 1
+                if runtime_stats is not None:
+                    runtime_stats["accepted_draft_tokens"] += 1
                 if proposal_id == eos_token_id:
                     target_eos_accepted = True
                     break
@@ -567,13 +653,16 @@ def speculative_greedy_fast(
                 )
                 target_past = target_result.past_key_values
                 target_next_logits = target_result.logits[0, -1]
+                if runtime_stats is not None:
+                    runtime_stats["target_forward_calls"] += 1
 
             rejection_position = None if mismatch_index is None else base_position + mismatch_index
             for j, proposal_id in enumerate(proposals):
                 valid = target_decisions[j] is not None
                 decision = target_decisions[j]
                 rejected = bool(proposal_id != decision) if valid else None
-                invalidated = not valid
+                guarded_unverified = bool(guard_decision and guard_decision.get("triggered") and j >= verify_slots)
+                invalidated = bool(not valid and mismatch_index is not None and j > mismatch_index)
                 events.append({
                     "prompt_id": int(prompt_id),
                     "round_index": int(round_index),
@@ -591,9 +680,15 @@ def speculative_greedy_fast(
                     "invalidated_after_first_rejection": bool(invalidated),
                     "accepted_prefix_length": int(accepted_prefix),
                     "first_rejection_output_position": rejection_position,
+                    "guard_triggered": bool(guard_decision and guard_decision.get("triggered")),
+                    "guard_cut_slot": None if not guard_decision or not guard_decision.get("triggered") else int(guard_decision["guard_slot"]),
+                    "guard_applied": False,
+                    "guard_unverified": guarded_unverified,
                 })
 
             if mismatch_index is not None:
+                if runtime_stats is not None:
+                    runtime_stats["rejected_draft_tokens"] += 1
                 generated.extend(proposals[:mismatch_index])
                 correction = int(target_decisions[mismatch_index])
                 generated.append(correction)
@@ -606,10 +701,42 @@ def speculative_greedy_fast(
                     )
                     target_past = target_result.past_key_values
                     target_next_logits = target_result.logits[0, -1]
+                    if runtime_stats is not None:
+                        runtime_stats["target_forward_calls"] += 1
             else:
-                generated.extend(proposals)
-                if target_eos_accepted or (proposals and proposals[-1] == eos_token_id):
-                    finished = True
+                if guard_decision is not None and guard_decision.get("triggered"):
+                    applied = accepted_prefix == verify_slots and not target_eos_accepted
+                    for event in events[-len(proposals):] if proposals else []:
+                        if int(event["round_index"]) == int(round_index):
+                            event["guard_applied"] = bool(applied)
+                    if applied:
+                        if runtime_stats is not None:
+                            runtime_stats["guard_applied_rounds"] += 1
+                        generated.extend(proposals[:verify_slots])
+                        bonus = int(torch.argmax(target_next_logits, dim=-1).item())
+                        generated.append(bonus)
+                        if bonus == eos_token_id:
+                            finished = True
+                        else:
+                            target_result = target_model(
+                                input_ids=torch.tensor([[bonus]], dtype=torch.long, device=target_device),
+                                past_key_values=target_past, use_cache=True,
+                            )
+                            target_past = target_result.past_key_values
+                            target_next_logits = target_result.logits[0, -1]
+                            if runtime_stats is not None:
+                                runtime_stats["target_forward_calls"] += 1
+                    else:
+                        generated.extend(proposals)
+                        if target_eos_accepted or (proposals and proposals[-1] == eos_token_id):
+                            finished = True
+                else:
+                    generated.extend(proposals)
+                    if target_eos_accepted or (proposals and proposals[-1] == eos_token_id):
+                        finished = True
+            if runtime_stats is not None:
+                runtime_stats["rounds"] += 1
+                runtime_stats["draft_tokens_proposed"] += len(proposals)
             round_index += 1
 
     for event in events:

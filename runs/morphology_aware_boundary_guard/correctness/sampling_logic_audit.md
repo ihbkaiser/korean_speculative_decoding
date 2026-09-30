@@ -1,0 +1,5 @@
+# Sampling logic audit
+
+Repository source audit (`src/e2_model_pairs.py`, `src/speculative_decoding.py`) found only deterministic greedy speculative decoding in the E2/FLORES path. The online acceptance rule is token-ID equality between each draft proposal and the target argmax; a rejected proposal is replaced with that target argmax. There is no multinomial proposal sampler, acceptance-probability ratio, residual distribution, or RNG-driven speculative-sampling path in this codebase.
+
+`NP_BOUNDARY_GUARD` leaves this greedy argmax and correction behavior unchanged. After a fully accepted safe prefix, it emits the existing target argmax for the first unverified position and advances the target KV cache exactly as for a normal correction token. Therefore this run verifies greedy token-ID equivalence only. It does **not** implement, alter, or make any claim about exact stochastic speculative sampling. Sampling exactness remains outside the repository's implemented decoder and is not evaluated here.

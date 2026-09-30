@@ -1,0 +1,239 @@
+{
+  "experiment": "Training-free exact morphology-aware speculative-decoding scheduling intervention",
+  "method": "NP_BOUNDARY_GUARD",
+  "seed": 3090,
+  "random_guard_seed": 20260930,
+  "models": {
+    "0.6B": {
+      "id": "Qwen/Qwen3-0.6B-Base",
+      "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd"
+    },
+    "1.7B": {
+      "id": "Qwen/Qwen3-1.7B-Base",
+      "revision": "ea980cb0a6c2ae4b936e82123acc929f1cec04c1"
+    },
+    "4B": {
+      "id": "Qwen/Qwen3-4B-Base",
+      "revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539"
+    }
+  },
+  "pairs": {
+    "P1": {
+      "draft": "0.6B",
+      "target": "1.7B",
+      "slug": "p1_06b_to_17b"
+    },
+    "P2": {
+      "draft": "1.7B",
+      "target": "4B",
+      "slug": "p2_17b_to_4b"
+    },
+    "P3": {
+      "draft": "0.6B",
+      "target": "4B",
+      "slug": "p3_06b_to_4b"
+    }
+  },
+  "dtype": "float16",
+  "attention_backend": "sdpa",
+  "max_prompt_tokens": 128,
+  "max_new_tokens": 128,
+  "speculative_k": 4,
+  "eos_token_id": 151643,
+  "generation": "greedy, no sampling, use_cache=True",
+  "prompt_counts": {
+    "WIKIPEDIA": 1000,
+    "FLORES": 1012
+  },
+  "prompt_order": "source order; pilot uses seed 3090 choice without replacement then returns to source order; 100 selected pilot IDs per workload are correctness suite",
+  "target_references_reused": true,
+  "reference_artifact": "runs/morphology_aware_boundary_guard/source_target_references.parquet",
+  "policy_variants": [
+    "TARGET_ONLY",
+    "FIXED_K_SD",
+    "NP_BOUNDARY_GUARD",
+    "ALL_MORPH_BOUNDARY_GUARD",
+    "RANDOM_MATCHED_GUARD",
+    "ENTROPY_MATCHED_GUARD"
+  ],
+  "entropy_thresholds_wikipedia_only": {
+    "P1": {
+      "threshold": 5.291721978187556,
+      "matched_blocks": 171,
+      "eligible_blocks_before_thinning": 500,
+      "eligible_slot_histogram": {
+        "3": 96,
+        "1": 275,
+        "2": 129
+      },
+      "target_np_slot_histogram": {
+        "1": 72,
+        "2": 59,
+        "3": 40
+      },
+      "slot_thinning_probabilities": {
+        "1": 0.26181818181818184,
+        "2": 0.4573643410852713,
+        "3": 0.4166666666666667
+      },
+      "extra_eligible_blocks": 329,
+      "score": [
+        -171,
+        329,
+        -5.291721978187556
+      ],
+      "target_np_activation_blocks": 171,
+      "calibration_source": "WIKIPEDIA only; saved teacher-forced draft entropy at positions with accepted preceding proposal prefix",
+      "method": "201 empirical entropy quantiles; choose the cutoff maximizing slotwise-supported NP activations and freeze deterministic slotwise thinning probabilities"
+    },
+    "P2": {
+      "threshold": 5.098802773952483,
+      "matched_blocks": 192,
+      "eligible_blocks_before_thinning": 504,
+      "eligible_slot_histogram": {
+        "1": 277,
+        "3": 102,
+        "2": 125
+      },
+      "target_np_slot_histogram": {
+        "2": 52,
+        "1": 87,
+        "3": 53
+      },
+      "slot_thinning_probabilities": {
+        "2": 0.416,
+        "1": 0.3140794223826715,
+        "3": 0.5196078431372549
+      },
+      "extra_eligible_blocks": 312,
+      "score": [
+        -192,
+        312,
+        -5.098802773952483
+      ],
+      "target_np_activation_blocks": 192,
+      "calibration_source": "WIKIPEDIA only; saved teacher-forced draft entropy at positions with accepted preceding proposal prefix",
+      "method": "201 empirical entropy quantiles; choose the cutoff maximizing slotwise-supported NP activations and freeze deterministic slotwise thinning probabilities"
+    },
+    "P3": {
+      "threshold": 5.329163768291475,
+      "matched_blocks": 174,
+      "eligible_blocks_before_thinning": 511,
+      "eligible_slot_histogram": {
+        "1": 299,
+        "2": 120,
+        "3": 92
+      },
+      "target_np_slot_histogram": {
+        "1": 75,
+        "3": 34,
+        "2": 65
+      },
+      "slot_thinning_probabilities": {
+        "1": 0.2508361204013378,
+        "3": 0.3695652173913043,
+        "2": 0.5416666666666666
+      },
+      "extra_eligible_blocks": 337,
+      "score": [
+        -174,
+        337,
+        -5.329163768291475
+      ],
+      "target_np_activation_blocks": 174,
+      "calibration_source": "WIKIPEDIA only; saved teacher-forced draft entropy at positions with accepted preceding proposal prefix",
+      "method": "201 empirical entropy quantiles; choose the cutoff maximizing slotwise-supported NP activations and freeze deterministic slotwise thinning probabilities"
+    }
+  },
+  "entropy_policy": "earliest internal slot with online draft entropy >= frozen pair-specific threshold; a deterministic slotwise thinning probability calibrated on WIKIPEDIA matches the approximate NP activation and slot distribution; both remain frozen on FLORES",
+  "wikipedia_pilot_slot_distributions": {
+    "P1": {
+      "1": 0.42105263157894735,
+      "2": 0.34502923976608185,
+      "3": 0.23391812865497075
+    },
+    "P2": {
+      "2": 0.2708333333333333,
+      "1": 0.453125,
+      "3": 0.2760416666666667
+    },
+    "P3": {
+      "1": 0.43103448275862066,
+      "3": 0.19540229885057472,
+      "2": 0.3735632183908046
+    }
+  },
+  "gpu_requirement": {
+    "physical_gpu_index": 3,
+    "gpu_name": "NVIDIA A100 80GB",
+    "CUDA_VISIBLE_DEVICES": "3",
+    "framework_local_device": "cuda:0",
+    "inventory_and_versions_recorded_before_first_GPU_job": true
+  },
+  "gpu_metadata": {
+    "captured_at_utc": "2026-09-30T10:50:49.503174+00:00",
+    "nvidia_smi_L_output": "GPU 0: NVIDIA A100-SXM4-80GB (UUID: GPU-27923608-cc6c-c435-7749-ce40279def74)\nGPU 1: NVIDIA A100-SXM4-80GB (UUID: GPU-63b0791c-50f8-402d-bd24-b1cd053c4bfc)\nGPU 2: NVIDIA A100-SXM4-80GB (UUID: GPU-47aca084-3f4d-01f5-4ad0-b67cfbcde54d)\nGPU 3: NVIDIA A100-SXM4-80GB (UUID: GPU-51e0dbfc-062c-3371-4d23-f5795c8f4ba5)\nGPU 4: NVIDIA A100-SXM4-80GB (UUID: GPU-02b89280-20c6-087c-2b7c-0a24db5d86f5)\nGPU 5: NVIDIA A100-SXM4-80GB (UUID: GPU-88b886b0-71f1-c3a9-eb82-3f21b6db00b4)\nGPU 6: NVIDIA A100-SXM4-80GB (UUID: GPU-d37350cd-d939-bd98-faea-d961b1899464)\nGPU 7: NVIDIA A100-SXM4-80GB (UUID: GPU-341ddf4d-bb4e-d40e-a484-9d8ea889936e)",
+    "nvidia_smi_physical_gpu3": "NVIDIA A100-SXM4-80GB, 580.105.08, 81920 MiB, 4 MiB, 81150 MiB",
+    "physical_gpu_index": 3,
+    "GPU_name": "NVIDIA A100-SXM4-80GB",
+    "driver_version": "580.105.08",
+    "nvidia_smi_cuda_version": "13.0",
+    "torch_cuda_runtime_version": "12.8",
+    "torch_version": "2.11.0+cu128",
+    "transformers_version": "5.17.0",
+    "attention_backend": "sdpa",
+    "dtype": "torch.float16",
+    "CUDA_VISIBLE_DEVICES": "3",
+    "framework_local_device": "cuda:0",
+    "visible_device_count": 1,
+    "device_total_memory_bytes": 85094825984,
+    "tf32_matmul": true,
+    "tf32_cudnn": true,
+    "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+    "TOKENIZERS_PARALLELISM": "true",
+    "pid": 156851,
+    "python": "3.13.13 | packaged by Anaconda, Inc. | (main, Apr 14 2026, 06:19:41) [GCC 14.3.0]",
+    "platform": "Linux-6.17.0-1011-oracle-x86_64-with-glibc2.39",
+    "all_model_weights_allocated_gb": 11.807527542114258,
+    "all_model_weights_reserved_gb": 11.818359375
+  },
+  "source_artifact_sha256": {
+    "runs/e2_model_pair_replication/config.json": "4f1ab14a5d530fd20e29bea298cf73f5ce4733130df728240ccc28c672f3d844",
+    "runs/e2_model_pair_replication/prompt_ids.jsonl": "e4b0db2d1698d8c372ebf2dfa1767d020d6a1e74fabc5c71130d9953ad5e5707",
+    "runs/e2_model_pair_replication/h3/h3_token_environment.parquet": "cf867e74e44c140994732fad0e50937d307e838ca3c10ba18e0788347615c33b",
+    "runs/20260926T184145Z_pilot1000/sd_events.parquet": "1bf4d3264f031fbd206722aa0fbf3df0363fb8e2ccfd125263b3af794c697a61",
+    "runs/20260926T184145Z_pilot1000/reference_outputs.jsonl": "56155603252d86febbeeaaef466789aa12359160cf2ded782bd46bcb3c9fdcce",
+    "runs/20260926T184145Z_pilot1000/h2_token_table.parquet": "16e8c9524892a2e0e0a83106f4daca9cf7890690c2b7935a100d6ad9125d605f",
+    "runs/flores200_en_ko_replication/flores_config.json": "69b7c62a2b33276ff274feef96683f52fe7e7c1c819763b3396b6a9084b40df4",
+    "runs/flores200_en_ko_replication/data_manifest.csv": "8b8367e6c6be4d4ad3e11220e985f504b297ea44237da5f44c388f107368dbde",
+    "runs/flores200_en_ko_replication/data_manifest.sha256": "859b3b33ed4a3a2e11722b5a6db83753571009805ed813626c2db1f815cfc736",
+    "runs/e2_model_pair_replication/p1_06b_to_17b/sd_events.parquet": "f306be53dfccce7e8e0cb3509887e01290448964540c2940c38d8da431ed7418",
+    "runs/e2_model_pair_replication/p1_06b_to_17b/continuations.parquet": "d4c23bb3a6676ad420bed0b9d96ed01109159ea756a1351bb887eaa4a77dfaf6",
+    "runs/flores200_en_ko_replication/traces/p1_06b_to_17b/sd_events.parquet": "5ab8a10847fcf5adb6635b9f8ba1a51bc0e279bc0ef2081a4609365923eb9320",
+    "runs/flores200_en_ko_replication/token_tables/p1_06b_to_17b/continuations.parquet": "5c2e0a6bd990d16a2e127bb7ab71277ea32dcfc30837b5667b0467a1b5c966c2",
+    "runs/flores200_en_ko_replication/token_tables/p1_06b_to_17b/h3_token_environment.parquet": "533fc7d4f5e8c987ff9d2a896f9a69f99cce073ee1959a6eadd2f57de0c88217",
+    "runs/e2_model_pair_replication/p2_17b_to_4b/sd_events.parquet": "d9ff1c8a2ce8ba39dbe86cd918c974b97e2e8ac7d0ee1bd0201dac6824fc8688",
+    "runs/e2_model_pair_replication/p2_17b_to_4b/continuations.parquet": "56700ee562395edf84e7915824546fde9f85a41c552e3bb59675b42c7b62c08e",
+    "runs/flores200_en_ko_replication/traces/p2_17b_to_4b/sd_events.parquet": "081cebcc743e819e65438fc7406c3ad343f98ac097b0e1f7a7dcb4cdb8bea474",
+    "runs/flores200_en_ko_replication/token_tables/p2_17b_to_4b/continuations.parquet": "edb45a43ce4a57fc4c0a698745d0458d0c517bcf8a08642fd2602b5f11390101",
+    "runs/flores200_en_ko_replication/token_tables/p2_17b_to_4b/h3_token_environment.parquet": "417af8172adffae09bb3fffbd3c3bba793acf932cbd19c2b8641dab91500f9ba",
+    "runs/flores200_en_ko_replication/traces/p3_06b_to_4b/sd_events.parquet": "013140cfab94aed71ef9755da4cd21b1eb5dfc9bdc3d76f751655fe4786e53a5",
+    "runs/flores200_en_ko_replication/token_tables/p3_06b_to_4b/continuations.parquet": "edb45a43ce4a57fc4c0a698745d0458d0c517bcf8a08642fd2602b5f11390101",
+    "runs/flores200_en_ko_replication/token_tables/p3_06b_to_4b/h3_token_environment.parquet": "35e85d711662db4a4db47dc1eec4d9c5df5f27ddc7a5e977628faee222f77782"
+  },
+  "prompt_summary": {
+    "prompt_count_wikipedia": 1000,
+    "prompt_count_flores": 1012
+  },
+  "prompt_hashes_sha256": "ce7c129c2dc5ac95d54cdefa813597802678c91f822581815d5909f86cf2c515",
+  "software": {
+    "torch": "2.11.0+cu128",
+    "transformers": "5.17.0",
+    "tokenizers": "0.23.2",
+    "kiwipiepy": "0.24.0",
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "pyarrow": "25.0.1"
+  },
+  "stage": "Correctness suite in progress"
+}

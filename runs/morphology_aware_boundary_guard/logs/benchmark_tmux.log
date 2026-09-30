@@ -1,0 +1,12 @@
+GPU preflight passed: physical GPU 3 -> NVIDIA A100-SXM4-80GB / cuda:0
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights:  91%|█████████ | 282/310 [00:00<00:00, 2819.72it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 2857.59it/s]
+Loaded 0.6B @ pinned revision da87bfb608c14b7cf20ba1ce41287e8de496c0cd on cuda:0
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights:  38%|███▊      | 118/310 [00:00<00:00, 1176.69it/s]Loading weights:  95%|█████████▌| 295/310 [00:00<00:00, 1516.37it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 1499.61it/s]
+Loaded 1.7B @ pinned revision ea980cb0a6c2ae4b936e82123acc929f1cec04c1 on cuda:0
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights:  15%|█▌        | 60/398 [00:00<00:00, 594.77it/s]Loading weights:  43%|████▎     | 170/398 [00:00<00:00, 889.27it/s]Loading weights:  70%|███████   | 279/398 [00:00<00:00, 976.69it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 1008.32it/s]
+Loaded 4B @ pinned revision 906bfd4b4dc7f14ee4320094d8b41684abff8539 on cuda:0
+correctness WIKIPEDIA/P1/TARGET_ONLY/rep0: 10/100 prompts
+correctness WIKIPEDIA/P1/TARGET_ONLY/rep0: 20/100 prompts
+correctness WIKIPEDIA/P1/TARGET_ONLY/rep0: 30/100 prompts
+correctness WIKIPEDIA/P1/TARGET_ONLY/rep0: 40/100 prompts
