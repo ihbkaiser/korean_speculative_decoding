@@ -1,0 +1,51 @@
+{
+  "purpose": "Reuse previously generated target-only greedy FLORES continuations for the correctness-suite reference, as allowed by the frozen plan; this is not a timing measurement.",
+  "frozen_flores_config_sha256": "69b7c62a2b33276ff274feef96683f52fe7e7c1c819763b3396b6a9084b40df4",
+  "frozen_prompt_manifest_sha256": "7747d062caee7fb779f4d42b74e0dacc0d094ab70adfd265c93d21546b70a179",
+  "frozen_target_reference_sha256": "7ac645a8a355793e505b035fe2f6622c00c0b2658f78711320f129f6a87ea2ee",
+  "max_prompt_tokens": 128,
+  "max_new_tokens": 128,
+  "speculative_k": 4,
+  "decoding": "greedy, no sampling",
+  "eos_token_id": 151643,
+  "prompt_count_in_correctness_subset": 100,
+  "pair_results": {
+    "P1": {
+      "source_artifact": "runs/flores200_en_ko_replication/token_tables/p1_06b_to_17b/continuations.parquet",
+      "sha256": "5c2e0a6bd990d16a2e127bb7ab71277ea32dcfc30837b5667b0467a1b5c966c2",
+      "rows_in_source": 1012,
+      "correctness_prompt_rows_reused": 100,
+      "reference_identity_match_count": 100,
+      "prompt_hash_match_count": 100,
+      "target_model_id": "Qwen/Qwen3-1.7B-Base",
+      "target_revision": "ea980cb0a6c2ae4b936e82123acc929f1cec04c1",
+      "provenance_note": "P1 target greedy batch=1",
+      "runtime_timing_recorded": false
+    },
+    "P2": {
+      "source_artifact": "runs/flores200_en_ko_replication/token_tables/p2_17b_to_4b/continuations.parquet",
+      "sha256": "edb45a43ce4a57fc4c0a698745d0458d0c517bcf8a08642fd2602b5f11390101",
+      "rows_in_source": 1012,
+      "correctness_prompt_rows_reused": 100,
+      "reference_identity_match_count": 100,
+      "prompt_hash_match_count": 100,
+      "target_model_id": "Qwen/Qwen3-4B-Base",
+      "target_revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+      "provenance_note": "FLORES 4B target greedy singleton",
+      "runtime_timing_recorded": false
+    },
+    "P3": {
+      "source_artifact": "runs/flores200_en_ko_replication/token_tables/p3_06b_to_4b/continuations.parquet",
+      "sha256": "edb45a43ce4a57fc4c0a698745d0458d0c517bcf8a08642fd2602b5f11390101",
+      "rows_in_source": 1012,
+      "correctness_prompt_rows_reused": 100,
+      "reference_identity_match_count": 100,
+      "prompt_hash_match_count": 100,
+      "target_model_id": "Qwen/Qwen3-4B-Base",
+      "target_revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+      "provenance_note": "FLORES 4B target greedy singleton",
+      "runtime_timing_recorded": false
+    }
+  },
+  "timing_policy": "No wall-clock/throughput claims are derived from cached TARGET_ONLY correctness rows. TARGET_ONLY pilot/full timing still runs on the current GPU path."
+}

@@ -209,3 +209,65 @@ Traceback (most recent call last):
   File "/data/hoang/korean_speculative_decoding/scripts/run_morphology_guard.py", line 497, in run_combo
     raise RuntimeError(f"Greedy exactness failed for {workload}/{pair}/{variant}/prompt_id={pid}")
 RuntimeError: Greedy exactness failed for WIKIPEDIA/P3/TARGET_ONLY/prompt_id=12
+GPU preflight passed: physical GPU 3 -> NVIDIA A100-SXM4-80GB / cuda:0
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 3119.50it/s]
+Loaded 0.6B @ pinned revision da87bfb608c14b7cf20ba1ce41287e8de496c0cd on cuda:0
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights:  33%|███▎      | 102/310 [00:00<00:00, 1010.80it/s]Loading weights:  92%|█████████▏| 284/310 [00:00<00:00, 1472.37it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 1444.85it/s]
+Loaded 1.7B @ pinned revision ea980cb0a6c2ae4b936e82123acc929f1cec04c1 on cuda:0
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights:  26%|██▌       | 104/398 [00:00<00:00, 1031.16it/s]Loading weights:  52%|█████▏    | 208/398 [00:00<00:00, 1015.88it/s]Loading weights:  78%|███████▊  | 311/398 [00:00<00:00, 1004.86it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 1094.75it/s]
+Loaded 4B @ pinned revision 906bfd4b4dc7f14ee4320094d8b41684abff8539 on cuda:0
+correctness WIKIPEDIA/P3/TARGET_ONLY/rep0: 10/100 prompts
+correctness WIKIPEDIA/P3/TARGET_ONLY/rep0: 20/100 prompts
+correctness WIKIPEDIA/P3/TARGET_ONLY/rep0: 30/100 prompts
+correctness WIKIPEDIA/P3/TARGET_ONLY/rep0: 40/100 prompts
+correctness WIKIPEDIA/P3/TARGET_ONLY/rep0: 50/100 prompts
+correctness WIKIPEDIA/P3/TARGET_ONLY/rep0: 60/100 prompts
+correctness WIKIPEDIA/P3/TARGET_ONLY/rep0: 70/100 prompts
+correctness WIKIPEDIA/P3/TARGET_ONLY/rep0: 80/100 prompts
+correctness WIKIPEDIA/P3/TARGET_ONLY/rep0: 90/100 prompts
+correctness WIKIPEDIA/P3/TARGET_ONLY/rep0: 100/100 prompts
+correctness WIKIPEDIA/P3/FIXED_K_SD/rep0: 10/100 prompts
+correctness WIKIPEDIA/P3/FIXED_K_SD/rep0: 20/100 prompts
+correctness WIKIPEDIA/P3/FIXED_K_SD/rep0: 30/100 prompts
+correctness WIKIPEDIA/P3/FIXED_K_SD/rep0: 40/100 prompts
+correctness WIKIPEDIA/P3/FIXED_K_SD/rep0: 50/100 prompts
+correctness WIKIPEDIA/P3/FIXED_K_SD/rep0: 60/100 prompts
+correctness WIKIPEDIA/P3/FIXED_K_SD/rep0: 70/100 prompts
+correctness WIKIPEDIA/P3/FIXED_K_SD/rep0: 80/100 prompts
+correctness WIKIPEDIA/P3/FIXED_K_SD/rep0: 90/100 prompts
+correctness WIKIPEDIA/P3/FIXED_K_SD/rep0: 100/100 prompts
+correctness WIKIPEDIA/P3/NP_BOUNDARY_GUARD/rep0: 10/100 prompts
+correctness WIKIPEDIA/P3/NP_BOUNDARY_GUARD/rep0: 20/100 prompts
+correctness WIKIPEDIA/P3/NP_BOUNDARY_GUARD/rep0: 30/100 prompts
+correctness WIKIPEDIA/P3/NP_BOUNDARY_GUARD/rep0: 40/100 prompts
+correctness WIKIPEDIA/P3/NP_BOUNDARY_GUARD/rep0: 50/100 prompts
+correctness WIKIPEDIA/P3/NP_BOUNDARY_GUARD/rep0: 60/100 prompts
+correctness WIKIPEDIA/P3/NP_BOUNDARY_GUARD/rep0: 70/100 prompts
+correctness WIKIPEDIA/P3/NP_BOUNDARY_GUARD/rep0: 80/100 prompts
+correctness WIKIPEDIA/P3/NP_BOUNDARY_GUARD/rep0: 90/100 prompts
+correctness WIKIPEDIA/P3/NP_BOUNDARY_GUARD/rep0: 100/100 prompts
+correctness WIKIPEDIA/P3/ALL_MORPH_BOUNDARY_GUARD/rep0: 10/100 prompts
+correctness WIKIPEDIA/P3/ALL_MORPH_BOUNDARY_GUARD/rep0: 20/100 prompts
+correctness WIKIPEDIA/P3/ALL_MORPH_BOUNDARY_GUARD/rep0: 30/100 prompts
+correctness WIKIPEDIA/P3/ALL_MORPH_BOUNDARY_GUARD/rep0: 40/100 prompts
+correctness WIKIPEDIA/P3/ALL_MORPH_BOUNDARY_GUARD/rep0: 50/100 prompts
+correctness WIKIPEDIA/P3/ALL_MORPH_BOUNDARY_GUARD/rep0: 60/100 prompts
+correctness WIKIPEDIA/P3/ALL_MORPH_BOUNDARY_GUARD/rep0: 70/100 prompts
+correctness WIKIPEDIA/P3/ALL_MORPH_BOUNDARY_GUARD/rep0: 80/100 prompts
+correctness WIKIPEDIA/P3/ALL_MORPH_BOUNDARY_GUARD/rep0: 90/100 prompts
+correctness WIKIPEDIA/P3/ALL_MORPH_BOUNDARY_GUARD/rep0: 100/100 prompts
+correctness WIKIPEDIA/P3/RANDOM_MATCHED_GUARD/rep0: 10/100 prompts
+correctness WIKIPEDIA/P3/RANDOM_MATCHED_GUARD/rep0: 20/100 prompts
+correctness WIKIPEDIA/P3/RANDOM_MATCHED_GUARD/rep0: 30/100 prompts
+correctness WIKIPEDIA/P3/RANDOM_MATCHED_GUARD/rep0: 40/100 prompts
+correctness WIKIPEDIA/P3/RANDOM_MATCHED_GUARD/rep0: 50/100 prompts
+correctness WIKIPEDIA/P3/RANDOM_MATCHED_GUARD/rep0: 60/100 prompts
+correctness WIKIPEDIA/P3/RANDOM_MATCHED_GUARD/rep0: 70/100 prompts
+correctness WIKIPEDIA/P3/RANDOM_MATCHED_GUARD/rep0: 80/100 prompts
+correctness WIKIPEDIA/P3/RANDOM_MATCHED_GUARD/rep0: 90/100 prompts
+correctness WIKIPEDIA/P3/RANDOM_MATCHED_GUARD/rep0: 100/100 prompts
+correctness WIKIPEDIA/P3/ENTROPY_MATCHED_GUARD/rep0: 10/100 prompts
+correctness WIKIPEDIA/P3/ENTROPY_MATCHED_GUARD/rep0: 20/100 prompts
+correctness WIKIPEDIA/P3/ENTROPY_MATCHED_GUARD/rep0: 30/100 prompts
+correctness WIKIPEDIA/P3/ENTROPY_MATCHED_GUARD/rep0: 40/100 prompts
