@@ -1,0 +1,58 @@
+{
+  "eligible_cross": 1374,
+  "eligible_within_split": 36428,
+  "primary_matched": 73,
+  "primary_cross_matched": 73,
+  "primary_control_reuse": 0,
+  "primary_covariate_max_abs_smd_by_workload": {
+    "FLORES": 2.0247300388389244,
+    "WIKIPEDIA": 2.808687075405825
+  },
+  "strict_fragment_matched": 336,
+  "sensitivity_matched": 952,
+  "sensitivity_control_reuse": 0,
+  "keys_primary": [
+    "workload",
+    "pair",
+    "prompt_id",
+    "proposal_slot",
+    "candidate_token_char_length"
+  ],
+  "keys_strict_fragment_sensitivity": [
+    "workload",
+    "pair",
+    "prompt_id",
+    "proposal_slot",
+    "fragmentation_bin"
+  ],
+  "keys_sensitivity": [
+    "workload",
+    "pair",
+    "prompt_id",
+    "proposal_slot"
+  ],
+  "distance_covariates": [
+    "draft_entropy",
+    "target_entropy",
+    "relative_position",
+    "generation_position",
+    "candidate_token_char_length",
+    "candidate_eojeol_char_length",
+    "log_candidate_token_count",
+    "first_token",
+    "last_token"
+  ],
+  "scale_sd": {
+    "draft_entropy": 1.436305763415338,
+    "target_entropy": 1.3011956128809643,
+    "relative_position": 0.29917760754391637,
+    "generation_position": 36.6411786263233,
+    "candidate_token_char_length": 0.28258415442933754,
+    "candidate_eojeol_char_length": 1.1075879173920231,
+    "log_candidate_token_count": 1.2384772050222794,
+    "first_token": 0.42111290857582595,
+    "last_token": 0.28024791936925975
+  },
+  "bootstrap_prompt_cluster_reps": 5000,
+  "seed": 20261001
+}

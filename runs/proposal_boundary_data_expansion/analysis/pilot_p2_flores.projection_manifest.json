@@ -1,0 +1,29 @@
+{
+  "tokenizer": {
+    "model_id": "Qwen/Qwen3-0.6B-Base",
+    "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+    "tokenizer_class": "Qwen2Tokenizer",
+    "vocab_size": 151669,
+    "backend_sha256": "41e00eccf531cffc2e562d38bdd879d41e5044ea279af5b73c6a32aabcc8fe04"
+  },
+  "rows_file": "pilot_p2_flores.parquet",
+  "rows_sha256": "f37c5fc453e475994ba9cc91c6815fdce80f9152dfd5419ffa3dce0b32476ae7",
+  "records": [
+    {
+      "workload": "FLORES",
+      "pair": "P2",
+      "trace_prompts": 32,
+      "valid_decision_rows": 1582,
+      "reject_rows": 355,
+      "projection_status_counts": {
+        "VALID": 1392,
+        "INVALID_TOKEN_SPAN": 64,
+        "INVALID_MORPHOLOGY": 126
+      },
+      "valid_primary_classes": 768,
+      "valid_single_boundary_cross": 44,
+      "valid_n2p_cross": 5,
+      "trace_sha256": "26adc1a978b1e3ebe30b8d314ca08c35f140da6673a4825fcc35fc6dea29c28d"
+    }
+  ]
+}

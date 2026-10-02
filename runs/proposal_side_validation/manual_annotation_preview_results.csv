@@ -1,0 +1,9 @@
+sample_id,reviewer,expert_label,confidence_1_to_5,notes,model_fullblock_label,matches_model
+KO-001,GPT-6-Sol (user-provided),CROSS_MORPHEME,5,학생회장을: token 장을 includes 장 from the lexical nominal portion and accusative particle 을; it crosses a morpheme boundary.,CROSS_MORPHEME,true
+KO-002,GPT-6-Sol (user-provided),CROSS_MORPHEME,5,개념들을: 들 is the plural marker and 을 is the accusative particle; 들을 spans the boundary between them.,CROSS_MORPHEME,true
+KO-004,GPT-6-Sol (user-provided),CROSS_MORPHEME,5,발전하고: 하 is the verbalizing element and 고 is a connective ending; 하고 spans their boundary.,CROSS_MORPHEME,true
+KO-053,GPT-6-Sol (user-provided),CROSS_MORPHEME,5,않는다: surface is morphologically 않 + 는다 (auxiliary/stem plus sentence-final ending); the leading-space token marker does not change the within-eojeol analysis.,CROSS_MORPHEME,true
+KO-101,GPT-6-Sol (user-provided),CROSS_MORPHEME,5,의도적으로: 적 and 으로 are distinct morphological elements in the adverbial formation; 적으로 spans their boundary.,CROSS_MORPHEME,true
+KO-103,GPT-6-Sol (user-provided),CROSS_MORPHEME,5,것들을: 들 is the plural marker and 을 is the accusative particle; 들을 spans their boundary.,CROSS_MORPHEME,true
+KO-104,GPT-6-Sol (user-provided),CROSS_MORPHEME,5,것이다: morphologically 것 + 이 + 다; the token covers multiple morphemes. The leading-space token marker is not itself a Korean morpheme.,CROSS_MORPHEME,true
+KO-153,GPT-6-Sol (user-provided),CROSS_MORPHEME,5,여행하면서: 하 is the verbalizing element and 면서 is a connective ending; 하면서 spans their boundary.,CROSS_MORPHEME,true

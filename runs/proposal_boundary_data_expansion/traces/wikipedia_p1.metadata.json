@@ -1,0 +1,32 @@
+{
+  "workload": "WIKIPEDIA",
+  "pair": "P1",
+  "prompt_count": 1000,
+  "target_parity_checked": 32,
+  "target_parity_failures": 0,
+  "speculative_outputs_match_independent_target_greedy_on_audited_prompts": true,
+  "valid_proposal_events": 126867,
+  "first_rejection_events": 13067,
+  "trace_sha256": "9ffff6e8b693d1fb12d6908c9b296082dbc23002708c5012668d0f5bf9428216",
+  "elapsed_seconds_this_run": 15951.81081352802,
+  "model_pair": {
+    "draft": {
+      "id": "Qwen/Qwen3-0.6B-Base",
+      "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd"
+    },
+    "target": {
+      "id": "Qwen/Qwen3-1.7B-Base",
+      "revision": "ea980cb0a6c2ae4b936e82123acc929f1cec04c1"
+    }
+  },
+  "max_new_tokens": 128,
+  "speculative_k": 4,
+  "requested_prompt_cap_per_workload": null,
+  "sample_seed": 20261001,
+  "dtype": "float16",
+  "attention_backend": "sdpa",
+  "physical_gpu": 0,
+  "gpu_name": "NVIDIA RTX A4000",
+  "peak_allocated_vram_gb": 4.540680885314941,
+  "prompt_manifest_sha256": "1f5443d6feeb7438fb9f006889d7d9d52dac35f449fa1175150f277c6d3b6dc1"
+}

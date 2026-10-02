@@ -1,0 +1,64 @@
+{
+  "purpose": "Proposal-side morphology validation for greedy speculative-decoding agreement",
+  "gpu_used": false,
+  "max_prompts_per_workload": null,
+  "prefix_audit_fraction": 1.0,
+  "workloads": [
+    "WIKIPEDIA",
+    "FLORES"
+  ],
+  "pairs": [
+    "P1",
+    "P2",
+    "P3"
+  ],
+  "primary_candidate_label_source": "accepted tokens reuse exact target label; first rejected candidate is reprojected in the complete draft proposal block",
+  "invalidated_suffix_rule": "proposal rows after first rejection are excluded from all regression outcomes",
+  "sensitivity_label_source": "strict projection of a deterministic sample of valid proposal prefixes through the first rejected candidate",
+  "tokenizer": {
+    "model_id": "Qwen/Qwen3-0.6B-Base",
+    "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+    "tokenizer_class": "Qwen2Tokenizer",
+    "vocab_size": 151669,
+    "backend_sha256": "41e00eccf531cffc2e562d38bdd879d41e5044ea279af5b73c6a32aabcc8fe04"
+  },
+  "kiwi_version": "0.24.0",
+  "frequency_cache_metadata": {
+    "cache_key": "15d29735986b8591103f9c1b23b6f879f5ec7f55b0061d0909dc2915b1dff7fd",
+    "corpus_path": "data/korean_wikipedia_20231101_ko.jsonl",
+    "corpus_sha256": "6f5a90e25f62ba84f49cfd84285aab17b6f91c6c3c6a06ebb4c129059d72563e",
+    "corpus": "Local Korean Wikipedia prompt cache (wikimedia/wikipedia, config 20231101.ko, train; first 1,000 non-empty articles)",
+    "document_count": 1000,
+    "total_corpus_tokens": 3425737,
+    "distinct_eojeol_surfaces": 270763,
+    "token_frequency_rows": 151669,
+    "tokenizer_name": "Qwen/Qwen3-4B-Base",
+    "tokenizer_class": "Qwen2Tokenizer",
+    "tokenizer_revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+    "tokenizer_backend_sha256": "41e00eccf531cffc2e562d38bdd879d41e5044ea279af5b73c6a32aabcc8fe04",
+    "vocab_size": 151669,
+    "use_fast": true
+  },
+  "source_sha256": {
+    "runs/e2_model_pair_replication/p2_17b_to_4b/continuations.parquet": "56700ee562395edf84e7915824546fde9f85a41c552e3bb59675b42c7b62c08e",
+    "runs/20260926T184145Z_pilot1000/e1_token_frequency_cache_metadata.json": "1c5bd2738395dc74c8f7cdbc123eb0903b3cfd819ec46147ced10485507dfba5",
+    "runs/e2_model_pair_replication/p1_06b_to_17b/token_table.parquet": "9ac377ac3e5ad7dafe044a37c40a15294fd92056966952ba1825b5b735929687",
+    "runs/flores200_en_ko_replication/token_tables/p1_06b_to_17b/continuations.parquet": "5c2e0a6bd990d16a2e127bb7ab71277ea32dcfc30837b5667b0467a1b5c966c2",
+    "runs/flores200_en_ko_replication/token_tables/p2_17b_to_4b/continuations.parquet": "edb45a43ce4a57fc4c0a698745d0458d0c517bcf8a08642fd2602b5f11390101",
+    "runs/20260926T184145Z_pilot1000/e1_token_frequency_cache.parquet": "d5093700c1ffbf504131bebf24a5704f6456358b3be41e877ee56682a66af98c",
+    "runs/e2_model_pair_replication/p2_17b_to_4b/sd_events.parquet": "d9ff1c8a2ce8ba39dbe86cd918c974b97e2e8ac7d0ee1bd0201dac6824fc8688",
+    "runs/20260926T184145Z_pilot1000/reference_outputs.jsonl": "56155603252d86febbeeaaef466789aa12359160cf2ded782bd46bcb3c9fdcce",
+    "runs/e2_model_pair_replication/p1_06b_to_17b/sd_events.parquet": "f306be53dfccce7e8e0cb3509887e01290448964540c2940c38d8da431ed7418",
+    "runs/flores200_en_ko_replication/traces/p3_06b_to_4b/sd_events.parquet": "013140cfab94aed71ef9755da4cd21b1eb5dfc9bdc3d76f751655fe4786e53a5",
+    "runs/20260926T184145Z_pilot1000/sd_events.parquet": "1bf4d3264f031fbd206722aa0fbf3df0363fb8e2ccfd125263b3af794c697a61",
+    "runs/flores200_en_ko_replication/traces/p1_06b_to_17b/sd_events.parquet": "5ab8a10847fcf5adb6635b9f8ba1a51bc0e279bc0ef2081a4609365923eb9320",
+    "runs/e2_model_pair_replication/p1_06b_to_17b/continuations.parquet": "d4c23bb3a6676ad420bed0b9d96ed01109159ea756a1351bb887eaa4a77dfaf6",
+    "runs/flores200_en_ko_replication/traces/p2_17b_to_4b/sd_events.parquet": "081cebcc743e819e65438fc7406c3ad343f98ac097b0e1f7a7dcb4cdb8bea474",
+    "runs/flores200_en_ko_replication/token_tables/p3_06b_to_4b/continuations.parquet": "edb45a43ce4a57fc4c0a698745d0458d0c517bcf8a08642fd2602b5f11390101",
+    "runs/flores200_en_ko_replication/token_tables/p1_06b_to_17b/token_table.parquet": "6bf70e5071c07c1bf46b770d872859a1ed3f882fab4346195a9a27da534b3a65",
+    "runs/20260926T184145Z_pilot1000/h2_token_table.parquet": "16e8c9524892a2e0e0a83106f4daca9cf7890690c2b7935a100d6ad9125d605f",
+    "runs/flores200_en_ko_replication/token_tables/p2_17b_to_4b/token_table.parquet": "e63f148325c2f827fdd35a8b60a53a625bb84c0b537cd43a60152d1c3167ccba",
+    "runs/e2_model_pair_replication/p2_17b_to_4b/token_table.parquet": "5311b45b990a7b6576e9bbe05f964eef86e6b52521f44e1d5c6699d1fa4333f3",
+    "runs/flores200_en_ko_replication/token_tables/p3_06b_to_4b/token_table.parquet": "bc298b681bf2a7ade29e0eeb1e9d41f23a17730d52e1b7cd8aa5f52f343ea963"
+  }
+}

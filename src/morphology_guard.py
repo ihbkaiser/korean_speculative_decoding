@@ -42,8 +42,15 @@ def project_candidate_block(
     prompt_id: int,
     round_index: int,
     pair: str,
+    allow_local_exact_spans: bool = False,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
-    """Classify proposed target-token slots using exact decoded character spans."""
+    """Classify proposed target-token slots using exact decoded character spans.
+
+    By default, the online guard requires the complete block to round-trip
+    exactly. Offline measurement may set ``allow_local_exact_spans`` to accept
+    an individually exact token span when another token elsewhere in the
+    proposed block prevents whole-block retokenization from being exact.
+    """
     started = time.perf_counter()
     from scripts.analyze_h3 import boundary_type
 
@@ -107,7 +114,7 @@ def project_candidate_block(
             token_start, token_end, whitespace_only = _nonwhite_span(continuation, local_start, local_end)
 
         morph_class, eo_ids, morph_ids, reason = _classify_token(
-            span_exact=span_exact and alignment["roundtrip_exact"],
+            span_exact=span_exact and (alignment["roundtrip_exact"] or allow_local_exact_spans),
             crosses_prompt=crosses_prompt,
             whitespace_only=whitespace_only,
             token_start=token_start,
@@ -150,7 +157,7 @@ def project_candidate_block(
             reason = "cross_morpheme_not_within_single_eojeol"
             morph_class = "CROSS_EOJEOL"
 
-        if not alignment["roundtrip_exact"]:
+        if not alignment["roundtrip_exact"] and not allow_local_exact_spans:
             status = "INVALID_ROUNDTRIP"
         elif not span_exact:
             status = "INVALID_TOKEN_SPAN"

@@ -1,0 +1,21 @@
+{
+  "analysis": "actual draft proposal boundary-specific N2P CROSS vs nearest-boundary WITHIN_SPLIT",
+  "workloads": [
+    "WIKIPEDIA",
+    "FLORES"
+  ],
+  "pairs": [
+    "P1",
+    "P2"
+  ],
+  "candidate_context": "complete saved draft proposal block for both accepted and first-rejected observed proposals",
+  "invalidated_suffixes": "excluded as outcome rows",
+  "tokenizer": {
+    "model_id": "Qwen/Qwen3-0.6B-Base",
+    "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+    "tokenizer_class": "Qwen2Tokenizer",
+    "vocab_size": 151669,
+    "backend_sha256": "41e00eccf531cffc2e562d38bdd879d41e5044ea279af5b73c6a32aabcc8fe04"
+  },
+  "kiwi_version": "0.24.0"
+}

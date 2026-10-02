@@ -1,0 +1,30 @@
+{
+  "workload": "FLORES",
+  "pair": "P2",
+  "prompt_count": 32,
+  "target_parity_checked": 32,
+  "target_parity_failures": 0,
+  "speculative_outputs_match_independent_target_greedy_on_audited_prompts": true,
+  "valid_proposal_events": 1582,
+  "first_rejection_events": 355,
+  "trace_sha256": "26adc1a978b1e3ebe30b8d314ca08c35f140da6673a4825fcc35fc6dea29c28d",
+  "elapsed_seconds_this_run": 346.0989716309123,
+  "model_pair": {
+    "draft": {
+      "id": "Qwen/Qwen3-1.7B-Base",
+      "revision": "ea980cb0a6c2ae4b936e82123acc929f1cec04c1"
+    },
+    "target": {
+      "id": "Qwen/Qwen3-4B-Base",
+      "revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539"
+    }
+  },
+  "max_new_tokens": 128,
+  "speculative_k": 4,
+  "dtype": "float16",
+  "attention_backend": "sdpa",
+  "physical_gpu": 0,
+  "gpu_name": "NVIDIA RTX A4000",
+  "peak_allocated_vram_gb": 10.920454978942871,
+  "prompt_manifest_sha256": "1f5443d6feeb7438fb9f006889d7d9d52dac35f449fa1175150f277c6d3b6dc1"
+}

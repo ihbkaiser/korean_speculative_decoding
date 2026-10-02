@@ -1,0 +1,57 @@
+{
+  "pairs": {
+    "P1": {
+      "target_model": {
+        "id": "Qwen/Qwen3-1.7B-Base",
+        "revision": "ea980cb0a6c2ae4b936e82123acc929f1cec04c1"
+      },
+      "draft_model": {
+        "id": "Qwen/Qwen3-0.6B-Base",
+        "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd"
+      },
+      "n_contexts": 1336,
+      "target_seconds": 71.05343483807519,
+      "draft_seconds": 68.99477901123464
+    },
+    "P2": {
+      "target_model": {
+        "id": "Qwen/Qwen3-4B-Base",
+        "revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539"
+      },
+      "draft_model": {
+        "id": "Qwen/Qwen3-1.7B-Base",
+        "revision": "ea980cb0a6c2ae4b936e82123acc929f1cec04c1"
+      },
+      "n_contexts": 1414,
+      "target_seconds": 92.86708707828075,
+      "draft_seconds": 80.28438055282459
+    }
+  },
+  "condition_audit": {
+    "NP_CROSS": {
+      "n": 1375,
+      "draft_replay_match": 1370,
+      "target_replay_match": 1373,
+      "saved_reject_label_match": 1368,
+      "valid_counterfactual": 1368,
+      "no_valid_alternative": 0,
+      "model_replay_mismatch": 7
+    },
+    "WITHIN_SPLIT_PLACEBO": {
+      "n": 1375,
+      "draft_replay_match": 1374,
+      "target_replay_match": 1370,
+      "saved_reject_label_match": 1369,
+      "valid_counterfactual": 1369,
+      "no_valid_alternative": 0,
+      "model_replay_mismatch": 6
+    }
+  },
+  "tokenizer": {
+    "model_id": "Qwen/Qwen3-0.6B-Base",
+    "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+    "tokenizer_class": "Qwen2Tokenizer",
+    "vocab_size": 151669,
+    "backend_sha256": "41e00eccf531cffc2e562d38bdd879d41e5044ea279af5b73c6a32aabcc8fe04"
+  }
+}

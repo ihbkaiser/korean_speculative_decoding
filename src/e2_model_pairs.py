@@ -509,6 +509,7 @@ def speculative_greedy_fast(
     guard_controller: Any | None = None,
     runtime_stats: dict[str, Any] | None = None,
     batch_target_verification: bool = False,
+    record_entropies: bool = False,
 ) -> tuple[list[int], list[dict[str, Any]]]:
     """Exact cached-path greedy SD, with an optional exact proposal scheduler.
 
@@ -574,7 +575,7 @@ def speculative_greedy_fast(
             proposals: list[int] = []
             proposal_entropies: list[float] = []
             for _ in range(proposal_limit):
-                if guard_controller is not None and bool(getattr(guard_controller, "requires_entropy", False)):
+                if record_entropies or (guard_controller is not None and bool(getattr(guard_controller, "requires_entropy", False))):
                     log_probs = torch.log_softmax(draft_result.logits[0, -1].float(), dim=-1)
                     entropy = float((-(log_probs.exp() * log_probs).sum()).item())
                     proposal_entropies.append(entropy)
@@ -634,6 +635,7 @@ def speculative_greedy_fast(
                         })
 
             target_decisions: list[int | None] = [None] * len(proposals)
+            target_entropies: list[float | None] = [None] * len(proposals)
             accepted_prefix = 0
             mismatch_index: int | None = None
             target_eos_accepted = False
@@ -657,6 +659,9 @@ def speculative_greedy_fast(
                 ) if batch_target_verification else target_next_logits
                 decision = int(torch.argmax(decision_logits, dim=-1).item())
                 target_decisions[j] = decision
+                if record_entropies:
+                    target_log_probs = torch.log_softmax(decision_logits.float(), dim=-1)
+                    target_entropies[j] = float((-(target_log_probs.exp() * target_log_probs).sum()).item())
                 if runtime_stats is not None:
                     runtime_stats["target_proposal_positions_verified"] += 1
                 if proposal_id != decision:
@@ -699,6 +704,8 @@ def speculative_greedy_fast(
                     "draft_proposed_token_id": int(proposal_id),
                     "target_verification_token_id": decision,
                     "target_greedy_token_id": decision,
+                    "draft_entropy": proposal_entropies[j] if record_entropies and j < len(proposal_entropies) else None,
+                    "target_entropy": target_entropies[j] if record_entropies else None,
                     "accepted": bool(valid and not rejected),
                     "rejected": rejected,
                     "sd_valid": bool(valid),

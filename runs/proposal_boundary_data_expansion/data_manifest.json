@@ -1,0 +1,32 @@
+{
+  "wiki": {
+    "dataset": "wikimedia/wikipedia",
+    "config": "20231101.ko",
+    "split": "train",
+    "revision": "b04c8d1ceb2f5cd4588862100d08de323dccfbaa",
+    "additional_prompts": 1000,
+    "first_source_ordinal": 1000,
+    "last_source_ordinal": 1999,
+    "original_prompt_cache_sha256": "6f5a90e25f62ba84f49cfd84285aab17b6f91c6c3c6a06ebb4c129059d72563e"
+  },
+  "flores": {
+    "release": "FLORES-200 original release",
+    "split": "dev",
+    "prompt_count": 997,
+    "source_archive_sha256": "b8b0b76783024b85797e5cc75064eb83fc5288b41e9654dabc7be6ae944011f6",
+    "source_file_sha256": {
+      "eng_Latn.dev": "51a25f527fd81f428b6933d85a2f5e5544af92aa82042c7fbf0c4120327fba0a",
+      "kor_Hang.dev": "b309cfc95f11fcf5be423eb43c31cef9aef91c504ebd25d4ef6b11cb916c29c2",
+      "metadata_dev.tsv": "26e7b00913809be16aa2590e5e252f0a54832eef2de96b3948876878995ec771"
+    },
+    "overlap_with_devtest_source_rows": []
+  },
+  "tokenizer": {
+    "model_id": "Qwen/Qwen3-0.6B-Base",
+    "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+    "prompt_encoding": "add_special_tokens=False; truncation to 128 tokens"
+  },
+  "total_prompts": 1997,
+  "prompts_jsonl_sha256": "a4a6914d687638eea55dabe648fee983059d0471af286d6adc3472e6ad81c162",
+  "prompt_manifest_sha256": "1f5443d6feeb7438fb9f006889d7d9d52dac35f449fa1175150f277c6d3b6dc1"
+}
