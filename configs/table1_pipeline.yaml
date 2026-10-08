@@ -51,7 +51,7 @@ inference:
   do_sample: false
   dtype: float16
   attention_backend: sdpa
-  decoder: legacy
+  decoder: cached
   # Cached SD verifies k proposals in one target block on B200.  If a
   # near-tie disagrees with the batch-64 reference, Table 1 retries only that
   # prompt on the strict singleton target path.

@@ -174,7 +174,7 @@ def build_run_identity(
         "max_prompt_tokens": int(config["max_prompt_tokens"]),
         "max_new_tokens": int(config["max_new_tokens"]),
         "speculative_k": int(config["speculative_k"]),
-        "decoder": str(pair_spec.get("decoder", config.get("decoder", "legacy"))),
+        "decoder": str(pair_spec.get("decoder", config.get("decoder", "cached"))),
         "dtype": _pair_inference_setting(pair_spec, config, "dtype", "float16"),
         "attention_backend": _pair_inference_setting(pair_spec, config, "attention_backend", "sdpa"),
         "reference_batch_size": int(
@@ -195,7 +195,7 @@ def _pair_inference_setting(
 
 def select_speculative_decoder(pair_spec: dict[str, Any], config: dict[str, Any]):
     """Select a pinned decoder without silently changing audit semantics."""
-    decoder_name = str(pair_spec.get("decoder", config.get("decoder", "legacy"))).lower()
+    decoder_name = str(pair_spec.get("decoder", config.get("decoder", "cached"))).lower()
     decoders = {
         "legacy": speculative_greedy,
         "cached": speculative_greedy_cached,

@@ -78,7 +78,7 @@ Teacher-forced 분석은 target-generated continuation의 모든 token 위치에
 
 ### 중요 구현 설명 (English notes)
 
-- **Exact greedy parity:** Target proposals are verified one token at a time through the target KV cache, using the same cached forward path as target-only greedy decoding. This avoids argmax changes that can arise from batched verification kernels near ties.
+- **Exact greedy parity:** Production Table 1 uses the persistent draft-cache decoder for all five pairs. It verifies each `k=4` proposal block with one target forward and rolls the target cache back after rejection; if a batch/scalar near-tie is observed, only that prompt falls back to the strict singleton verifier.
 - **Invalidated proposals:** Proposals after the first mismatch are logged for audit, but their `rejected` value is null because the target never verified them on the valid decoding path.
 - **Boundary score:** Morpheme/tokenizer boundaries are exact character offsets within one eojeol. `misalignment` is one minus their boundary F1; two empty boundary sets have F1 1.
 - **Inference scope:** Regression standard errors are clustered by prompt. A small pilot is for pipeline validation and does not establish the hypothesis.
@@ -279,17 +279,19 @@ create an ephemeral Modal Secret; the token is ignored by git and excluded
 from the zip.
 
 The production Table 1 path selects the decoder and numeric inference path per
-pair from the pinned YAML. All five pairs use FP32 + eager attention and
-reference batch 64. Q1/Q3/M1/G1 use the persistent draft-cache
-decoder after a B200 smoke parity check, while Q2 stays on the legacy sequential
-decoder because its cached smoke run changed a valid proposal decision. The
-global defaults remain `decoder: legacy`, FP16, and SDPA. In all cases, target
-continuation IDs must remain exact within the configured numeric path.
+pair from the pinned YAML. All five pairs use the persistent draft-cache
+decoder, FP32 + eager attention, reference batch 64, and batched target
+verification with strict singleton fallback. The global decoder default is
+`decoder: cached`; an explicit `decoder: legacy` remains available for an
+isolated comparison. In all cases, target continuation IDs must remain exact
+within the configured numeric path.
 
 The target-only reference pass uses same-length microbatches of 64 for all five
 pairs. FP32 + eager is selected uniformly for this throughput-oriented run;
 exact token parity against the former FP16 scalar baseline is not a required
-gate for this configuration. Target proposal verification remains sequential.
+gate for this configuration. Cached target proposal verification evaluates one
+`k=4` block at a time and records a strict singleton fallback whenever the
+batched path disagrees with the scalar target path.
 
 On the pinned B200 runtime, FP32 SDPA was slightly slower than eager for Q1/Q2
 batch 64, so eager is pinned uniformly. `flash_attention_2` is accepted by the

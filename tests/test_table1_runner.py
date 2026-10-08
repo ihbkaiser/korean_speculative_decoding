@@ -62,6 +62,19 @@ def test_pair_decoder_override_wins_over_legacy_global_default():
     assert select_speculative_decoder({"decoder": "cached"}, {"decoder": "legacy"}) is speculative_greedy_cached
 
 
+def test_company_table1_config_defaults_all_pairs_to_cached():
+    import yaml
+
+    config_path = Path(__file__).resolve().parents[1] / "configs" / "table1_pipeline.yaml"
+    config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+
+    assert config["inference"]["decoder"] == "cached"
+    assert {
+        pair_spec.get("decoder", config["inference"]["decoder"])
+        for pair_spec in config["pairs"].values()
+    } == {"cached"}
+
+
 def test_custom_model_path_override_disables_hub_revision(tmp_path):
     draft_path = tmp_path / "draft-model"
     draft_path.mkdir()
