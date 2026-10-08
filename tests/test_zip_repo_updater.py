@@ -28,6 +28,15 @@ def test_updater_is_self_contained_shell_file():
     assert 'FOLDER_PATH="${FOLDER_PATH:-' in text
 
 
+def test_updater_has_fast_staging_and_detailed_logging():
+    text = SCRIPT.read_text(encoding="utf-8")
+    assert "archive.extractall" in text
+    assert "TemporaryDirectory" in text
+    assert "--log-file" in text
+    assert "temporary stage removed" in text
+    assert "scan repository" in text
+
+
 def _run_shell_updater(archive: Path, repo: Path, *extra: str) -> subprocess.CompletedProcess[str]:
     bash = shutil.which("bash")
     if not bash:

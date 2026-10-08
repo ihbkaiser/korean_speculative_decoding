@@ -7,6 +7,8 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PYTHON_BIN="${PYTHON_BIN:-python3}"
 ZIP_PATH="${ZIP_PATH:-}"
 FOLDER_PATH="${FOLDER_PATH:-$REPO_ROOT}"
+LOG_FILE="${LOG_FILE:-}"
+PROGRESS_EVERY="${PROGRESS_EVERY:-100}"
 export REPO_ROOT
 
 PY_ARGS=()
@@ -27,18 +29,28 @@ else
   PY_ARGS+=("$ZIP_PATH")
 fi
 PY_ARGS+=(--repo "$FOLDER_PATH")
+if [[ -n "$LOG_FILE" ]]; then
+  PY_ARGS+=(--log-file "$LOG_FILE")
+fi
+PY_ARGS+=(--progress-every "$PROGRESS_EVERY")
+if [[ "${VERBOSE:-0}" == "1" ]]; then
+  PY_ARGS+=(--verbose)
+fi
 
 exec "$PYTHON_BIN" - "${PY_ARGS[@]}" "$@" <<'PY'
 from __future__ import annotations
 
 import argparse
+import filecmp
 import hashlib
 import json
 import os
 import re
 import shutil
 import stat
+import sys
 import tempfile
+import time
 import zipfile
 from datetime import datetime, timezone
 from pathlib import Path, PurePosixPath
@@ -50,6 +62,31 @@ DEFAULT_PRESERVE = (
     "data", "models", "metadata", "audit", "runs", "logs", "validation",
     "results", "remote_artifacts",
 )
+
+
+class RunLogger:
+    def __init__(self, log_file: Path | None = None, *, verbose: bool = False):
+        self.verbose = verbose
+        self.handle = None
+        if log_file:
+            log_file = log_file.expanduser().resolve()
+            log_file.parent.mkdir(parents=True, exist_ok=True)
+            self.handle = log_file.open("a", encoding="utf-8", buffering=1)
+
+    def log(self, message: str, level: str = "INFO") -> None:
+        stamp = datetime.now().astimezone().isoformat(timespec="seconds")
+        line = f"{stamp} [{level}] {message}"
+        print(line, file=sys.stderr, flush=True)
+        if self.handle:
+            self.handle.write(line + "\n")
+
+    def close(self) -> None:
+        if self.handle:
+            self.handle.close()
+
+
+def elapsed(start: float) -> str:
+    return f"{time.perf_counter() - start:.2f}s"
 
 
 def normalise_archive_name(name: str) -> str:
@@ -83,30 +120,48 @@ def relative_member(name: str, root: str | None) -> Path:
     return Path(*PurePosixPath(normalised).parts)
 
 
-def extract_archive(archive_path: Path, stage: Path) -> Path:
+def extract_archive(
+    archive_path: Path,
+    stage: Path,
+    *,
+    preserve: tuple[str, ...],
+    logger: RunLogger,
+) -> tuple[Path, list[Path]]:
     if stage.exists() and any(stage.iterdir()):
         raise ValueError(f"staging directory must be empty: {stage}")
     stage.mkdir(parents=True, exist_ok=True)
+    started = time.perf_counter()
     with zipfile.ZipFile(archive_path) as archive:
-        infos = [info for info in archive.infolist() if not info.is_dir()]
+        all_infos = archive.infolist()
+        infos = [info for info in all_infos if not info.is_dir()]
         root = detect_archive_root(info.filename for info in infos)
         seen: set[Path] = set()
+        mutable_infos = []
+        skipped: list[Path] = []
+        for info in all_infos:
+            normalise_archive_name(info.filename)
+            mode = (info.external_attr >> 16) & 0o170000
+            if mode == stat.S_IFLNK:
+                raise ValueError(f"symbolic links are not allowed: {info.filename!r}")
         for info in infos:
             relative = relative_member(info.filename, root)
             if relative in seen:
                 raise ValueError(f"duplicate archive path after root stripping: {relative}")
             seen.add(relative)
-            mode = (info.external_attr >> 16) & 0o170000
-            if mode == stat.S_IFLNK:
-                raise ValueError(f"symbolic links are not allowed: {info.filename!r}")
-            destination = stage / relative
-            destination.parent.mkdir(parents=True, exist_ok=True)
-            with archive.open(info, "r") as source, destination.open("wb") as target:
-                shutil.copyfileobj(source, target)
-            permissions = (info.external_attr >> 16) & 0o777
-            if permissions:
-                destination.chmod(permissions)
-    return stage
+            if is_preserved(relative, preserve):
+                skipped.append(relative)
+            else:
+                mutable_infos.append(info)
+        logger.log(
+            f"extract mutable ZIP entries: total={len(infos)}, "
+            f"mutable={len(mutable_infos)}, preserved={len(skipped)}, root={root or '<none>'}"
+        )
+        # The archive is fully validated above. Extract only mutable entries in
+        # one archive operation; data/models/cache files are never copied to tmp.
+        archive.extractall(stage, members=mutable_infos)
+    source = stage / root if root else stage
+    logger.log(f"temporary extraction complete: files={len(mutable_infos)}, elapsed={elapsed(started)}")
+    return source, skipped
 
 
 def normalise_preserve(values: Iterable[str]) -> tuple[str, ...]:
@@ -124,6 +179,8 @@ def is_preserved(relative: Path, preserve: tuple[str, ...]) -> bool:
 
 
 def files(root: Path) -> dict[Path, Path]:
+    if not root.exists():
+        return {}
     return {
         path.relative_to(root): path
         for path in root.rglob("*")
@@ -132,9 +189,9 @@ def files(root: Path) -> dict[Path, Path]:
 
 
 def same_file(left: Path, right: Path) -> bool:
-    if not left.exists() or left.stat().st_size != right.stat().st_size:
+    if not left.is_file() or not right.is_file() or left.stat().st_size != right.stat().st_size:
         return False
-    return left.read_bytes() == right.read_bytes()
+    return filecmp.cmp(left, right, shallow=False)
 
 
 def sha256(path: Path) -> str:
@@ -159,6 +216,8 @@ def apply_update(
     preserve: Iterable[str],
     delete_missing: bool = False,
     dry_run: bool = False,
+    logger: RunLogger,
+    progress_every: int = 100,
 ) -> dict[str, object]:
     repo = repo.expanduser().resolve()
     archive_path = archive_path.expanduser().resolve()
@@ -167,19 +226,37 @@ def apply_update(
     if not archive_path.is_file():
         raise FileNotFoundError(archive_path)
     preserve_values = normalise_preserve(preserve)
+    logger.log(
+        f"start update: archive={archive_path}, repo={repo}, dry_run={dry_run}, "
+        f"delete_missing={delete_missing}"
+    )
 
-    with tempfile.TemporaryDirectory(prefix="repo_zip_stage-") as temporary:
-        source = extract_archive(archive_path, Path(temporary))
+    temporary = tempfile.TemporaryDirectory(prefix="repo_zip_stage-")
+    try:
+        stage = Path(temporary.name)
+        logger.log(f"temporary stage created: {stage}")
+        source, skipped = extract_archive(
+            archive_path, stage, preserve=preserve_values, logger=logger
+        )
         source_files = files(source)
-        destination_files = files(repo)
-        mutable_source = {
-            relative: path for relative, path in source_files.items()
-            if not is_preserved(relative, preserve_values)
-        }
-        mutable_destination = {
-            relative: path for relative, path in destination_files.items()
-            if not is_preserved(relative, preserve_values)
-        }
+        mutable_source = source_files
+        logger.log(f"scan temporary code tree: files={len(mutable_source)}")
+
+        if delete_missing:
+            logger.log("scan repository for deletions: full mutable tree")
+            destination_files = files(repo)
+            mutable_destination = {
+                relative: path for relative, path in destination_files.items()
+                if not is_preserved(relative, preserve_values)
+            }
+        else:
+            logger.log("scan repository: only ZIP paths (delete scan disabled)")
+            mutable_destination = {}
+            for relative in mutable_source:
+                candidate = repo / relative
+                if candidate.is_file() and not candidate.is_symlink():
+                    mutable_destination[relative] = candidate
+
         added = sorted(relative for relative in mutable_source if relative not in mutable_destination)
         updated = sorted(
             relative for relative in mutable_source
@@ -190,12 +267,17 @@ def apply_update(
             relative for relative in mutable_destination
             if delete_missing and relative not in mutable_source
         )
-        skipped = sorted(relative for relative in source_files if is_preserved(relative, preserve_values))
         changed = added + updated + deleted
         backup_dir: Path | None = None
+        logger.log(
+            f"plan ready: added={len(added)}, updated={len(updated)}, "
+            f"deleted={len(deleted)}, preserved={len(skipped)}"
+        )
 
         if not dry_run and changed:
+            backup_started = time.perf_counter()
             backup_dir = backup_path(repo)
+            logger.log(f"create backup: {backup_dir}")
             for relative in updated + deleted:
                 existing = repo / relative
                 if existing.is_file() and not existing.is_symlink():
@@ -216,13 +298,16 @@ def apply_update(
             (backup_dir / "manifest.json").write_text(
                 json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
             )
+            logger.log(f"backup complete: elapsed={elapsed(backup_started)}")
 
         if not dry_run:
+            apply_started = time.perf_counter()
+            logger.log(f"apply changes: files={len(changed)}")
             for relative in updated + deleted:
                 destination = repo / relative
                 if destination.is_symlink() or destination.is_file():
                     destination.unlink()
-            for relative in added + updated:
+            for index, relative in enumerate(added + updated, start=1):
                 source_file = mutable_source[relative]
                 destination = repo / relative
                 if destination.is_symlink():
@@ -231,6 +316,18 @@ def apply_update(
                     raise IsADirectoryError(destination)
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(source_file, destination)
+                if logger.verbose:
+                    logger.log(f"copied [{index}/{len(added) + len(updated)}]: {relative}")
+                elif index % max(1, progress_every) == 0:
+                    logger.log(f"copy progress: {index}/{len(added) + len(updated)}")
+            logger.log(f"apply complete: elapsed={elapsed(apply_started)}")
+        elif dry_run:
+            logger.log("dry-run: no files changed")
+        else:
+            logger.log("no mutable changes detected")
+    finally:
+        temporary.cleanup()
+        logger.log("temporary stage removed")
 
     return {
         "status": "DRY_RUN" if dry_run else "UPDATED",
@@ -263,16 +360,33 @@ def main() -> int:
         help="delete mutable local files absent from ZIP; backups are created first",
     )
     parser.add_argument("--dry-run", action="store_true", help="report changes without modifying the repo")
-    args = parser.parse_args()
-    result = apply_update(
-        args.zip_path,
-        args.repo,
-        preserve=(*DEFAULT_PRESERVE, *args.preserve),
-        delete_missing=args.delete_missing,
-        dry_run=args.dry_run,
+    parser.add_argument("--log-file", type=Path, help="also write timestamped logs to this file")
+    parser.add_argument("--verbose", action="store_true", help="log every copied file")
+    parser.add_argument(
+        "--progress-every", type=int, default=100,
+        help="log copy progress every N files (default: 100)",
     )
-    print(json.dumps(result, ensure_ascii=False, indent=2))
-    return 0
+    args = parser.parse_args()
+    if args.progress_every < 1:
+        parser.error("--progress-every must be >= 1")
+    logger = RunLogger(args.log_file, verbose=args.verbose)
+    try:
+        result = apply_update(
+            args.zip_path,
+            args.repo,
+            preserve=(*DEFAULT_PRESERVE, *args.preserve),
+            delete_missing=args.delete_missing,
+            dry_run=args.dry_run,
+            logger=logger,
+            progress_every=args.progress_every,
+        )
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        return 0
+    except Exception as exc:
+        logger.log(f"update failed: {type(exc).__name__}: {exc}", "ERROR")
+        raise
+    finally:
+        logger.close()
 
 
 if __name__ == "__main__":

@@ -203,6 +203,20 @@ ZIP_PATH="$ZIP_PATH" FOLDER_PATH="$FOLDER_PATH" \
   bash /workspace/storage-shared/nlp/tungdd11/korean_speculative_decoding/repo/scripts/update_from_github_zip.sh
 ```
 
+The updater logs timestamped phases to the terminal. To keep a persistent log
+and show every copied file, set `LOG_FILE` and `VERBOSE=1`:
+
+```bash
+LOG_FILE=/workspace/storage-shared/nlp/tungdd11/korean_speculative_decoding/update.log \
+VERBOSE=1 ZIP_PATH="$ZIP_PATH" FOLDER_PATH="$FOLDER_PATH" \
+  bash /workspace/storage-shared/nlp/tungdd11/korean_speculative_decoding/repo/scripts/update_from_github_zip.sh
+```
+
+It validates the whole ZIP, extracts only mutable code/config files into a
+temporary directory, applies the overlay, and removes that directory in a
+`finally` cleanup block even when the update fails. `data/`, `models/`, caches, logs,
+artifacts, and credentials are not extracted or overwritten by default.
+
 The default mode is an overlay, so local files absent from the ZIP are kept.
 To mirror deletions from GitHub for the mutable part of the checkout, opt in
 explicitly with `--delete-missing`:
