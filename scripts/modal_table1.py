@@ -15,6 +15,7 @@ import os
 import shutil
 import subprocess
 import sys
+import tempfile
 import time
 import zipfile
 from pathlib import Path
@@ -42,7 +43,24 @@ def _read_local_token() -> str:
     return token
 
 
-HF_SECRET = modal.Secret.from_dict({"HF_TOKEN": _read_local_token()}) if modal.is_local() else modal.Secret.from_dict({})
+def _local_hf_secret() -> modal.Secret:
+    """Create a local Modal secret only when an HF token is actually present.
+
+    Test/benchmark stages use persistent Modal volumes and do not need Hub
+    authentication.  Keeping import-time secret creation optional lets those
+    stages run from a source snapshot without copying credentials anywhere.
+    Stages that access the Hub still fail explicitly when ``HF_TOKEN`` is
+    absent inside the remote function.
+    """
+    if not modal.is_local():
+        return modal.Secret.from_dict({})
+    token_path = ROOT / "hf_token"
+    if not token_path.exists() or not token_path.read_text(encoding="utf-8").strip():
+        return modal.Secret.from_dict({})
+    return modal.Secret.from_dict({"HF_TOKEN": _read_local_token()})
+
+
+HF_SECRET = _local_hf_secret()
 
 image = (
     modal.Image.debian_slim(python_version="3.11")
@@ -119,6 +137,27 @@ def _model_slug(model_id: str) -> str:
 def _write_json(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+@app.function(image=image, cpu=4, memory=32768, timeout=1800)
+def test_remote() -> dict[str, Any]:
+    """Run the repository test suite inside the pinned Modal image."""
+    test_root = Path(tempfile.mkdtemp(prefix="table1-repo-tests-"))
+    try:
+        shutil.copytree(REMOTE_REPO, test_root, dirs_exist_ok=True)
+        completed = subprocess.run(
+            [sys.executable, "-m", "pytest", "-q"],
+            cwd=str(test_root),
+            env=_env(),
+            text=True,
+            check=False,
+        )
+        print(f"TABLE1_REMOTE_TEST_EXIT_CODE={completed.returncode}", flush=True)
+        if completed.returncode != 0:
+            raise RuntimeError(f"Remote test suite failed with exit code {completed.returncode}")
+        return {"status": "passed", "return_code": completed.returncode}
+    finally:
+        shutil.rmtree(test_root, ignore_errors=True)
 
 
 @app.function(
@@ -938,6 +977,9 @@ def main(
     """
     if stage == "prepare-data":
         print(prepare_data_remote.remote())
+        return
+    if stage == "test":
+        print(test_remote.remote())
         return
     if stage == "download-models":
         print(download_models_remote.remote())

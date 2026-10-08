@@ -8,7 +8,7 @@ import math
 import time
 from collections import defaultdict
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Iterable, TextIO
 
 from .data import encode_prompt
 from .models import (
@@ -38,6 +38,27 @@ def _json_default(value: Any) -> Any:
 def _write_json(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2, default=_json_default) + "\n", encoding="utf-8")
+
+
+class ProgressWriter:
+    """Write resumable progress with bounded shared-filesystem flushes."""
+
+    def __init__(self, handle: TextIO, *, flush_every: int = 64):
+        if flush_every < 1:
+            raise ValueError("flush_every must be at least 1")
+        self.handle = handle
+        self.flush_every = flush_every
+        self.pending = 0
+
+    def write(self, item: dict[str, Any]) -> None:
+        self.handle.write(json.dumps(item, ensure_ascii=False, default=_json_default) + "\n")
+        self.pending += 1
+        if self.pending >= self.flush_every:
+            self.flush()
+
+    def flush(self) -> None:
+        self.handle.flush()
+        self.pending = 0
 
 
 def _write_parquet_atomic(rows: list[dict[str, Any]], path: Path) -> None:
@@ -512,12 +533,18 @@ def run_sd_shard(
     num_shards: int = 1,
     device: str = "cuda",
     token: str | None = None,
+    progress_flush_every: int = 64,
+    progress_log_every: int = 100,
 ) -> dict[str, Any]:
     """Run one deterministic, resumable prompt shard."""
     from transformers import AutoTokenizer
 
     if shard_index < 0 or num_shards < 1 or shard_index >= num_shards:
         raise ValueError("invalid shard index/count")
+    if progress_flush_every < 1:
+        raise ValueError("progress_flush_every must be at least 1")
+    if progress_log_every < 0:
+        raise ValueError("progress_log_every must be non-negative")
     root_path = Path(root)
     records = load_pair_records(root_path / config["paths"]["prompts"], pair_spec)
     shard_records = records[shard_index::num_shards]
@@ -600,6 +627,7 @@ def run_sd_shard(
     )
     started = time.time()
     with progress_path.open("a", encoding="utf-8") as progress:
+        progress_writer = ProgressWriter(progress, flush_every=progress_flush_every)
         for index, record in enumerate(shard_records):
             doc_id = str(record["doc_id"])
             if doc_id in completed:
@@ -615,15 +643,20 @@ def run_sd_shard(
                 reference_ids=reference_ids_by_doc[doc_id],
             )
             item = {"reference": reference, "events": events}
-            progress.write(json.dumps(item, ensure_ascii=False, default=_json_default) + "\n")
-            progress.flush()
+            progress_writer.write(item)
             completed[doc_id] = (reference, events)
-            print(
-                f"[{pair_id} shard {shard_index}/{num_shards}] "
-                f"{index + 1}/{len(shard_records)} doc_id={doc_id} "
-                f"generated={len(reference['target_continuation_token_ids'])}",
-                flush=True,
-            )
+            processed = index + 1
+            if progress_log_every and (
+                processed % progress_log_every == 0 or processed == len(shard_records)
+            ):
+                print(
+                    f"[{pair_id} shard {shard_index}/{num_shards}] "
+                    f"{processed}/{len(shard_records)} doc_id={doc_id} "
+                    f"generated={len(reference['target_continuation_token_ids'])} "
+                    f"checkpoint_pending={progress_writer.pending}",
+                    flush=True,
+                )
+        progress_writer.flush()
 
     reference_rows = [completed[str(record["doc_id"])][0] for record in shard_records]
     event_rows = [event for record in shard_records for event in completed[str(record["doc_id"])][1]]

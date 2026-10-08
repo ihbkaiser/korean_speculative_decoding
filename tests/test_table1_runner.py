@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import io
 import json
+from pathlib import Path
 
 import pandas as pd
 import pytest
@@ -14,6 +16,7 @@ from src.table1_runner import (
     build_run_identity,
     load_pair_records,
     prompt_ids_sha256,
+    ProgressWriter,
     resolve_model_reference,
     select_speculative_decoder,
     smoke_gate_mode,
@@ -115,6 +118,51 @@ def test_table1_cli_accepts_single_pair_end_to_end_command():
     assert args.align_device == "cpu"
 
 
+def test_table1_cli_accepts_buffered_progress_and_deferred_alignment_flags():
+    args = build_parser().parse_args([
+        "run-table1-main",
+        "--pair", "Q1",
+        "--skip-align",
+        "--progress-flush-every", "7",
+        "--progress-log-every", "11",
+    ])
+
+    assert args.skip_align is True
+    assert args.progress_flush_every == 7
+    assert args.progress_log_every == 11
+
+
+def test_progress_writer_flushes_in_batches():
+    class CountingBuffer(io.StringIO):
+        def __init__(self):
+            super().__init__()
+            self.flush_calls = 0
+
+        def flush(self):
+            self.flush_calls += 1
+            super().flush()
+
+    buffer = CountingBuffer()
+    writer = ProgressWriter(buffer, flush_every=2)
+    writer.write({"doc_id": "p1"})
+    assert buffer.flush_calls == 0
+    writer.write({"doc_id": "p2"})
+    assert buffer.flush_calls == 1
+    writer.write({"doc_id": "p3"})
+    writer.flush()
+    assert buffer.flush_calls == 2
+    assert buffer.getvalue().count("\n") == 3
+
+
+def test_company_launcher_overlaps_alignment_after_each_gpu_pair():
+    launcher = (Path(__file__).resolve().parents[1] / "scripts" / "run_company_table1.sh").read_text(
+        encoding="utf-8"
+    )
+    assert "--skip-align" in launcher
+    assert 'run_pair_align "$pair" &' in launcher
+    assert 'wait "$pid"' in launcher
+
+
 def test_run_table1_rejects_empty_shard_topology(tmp_path):
     args = build_parser().parse_args([
         "--root", str(tmp_path),
@@ -174,6 +222,56 @@ def test_main_table1_command_skips_audit_and_smoke(monkeypatch, tmp_path):
     assert len(run_calls) == 1
     assert run_calls[0]["model_meta"]["draft"]["local_path"] == str(draft.resolve())
     assert align_calls[0].target_model_path == str(target)
+
+
+def test_main_table1_can_defer_alignment(monkeypatch, tmp_path):
+    draft = tmp_path / "draft"
+    target = tmp_path / "target"
+    draft.mkdir()
+    target.mkdir()
+    config = {
+        "paths": {
+            "prompts": "data/prompts.parquet",
+            "dataset_metadata": "metadata/dataset_revision.json",
+            "model_metadata": "metadata/model_revisions.json",
+            "runs": "runs/table1",
+        },
+        "pairs": {
+            "Q1": {
+                "draft": "configured/draft",
+                "target": "configured/target",
+                "prompt_split": "common_20k",
+                "prompt_count": 1,
+            }
+        },
+        "model_paths": {"Q1": {"draft": str(draft), "target": str(target)}},
+        "inference": {"max_new_tokens": 128},
+    }
+    monkeypatch.setattr(table1_pipeline, "load_config", lambda _: config)
+    monkeypatch.setattr(table1_pipeline, "command_prepare_data", lambda _: 0)
+    run_calls = []
+    align_calls = []
+    monkeypatch.setattr(
+        table1_pipeline,
+        "run_sd_shard",
+        lambda **kwargs: run_calls.append(kwargs) or {"status": "complete"},
+    )
+    monkeypatch.setattr(table1_pipeline, "command_align", lambda args: align_calls.append(args) or 0)
+
+    args = build_parser().parse_args([
+        "--root", str(tmp_path),
+        "run-table1-main",
+        "--pair", "Q1",
+        "--skip-align",
+        "--progress-flush-every", "7",
+        "--progress-log-every", "11",
+    ])
+
+    assert table1_pipeline.command_run_table1_main(args) == 0
+    assert len(run_calls) == 1
+    assert run_calls[0]["progress_flush_every"] == 7
+    assert run_calls[0]["progress_log_every"] == 11
+    assert align_calls == []
 
 
 def test_event_artifact_contains_margin_and_top1_fields():

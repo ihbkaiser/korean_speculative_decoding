@@ -185,6 +185,26 @@ bash scripts/run_company_table1.sh Q1
 bash scripts/run_company_table1.sh all
 ```
 
+The `all` mode overlaps CPU morphology alignment with the next pair's GPU
+inference: each pair runs SD first, then its alignment is started in the
+background while the next pair starts. The final table build waits for every
+alignment process and aborts if any one fails. Per-pair logs are split into
+`logs/table1_<PAIR>_sd.log` and `logs/table1_<PAIR>_align.log`; the build log
+is `logs/table1_build.log`.
+
+SD progress checkpoints are buffered by default (`64` JSONL records per
+flush), and terminal progress is printed every `100` prompts. This reduces
+filesystem and console overhead while keeping resumable progress. Override
+these values when needed:
+
+```bash
+PROGRESS_FLUSH_EVERY=64 PROGRESS_LOG_EVERY=100 \
+  bash scripts/run_company_table1.sh all
+```
+
+If a run is interrupted between checkpoint flushes, at most the buffered
+suffix is recomputed; prompt sampling and shard assignment remain unchanged.
+
 ### Updating the company checkout from GitHub Download ZIP
 
 The ZIP updater handles the top-level `*-main/` directory created by GitHub.

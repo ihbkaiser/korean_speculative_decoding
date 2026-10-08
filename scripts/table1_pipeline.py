@@ -454,6 +454,8 @@ def command_run_sd(args: argparse.Namespace) -> int:
         num_shards=args.num_shards,
         device=args.device,
         token=_token(),
+        progress_flush_every=args.progress_flush_every,
+        progress_log_every=args.progress_log_every,
     )
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0
@@ -496,6 +498,8 @@ def command_run_table1(args: argparse.Namespace) -> int:
             device=args.device,
             draft_model_path=args.draft_model_path,
             target_model_path=args.target_model_path,
+            progress_flush_every=args.progress_flush_every,
+            progress_log_every=args.progress_log_every,
         )
         command_run_sd(run_args)
         align_args = argparse.Namespace(
@@ -562,6 +566,7 @@ def command_run_table1_main(args: argparse.Namespace) -> int:
         "target": model_meta["target"],
         "num_shards": int(args.num_shards),
         "config": str(Path(args.config).resolve()),
+        "alignment_deferred": bool(args.skip_align),
     })
 
     stage_results: list[dict[str, Any]] = []
@@ -576,26 +581,39 @@ def command_run_table1_main(args: argparse.Namespace) -> int:
             num_shards=args.num_shards,
             device=args.device,
             token=_token(),
+            progress_flush_every=args.progress_flush_every,
+            progress_log_every=args.progress_log_every,
         )
         print(json.dumps(result, ensure_ascii=False, indent=2))
-        align_args = argparse.Namespace(
-            config=args.config,
-            root=args.root,
-            pair=args.pair,
-            shard_index=shard_index,
-            num_shards=args.num_shards,
-            device=args.align_device,
-            target_model_path=target_model_path,
-        )
-        command_align(align_args)
-        stage_results.append({"shard_index": shard_index, "status": "complete"})
+        if args.skip_align:
+            print(
+                f"ALIGNMENT_DEFERRED pair={args.pair} shard={shard_index}; "
+                "run align-morphology after GPU inference",
+                flush=True,
+            )
+            stage_results.append({"shard_index": shard_index, "status": "sd_complete", "alignment": "deferred"})
+        else:
+            align_args = argparse.Namespace(
+                config=args.config,
+                root=args.root,
+                pair=args.pair,
+                shard_index=shard_index,
+                num_shards=args.num_shards,
+                device=args.align_device,
+                target_model_path=target_model_path,
+            )
+            command_align(align_args)
+            stage_results.append({"shard_index": shard_index, "status": "complete"})
 
     print(json.dumps({
         "pair": args.pair,
-        "status": "complete",
+        "status": "sd_complete" if args.skip_align else "complete",
         "mode": "production_without_audit_or_smoke",
         "shards": stage_results,
-        "next": "run build-table1 after all five pairs finish",
+        "next": (
+            "run align-morphology for each shard, then build-table1"
+            if args.skip_align else "run build-table1 after all five pairs finish"
+        ),
     }, ensure_ascii=False, indent=2))
     return 0
 
@@ -651,6 +669,8 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--shard-index", type=int, default=0)
     run.add_argument("--num-shards", type=int, default=1)
     run.add_argument("--device", default="cuda")
+    run.add_argument("--progress-flush-every", type=int, default=64)
+    run.add_argument("--progress-log-every", type=int, default=100)
     _add_model_override_args(run)
     run.set_defaults(func=command_run_sd)
 
@@ -662,6 +682,8 @@ def build_parser() -> argparse.ArgumentParser:
     run_table1.add_argument("--num-shards", type=int, default=1)
     run_table1.add_argument("--device", default="cuda")
     run_table1.add_argument("--align-device", default="cpu")
+    run_table1.add_argument("--progress-flush-every", type=int, default=64)
+    run_table1.add_argument("--progress-log-every", type=int, default=100)
     _add_model_override_args(run_table1)
     run_table1.set_defaults(func=command_run_table1)
 
@@ -673,6 +695,12 @@ def build_parser() -> argparse.ArgumentParser:
     run_table1_main.add_argument("--num-shards", type=int, default=1)
     run_table1_main.add_argument("--device", default="cuda")
     run_table1_main.add_argument("--align-device", default="cpu")
+    run_table1_main.add_argument(
+        "--skip-align", action="store_true",
+        help="finish GPU SD only; run align-morphology separately to overlap CPU work",
+    )
+    run_table1_main.add_argument("--progress-flush-every", type=int, default=64)
+    run_table1_main.add_argument("--progress-log-every", type=int, default=100)
     _add_model_override_args(run_table1_main)
     run_table1_main.set_defaults(func=command_run_table1_main)
 
