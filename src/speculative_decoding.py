@@ -292,6 +292,7 @@ def speculative_greedy_cached(
     eos_token_id: int | None,
     k: int = 4,
     prompt_id: int | str = 0,
+    batch_target_verification: bool = False,
 ) -> tuple[list[int], list[dict[str, Any]]]:
     """Exact greedy SD with a persistent draft KV cache.
 
@@ -302,9 +303,12 @@ def speculative_greedy_cached(
     cache format cannot be cropped, it falls back to a full draft prefill on
     the next block without changing output semantics.
 
-    Target verification remains the sequential cached path used by the
-    correctness reference, so this optimization does not trade away token-ID
-    parity for batched-kernel speed.
+    ``batch_target_verification`` verifies a complete proposal block with one
+    target forward and rolls the target cache back after a rejection.  It is
+    substantially faster on GPUs.  Because batched and singleton kernels can
+    disagree on a numerically near-tied argmax, callers that require strict
+    singleton parity must compare the returned IDs and retry with this option
+    disabled when needed.
     """
     if not prompt_ids:
         raise ValueError("prompt_ids must not be empty")
@@ -358,26 +362,58 @@ def speculative_greedy_cached(
         accepted_prefix_length = 0
         first_rejection_output_position: int | None = None
         mismatch_index: int | None = None
+        target_eos_accepted = False
+        batched_target_logits = None
+        verification_cache_length: int | None = None
+        use_batched_target_verification = bool(batch_target_verification and proposals)
+        if use_batched_target_verification:
+            if not hasattr(target_past, "crop") or not hasattr(target_past, "get_seq_length"):
+                # Legacy tuple caches cannot be safely rolled back after a
+                # vectorized verification call.  Fall back to the exact
+                # singleton path instead of silently changing semantics.
+                use_batched_target_verification = False
+            else:
+                verification_cache_length = int(target_past.get_seq_length())
+                target_result = target_model(
+                    input_ids=_as_batch(proposals, target_device),
+                    past_key_values=target_past,
+                    use_cache=True,
+                )
+                target_past = target_result.past_key_values
+                batched_target_logits = target_result.logits[0]
+
         for j, proposal_id in enumerate(proposals):
-            stats = distribution_stats(target_next_logits, proposal_id)
+            if use_batched_target_verification and j > 0:
+                decision_logits = batched_target_logits[j - 1]
+            else:
+                decision_logits = target_next_logits
+            stats = distribution_stats(decision_logits, proposal_id)
             target_distributions.append(stats)
+            if mismatch_index is not None:
+                # In batched mode the remaining logits are retained only for
+                # audit rows; they must not affect the committed prefix.
+                continue
             target_greedy_id = int(stats["greedy_token_id"])
             if proposal_id != target_greedy_id:
                 mismatch_index = j
                 first_rejection_output_position = base_position + j
-                break
+                if not use_batched_target_verification:
+                    break
+                continue
             accepted_prefix_length += 1
             if eos_token_id is not None and proposal_id == eos_token_id:
+                target_eos_accepted = True
                 break
-            target_result = target_model(
-                input_ids=_as_batch([proposal_id], target_device),
-                past_key_values=target_past,
-                use_cache=True,
-            )
-            target_past = target_result.past_key_values
-            target_next_logits = target_result.logits[0, -1]
+            if not use_batched_target_verification:
+                target_result = target_model(
+                    input_ids=_as_batch([proposal_id], target_device),
+                    past_key_values=target_past,
+                    use_cache=True,
+                )
+                target_past = target_result.past_key_values
+                target_next_logits = target_result.logits[0, -1]
 
-        if mismatch_index is not None:
+        if mismatch_index is not None and not use_batched_target_verification:
             # Preserve the original audit contract for invalidated suffixes.
             for j in range(mismatch_index + 1, len(proposals)):
                 hypothetical_context = current + proposals[:j]
@@ -417,6 +453,15 @@ def speculative_greedy_cached(
             })
 
         if mismatch_index is not None:
+            if use_batched_target_verification:
+                if verification_cache_length is None:
+                    raise RuntimeError("missing target cache length for batched verification")
+                target_past = _crop_past_key_values(
+                    target_past,
+                    verification_cache_length + accepted_prefix_length,
+                )
+                if target_past is None:
+                    raise RuntimeError("target cache rollback failed after batched verification")
             generated.extend(proposals[:mismatch_index])
             correction = int(target_distributions[mismatch_index]["greedy_token_id"])
             generated.append(correction)
@@ -451,7 +496,9 @@ def speculative_greedy_cached(
                     draft_next_logits = draft_result.logits[0, -1]
         else:
             generated.extend(proposals)
-            if proposals and eos_token_id is not None and proposals[-1] == eos_token_id:
+            if use_batched_target_verification and proposals and not target_eos_accepted:
+                target_next_logits = batched_target_logits[len(proposals) - 1]
+            if proposals and (target_eos_accepted or (eos_token_id is not None and proposals[-1] == eos_token_id)):
                 finished = True
 
         for row in round_events:

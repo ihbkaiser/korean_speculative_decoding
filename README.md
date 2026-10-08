@@ -161,9 +161,15 @@ the runtime environment manifest. Q2 also gets a common-20k consolidated view
 for cross-pair analysis. The final `build-table1` must report `COMPLETE`.
 
 Each SD/alignment shard writes a `COMPLETE` marker only after exact token-ID
-parity succeeds. Re-running a shard resumes from `progress.jsonl` and does not
-resample prompts. Incomplete pairs remain `Status=INCOMPLETE` in Table 1;
-placeholder values are never generated.
+parity succeeds. Production reference generation uses same-length batch-64
+target decoding for throughput. If a near-tied batch kernel disagrees with the
+singleton cached verifier, only that prompt is regenerated with scalar target
+greedy decoding and the fallback is recorded in the reference row and
+`run_metadata.json`; a real SD-versus-scalar mismatch still aborts the shard.
+Cached SD also verifies each `k=4` proposal block in one target forward and
+rolls the target cache back after rejection. Re-running a shard resumes from
+`progress.jsonl` and does not resample prompts. Incomplete pairs remain
+`Status=INCOMPLETE` in Table 1; placeholder values are never generated.
 
 If the full compatibility audit and 200-prompt smoke gate have already been
 handled externally, use `run-table1-main` for the production path only. It

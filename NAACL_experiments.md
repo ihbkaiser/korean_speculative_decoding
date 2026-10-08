@@ -111,6 +111,16 @@ must hold exactly.
 
 If this invariant fails, downstream rejection analysis is invalid and the run must be debugged before proceeding.
 
+The production implementation keeps this invariant without a global
+batch-size-1 fallback. Target references are generated in same-length
+microbatches of 64. Cached speculative decoding verifies each `k=4` proposal
+block in one target forward on the B200 and rolls back the target cache after
+the first rejection. When a batch kernel produces a rare near-tie disagreement,
+that prompt alone is regenerated with singleton target greedy decoding; the
+fallback token IDs, first-difference position, and source are persisted in the
+reference row and shard metadata. A mismatch between singleton target greedy
+and the speculative output remains fatal.
+
 ---
 
 ## 0.4 Core morphology definitions

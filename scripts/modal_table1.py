@@ -298,8 +298,9 @@ def benchmark_pair_b200(
     pair_id: str,
     prompts: int = 5,
     max_new_tokens: int = 32,
+    batch_target_verification: bool = False,
 ) -> dict[str, Any]:
-    """Compare the legacy and persistent-draft-cache decoders on one B200."""
+    """Compare the decoders, optionally using block target verification."""
     import yaml
     import torch
     from transformers import AutoTokenizer
@@ -365,8 +366,12 @@ def benchmark_pair_b200(
         torch.cuda.reset_peak_memory_stats()
         started = time.perf_counter()
         for ids, reference in zip(prompt_ids, references):
+            decoder_kwargs = {}
+            if decoder is speculative_greedy_cached:
+                decoder_kwargs["batch_target_verification"] = bool(batch_target_verification)
             output, events = decoder(
                 draft_model, target_model, ids, int(max_new_tokens), eos_token_id, 4,
+                **decoder_kwargs,
             )
             verify_greedy_equivalence(reference, output)
             outputs.append(output)
@@ -481,6 +486,7 @@ def benchmark_pair_b200(
         "audit_events_exact": full_audit_exact,
         "valid_audit_events_exact": valid_audit_exact,
         "invalidated_suffixes_may_differ": not full_audit_exact,
+        "batch_target_verification": bool(batch_target_verification),
     }
     output_path = Path("/root/artifacts/benchmarks") / f"table1_decoder_{pair_id.lower()}_b200.json"
     _write_json(output_path, result)
@@ -969,6 +975,7 @@ def main(
     benchmark_dtype: str = "",
     benchmark_disable_reduced_precision_matmul: bool = False,
     benchmark_batch_size: int = 0,
+    benchmark_batched_verification: bool = False,
 ) -> None:
     """Run one stage or the entire sequential pipeline.
 
@@ -1000,13 +1007,18 @@ def main(
     if stage == "benchmark":
         if not pair:
             raise ValueError("stage=benchmark requires --pair")
-        print(benchmark_pair_b200.remote(pair, benchmark_prompts, benchmark_max_new_tokens))
+        print(benchmark_pair_b200.remote(
+            pair, benchmark_prompts, benchmark_max_new_tokens, benchmark_batched_verification,
+        ))
         return
     if stage == "benchmark-all":
         pair_ids = ["Q1", "Q2", "Q3", "M1", "G1"]
         print("TABLE1_PARALLEL_STAGE=benchmark pairs=" + json.dumps(pair_ids), flush=True)
         for result in benchmark_pair_b200.starmap(
-            [(pair_id, benchmark_prompts, benchmark_max_new_tokens) for pair_id in pair_ids]
+            [
+                (pair_id, benchmark_prompts, benchmark_max_new_tokens, benchmark_batched_verification)
+                for pair_id in pair_ids
+            ]
         ):
             print(result)
         return

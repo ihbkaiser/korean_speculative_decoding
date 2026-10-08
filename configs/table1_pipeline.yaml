@@ -52,6 +52,10 @@ inference:
   dtype: float16
   attention_backend: sdpa
   decoder: legacy
+  # Cached SD verifies k proposals in one target block on B200.  If a
+  # near-tie disagrees with the batch-64 reference, Table 1 retries only that
+  # prompt on the strict singleton target path.
+  target_verification: batched_fallback
   smoke_prompts: 200
   compatibility_probe_prompts: 1000
   shard_size: 200
@@ -78,7 +82,7 @@ pairs:
     support_threshold_cross: 200
     support_threshold_within: 200
     gpu: B200
-    decoder: legacy
+    decoder: cached
     dtype: float32
     attention_backend: eager
     reference_batch_size: 64

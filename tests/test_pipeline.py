@@ -218,6 +218,26 @@ def test_cached_speculative_decoder_reuses_draft_prefix_and_preserves_parity():
     assert draft.long_prefill_calls == 1
 
 
+def test_cached_speculative_decoder_batched_target_verification_rolls_back_exactly():
+    target = CropCacheScriptedModel([1, 2, 3, 4])
+    draft = CropCacheScriptedModel([1, 0, 0, 0])
+    prompt = [6, 6]
+    reference = greedy_generate(target, prompt, max_new_tokens=8, eos_token_id=4)
+    speculative, events = speculative_greedy_cached(
+        draft,
+        target,
+        prompt,
+        max_new_tokens=8,
+        eos_token_id=4,
+        k=4,
+        batch_target_verification=True,
+    )
+    verify_greedy_equivalence(reference, speculative)
+    assert reference == [1, 2, 3, 4]
+    assert events[1]["is_first_rejection"] is True
+    assert events[2]["invalidated_after_first_rejection"] is True
+
+
 def test_boundary_alignment_calculation():
     assert boundary_f1([], []) == 1.0
     assert boundary_f1([1], []) == 0.0
