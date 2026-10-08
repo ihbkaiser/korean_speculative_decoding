@@ -126,6 +126,7 @@ def extract_archive(
     *,
     preserve: tuple[str, ...],
     logger: RunLogger,
+    target_name: str,
 ) -> tuple[Path, list[Path]]:
     if stage.exists() and any(stage.iterdir()):
         raise ValueError(f"staging directory must be empty: {stage}")
@@ -138,6 +139,7 @@ def extract_archive(
         seen: set[Path] = set()
         mutable_infos = []
         skipped: list[Path] = []
+        relative_entries = []
         for info in all_infos:
             normalise_archive_name(info.filename)
             mode = (info.external_attr >> 16) & 0o170000
@@ -145,6 +147,24 @@ def extract_archive(
                 raise ValueError(f"symbolic links are not allowed: {info.filename!r}")
         for info in infos:
             relative = relative_member(info.filename, root)
+            relative_entries.append((info, relative))
+
+        # A locally packaged checkout can add a second wrapper, e.g.
+        # korean_speculative_decoding-main/repo/src/... . When the inner
+        # directory matches the destination basename, remove it so updating
+        # FOLDER_PATH=/.../repo never creates /.../repo/repo/....
+        inner_root = None
+        if relative_entries and all(
+            relative.parts
+            and relative.parts[0] == target_name
+            and len(relative.parts) >= 2
+            for _, relative in relative_entries
+        ):
+            inner_root = target_name
+
+        for info, relative in relative_entries:
+            if inner_root:
+                relative = Path(*relative.parts[1:])
             if relative in seen:
                 raise ValueError(f"duplicate archive path after root stripping: {relative}")
             seen.add(relative)
@@ -154,12 +174,17 @@ def extract_archive(
                 mutable_infos.append(info)
         logger.log(
             f"extract mutable ZIP entries: total={len(infos)}, "
-            f"mutable={len(mutable_infos)}, preserved={len(skipped)}, root={root or '<none>'}"
+            f"mutable={len(mutable_infos)}, preserved={len(skipped)}, "
+            f"root={root or '<none>'}, inner_root={inner_root or '<none>'}"
         )
         # The archive is fully validated above. Extract only mutable entries in
         # one archive operation; data/models/cache files are never copied to tmp.
         archive.extractall(stage, members=mutable_infos)
-    source = stage / root if root else stage
+    source = stage
+    if root:
+        source /= root
+    if inner_root:
+        source /= inner_root
     logger.log(f"temporary extraction complete: files={len(mutable_infos)}, elapsed={elapsed(started)}")
     return source, skipped
 
@@ -236,7 +261,11 @@ def apply_update(
         stage = Path(temporary.name)
         logger.log(f"temporary stage created: {stage}")
         source, skipped = extract_archive(
-            archive_path, stage, preserve=preserve_values, logger=logger
+            archive_path,
+            stage,
+            preserve=preserve_values,
+            logger=logger,
+            target_name=repo.name,
         )
         source_files = files(source)
         mutable_source = source_files

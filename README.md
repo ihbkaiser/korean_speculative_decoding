@@ -216,6 +216,9 @@ It validates the whole ZIP, extracts only mutable code/config files into a
 temporary directory, applies the overlay, and removes that directory in a
 `finally` cleanup block even when the update fails. `data/`, `models/`, caches, logs,
 artifacts, and credentials are not extracted or overwritten by default.
+If a ZIP has both a GitHub wrapper and a redundant checkout wrapper such as
+`korean_speculative_decoding-main/repo/...`, the updater removes both layers
+when `FOLDER_PATH` ends in `repo`.
 
 The default mode is an overlay, so local files absent from the ZIP are kept.
 To mirror deletions from GitHub for the mutable part of the checkout, opt in

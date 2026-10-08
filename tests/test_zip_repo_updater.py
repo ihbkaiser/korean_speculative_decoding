@@ -20,6 +20,14 @@ def _write_zip(path: Path, entries: dict[str, str]) -> None:
             archive.writestr(name, content)
 
 
+def _embedded_namespace() -> dict[str, object]:
+    text = SCRIPT.read_text(encoding="utf-8")
+    code = text.split("<<'PY'\n", 1)[1].rsplit("\nPY\n", 1)[0]
+    namespace: dict[str, object] = {"__name__": "embedded_updater_test"}
+    exec(compile(code, str(SCRIPT), "exec"), namespace)
+    return namespace
+
+
 def test_updater_is_self_contained_shell_file():
     text = SCRIPT.read_text(encoding="utf-8")
     assert "import zipfile" in text
@@ -35,6 +43,33 @@ def test_updater_has_fast_staging_and_detailed_logging():
     assert "--log-file" in text
     assert "temporary stage removed" in text
     assert "scan repository" in text
+
+
+def test_updater_strips_redundant_repo_wrapper_from_github_zip(tmp_path):
+    namespace = _embedded_namespace()
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    archive = tmp_path / "download.zip"
+    _write_zip(archive, {
+        "korean_speculative_decoding-main/repo/README.md": "new readme",
+        "korean_speculative_decoding-main/repo/src/main.py": "new code",
+    })
+
+    logger = namespace["RunLogger"]()  # type: ignore[operator]
+    try:
+        result = namespace["apply_update"](  # type: ignore[operator]
+            archive,
+            repo,
+            preserve=namespace["DEFAULT_PRESERVE"],  # type: ignore[arg-type]
+            logger=logger,
+        )
+    finally:
+        logger.close()
+
+    assert (repo / "README.md").read_text(encoding="utf-8") == "new readme"
+    assert (repo / "src" / "main.py").read_text(encoding="utf-8") == "new code"
+    assert not (repo / "repo").exists()
+    assert result["added"] == ["README.md", "src/main.py"]
 
 
 def _run_shell_updater(archive: Path, repo: Path, *extra: str) -> subprocess.CompletedProcess[str]:
