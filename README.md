@@ -185,6 +185,36 @@ bash scripts/run_company_table1.sh Q1
 bash scripts/run_company_table1.sh all
 ```
 
+### Updating the company checkout from GitHub Download ZIP
+
+The ZIP updater handles the top-level `*-main/` directory created by GitHub.
+By default it updates code/config/docs while preserving `data/`, `metadata/`,
+`runs/`, logs, model/cache directories, `.venv/`, and credentials. Before
+writing, it creates a recoverable backup outside the repository. It does not
+need network access:
+
+```bash
+ZIP_PATH=/workspace/storage-shared/nlp/tungdd11/korean_speculative_decoding/korean_speculative_decoding-main.zip
+FOLDER_PATH=/workspace/storage-shared/nlp/tungdd11/korean_speculative_decoding/repo
+
+ZIP_PATH="$ZIP_PATH" FOLDER_PATH="$FOLDER_PATH" \
+  bash /workspace/storage-shared/nlp/tungdd11/korean_speculative_decoding/repo/scripts/update_from_github_zip.sh --dry-run
+ZIP_PATH="$ZIP_PATH" FOLDER_PATH="$FOLDER_PATH" \
+  bash /workspace/storage-shared/nlp/tungdd11/korean_speculative_decoding/repo/scripts/update_from_github_zip.sh
+```
+
+The default mode is an overlay, so local files absent from the ZIP are kept.
+To mirror deletions from GitHub for the mutable part of the checkout, opt in
+explicitly with `--delete-missing`:
+
+```bash
+ZIP_PATH="$ZIP_PATH" FOLDER_PATH="$FOLDER_PATH" \
+  bash /workspace/storage-shared/nlp/tungdd11/korean_speculative_decoding/repo/scripts/update_from_github_zip.sh --delete-missing
+```
+
+Backups are stored in `../.repo_update_backups/`; each update prints a JSON
+report listing added, updated, deleted, and preserved files.
+
 The Modal entrypoint persists the HF cache and experiment artifacts in named
 Volumes and supports the same stages:
 
