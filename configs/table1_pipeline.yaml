@@ -1,0 +1,132 @@
+schema: table1-models-data-alignment-v1
+status: implementation_ready_not_executed
+seed: 42
+paths:
+  prompts: data/prompts_40k.parquet
+  common_ids: data/common_20k_ids.txt
+  extra_ids: data/extra_20k_ids.txt
+  dataset_metadata: metadata/dataset_revision.json
+  model_metadata: metadata/model_revisions.json
+  compatibility_csv: audit/tokenizer_compatibility.csv
+  validation: validation
+  runs: runs/table1
+  results: results
+# Company B200 node: model snapshots are kept outside the repo and are
+# referenced at the immutable commit-directory level (the directory that
+# contains config.json and model*.safetensors).  These paths are used by
+# run-table1-main when explicit CLI overrides are omitted.
+model_paths:
+  Q1:
+    draft: /workspace/storage-shared/nlp/tungdd11/korean_speculative_decoding/models/Qwen--Qwen3-0.6B-Base/da87bfb608c14b7cf20ba1ce41287e8de496c0cd
+    target: /workspace/storage-shared/nlp/tungdd11/korean_speculative_decoding/models/Qwen--Qwen3-1.7B-Base/ea980cb0a6c2ae4b936e82123acc929f1cec04c1
+  Q2:
+    draft: /workspace/storage-shared/nlp/tungdd11/korean_speculative_decoding/models/Qwen--Qwen3-0.6B-Base/da87bfb608c14b7cf20ba1ce41287e8de496c0cd
+    target: /workspace/storage-shared/nlp/tungdd11/korean_speculative_decoding/models/Qwen--Qwen3-4B-Base/906bfd4b4dc7f14ee4320094d8b41684abff8539
+  Q3:
+    draft: /workspace/storage-shared/nlp/tungdd11/korean_speculative_decoding/models/Qwen--Qwen3-4B-Base/906bfd4b4dc7f14ee4320094d8b41684abff8539
+    target: /workspace/storage-shared/nlp/tungdd11/korean_speculative_decoding/models/Qwen--Qwen3-8B-Base/49e3418fbbbca6ecbdf9608b4d22e5a407081db4
+  M1:
+    draft: /workspace/storage-shared/nlp/tungdd11/korean_speculative_decoding/models/mistralai--Ministral-3-3B-Base-2512/6f9c4b12a95b139af68670a6713616b757923735
+    target: /workspace/storage-shared/nlp/tungdd11/korean_speculative_decoding/models/mistralai--Ministral-3-8B-Base-2512/d4883f9b36aa2e5d775730d3fdba3d30de51a8ef
+  G1:
+    draft: /workspace/storage-shared/nlp/tungdd11/korean_speculative_decoding/models/google--gemma-3-4b-pt/cc012e0a6d0787b4adcc0fa2c4da74402494554d
+    target: /workspace/storage-shared/nlp/tungdd11/korean_speculative_decoding/models/google--gemma-3-12b-pt/295efb63d01a7017928f273a94ebb86105c9526f
+dataset:
+  id: HuggingFaceFW/fineweb-2
+  config: kor_Hang
+  split: train
+  revision: null
+  text_field: text
+  scan_limit: 250000
+  pool_size: 40000
+  common_size: 20000
+  min_chars: 64
+  min_hangul_ratio: 0.35
+  boilerplate_cleaner: none
+inference:
+  max_prompt_tokens: 128
+  max_new_tokens: 128
+  speculative_k: 4
+  temperature: 0.0
+  do_sample: false
+  dtype: float16
+  attention_backend: sdpa
+  decoder: legacy
+  smoke_prompts: 200
+  compatibility_probe_prompts: 1000
+  shard_size: 200
+pairs:
+  Q1:
+    family: Qwen3
+    draft: Qwen/Qwen3-0.6B-Base
+    target: Qwen/Qwen3-1.7B-Base
+    prompt_split: common_20k
+    prompt_count: 20000
+    support_threshold_cross: 100
+    support_threshold_within: 100
+    gpu: B200
+    decoder: cached
+    dtype: float32
+    attention_backend: eager
+    reference_batch_size: 64
+  Q2:
+    family: Qwen3
+    draft: Qwen/Qwen3-0.6B-Base
+    target: Qwen/Qwen3-4B-Base
+    prompt_split: all_40k
+    prompt_count: 40000
+    support_threshold_cross: 200
+    support_threshold_within: 200
+    gpu: B200
+    decoder: legacy
+    dtype: float32
+    attention_backend: eager
+    reference_batch_size: 64
+  Q3:
+    family: Qwen3
+    draft: Qwen/Qwen3-4B-Base
+    target: Qwen/Qwen3-8B-Base
+    prompt_split: common_20k
+    prompt_count: 20000
+    support_threshold_cross: 100
+    support_threshold_within: 100
+    gpu: B200
+    decoder: cached
+    dtype: float32
+    attention_backend: eager
+    reference_batch_size: 64
+  M1:
+    family: Ministral 3
+    draft: mistralai/Ministral-3-3B-Base-2512
+    target: mistralai/Ministral-3-8B-Base-2512
+    prompt_split: common_20k
+    prompt_count: 20000
+    support_threshold_cross: 100
+    support_threshold_within: 100
+    gpu: B200
+    decoder: cached
+    dtype: float32
+    attention_backend: eager
+    reference_batch_size: 64
+  G1:
+    family: Gemma 3
+    draft: google/gemma-3-4b-pt
+    target: google/gemma-3-12b-pt
+    prompt_split: common_20k
+    prompt_count: 20000
+    support_threshold_cross: 100
+    support_threshold_within: 100
+    gpu: B200
+    decoder: cached
+    dtype: float32
+    attention_backend: eager
+    reference_batch_size: 64
+modal:
+  app_name: korean-speculative-decoding-table1
+  cache_volume: korean-speculative-decoding-hf-cache
+  artifact_volume: korean-speculative-decoding-table1-artifacts
+  cpu: 8
+  memory_mib: 65536
+  timeout_seconds: 86400
+  private_hf_repo: true
+  hf_repo_id: null

@@ -1,0 +1,167 @@
+# Design manifest only. Current repo runners DO NOT implement this schema.
+# Resolve every null revision and complete E00 before any execution adapter.
+schema: research-design-v2
+status: proposed_not_executed
+date: '2026-10-06'
+seed: 20261006
+defaults:
+  dtype: bfloat16
+  attention_backend: sdpa
+  batch_size: 1
+  speculative_k: 4
+  max_new_tokens: 256
+  do_sample: false
+  num_beams: 1
+  use_cache: true
+  quantization: none
+  cpu_offload: false
+  continuation_prefix_unicode_chars: 600
+  continuation_input_token_cap: 512
+  translation_input_token_cap: 256
+  instruction_input_token_cap: 512
+  summarization_input_token_cap: 2048
+  same_raw_continuation_prefix_across_families: true
+  invalidated_proposals_are_outcomes: false
+  new_model_gpu_index: null
+  required_preflight: [immutable_revisions, tokenizer_compatibility, output_contract, cache_correctness, morphology_coverage]
+models:
+  q06base: {id: Qwen/Qwen3-0.6B-Base, revision: da87bfb608c14b7cf20ba1ce41287e8de496c0cd}
+  q17base: {id: Qwen/Qwen3-1.7B-Base, revision: ea980cb0a6c2ae4b936e82123acc929f1cec04c1}
+  q4base: {id: Qwen/Qwen3-4B-Base, revision: 906bfd4b4dc7f14ee4320094d8b41684abff8539}
+  q8base: {id: Qwen/Qwen3-8B-Base, revision: null}
+  g4pt: {id: google/gemma-3-4b-pt, revision: null, text_only: true}
+  g12pt: {id: google/gemma-3-12b-pt, revision: null, text_only: true}
+  q17it: {id: Qwen/Qwen3-1.7B, revision: null, enable_thinking: false}
+  q4it: {id: Qwen/Qwen3-4B, revision: null, enable_thinking: false}
+  g4it: {id: google/gemma-3-4b-it, revision: null, text_only: true}
+  g12it: {id: google/gemma-3-12b-it, revision: null, text_only: true}
+pairs:
+  Q1: {draft: q06base, target: q17base}
+  Q2: {draft: q17base, target: q4base}
+  Q3: {draft: q06base, target: q4base}
+  Q4: {draft: q06base, target: q8base}
+  Q5: {draft: q17base, target: q8base}
+  Q6: {draft: q4base, target: q8base}
+  G1: {draft: g4pt, target: g12pt}
+  QI1: {draft: q17it, target: q4it}
+  GI1: {draft: g4it, target: g12it}
+data:
+  W:
+    id: wikimedia/wikipedia
+    config: 20231101.ko
+    revision: null
+    task: continuation
+    exclude_discovery_and_expansion_articles: true
+    source_document_grouping: true
+    random_sample_without_replacement: 10000
+    train: 4000
+    dev: 1000
+    test: 5000
+    scale_shared_test_subset: 2000
+  F:
+    source: existing_original_flores200_archive
+    split: dev
+    source_language: eng_Latn
+    output_language: kor_Hang
+    test: 997
+    task: translation
+    tune_on_final_test: false
+    require_uninspected_or_disclose_prior_exposure: true
+  N:
+    id: csebuetnlp/xlsum
+    config: korean
+    revision: null
+    task: continuation
+    dev: {official_split: validation, count: 550}
+    test: {official_split: test, count: 550}
+  I:
+    id: beomi/KoAlpaca-v1.1a
+    revision: null
+    task: instruction_response
+    group_by_source_url_and_normalized_instruction: true
+    dev: 300
+    test: 1000
+    include_dataset_answer_in_prompt: false
+  S:
+    source: N
+    task: summarization
+    dev: 550
+    test: 550
+    shared_article_ids_with_N: true
+baseline_collection:
+  primary_test: {pairs: [Q1, Q2, Q3], data: [W_test, F_test, N_test]}
+  predictor_development: {pairs: [Q2], data: [W_train, W_dev]}
+  scale_grid: {pairs: [Q4, Q5, Q6], data: [W_shared_test_2000]}
+  family_replication: {pairs: [G1], data: [W_shared_test_2000, F_test, N_test]}
+  instruction_replication: {pairs: [QI1, GI1], data: [I_test, S_test]}
+  expected_trajectory_count: 37288
+statistics:
+  cluster: source_document_id
+  bootstrap_replicates: 2000
+  confidence_level: 0.95
+  environment_multiplicity: holm_within_pair_workload_five_contrasts
+  primary_environment: NOMINAL_TO_PARTICLE
+  support_goals_W_test: {np_cross: 500, np_cross_source_documents: 200, rd_ci_half_width_pp: 5}
+  overlap:
+    estimator: overlap_weighting
+    propensity_range: [0.05, 0.95]
+    balance_abs_smd_goal: 0.10
+    matched_sensitivity_logit_propensity_caliper_sd: 0.2
+predictors:
+  pair: Q2
+  deployable_context: prefix_plus_current_draft_candidate
+  lookahead_primary: 0
+  lookahead_sensitivity: [1, full_block]
+  forbid_features: [target_entropy, target_continuation_morphology, future_target_eojeol_length, future_target_fragmentation]
+  logistic:
+    C_grid: [0.01, 0.1, 1, 10, 100]
+    max_iter: 2000
+    class_weight: null
+    selection_metric: dev_log_loss
+  nonlinear:
+    class: HistGradientBoostingClassifier
+    loss: log_loss
+    learning_rate: 0.05
+    max_iter: 200
+    max_leaf_nodes: 15
+    min_samples_leaf: 50
+    l2_regularization: 1
+    early_stopping: false
+  token_lookup_pseudocount: 10
+robustness:
+  k_grid: [1, 2, 4, 8, 16]
+  k_pairs: [Q2, Q5]
+  k_prompts_per_workload: 500
+  context_target_tokens: [128, 512, 2048]
+  max_new_tokens_grid: [128, 256, 512]
+  length_pair: Q5
+  length_prompts: 300
+  precision_pairs: [Q2, Q5]
+  precision_prompts: 128
+  precision_grid: [bfloat16, float16]
+  sampling_optional:
+    implemented_in_current_repo: false
+    pair: Q2
+    temperature: 0.7
+    top_p: 1.0
+    top_k: 0
+    seeds: [17, 29, 43]
+    prompts_per_workload: 200
+runtime:
+  gated_by: [E00, E09, E13]
+  pairs: [Q4, Q5]
+  final_prompts_per_workload: 500
+  workloads: [W, F]
+  repetitions: 3
+  true_batched_target_verification_required: true
+  efficient_draft_cache_required: true
+  include_controller_and_parser_time: true
+  detector_local_eojeols: 20
+  preserve_natural_candidates: true
+  fixed_k_grid: [1, 2, 4, 8, 16]
+  adaptive_k_cap: [8, 16]
+  entropy_quantiles: [0.5, 0.7, 0.8, 0.9, 0.95]
+  confidence_thresholds: [0.3, 0.5, 0.7, 0.9, 0.95]
+  risk_thresholds: [0.1, 0.2, 0.3, 0.4, 0.5]
+  cost_model_shortlist_per_policy: 3
+  final_test_tuning: false

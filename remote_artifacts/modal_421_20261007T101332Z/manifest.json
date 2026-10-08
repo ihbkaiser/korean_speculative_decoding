@@ -1,0 +1,15 @@
+{
+  "run_label": "4.2.1_matched_population_aggregate_vs_directional",
+  "modal_app": "naacl-421-matched-population",
+  "gpu": "T4",
+  "cpu": 4,
+  "memory_mib": 16384,
+  "timeout_seconds": 3600,
+  "input_files": [
+    "proposal_boundary_rows_wikipedia_p1.parquet",
+    "proposal_boundary_rows_wikipedia_p2.parquet",
+    "proposal_boundary_rows_flores_p1.parquet",
+    "proposal_boundary_rows_flores_p2.parquet"
+  ],
+  "local_data_analysis": false
+}

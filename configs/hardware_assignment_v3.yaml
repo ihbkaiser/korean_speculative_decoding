@@ -1,0 +1,97 @@
+# Planning manifest only. NOT a supported runner/scheduler configuration.
+# User confirmed two B200 on one host with long-term access.
+schema: hardware-research-design-v3
+status: proposed_not_executed
+date: '2026-10-06'
+inherits_design: configs/paper_experiment_matrix_v2.yaml
+experiment_details: refine-logs/HARDWARE_EXECUTION_PLAN_20261006_v3.md
+seed: 20261006
+devices:
+  workstation_3090:
+    gpu_uuid: null
+    nominal_memory_gb: 24
+    actual_free_memory_bytes: null
+    responsibilities: [small_pair_pilots, trace_validation, cpu_analysis, hardware_runtime_comparison]
+    primary_pairs: [Q1, Q2, Q3]
+  company_b200_a:
+    gpu_uuid: null
+    host: company_shared_host
+    actual_total_memory_bytes: null
+    responsibilities: [canonical_confirmation, qwen_capacity, diagnostics, engine_cost_pilot]
+  company_b200_b:
+    gpu_uuid: null
+    host: company_shared_host
+    actual_total_memory_bytes: null
+    responsibilities: [family_replication, large_models, exclusive_runtime]
+defaults:
+  dtype: bfloat16
+  attention_backend: sdpa
+  sd_batch_size: 1
+  tensor_parallel_size: 1
+  speculative_k: 4
+  max_new_tokens: 256
+  do_sample: false
+  normal_eos: true
+  quantization: none
+  cpu_offload: false
+  shard_prompt_count: 200
+  weight_and_tokenizer_revisions_required: true
+  frozen_data_manifest_required: true
+  actual_candidate_features_required: true
+  online_context: accepted_prefix_plus_current_candidate
+  invalidated_proposals_are_rejections: false
+  runtime_other_company_gpu_idle_initially: true
+  runtime_repeats: 3
+  queue_submission_authorized_by_manifest: false
+preflight:
+  required: [device_uuid_and_memory, immutable_revisions, tokenizer_compatibility, model_adapters, batched_verifier, efficient_kv_cache, output_eos_stop_parity, online_feature_audit, measured_cost_and_storage]
+  per_base_pair_pilot: {W_dev: 64, F_dev: 32, N_dev: 32}
+  per_it_pair_pilot: {I_dev: 64, S_dev: 32}
+  cross_device_prefix_audit: 128
+  timing_warmup_prompts: 8
+  timing_dev_prompts_per_workload: 32
+new_models:
+  q3moe30base: {id: Qwen/Qwen3-30B-A3B-Base, revision: null, total_parameters_b: 30.5, active_parameters_b: 3.3}
+  g27pt: {id: google/gemma-3-27b-pt, revision: null, text_only: true}
+  q25_15base: {id: Qwen/Qwen2.5-1.5B, revision: null}
+  q25_7base: {id: Qwen/Qwen2.5-7B, revision: null}
+  q25_14base: {id: Qwen/Qwen2.5-14B, revision: null}
+  q25_32base: {id: Qwen/Qwen2.5-32B, revision: null}
+  q25_72base: {id: Qwen/Qwen2.5-72B, revision: null}
+  q3_32it: {id: Qwen/Qwen3-32B, revision: null, enable_thinking: false}
+large_pairs:
+  L01a: {draft: q17base, target: q3moe30base, owner: company_b200_b, priority: P1, W_test: 2000, F_test: 997, N_test: 550}
+  L01b: {draft: q4base, target: q3moe30base, owner: company_b200_b, priority: P1, W_test: 2000, F_test: 997, N_test: 550}
+  L02a: {draft: g4pt, target: g27pt, owner: company_b200_b, priority: P1, W_test: 2000, F_test: 997, N_test: 550}
+  L02b: {draft: g12pt, target: g27pt, owner: company_b200_b, priority: P3_optional, W_test: 2000, F_test: 997, N_test: 550}
+  L03_7: {draft: q25_15base, target: q25_7base, owner: company_b200_b, priority: P2, W_test: 2000, F_test: 997}
+  L03_14: {draft: q25_15base, target: q25_14base, owner: company_b200_b, priority: P2, W_test: 2000, F_test: 997}
+  L03_32: {draft: q25_15base, target: q25_32base, owner: company_b200_b, priority: P2, W_test: 2000, F_test: 997}
+  L03_72: {draft: q25_15base, target: q25_72base, owner: company_b200_b, priority: P2_memory_gated, W_test: 2000, F_test: 997}
+  L03_7draft32: {draft: q25_7base, target: q25_32base, owner: company_b200_b, priority: P3_optional, W_test: 2000, F_test: 997}
+  L04_4draft32it: {draft: q4it, target: q3_32it, owner: company_b200_b, priority: P2, I_test: 1000, S_test: 550}
+counts_excluding_references_pilots_diagnostics_runtime:
+  baseline_v2_trajectories: 37288
+  required_large_extension_trajectories: 10641
+  recommended_total_trajectories: 47929
+  optional_dense_four_target_trajectories: 11988
+  optional_it32_trajectories: 1550
+  total_with_dense_and_it32: 61467
+  total_with_all_listed_optional_analysis_pairs: 68011
+support_expansion:
+  status: conditional_preregister_before_final_effect_inspection
+  extra_independent_W_test_documents: 5000
+  fixed_pairs: [Q2, Q5, L01a, L02a]
+  extra_trajectories: 20000
+  stopping_on_statistical_significance: false
+runtime:
+  method_gate_order: [E00_correctness, E01_measurement, E09_incremental_information, E13_measured_headroom, E14_final_latency, E15_ablations]
+  primary_pairs: [Q4, Q5]
+  policies: [target_AR, best_fixed_K, tuned_entropy_stop, strongest_confidence_only_stop, confidence_plus_online_morphology]
+  fixed_K_grid: [1, 2, 4, 8, 16]
+  datasets: {W_test: 500, F_test: 500}
+  large_IT_conditional: {pair: L04_4draft32it, I_test: 500, S_test: 300}
+  hardware_comparison_conditional: {pair: Q3, W_test: 500, devices: [workstation_3090, company_b200_b]}
+  include_cpu_morphology_time: true
+  tune_on_test: false
+  tensor_parallel_2: only_memory_gated_separate_condition

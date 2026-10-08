@@ -1,0 +1,48 @@
+{
+  "analysis": "4.2.1 matched-population aggregate alignment vs directional morphology",
+  "unit": "observed proposal event; invalidated suffixes excluded in source projection",
+  "population": "VALID projection; WITHIN_SPLIT or exactly-one-boundary CROSS_MORPHEME; fragmentation bins 2 through 8+; common complete-case rows for all models",
+  "aggregate_feature": "1 - src.morphology.analyze_eojeol(candidate_eojeol, Kiwi, pinned fast tokenizer).boundary_f1",
+  "directional_feature": "proposal_morph_class: CROSS_MORPHEME vs WITHIN_SPLIT",
+  "models": [
+    "M0_CONTROLS",
+    "M1_CONTROLS_PLUS_AGGREGATE",
+    "M2_CONTROLS_PLUS_DIRECTION",
+    "M3_CONTROLS_PLUS_BOTH"
+  ],
+  "controls": [
+    "relative_position",
+    "first_token",
+    "last_token",
+    "proposal_slot",
+    "generation_position",
+    "token_char_length",
+    "eojeol_char_length",
+    "draft_entropy",
+    "target_entropy",
+    "fragmentation_bin",
+    "morph_environment",
+    "four-df spline of log_candidate_token_count"
+  ],
+  "inference": "logit with prompt-clustered sandwich covariance; directional average marginal contrast standardized over the eligible cell population; Holm correction across four workload-pair cells for each primary feature family",
+  "tokenizer": {
+    "model_id": "Qwen/Qwen3-0.6B-Base",
+    "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+    "tokenizer_class": "Qwen2Tokenizer",
+    "vocab_size": 151669,
+    "backend_sha256": "41e00eccf531cffc2e562d38bdd879d41e5044ea279af5b73c6a32aabcc8fe04",
+    "source": "pinned Hugging Face revision"
+  },
+  "kiwipiepy_version": "0.24.0",
+  "statsmodels_version": "0.14.1",
+  "score_cache": {
+    "cache_reused": false,
+    "unique_eojeols_scored": 49018
+  },
+  "input_sha256": {
+    "proposal_boundary_rows_wikipedia_p1.parquet": "58d59e708d52e299f7910dcbc55a967ef7d094f3ce953e708263963a076f83b8",
+    "proposal_boundary_rows_wikipedia_p2.parquet": "f50eac8b4add7f4fa8bbaf620a33032fab53fd7f22b7b2ac99968fd8c39ba449",
+    "proposal_boundary_rows_flores_p1.parquet": "558ede0866b21c20f65d54883f3a9affabd79a70263f9d567e265cecd5ad474c",
+    "proposal_boundary_rows_flores_p2.parquet": "a6537cdf0ffbc511324b10171b74213e8b07865307e9594f1a33a2e2d245307a"
+  }
+}

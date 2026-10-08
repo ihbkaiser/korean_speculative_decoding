@@ -1,0 +1,18 @@
+﻿{
+    "run_label":  "4.2.1_matched_population_aggregate_vs_directional",
+    "modal_app_id":  "ap-vXpF0Nc3twZ7fwZhfAeXXO",
+    "modal_app_url":  "https://modal.com/apps/tungkieu6868/main/ap-vXpF0Nc3twZ7fwZhfAeXXO",
+    "run_status":  "completed",
+    "requested_gpu":  "T4",
+    "observed_gpu":  "Tesla T4",
+    "remote_compute_seconds":  41.722,
+    "cpu":  4,
+    "memory_mib":  16384,
+    "timeout_seconds":  3600,
+    "reported_usage_cost_usd":  0.01360109,
+    "billing_resource_rows":  4,
+    "cost_note":  "Modal billing report usage for this app; not a remaining-credit or final-invoice statement.",
+    "results_archive":  "results.zip",
+    "results_directory":  "results",
+    "log":  "modal_run.log"
+}

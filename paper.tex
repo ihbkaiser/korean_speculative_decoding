@@ -1,0 +1,193 @@
+% NAACL/*ACL review draft. Compile with pdfLaTeX and BibTeX.
+% For camera-ready, switch [review] to [final] and add the authors.
+\documentclass[11pt]{article}
+\usepackage[review]{acl}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{url}
+
+\title{When Tokens Cross Morphemes: Understanding Speculative Decoding Failures in Korean}
+
+% The review option anonymizes the author block.
+\author{Anonymous NAACL 2027 submission}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Speculative decoding accelerates autoregressive generation only when a small draft model predicts tokens that a larger target model will accept. We examine whether Korean morphology helps explain these token-level disagreements. Korean subword tokens may either split a morpheme or combine material on both sides of a morpheme boundary. A scalar measure of token--morpheme boundary agreement does not predict rejection once fragmentation is held comparable. The distinction between these two forms of mismatch, however, is consequential. Across three Qwen3 draft--target configurations, tokens crossing a morpheme boundary are more likely to be rejected than tokens that split within a morpheme, after adjustment for token structure, position, model uncertainty, and frequency. This association is not uniform across Korean morphology. It is concentrated at nominal--particle attachments: crossing this boundary increases adjusted rejection probability by 20.9, 18.7, and 24.7 percentage points in the three configurations. The pattern is stable in a common-prompt analysis and is not driven by multi-boundary tokens. These findings show that the linguistic location of a subword boundary, rather than fragmentation alone, is informative about draft--target compatibility in Korean.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+Speculative decoding (SD) reduces the serial cost of autoregressive generation by allowing a smaller draft model to propose several future tokens and a larger target model to verify them in parallel \citep{leviathan2023,chen2023speculative}. Its efficiency depends on how often the draft proposes tokens that the target accepts. Existing work has improved drafts, proposal policies, and uncertainty-based controls; for example, draft entropy can identify positions at which long speculative blocks are risky \citep{zhang2025draft}. Yet we still know relatively little about which linguistic properties of a proposed token make two models disagree.
+
+This question is particularly natural in Korean. A whitespace-delimited unit, or \emph{eojeol}, commonly contains a lexical item together with particles, tense markers, or endings. A frequency-based subword tokenizer therefore need not preserve the boundaries identified by Korean morphological analysis. It may split a single morpheme into several tokens, or it may create one token that contains the end of a nominal and an attached particle. Prior work has shown that morphology-sensitive tokenization can improve Korean NLP \citep{park2020korean,lee2026morpheme} and that constraining subword merges by morphological boundaries can improve morphological coherence \citep{asgari2026morphbpe}. Whether such structure predicts speculative-decoding acceptance has not been established.
+
+We study this issue at the level of individual draft proposals. Our first analysis asks whether overall disagreement between tokenizer boundaries and morpheme boundaries predicts rejection. It does not. This negative result matters because a single boundary-agreement score treats two linguistically different tokenization events as interchangeable: splitting inside a morpheme and crossing from one morpheme into the next. When we separate them, cross-morpheme tokens are consistently associated with higher rejection than within-morpheme splits, even after accounting for structural features, entropy, and token frequency.
+
+The central finding is more specific still. The penalty for crossing a morpheme boundary is not distributed evenly across Korean constructions. In three independently analyzed draft--target configurations, it is large and reproducible at nominal--particle attachments, while predicate--ending transitions show estimates near zero. The result therefore does not support the broad claim that all Korean grammatical boundaries are equally difficult. Rather, it identifies one recurring attachment environment in which the draft and target are especially likely to diverge.
+
+Our contributions are threefold:
+\begin{itemize}
+    \item We provide a token-level analysis of the relationship between Korean morphological structure and speculative-decoding rejection.
+    \item We show that aggregate token--morpheme misalignment obscures a consequential distinction: tokens that cross a morpheme boundary behave differently from tokens that merely split a morpheme.
+    \item We localize the association to nominal--particle attachments and replicate it across three model-size configurations, reporting effects on the rejection-probability scale rather than only as odds ratios.
+\end{itemize}
+
+\section{Background and Related Work}
+\label{sec:related}
+
+\paragraph{Speculative decoding.}
+In SD, a draft model proposes a block of tokens and a target model verifies the proposal in parallel, accepting a prefix under a verification rule \citep{leviathan2023,chen2023speculative}. The method is most effective when long prefixes are accepted. Recent work consequently estimates when drafting is likely to fail. \citet{zhang2025draft}, for instance, use draft uncertainty to adapt speculative length. Our work is complementary: we ask whether the linguistic structure of the proposed token remains informative after uncertainty is taken into account.
+
+\paragraph{Multilingual speculative decoding.}
+Language is an important source of variation in SD. Language-specialized drafts can improve multilingual inference \citep{yi2024multilingual}, and recent evidence suggests that small drafts may be disproportionately weak outside English \citep{paudel2026languages}. Rather than comparing languages as whole units, we examine variation within Korean, where individual subword tokens occupy different morphological environments.
+
+\paragraph{Korean morphology and tokenization.}
+Korean is commonly analyzed as sequences of morphemes within eojeol. The relationship between whitespace and morphology is therefore non-trivial: a single eojeol may contain a noun and a case particle, or a predicate and several endings. Earlier work found benefits from combining morphological segmentation with subword tokenization \citep{park2020korean}; more recently, \citet{lee2026morpheme} proposed morpheme-based Korean subword tokenization, and \citet{asgari2026morphbpe} constrained BPE merges to respect morpheme boundaries. We use Kiwi \citep{lee2024kiwi} to obtain surface morpheme spans. We do not modify the tokenizer or retrain either model.
+
+\section{Experimental Setting}
+\label{sec:setup}
+
+\subsection{Models, data, and outcome}
+
+We evaluate greedy SD on the first 1,000 Korean Wikipedia examples in local dataset order. Prompts are truncated to at most 128 tokens and the target generates at most 128 continuation tokens. We use three Qwen3-Base draft--target configurations with a shared tokenizer: 0.6B$\rightarrow$1.7B, 1.7B$\rightarrow$4B, and 0.6B$\rightarrow$4B. The speculative block size is four. For each configuration, speculative output exactly matches the target's greedy output by token ID on all prompts.
+
+Our outcome is \textbf{SD rejection}: an eligible proposal on the realized speculative path is coded as rejected when the target does not accept it. Proposals made invalid by an earlier rejection in the same block are not counted as rejections. We also computed teacher-forced next-token disagreement as a diagnostic. In the initial 0.6B$\rightarrow$4B analysis, the two labels agreed at 99.88\% of eligible positions; we therefore use SD rejection as the main outcome and treat teacher forcing only as a consistency check.
+
+\subsection{Morphological alignment and analysis population}
+
+Kiwi supplies morpheme surface spans within each eojeol. We align the visible character span of every generated token to these morphemes, after removing whitespace from the token core. The main comparison uses two token classes:
+\begin{itemize}
+    \item \textbf{within-morpheme splits}, which lie inside one morpheme but cover only part of it; and
+    \item \textbf{cross-morpheme tokens}, which overlap material from two or more morphemes.
+\end{itemize}
+Tokens that span multiple eojeol or have ambiguous surface alignment are excluded. In the initial 0.6B$\rightarrow$4B analysis, 9,660 of 127,245 generated tokens (7.59\%) were excluded because Kiwi or span alignment was ambiguous; a further 135 visible tokens could not be mapped by exact retokenization and were documented separately. The corresponding primary comparison contains 73,143 eligible tokens from 997 prompts. Pair-specific replication analyses apply the same eligibility and alignment rules.
+
+For every regression, we compare observations within exact fragmentation levels (2, 3, 4, 5, 6, 7, and 8 or more tokens per eojeol). We adjust for relative position within the eojeol, whether the token is first or last in the eojeol, proposal slot, generation position, token and eojeol character lengths, draft entropy, target entropy, and a flexible function of log token frequency. Standard errors are clustered by prompt. We report adjusted probabilities and their differences whenever possible, because they are more directly interpretable than odds ratios.
+
+\section{A Coarse Boundary Score Does Not Explain Rejection}
+\label{sec:coarse}
+
+We first ask whether a tokenizer that disagrees more strongly with the morphological analysis is more likely to produce rejected proposals. For each eojeol, let $B_T$ and $B_M$ be the internal tokenizer and morpheme boundaries. We summarize agreement with boundary F1 and define
+\begin{equation}
+    \mathrm{misalignment} = 1 - F_1(B_T,B_M).
+\end{equation}
+A value near zero indicates close agreement and a value near one indicates poor agreement.
+
+This scalar measure does not yield the expected positive pattern. In fragmentation groups of two, three, and four tokens, the estimated association with rejection is small and not statistically distinguishable from zero. In the five-or-more group, the unadjusted estimate is negative rather than positive. After entropy and position controls, the overall adjusted coefficient is also not positive ($\beta=-0.0785$, $p=.084$ for SD rejection; $\beta=-0.0498$, $p=.291$ for teacher-forced disagreement). We therefore do not interpret the negative estimates as beneficial effects of misalignment. They instead show that a scalar boundary score mixes together tokenization events with different consequences.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lrrr}
+\toprule
+Fragmentation & Rejection & Misalignment slope & $p$ \\
+\midrule
+2  & 20.62\% & $+0.015$ & .795 \\
+3  & 20.00\% & $-0.059$ & .473 \\
+4  & 18.55\% & $-0.077$ & .544 \\
+$5+$ & 16.17\% & $-0.676$ & $1.54\times10^{-5}$ \\
+\bottomrule
+\end{tabular}
+\caption{Association between a coarse boundary-misalignment score and SD rejection in the initial 0.6B$\rightarrow$4B analysis. Slopes are changes in log-odds over the full 0--1 score range, with prompt-clustered standard errors.}
+\label{tab:coarse}
+\end{table}
+
+\section{Crossing a Morpheme Boundary Is Different from Splitting One}
+\label{sec:crossing}
+
+The negative result above motivates a more precise comparison. A within-morpheme split subdivides one linguistic unit, whereas a cross-morpheme token fuses material that belongs to adjacent units. For example, the latter can contain the suffix of a noun together with an attached particle. These operations receive similarly poor scores under aggregate boundary agreement, but they impose different prediction problems on the models.
+
+In the initial 0.6B$\rightarrow$4B analysis, cross-morpheme tokens have higher rejection odds than within-morpheme splits in every adjustment set. With all structural, entropy, and frequency controls, the odds ratio is 1.77 (95\% CI 1.47--2.11; $p=6.34\times10^{-10}$). The association survives both linear and nonlinear frequency controls and a frequency-stratified comparison, indicating that token rarity alone does not account for the result (Table~\ref{tab:frequency}). The same direction is retained in the model-pair replication analyses described below.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Frequency adjustment & Odds ratio (95\% CI) & $p$ \\
+\midrule
+No frequency term & 1.766 (1.475--2.115) & $6.3\mathrm{e}{-10}$ \\
+Linear log frequency & 1.750 (1.457--2.101) & $2.1\mathrm{e}{-9}$ \\
+Flexible log frequency & 1.894 (1.542--2.327) & $1.2\mathrm{e}{-9}$ \\
+Frequency-stratified & 1.961 (1.614--2.381) & $1.1\mathrm{e}{-11}$ \\
+\bottomrule
+\end{tabular}
+\caption{Cross-morpheme tokens versus within-morpheme splits in the initial 0.6B$\rightarrow$4B analysis. All rows include structural and entropy controls. The frequency-stratified comparison uses 44,158 tokens from 992 prompts.}
+\label{tab:frequency}
+\end{table}
+
+\section{The Association Is Concentrated at Nominal--Particle Attachments}
+\label{sec:environment}
+
+The preceding result establishes that crossing a morpheme boundary is not equivalent to splitting within a morpheme. It does not, however, establish that all boundaries behave alike. We therefore classify the single boundary crossed by each eligible cross-morpheme token according to the adjacent morphosyntactic environment: nominal$\rightarrow$particle, predicate$\rightarrow$ending, ending$\rightarrow$ending, lexical$\rightarrow$lexical, or other. For within-morpheme splits, we assign the corresponding local environment from the adjacent morphemes. The primary analysis compares cross-morpheme tokens and within-morpheme splits within each environment, using the same covariates as above.
+
+Of 11,016 eligible cross-morpheme tokens across the three configurations, 9,294 (84.4\%) cross exactly one boundary. The primary analysis is restricted to these single-boundary cases. This restriction makes the linguistic interpretation clear: the result is not driven by unusual tokens that absorb several morphemes at once.
+
+Nominal--particle attachment is the one well-supported environment with a large, reproducible penalty. Table~\ref{tab:nominal-particle} reports adjusted differences in rejection probability between cross-morpheme tokens and within-morpheme splits. Crossing a nominal--particle boundary is associated with increases of 20.9, 18.7, and 24.7 percentage points in the 0.6B$\rightarrow$1.7B, 1.7B$\rightarrow$4B, and 0.6B$\rightarrow$4B configurations, respectively. Each interval excludes zero after correcting the pre-specified particle-environment contrasts within the corresponding model pair.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lcc}
+\toprule
+Draft $\rightarrow$ target & Adjusted difference & Holm-adjusted $p$ \\
+\midrule
+0.6B $\rightarrow$ 1.7B & $+20.9$ [15.4, 26.4] pp & $4.9\times10^{-13}$ \\
+1.7B $\rightarrow$ 4B & $+18.7$ [12.4, 25.0] pp & $3.2\times10^{-8}$ \\
+0.6B $\rightarrow$ 4B & $+24.7$ [18.4, 31.0] pp & $5.6\times10^{-14}$ \\
+\bottomrule
+\end{tabular}
+\caption{Adjusted rejection-probability differences for cross-morpheme tokens minus within-morpheme splits at nominal$\rightarrow$particle attachments. Brackets give 95\% confidence intervals in percentage points.}
+\label{tab:nominal-particle}
+\end{table}
+
+The differences among boundary environments are themselves strongly supported: the interaction between token class and environment is significant in all three configurations ($p=2.05\times10^{-26}$, $1.03\times10^{-9}$, and $1.74\times10^{-28}$, respectively). The concentration is substantively important. Predicate$\rightarrow$ending estimates are close to zero, so the findings do not license a general statement that grammatical suffixes make SD fail. Ending$\rightarrow$ending estimates are negative, but those comparisons have only 10--33 within-morpheme-split tokens per pair and are too sparse for a stable interpretation. Cross-morpheme support for lexical$\rightarrow$lexical transitions is likewise sparse. Figure~\ref{fig:environment} presents the full environment-specific estimates and confidence intervals.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/h3_environment_ame_forest.pdf}
+\caption{Adjusted rejection-probability difference between cross-morpheme tokens and within-morpheme splits by morphological environment. Points show the three draft--target configurations; bars show 95\% confidence intervals.}
+\label{fig:environment}
+\end{figure}
+
+\subsection{Replication and sensitivity analysis}
+
+We analyze the three model pairs separately rather than pooling their token observations and treating the result as a single experiment. The nominal--particle effect has the same positive direction in all three pairs and similar magnitude despite different draft and target capacities. A secondary analysis restricted to the exact 993-prompt intersection shared by all three pairs produces only a minor numerical change: the largest shift in an environment-specific adjusted difference is 0.95 percentage points, and no estimate reverses sign. A broader construction-level sensitivity analysis also retains a positive nominal--particle association. Ending$\rightarrow$ending is not estimable in that sensitivity analysis because no single-boundary cross-morpheme tokens are available for the comparison.
+
+\section{Discussion}
+\label{sec:discussion}
+
+The main result is not that morphological alignment is uniformly beneficial. The coarse boundary score shows why that conclusion would be misleading. A token that divides a morpheme and a token that binds material across a boundary are both misaligned with morphology, yet their relationships with draft--target agreement differ sharply. The latter is the informative configuration in our data.
+
+The boundary-level analysis further narrows the claim. The association is concentrated at nominal--particle attachments, not broadly across every Korean grammatical transition. A plausible interpretation is that these fused subwords create a recurring prediction problem on which a smaller draft and larger target differ. This interpretation remains observational: the analysis does not show that particles, morphology, or any tokenizer decision causes rejection. It shows that, after adjustment for measured structural, uncertainty, and frequency variables, the cross-boundary penalty is larger around this particular attachment environment.
+
+The result is also compatible with several mechanisms that remain to be disentangled. It may reflect the identity of particular particles, the geometry with which a token covers the nominal and particle, residual lexical distributional differences, or recurrent fused token identities. These are testable decompositions, but they should not be inferred from the present regressions alone. The current evidence is sufficient for a narrower conclusion: Korean subword structure contains information about SD compatibility that is not captured by fragmentation, entropy, or unigram token frequency alone.
+
+There are practical implications, although we do not propose an inference method here. A risk predictor could in principle use local tokenization structure alongside confidence signals to shorten speculative blocks at positions likely to be rejected. Whether this improves throughput over strong entropy-adaptive baselines is an empirical question requiring a separate method evaluation.
+
+\section{Limitations}
+\label{sec:limitations}
+
+This study has several limitations. First, all analyses use Qwen3-Base model pairs that share a tokenizer. Replication across three capacities strengthens the result, but it does not establish that the pattern is architecture-independent or universal across Korean language models. Second, prompts are the first 1,000 examples in dataset order rather than a random sample of Korean Wikipedia, and continuations are model-generated rather than naturally occurring text.
+
+Third, morphology is produced automatically by Kiwi and surface-span alignment is imperfect. The documented exclusions may not be random. Fourth, estimates for ending$\rightarrow$ending and lexical$\rightarrow$lexical environments are limited by sparse comparison cells; their signs should not be interpreted as evidence for an opposite effect. Fifth, the available frequency estimates come from a local Korean Wikipedia cache. They provide an important robustness check, but they are not a complete account of lexical frequency or constructional familiarity. Finally, the study is observational. Regression adjustment and common-prompt sensitivity reduce several alternative explanations but do not establish a causal mechanism.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+We investigated why a Korean draft model and a larger target model disagree on individual speculative proposals. Overall token--morpheme boundary agreement does not predict rejection. The direction of the mismatch does: tokens that cross a morpheme boundary are more likely to be rejected than tokens that split within one. Across three draft--target configurations, this association is strongly concentrated at nominal--particle attachments, where boundary-crossing increases adjusted rejection probability by roughly 19--25 percentage points. These results suggest that the linguistic location of a subword token is a useful descriptor of draft--target compatibility in Korean speculative decoding.
+
+\bibliography{refs}
+
+\end{document}

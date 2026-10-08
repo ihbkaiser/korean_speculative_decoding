@@ -1,0 +1,117 @@
+# DESIGN ONLY: no existing runner/scheduler is claimed to implement this schema.
+schema: deadline-research-design-v4
+status: proposed_not_executed
+created_date: '2026-10-07'
+timezone: Asia/Bangkok
+start: '2026-10-07T09:00:00+07:00'
+deadline: '2026-10-10T23:59:00+07:00'
+corpus_window: {start: '2026-10-07T18:00:00+07:00', end: '2026-10-09T16:00:00+07:00'}
+final_runtime_window: {start: '2026-10-09T18:00:00+07:00', end: '2026-10-10T18:00:00+07:00'}
+inherits: configs/hardware_assignment_v3.yaml
+details: refine-logs/DEADLINE_EXPERIMENT_PLAN_20261007_v4.md
+hardware_confirmed: {rtx3090_count: 1, b200_count: 2, b200_same_host: true, long_term_access: true}
+hardware_inspected: false
+remote_jobs_submitted: false
+personnel_confirmed: {implementation_people: 1, korean_annotators: 0}
+human_validation_status: DEFERRED_NO_ANNOTATOR
+measurement_this_sprint: automated_alignment_coverage_context_sensitivity_not_gold_accuracy
+controlled_frames_this_sprint: exploratory_not_linguistically_validated
+devices: {rtx3090_uuid: null, b200_a_uuid: null, b200_b_uuid: null}
+gates:
+  G0_engine_and_capacity: '2026-10-07T18:00:00+07:00'
+  G1_features_and_predictor: '2026-10-08T12:00:00+07:00'
+  G2_policy_freeze: '2026-10-09T12:00:00+07:00'
+  G3_analysis_cutoff: '2026-10-09T16:00:00+07:00'
+  G4_raw_results_freeze: '2026-10-10T18:00:00+07:00'
+defaults: {dtype: bfloat16, attention_backend: sdpa, batch_size: 1, tensor_parallel_size: 1, K: 4, max_new_tokens: 256, do_sample: false, normal_eos: true, cpu_offload: false, quantization: none}
+counts:
+  required_analysis_SD: 47929
+  full_analysis_SD: 68011
+  full_analysis_A_SD: 36635
+  full_analysis_B_SD: 31376
+  estimated_unique_core_target_references_if_fully_reusable: 33835
+  estimated_unique_full_target_references_if_fully_reusable: 47373
+  primary_runtime_gross: 36000
+  primary_runtime_if_AR_shared: 33000
+  five_extra_ablations: 7500
+  optional_IT32_runtime: 14400
+  optional_hardware_B200_runtime: 6000
+  optional_hardware_3090_runtime: 6000
+  dev_timing_two_stage: 8400
+  support_expansion_SD_conditional: 20000
+  rescue_analysis_SD: 29282
+  rescue_unique_target_references_if_reusable: 23735
+  rescue_runtime_with_three_ablations_if_AR_reused: 15000
+method:
+  provisional_name: Morphology-Aware Draft Stopping
+  acronym: MADS
+  contract: greedy_only
+  novelty_verified: false
+  checkpoints:
+    training_pair: Q2
+    primary_runtime_pairs: [Q4, Q5]
+    optional_IT_pair: L04_4draft32it
+    optional_hardware_pair: Q3
+  split:
+    W_train_documents: 4000
+    W_dev_documents: 1000
+    W_dev_model_documents: 500
+    W_dev_policy_documents: 500
+    W_test_documents: 5000
+  predictor: {type: logistic_regression, C_grid: [0.01, 0.1, 1, 10, 100], max_iter: 2000, class_weight: none}
+  P0_features: [draft_log_top1_probability, draft_margin, draft_entropy, slot, generation_position, token_char_length, whitespace, previous_verified_round_information_if_supported]
+  P1_added_features: [online_CROSS_SPLIT_ALIGNED_UNKNOWN, internal_boundary_count, nominal_to_particle, predicate_to_ending]
+  forbidden_features: [current_target_entropy, target_side_geometry, future_eojeol_length, future_proposal_block]
+  online_context: accepted_history_plus_current_proposal_prefix
+  local_parser_eojeols: 20
+  unknown_span_policy: P0_fallback_and_record_coverage
+  stop_callback_location: after_current_candidate_before_next_draft_forward
+  survival_proxy: product_1_minus_predicted_risk
+  survival_threshold_grid: [0.1, 0.2, 0.4, 0.6, 0.8]
+  cap_grid: [8, 16]
+  current_candidate_retained: true
+  verification_changed: false
+  token_replacement_by_morphology: false
+  gate_on_positive_test_effect: false
+runtime:
+  policies: [target_AR, best_fixed_K, maxprob_dynamic, SVIP_or_explicit_SVIP_style, learned_confidence_only, learned_confidence_plus_morphology]
+  fixed_K_grid: [1, 2, 4, 8, 16]
+  probability_threshold_grid: [0.3, 0.5, 0.7, 0.9, 0.95]
+  entropy_dev_quantiles: [0.5, 0.7, 0.8, 0.9, 0.95]
+  shortlist_per_adaptive_family: 3
+  stage1_dev_prompts_per_pair: 100
+  stage2_dev_prompts_per_pair: 400
+  main_test_per_pair: {W: 500, F: 500}
+  repeats: 3
+  bootstrap_source_cluster_resamples: 2000
+  company_other_GPU_idle_initially: true
+  full_end_to_end_includes: [prefill, draft, target, cache, online_detector, predictor, required_sync]
+  excludes: [model_load, heavyweight_offline_label_projection]
+  ablations: [general_boundary_without_environment, nominal_particle_only, random_DEV_matched, one_candidate_lookahead_with_cost, full_block_guard_with_cost]
+capacity:
+  execution_margin: 0.2
+  corpus_nominal_hours_per_GPU: 46
+  corpus_auxiliary_reserved_hours_per_GPU: 6
+  final_runtime_nominal_hours: 24
+  final_runtime_reserved_hours: 2
+  unmeasured_primary_runtime_seconds_per_run_ceiling: 1.9555555556
+  unmeasured_full_runtime_seconds_per_run_ceiling: 1.3004926108
+  decide_scope_from: development_pilot_ETA_memory_and_access
+  choose_scope_from_final_test_sign: false
+  tiers: [FULL_68011, CORE_47929, RESCUE_declared_reduced_study]
+rescue_scope:
+  analysis:
+    Q2: {W_train: 4000, W_dev: 1000, W_test: 5000, F_test: 997, N_test: 550}
+    Q1: {W_test: 2000, F_test: 997, N_test: 550}
+    Q3: {W_test: 2000, F_test: 997, N_test: 550}
+    Q4: {W_test: 1000}
+    Q5: {W_test: 1000}
+    Q6: {W_test: 1000}
+    G1: {W_test: 1000, F_test: 997, N_test: 550}
+    L01a: {W_test: 1000, F_test: 997, N_test: 550}
+    L02a: {W_test: 1000, F_test: 997, N_test: 550}
+  runtime_per_pair: {pairs: [Q4, Q5], W_test: 200, F_test: 200, policies: 6, repeats: 3}
+  ablations: {pair: Q4, W_test: 200, variants: [general_boundary_without_environment, nominal_particle_only, random_DEV_matched], repeats: 3}
+  choose_subset_on_effect_sign: false
+not_in_four_day_scope: [exact_stochastic_SD_implementation, E17_cross_lingual_expansion, E18_draft_distillation]
+status_requirements: [planned, completed, failed, partial, skipped_with_reason]

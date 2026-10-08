@@ -1,0 +1,655 @@
+"""Model audit and resumable greedy speculative-decoding shards for Table 1."""
+
+from __future__ import annotations
+
+import hashlib
+import json
+import math
+import time
+from collections import defaultdict
+from pathlib import Path
+from typing import Any, Iterable
+
+from .data import encode_prompt
+from .models import (
+    assert_tokenizer_compatible,
+    compare_tokenizers,
+    config_vocab_size,
+    load_models,
+)
+from .speculative_decoding import (
+    greedy_generate,
+    greedy_generate_batch,
+    speculative_greedy,
+    speculative_greedy_cached,
+    verify_greedy_equivalence,
+)
+from .table1_data import load_prompt_pool
+
+
+def _json_default(value: Any) -> Any:
+    if hasattr(value, "item"):
+        return value.item()
+    if hasattr(value, "tolist"):
+        return value.tolist()
+    raise TypeError(f"Object is not JSON serializable: {type(value)!r}")
+
+
+def _write_json(path: Path, value: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(value, ensure_ascii=False, indent=2, default=_json_default) + "\n", encoding="utf-8")
+
+
+def _write_parquet_atomic(rows: list[dict[str, Any]], path: Path) -> None:
+    import pandas as pd
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(path.name + ".tmp")
+    pd.DataFrame(rows).to_parquet(temporary, index=False, engine="pyarrow")
+    temporary.replace(path)
+
+
+def resolve_model_revision(
+    model_id: str,
+    *,
+    requested_revision: str | None = None,
+    token: str | None = None,
+) -> dict[str, Any]:
+    from huggingface_hub import HfApi
+
+    info = HfApi(token=token).model_info(model_id, revision=requested_revision)
+    resolved = getattr(info, "sha", None)
+    if not resolved:
+        raise RuntimeError(f"Hugging Face did not return a commit SHA for {model_id}")
+    return {
+        "id": model_id,
+        "requested_revision": requested_revision or "main",
+        "resolved_revision": resolved,
+        "private": bool(getattr(info, "private", False)),
+        "gated": bool(getattr(info, "gated", False)),
+    }
+
+
+def load_pair_records(pool_path: str | Path, pair_spec: dict[str, Any]) -> list[dict[str, Any]]:
+    records = load_prompt_pool(pool_path)
+    split = pair_spec["prompt_split"]
+    if split == "common_20k":
+        selected = records[:20_000]
+    elif split == "all_40k":
+        selected = records[:40_000]
+    else:
+        raise ValueError(f"Unknown prompt split: {split}")
+    expected_count = int(pair_spec["prompt_count"])
+    if len(selected) != expected_count:
+        raise AssertionError(f"Expected {expected_count} prompt records for {split}, found {len(selected)}")
+    if len({row["doc_id"] for row in selected}) != len(selected):
+        raise AssertionError("pair prompt records contain duplicate doc_id")
+    return selected
+
+
+def prompt_ids_sha256(records: Iterable[dict[str, Any]]) -> str:
+    return hashlib.sha256("\n".join(str(row["doc_id"]) for row in records).encode("utf-8")).hexdigest()
+
+
+def resolve_model_reference(
+    model_meta: dict[str, Any],
+    side: str,
+    *,
+    override: str | None = None,
+) -> tuple[str, str | None]:
+    """Resolve a model name/path and revision for Transformers loading.
+
+    A local model directory must not receive a Hub commit SHA: the revision is
+    meaningful for Hub identifiers only.  ``override`` is intentionally also
+    allowed to be a Hub identifier so one CLI option can cover both use cases.
+    """
+    if override:
+        candidate = Path(str(override)).expanduser()
+        if candidate.exists():
+            return str(candidate.resolve()), None
+        return str(override), None
+
+    info = model_meta[side]
+    local_path = info.get("local_path")
+    if local_path:
+        candidate = Path(str(local_path)).expanduser()
+        if candidate.exists():
+            return str(candidate.resolve()), None
+    resolved_revision = info.get("resolved_revision")
+    return str(info["id"]), str(resolved_revision) if resolved_revision else None
+
+
+def _model_kwargs(model_meta: dict[str, Any], side: str) -> tuple[str, str | None]:
+    return resolve_model_reference(model_meta, side)
+
+
+def build_run_identity(
+    *,
+    pair_id: str,
+    pair_spec: dict[str, Any],
+    model_meta: dict[str, Any],
+    config: dict[str, Any],
+    records: list[dict[str, Any]],
+    shard_records: list[dict[str, Any]],
+    shard_index: int,
+    num_shards: int,
+) -> dict[str, Any]:
+    """Build the immutable identity used to validate resume artifacts."""
+    draft_name, draft_revision = _model_kwargs(model_meta, "draft")
+    target_name, target_revision = _model_kwargs(model_meta, "target")
+    return {
+        "pair_id": pair_id,
+        "prompt_split": pair_spec.get("prompt_split"),
+        "prompt_count": len(records),
+        "prompt_ids_sha256": prompt_ids_sha256(records),
+        "shard_index": int(shard_index),
+        "num_shards": int(num_shards),
+        "shard_prompt_count": len(shard_records),
+        "shard_prompt_ids_sha256": prompt_ids_sha256(shard_records),
+        "draft_model": draft_name,
+        "draft_revision": draft_revision,
+        "target_model": target_name,
+        "target_revision": target_revision,
+        "max_prompt_tokens": int(config["max_prompt_tokens"]),
+        "max_new_tokens": int(config["max_new_tokens"]),
+        "speculative_k": int(config["speculative_k"]),
+        "decoder": str(pair_spec.get("decoder", config.get("decoder", "legacy"))),
+        "dtype": _pair_inference_setting(pair_spec, config, "dtype", "float16"),
+        "attention_backend": _pair_inference_setting(pair_spec, config, "attention_backend", "sdpa"),
+        "reference_batch_size": int(
+            pair_spec.get("reference_batch_size", config.get("reference_batch_size", 1))
+        ),
+    }
+
+
+def _pair_inference_setting(
+    pair_spec: dict[str, Any], config: dict[str, Any], key: str, default: str,
+) -> str:
+    """Resolve an optional pair-specific inference override."""
+    return str(pair_spec.get(key, config.get(key, default)))
+
+
+def select_speculative_decoder(pair_spec: dict[str, Any], config: dict[str, Any]):
+    """Select a pinned decoder without silently changing audit semantics."""
+    decoder_name = str(pair_spec.get("decoder", config.get("decoder", "legacy"))).lower()
+    decoders = {
+        "legacy": speculative_greedy,
+        "cached": speculative_greedy_cached,
+    }
+    try:
+        return decoders[decoder_name]
+    except KeyError as exc:
+        raise ValueError(
+            f"Unknown speculative decoder {decoder_name!r}; expected legacy or cached"
+        ) from exc
+
+
+def generate_reference_ids(
+    records: list[dict[str, Any]],
+    *,
+    tokenizer: Any,
+    target_model: Any,
+    pair_spec: dict[str, Any],
+    config: dict[str, Any],
+) -> dict[str, list[int]]:
+    """Generate target references, using only parity-approved microbatches."""
+    if not records:
+        return {}
+    prompt_ids_by_doc = {
+        str(record["doc_id"]): encode_prompt(
+            tokenizer, str(record["text"]), int(config["max_prompt_tokens"])
+        )
+        for record in records
+    }
+    eos_token_id = getattr(tokenizer, "eos_token_id", None)
+    batch_size = int(pair_spec.get("reference_batch_size", config.get("reference_batch_size", 1)))
+    if batch_size < 1:
+        raise ValueError("reference_batch_size must be positive")
+    if batch_size == 1:
+        return {
+            doc_id: greedy_generate(
+                target_model,
+                prompt_ids,
+                int(config["max_new_tokens"]),
+                eos_token_id,
+            )
+            for doc_id, prompt_ids in prompt_ids_by_doc.items()
+        }
+
+    # Grouping by exact prompt length avoids padding/mask-dependent numerical
+    # changes. Pair-level batch sizes are enabled only after B200 parity pilots.
+    buckets: dict[int, list[tuple[str, list[int]]]] = defaultdict(list)
+    for doc_id, prompt_ids in prompt_ids_by_doc.items():
+        buckets[len(prompt_ids)].append((doc_id, prompt_ids))
+    references: dict[str, list[int]] = {}
+    for bucket in buckets.values():
+        for start in range(0, len(bucket), batch_size):
+            chunk = bucket[start:start + batch_size]
+            outputs = greedy_generate_batch(
+                target_model,
+                [prompt_ids for _, prompt_ids in chunk],
+                int(config["max_new_tokens"]),
+                eos_token_id,
+            )
+            references.update({doc_id: output for (doc_id, _), output in zip(chunk, outputs)})
+    return references
+
+
+def audit_pair_tokenizers(
+    pair_id: str,
+    pair_spec: dict[str, Any],
+    model_meta: dict[str, Any],
+    prompt_records: list[dict[str, Any]],
+    *,
+    probe_count: int = 1000,
+    token: str | None = None,
+    require_offsets: bool = True,
+) -> dict[str, Any]:
+    from transformers import AutoConfig, AutoTokenizer
+
+    draft_name, draft_revision = _model_kwargs(model_meta, "draft")
+    target_name, target_revision = _model_kwargs(model_meta, "target")
+    draft_tokenizer = AutoTokenizer.from_pretrained(
+        draft_name, revision=draft_revision, use_fast=True, token=token
+    )
+    target_tokenizer = AutoTokenizer.from_pretrained(
+        target_name, revision=target_revision, use_fast=True, token=token
+    )
+    probes = [str(row["text"]) for row in prompt_records[:probe_count]]
+    compatibility = compare_tokenizers(
+        draft_tokenizer,
+        target_tokenizer,
+        probes=probes,
+        require_offsets=require_offsets,
+    )
+    draft_config = AutoConfig.from_pretrained(draft_name, revision=draft_revision, token=token)
+    target_config = AutoConfig.from_pretrained(target_name, revision=target_revision, token=token)
+    draft_vocab_size = config_vocab_size(draft_config)
+    target_vocab_size = config_vocab_size(target_config)
+    compatibility.update({
+        "pair_id": pair_id,
+        "family": pair_spec["family"],
+        "draft_model": draft_name,
+        "target_model": target_name,
+        "draft_revision": draft_revision,
+        "target_revision": target_revision,
+        "model_vocab_size_draft": draft_vocab_size,
+        "model_vocab_size_target": target_vocab_size,
+        "model_vocab_size_equal": draft_vocab_size == target_vocab_size,
+        "probe_count_requested": probe_count,
+        "probe_count_completed": len(compatibility.get("probes", [])),
+    })
+    if draft_vocab_size != target_vocab_size:
+        compatibility["compatible"] = False
+        compatibility.setdefault("reasons", []).append("model config vocab sizes differ")
+    return compatibility
+
+
+def _event_row(
+    event: dict[str, Any],
+    *,
+    pair_id: str,
+    draft_model: str,
+    target_model: str,
+    tokenizer: Any,
+    record: dict[str, Any],
+    prompt_token_count: int,
+) -> dict[str, Any]:
+    token_id = int(event["draft_token_id"])
+    raw_token_text = tokenizer.decode(
+        [token_id], skip_special_tokens=False, clean_up_tokenization_spaces=False
+    )
+    return {
+        "doc_id": record["doc_id"],
+        "raw_text_hash": record["raw_text_hash"],
+        "pair_id": pair_id,
+        "draft_model": draft_model,
+        "target_model": target_model,
+        "prompt_token_count": int(prompt_token_count),
+        "generated_token_position": int(event["output_token_position"]),
+        "proposal_slot": int(event["proposal_position"]) - 1,
+        "block_id": int(event["round_index"]),
+        "token_id": token_id,
+        "token_text": raw_token_text,
+        "accepted": bool(event["accepted"]) if event["accepted"] is not None else None,
+        "rejected": bool(event["rejected"]) if event["rejected"] is not None else None,
+        "invalidated_by_earlier_rejection": bool(event["invalidated_after_first_rejection"]),
+        "draft_entropy": event["draft_entropy"],
+        "target_entropy": event["target_entropy"],
+        "draft_logprob_of_proposed_token": event["draft_logprob"],
+        "draft_top1_logprob": event.get("draft_top1_logprob"),
+        "target_logprob_of_proposed_token": event["target_logprob"],
+        "target_top1_token_id": int(event["target_greedy_token_id"]),
+        "target_top1_logprob": event["target_top1_logprob"],
+        "target_margin": float(event["target_top1_logprob"] - event["target_logprob"]),
+        "target_rank_of_proposed_token": int(event["target_rank_of_proposed_token"]),
+        "later_proposals_invalidated": bool(event["invalidated_after_first_rejection"]),
+        "is_first_rejection": bool(event["is_first_rejection"]),
+        "accepted_prefix_length": int(event["accepted_prefix_length"]),
+        "first_rejection_output_position": event["first_rejection_output_position"],
+        "pool_index": record.get("pool_index"),
+        "pool_split": record.get("pool_split"),
+    }
+
+
+def _prompt_run(
+    record: dict[str, Any],
+    *,
+    pair_id: str,
+    pair_spec: dict[str, Any],
+    draft_model: Any,
+    target_model: Any,
+    tokenizer: Any,
+    config: dict[str, Any],
+    reference_ids: list[int] | None = None,
+) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    prompt_ids = encode_prompt(tokenizer, str(record["text"]), int(config["max_prompt_tokens"]))
+    eos_token_id = getattr(tokenizer, "eos_token_id", None)
+    if reference_ids is None:
+        reference_ids = greedy_generate(
+            target_model, prompt_ids, int(config["max_new_tokens"]), eos_token_id
+        )
+    # Pair-level overrides are used only after the B200 smoke benchmark has
+    # demonstrated exact valid-audit parity for that pair.  The global default
+    # remains legacy so a new pair cannot silently change audit semantics.
+    decoder = select_speculative_decoder(pair_spec, config)
+    speculative_ids, raw_events = decoder(
+        draft_model,
+        target_model,
+        prompt_ids,
+        int(config["max_new_tokens"]),
+        eos_token_id,
+        int(config["speculative_k"]),
+        prompt_id=record["doc_id"],
+    )
+    verify_greedy_equivalence(reference_ids, speculative_ids, record["doc_id"])
+    reference_text = tokenizer.decode(
+        reference_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False
+    )
+    reference_row = {
+        "doc_id": record["doc_id"],
+        "raw_text_hash": record["raw_text_hash"],
+        "pair_id": pair_id,
+        "draft_model": pair_spec["draft"],
+        "target_model": pair_spec["target"],
+        "prompt_token_count": len(prompt_ids),
+        "prompt_token_ids": prompt_ids,
+        "prompt_text": tokenizer.decode(
+            prompt_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False
+        ),
+        "target_continuation_token_ids": reference_ids,
+        "target_continuation_text": reference_text,
+        "speculative_token_ids": speculative_ids,
+        "exact_sd_target": reference_ids == speculative_ids,
+        "completed": True,
+        "pool_index": record.get("pool_index"),
+        "pool_split": record.get("pool_split"),
+        "source_index": record.get("source_index"),
+    }
+    event_rows = [
+        _event_row(
+            event,
+            pair_id=pair_id,
+            draft_model=pair_spec["draft"],
+            target_model=pair_spec["target"],
+            tokenizer=tokenizer,
+            record=record,
+            prompt_token_count=len(prompt_ids),
+        )
+        for event in raw_events
+    ]
+    return reference_row, event_rows
+
+
+def run_smoke_test(
+    pair_id: str,
+    pair_spec: dict[str, Any],
+    model_meta: dict[str, Any],
+    prompt_records: list[dict[str, Any]],
+    *,
+    device: str,
+    config: dict[str, Any],
+    token: str | None = None,
+) -> dict[str, Any]:
+    from transformers import AutoTokenizer
+
+    draft_name, draft_revision = _model_kwargs(model_meta, "draft")
+    target_name, target_revision = _model_kwargs(model_meta, "target")
+    draft_tokenizer = AutoTokenizer.from_pretrained(draft_name, revision=draft_revision, use_fast=True, token=token)
+    target_tokenizer = AutoTokenizer.from_pretrained(target_name, revision=target_revision, use_fast=True, token=token)
+    tokenizer_report = compare_tokenizers(
+        draft_tokenizer,
+        target_tokenizer,
+        require_offsets=bool(config.get("require_offsets", True)),
+    )
+    if not tokenizer_report["compatible"]:
+        raise RuntimeError("Smoke tokenizer compatibility failed: " + "; ".join(tokenizer_report["reasons"]))
+    draft_model, target_model = load_models(
+        draft_name,
+        target_name,
+        device=device,
+        draft_revision=draft_revision,
+        target_revision=target_revision,
+        token=token,
+        dtype=_pair_inference_setting(pair_spec, config, "dtype", "float16"),
+        attention_backend=_pair_inference_setting(pair_spec, config, "attention_backend", "sdpa"),
+    )
+    smoke_limit = min(int(config.get("smoke_prompts", 200)), len(prompt_records))
+    smoke_records = prompt_records[:smoke_limit]
+    reference_ids_by_doc = generate_reference_ids(
+        smoke_records,
+        tokenizer=target_tokenizer,
+        target_model=target_model,
+        pair_spec=pair_spec,
+        config=config,
+    )
+    started = time.time()
+    checked: list[str] = []
+    reference_rows: list[dict[str, Any]] = []
+    event_rows: list[dict[str, Any]] = []
+    for record in smoke_records:
+        reference, events = _prompt_run(
+            record,
+            pair_id=pair_id,
+            pair_spec=pair_spec,
+            draft_model=draft_model,
+            target_model=target_model,
+            tokenizer=target_tokenizer,
+            config=config,
+            reference_ids=reference_ids_by_doc[str(record["doc_id"])],
+        )
+        checked.append(str(record["doc_id"]))
+        reference_rows.append(reference)
+        for event in events:
+            for field in (
+                "draft_entropy", "target_entropy", "draft_logprob",
+                "target_logprob", "draft_top1_logprob", "target_top1_logprob",
+            ):
+                value = event.get(field)
+                if value is None or not math.isfinite(float(value)):
+                    raise AssertionError(f"smoke event has non-finite {field}: {value!r}")
+            invalidated = bool(event["invalidated_after_first_rejection"])
+            if invalidated:
+                if event.get("rejected") is not None or event.get("accepted") is not False:
+                    raise AssertionError("invalidated proposal has invalid acceptance accounting")
+            elif not isinstance(event.get("rejected"), bool) or not isinstance(event.get("accepted"), bool):
+                raise AssertionError("valid proposal has invalid acceptance accounting")
+        event_rows.extend(events)
+    return {
+        "pair_id": pair_id,
+        "passed": True,
+        "prompts_checked": len(checked),
+        "smoke_max_new_tokens": int(config["max_new_tokens"]),
+        "prompt_ids_sha256": hashlib.sha256("\n".join(checked).encode("utf-8")).hexdigest(),
+        "elapsed_seconds": time.time() - started,
+        "device": device,
+        "reference_rows": reference_rows,
+        "event_rows": event_rows,
+    }
+
+
+def smoke_gate_mode(
+    smoke_prompts: int,
+    smoke_max_new_tokens: int,
+    *,
+    full_prompts: int = 200,
+    full_max_new_tokens: int = 128,
+) -> str:
+    """Label whether a smoke run is eligible for the expensive SD stage."""
+    if smoke_prompts == full_prompts and smoke_max_new_tokens == full_max_new_tokens:
+        return f"FULL_{full_prompts}"
+    return "QUICK_ONLY"
+
+
+def run_sd_shard(
+    *,
+    root: str | Path,
+    pair_id: str,
+    pair_spec: dict[str, Any],
+    model_meta: dict[str, Any],
+    config: dict[str, Any],
+    shard_index: int = 0,
+    num_shards: int = 1,
+    device: str = "cuda",
+    token: str | None = None,
+) -> dict[str, Any]:
+    """Run one deterministic, resumable prompt shard."""
+    from transformers import AutoTokenizer
+
+    if shard_index < 0 or num_shards < 1 or shard_index >= num_shards:
+        raise ValueError("invalid shard index/count")
+    root_path = Path(root)
+    records = load_pair_records(root_path / config["paths"]["prompts"], pair_spec)
+    shard_records = records[shard_index::num_shards]
+    shard_dir = root_path / config["paths"]["runs"] / pair_id / "shards" / f"shard-{shard_index:05d}-of-{num_shards:05d}"
+    shard_dir.mkdir(parents=True, exist_ok=True)
+    run_identity = build_run_identity(
+        pair_id=pair_id,
+        pair_spec=pair_spec,
+        model_meta=model_meta,
+        config=config,
+        records=records,
+        shard_records=shard_records,
+        shard_index=shard_index,
+        num_shards=num_shards,
+    )
+    dataset_metadata_path = root_path / config["paths"].get("dataset_metadata", "")
+    if dataset_metadata_path.exists():
+        dataset_metadata = json.loads(dataset_metadata_path.read_text(encoding="utf-8"))
+        run_identity["dataset_revision"] = dataset_metadata.get("resolved_revision")
+    complete_marker = shard_dir / "COMPLETE"
+    if complete_marker.exists():
+        metadata_path = shard_dir / "run_metadata.json"
+        previous = json.loads(metadata_path.read_text(encoding="utf-8")) if metadata_path.exists() else {}
+        previous_identity = {key: previous.get(key) for key in run_identity}
+        if previous_identity != run_identity:
+            raise RuntimeError(
+                f"Completed shard {shard_dir} belongs to a different model/configuration. "
+                "Choose a fresh --root or remove that pair's old run artifact before rerunning."
+            )
+        return {"pair_id": pair_id, "shard_index": shard_index, "status": "already_complete", "path": str(shard_dir)}
+
+    progress_path = shard_dir / "progress.jsonl"
+    completed: dict[str, tuple[dict[str, Any], list[dict[str, Any]]]] = {}
+    if progress_path.exists():
+        with progress_path.open(encoding="utf-8") as handle:
+            for line in handle:
+                if not line.strip():
+                    continue
+                item = json.loads(line)
+                reference = item.get("reference", {})
+                doc_id = str(reference.get("doc_id"))
+                expected_record = next(
+                    (row for row in shard_records if str(row["doc_id"]) == doc_id),
+                    None,
+                )
+                if expected_record is None:
+                    raise RuntimeError(f"progress contains a prompt outside this shard: {doc_id}")
+                if reference.get("raw_text_hash") != expected_record.get("raw_text_hash"):
+                    raise RuntimeError(f"progress raw_text_hash mismatch for doc_id={doc_id}")
+                if not reference.get("completed") or not reference.get("exact_sd_target"):
+                    raise RuntimeError(f"progress contains a parity-failed prompt: {doc_id}")
+                completed[doc_id] = (reference, item.get("events", []))
+
+    draft_name, draft_revision = _model_kwargs(model_meta, "draft")
+    target_name, target_revision = _model_kwargs(model_meta, "target")
+    draft_tokenizer = AutoTokenizer.from_pretrained(draft_name, revision=draft_revision, use_fast=True, token=token)
+    target_tokenizer = AutoTokenizer.from_pretrained(target_name, revision=target_revision, use_fast=True, token=token)
+    assert_tokenizer_compatible(draft_tokenizer, target_tokenizer)
+    draft_model, target_model = load_models(
+        draft_name,
+        target_name,
+        device=device,
+        draft_revision=draft_revision,
+        target_revision=target_revision,
+        token=token,
+        dtype=_pair_inference_setting(pair_spec, config, "dtype", "float16"),
+        attention_backend=_pair_inference_setting(pair_spec, config, "attention_backend", "sdpa"),
+    )
+
+    pending_records = [
+        record for record in shard_records
+        if str(record["doc_id"]) not in completed
+    ]
+    reference_ids_by_doc = generate_reference_ids(
+        pending_records,
+        tokenizer=target_tokenizer,
+        target_model=target_model,
+        pair_spec=pair_spec,
+        config=config,
+    )
+    started = time.time()
+    with progress_path.open("a", encoding="utf-8") as progress:
+        for index, record in enumerate(shard_records):
+            doc_id = str(record["doc_id"])
+            if doc_id in completed:
+                continue
+            reference, events = _prompt_run(
+                record,
+                pair_id=pair_id,
+                pair_spec=pair_spec,
+                draft_model=draft_model,
+                target_model=target_model,
+                tokenizer=target_tokenizer,
+                config=config,
+                reference_ids=reference_ids_by_doc[doc_id],
+            )
+            item = {"reference": reference, "events": events}
+            progress.write(json.dumps(item, ensure_ascii=False, default=_json_default) + "\n")
+            progress.flush()
+            completed[doc_id] = (reference, events)
+            print(
+                f"[{pair_id} shard {shard_index}/{num_shards}] "
+                f"{index + 1}/{len(shard_records)} doc_id={doc_id} "
+                f"generated={len(reference['target_continuation_token_ids'])}",
+                flush=True,
+            )
+
+    reference_rows = [completed[str(record["doc_id"])][0] for record in shard_records]
+    event_rows = [event for record in shard_records for event in completed[str(record["doc_id"])][1]]
+    if any(not row["exact_sd_target"] for row in reference_rows):
+        raise AssertionError("completed shard contains an SD/target mismatch")
+    _write_parquet_atomic(reference_rows, shard_dir / "references.parquet")
+    _write_parquet_atomic(event_rows, shard_dir / "sd_events.parquet")
+    metadata = {
+        **run_identity,
+        "pair_id": pair_id,
+        "shard_index": shard_index,
+        "num_shards": num_shards,
+        "prompt_count": len(reference_rows),
+        "prompt_ids_sha256": prompt_ids_sha256(reference_rows),
+        "all_target_sd_outputs_equal": True,
+        "reference_batch_size": int(
+            pair_spec.get("reference_batch_size", config.get("reference_batch_size", 1))
+        ),
+        "dtype": _pair_inference_setting(pair_spec, config, "dtype", "float16"),
+        "attention_backend": _pair_inference_setting(pair_spec, config, "attention_backend", "sdpa"),
+        "draft_model": draft_name,
+        "draft_revision": draft_revision,
+        "target_model": target_name,
+        "target_revision": target_revision,
+        "elapsed_seconds": time.time() - started,
+    }
+    _write_json(shard_dir / "run_metadata.json", metadata)
+    complete_marker.write_text("All prompts passed exact token-ID parity.\n", encoding="utf-8")
+    return {**metadata, "status": "complete", "path": str(shard_dir)}

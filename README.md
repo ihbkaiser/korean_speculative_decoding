@@ -101,3 +101,129 @@ python scripts/analyze_e1.py runs/<run_id>
 H2 tạo bảng token theo quan hệ tokenizer–morpheme. E1 nối bảng đó với tần suất token trong cache Wikipedia cục bộ, lưu cache tần suất để tái sử dụng và báo cáo mô hình điều chỉnh tần suất. Dataset đã chuẩn bị, log và kết quả chạy được lưu trong Git để tiện tái lập và xem lại; model cache (`.hf_home/`) và cache cục bộ vẫn được loại khỏi Git.
 
 Thiết kế chi tiết, semantics của event log, quy tắc alignment và giới hạn thực nghiệm nằm trong [implementation.md](implementation.md).
+
+## Table 1 pipeline (FineWeb2 Korean)
+
+The NAACL Table 1 pipeline is implemented in `scripts/table1_pipeline.py` and
+uses one frozen prompt pool for all five model pairs. The data stage records the
+immutable FineWeb2 commit in `metadata/dataset_revision.json`; model auditing
+records model SHAs and the tokenizer/parity gate in
+`metadata/model_revisions.json` and `audit/tokenizer_compatibility.csv`.
+
+```bash
+python scripts/table1_pipeline.py prepare-data
+python scripts/table1_pipeline.py audit-models --pair Q2 --device cuda
+python scripts/table1_pipeline.py run-sd --pair Q2 --shard-index 0 --num-shards 8
+python scripts/table1_pipeline.py align-morphology --pair Q2 --shard-index 0 --num-shards 8
+python scripts/table1_pipeline.py build-table1
+```
+
+To supply a different local model snapshot for each pair, pass both model paths
+to that pair's audit and SD commands. A custom override requires `--pair`, and
+`run-sd` refuses a path that was not used by the corresponding audit, so an old
+compatibility/smoke gate cannot accidentally be reused:
+
+```bash
+python scripts/table1_pipeline.py audit-models --pair Q1 --device cuda \
+  --draft-model-path /models/Q1/draft --target-model-path /models/Q1/target
+python scripts/table1_pipeline.py run-sd --pair Q1 --num-shards 8 --device cuda \
+  --draft-model-path /models/Q1/draft --target-model-path /models/Q1/target
+```
+
+Repeat those two commands for `Q2`, `Q3`, `M1`, and `G1`, changing the two
+paths each time. Then run `align-morphology` for every completed SD shard and
+run `build-table1` once. The paths may also be Hugging Face model IDs; local
+directories are loaded without a Hub revision.
+
+For the direct no-pilot path, `run-table1` performs the full sequence for one
+pair (full audit, every SD shard, and morphology alignment). Run it once per
+pair, then build the combined table once. If the frozen prompt pool is missing,
+the first invocation automatically runs the deterministic `prepare-data` stage:
+
+```bash
+python scripts/table1_pipeline.py run-table1 --pair Q1 --num-shards 1 \
+  --draft-model-path /models/Q1/draft --target-model-path /models/Q1/target
+python scripts/table1_pipeline.py run-table1 --pair Q2 --num-shards 1 \
+  --draft-model-path /models/Q2/draft --target-model-path /models/Q2/target
+python scripts/table1_pipeline.py run-table1 --pair Q3 --num-shards 1 \
+  --draft-model-path /models/Q3/draft --target-model-path /models/Q3/target
+python scripts/table1_pipeline.py run-table1 --pair M1 --num-shards 1 \
+  --draft-model-path /models/M1/draft --target-model-path /models/M1/target
+python scripts/table1_pipeline.py run-table1 --pair G1 --num-shards 1 \
+  --draft-model-path /models/G1/draft --target-model-path /models/G1/target
+python scripts/table1_pipeline.py build-table1
+```
+
+Each pair now persists smoke references/events/reports under `validation/`,
+raw resumable shard logs under `runs/table1/<pair>/shards/`, consolidated
+references/alignment/proposal joins under `results/`, tokenizer hashes, and
+the runtime environment manifest. Q2 also gets a common-20k consolidated view
+for cross-pair analysis. The final `build-table1` must report `COMPLETE`.
+
+Each SD/alignment shard writes a `COMPLETE` marker only after exact token-ID
+parity succeeds. Re-running a shard resumes from `progress.jsonl` and does not
+resample prompts. Incomplete pairs remain `Status=INCOMPLETE` in Table 1;
+placeholder values are never generated.
+
+If the full compatibility audit and 200-prompt smoke gate have already been
+handled externally, use `run-table1-main` for the production path only. It
+uses explicit model references from the CLI or `config.model_paths`, runs the complete frozen split, and keeps
+the per-prompt exact SD/target parity check; it does not call `audit-models` or
+`run_smoke_test`:
+
+```bash
+python scripts/table1_pipeline.py run-table1-main --pair Q1 --num-shards 1 \
+  --draft-model-path /models/Q1/draft --target-model-path /models/Q1/target
+```
+
+For the company B200 machine, the immutable local snapshot paths are already
+embedded in `configs/table1_pipeline.yaml`. The convenience launcher therefore
+needs only a pair name, or `all` for sequential execution of all five pairs:
+
+```bash
+bash scripts/run_company_table1.sh Q1
+bash scripts/run_company_table1.sh all
+```
+
+The Modal entrypoint persists the HF cache and experiment artifacts in named
+Volumes and supports the same stages:
+
+```bash
+modal run scripts/modal_table1.py --stage all
+modal run scripts/modal_table1.py --stage run-sd --pair Q2 --num-shards 8
+modal run scripts/modal_table1.py --stage benchmark --pair Q2 --benchmark-prompts 5 --benchmark-max-new-tokens 32
+modal run scripts/modal_table1.py --stage benchmark-all --benchmark-prompts 5 --benchmark-max-new-tokens 32
+modal run scripts/modal_table1.py --stage benchmark-batch-all --benchmark-prompts 16 --benchmark-max-new-tokens 32
+modal run scripts/modal_table1.py --stage package
+modal run scripts/modal_table1.py --stage upload --hf-repo-id <namespace>/korean-speculative-decoding-table1-bundle
+```
+
+All five pairs can run on one B200 each. In `stage=all`, audits remain
+sequential because they update shared metadata, while the five SD jobs and the
+five morphology-alignment jobs are submitted concurrently. The benchmark-all
+stage also uses one B200 per pair. The upload stage reads `hf_token` only to
+create an ephemeral Modal Secret; the token is ignored by git and excluded
+from the zip.
+
+The production Table 1 path selects the decoder and numeric inference path per
+pair from the pinned YAML. All five pairs use FP32 + eager attention and
+reference batch 64. Q1/Q3/M1/G1 use the persistent draft-cache
+decoder after a B200 smoke parity check, while Q2 stays on the legacy sequential
+decoder because its cached smoke run changed a valid proposal decision. The
+global defaults remain `decoder: legacy`, FP16, and SDPA. In all cases, target
+continuation IDs must remain exact within the configured numeric path.
+
+The target-only reference pass uses same-length microbatches of 64 for all five
+pairs. FP32 + eager is selected uniformly for this throughput-oriented run;
+exact token parity against the former FP16 scalar baseline is not a required
+gate for this configuration. Target proposal verification remains sequential.
+
+On the pinned B200 runtime, FP32 SDPA was slightly slower than eager for Q1/Q2
+batch 64, so eager is pinned uniformly. `flash_attention_2` is accepted by the
+loader but is not part of the current Modal image; enabling it would require a
+separate B200-compatible FlashAttention build.
+
+For a fast preliminary check on the larger pairs, use `--quick-smoke`; this
+checks 5 prompts with at most 32 generated tokens and records `QUICK_ONLY`.
+Such an artifact is deliberately blocked from `run-sd`, which requires the
+full 200-prompt/128-token smoke gate.

@@ -1,0 +1,34 @@
+﻿[
+    {
+        "object_id":  "ap-vXpF0Nc3twZ7fwZhfAeXXO",
+        "description":  "naacl-421-20261007T101332Z",
+        "environment":  "main",
+        "interval_start":  "2026-10-07T00:00:00",
+        "resource":  "Network Egress",
+        "cost":  "0.00021611"
+    },
+    {
+        "object_id":  "ap-vXpF0Nc3twZ7fwZhfAeXXO",
+        "description":  "naacl-421-20261007T101332Z",
+        "environment":  "main",
+        "interval_start":  "2026-10-07T00:00:00",
+        "resource":  "Memory",
+        "cost":  "0.00173664"
+    },
+    {
+        "object_id":  "ap-vXpF0Nc3twZ7fwZhfAeXXO",
+        "description":  "naacl-421-20261007T101332Z",
+        "environment":  "main",
+        "interval_start":  "2026-10-07T00:00:00",
+        "resource":  "CPU",
+        "cost":  "0.00378170"
+    },
+    {
+        "object_id":  "ap-vXpF0Nc3twZ7fwZhfAeXXO",
+        "description":  "naacl-421-20261007T101332Z",
+        "environment":  "main",
+        "interval_start":  "2026-10-07T00:00:00",
+        "resource":  "T4",
+        "cost":  "0.00786664"
+    }
+]
