@@ -1,0 +1,568 @@
+FAST_ONLY config=/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/repo/configs/table1_fast_b200.yaml scalar_fallback=disabled
+
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]
+Loading weights:  18%|█▊        | 57/310 [00:00<00:00, 553.85it/s]
+Loading weights:  36%|███▋      | 113/310 [00:00<00:00, 544.44it/s]
+Loading weights:  54%|█████▍    | 168/310 [00:00<00:00, 533.35it/s]
+Loading weights: 100%|██████████| 310/310 [00:00<00:00, 966.13it/s]
+
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]
+Loading weights:   8%|▊         | 24/310 [00:00<00:01, 208.31it/s]
+Loading weights:  15%|█▍        | 46/310 [00:00<00:01, 200.49it/s]
+Loading weights:  22%|██▏       | 67/310 [00:00<00:01, 180.03it/s]
+Loading weights:  29%|██▉       | 91/310 [00:00<00:01, 198.75it/s]
+Loading weights:  38%|███▊      | 117/310 [00:00<00:00, 212.86it/s]
+Loading weights:  45%|████▌     | 140/310 [00:00<00:00, 216.57it/s]
+Loading weights:  52%|█████▏    | 162/310 [00:00<00:00, 214.73it/s]
+Loading weights:  60%|██████    | 187/310 [00:00<00:00, 222.26it/s]
+Loading weights: 100%|██████████| 310/310 [00:00<00:00, 327.00it/s]
+[Q1 microbatch 256] resumed=0 pending=256 verification=target_block scalar_fallback=disabled
+
+Q1 SD (B=256):   0%|          | 0/256 [00:00<?, ?prompt/s]
+Q1 SD (B=256): 100%|██████████| 256/256 [00:24<00:00, 10.43prompt/s]
+                                                                    
+[Q1 microbatch 256] 256/256 prompts/s=10.431 elapsed=24.5s eta=0.0s
+
+Q1 SD (B=256): 100%|██████████| 256/256 [00:24<00:00, 10.43prompt/s]
+Q1 SD (B=256): 100%|██████████| 256/256 [00:24<00:00, 10.43prompt/s]
+{
+  "pair_id": "Q1",
+  "prompt_split": "common_20k",
+  "prompt_count": 256,
+  "prompt_ids_sha256": "9f7ddefdb3413b0402cbd8ab4ede8772c5b50b4261ad215d8b66b6a69fe80d1d",
+  "shard_index": 0,
+  "num_shards": 1,
+  "shard_prompt_count": 256,
+  "shard_prompt_ids_sha256": "9f7ddefdb3413b0402cbd8ab4ede8772c5b50b4261ad215d8b66b6a69fe80d1d",
+  "draft_model": "/__modal/volumes/vo-g2ntskY6f5hDhsCQgjBoCL/models/Qwen--Qwen3-0.6B-Base/da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+  "draft_revision": null,
+  "target_model": "/__modal/volumes/vo-g2ntskY6f5hDhsCQgjBoCL/models/Qwen--Qwen3-1.7B-Base/ea980cb0a6c2ae4b936e82123acc929f1cec04c1",
+  "target_revision": null,
+  "max_prompt_tokens": 128,
+  "max_new_tokens": 128,
+  "speculative_k": 4,
+  "decoder": "microbatched",
+  "dtype": "bfloat16",
+  "attention_backend": "sdpa",
+  "reference_batch_size": 64,
+  "target_verification": "batched_native",
+  "sd_batch_size": 256,
+  "reference_policy": "block_target_verified_no_scalar_reference",
+  "dataset_revision": "af9c13333eb981300149d5ca60a8e9d659b276b9",
+  "all_outputs_target_verified": true,
+  "all_target_sd_outputs_equal": null,
+  "independent_target_reference": false,
+  "scalar_parity_validated": false,
+  "scalar_fallback_prompt_count": 0,
+  "reference_sources": [
+    "block_target_verified_no_scalar_reference"
+  ],
+  "bonus_token_enabled": true,
+  "elapsed_seconds": 24.828656583999997,
+  "status": "complete",
+  "path": "/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/output with spaces/runs/Q1/shards/shard-00000-of-00001"
+}
+ALIGNMENT_DEFERRED pair=Q1 shard=0; run align-morphology after GPU inference
+{
+  "pair": "Q1",
+  "status": "sd_complete",
+  "mode": "production_without_audit_or_smoke",
+  "shards": [
+    {
+      "shard_index": 0,
+      "status": "sd_complete",
+      "alignment": "deferred"
+    }
+  ],
+  "next": "run align-morphology for each shard, then build-table1"
+}
+FAST_ONLY config=/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/repo/configs/table1_fast_b200.yaml scalar_fallback=disabled
+
+Q1 morphology:   0%|          | 0/256 [00:00<?, ?prompt/s]
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]
+Loading weights: 100%|██████████| 310/310 [00:00<00:00, 4005.24it/s]
+
+Q1 morphology:   0%|          | 1/256 [00:01<05:14,  1.23s/prompt]
+Q1 morphology:  22%|██▏       | 56/256 [00:02<00:06, 29.61prompt/s]
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]
+Loading weights:   3%|▎         | 11/398 [00:00<00:04, 94.13it/s]
+Loading weights:   6%|▌         | 24/398 [00:00<00:03, 102.74it/s]
+Loading weights:   9%|▉         | 36/398 [00:00<00:03, 105.85it/s]
+Loading weights:  13%|█▎        | 53/398 [00:00<00:02, 128.22it/s]
+Loading weights:  18%|█▊        | 70/398 [00:00<00:02, 141.65it/s]
+Q1 morphology:  41%|████      | 105/256 [00:03<00:03, 37.88prompt/s]
+Loading weights:  21%|██▏       | 85/398 [00:00<00:02, 130.56it/s]
+Loading weights:  25%|██▍       | 99/398 [00:00<00:02, 123.20it/s]
+Loading weights:  28%|██▊       | 112/398 [00:00<00:02, 121.78it/s]
+Loading weights:  34%|███▎      | 134/398 [00:01<00:01, 144.50it/s]
+Loading weights:  38%|███▊      | 153/398 [00:01<00:01, 152.62it/s]
+Loading weights:  43%|████▎     | 173/398 [00:01<00:01, 157.89it/s]
+Loading weights:  47%|████▋     | 189/398 [00:01<00:01, 155.03it/s]
+Loading weights:  52%|█████▏    | 205/398 [00:01<00:01, 154.59it/s]
+Q1 morphology:  62%|██████▎   | 160/256 [00:04<00:02, 44.33prompt/s]
+Loading weights:  56%|█████▌    | 221/398 [00:01<00:01, 152.32it/s]
+Loading weights:  60%|█████▉    | 237/398 [00:01<00:01, 150.29it/s]
+Loading weights: 100%|██████████| 398/398 [00:01<00:00, 225.19it/s]
+
+Q1 morphology:  88%|████████▊ | 224/256 [00:05<00:00, 51.14prompt/s]
+Q1 morphology: 100%|██████████| 256/256 [00:05<00:00, 42.90prompt/s]
+{
+  "pair_id": "Q1",
+  "shard_index": 0,
+  "num_shards": 1,
+  "prompt_count": 256,
+  "visible_candidate_tokens": 31324,
+  "aligned_rows": 31643,
+  "device": "cpu",
+  "target_model": "/__modal/volumes/vo-g2ntskY6f5hDhsCQgjBoCL/models/Qwen--Qwen3-1.7B-Base/ea980cb0a6c2ae4b936e82123acc929f1cec04c1",
+  "target_revision": null,
+  "status": "complete",
+  "path": "/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/output with spaces/runs/Q1/shards/shard-00000-of-00001/aligned_tokens.parquet"
+}
+[Q2 microbatch 256] resumed=0 pending=256 verification=target_block scalar_fallback=disabled
+
+Q2 SD (B=256):   0%|          | 0/256 [00:00<?, ?prompt/s]
+Q2 SD (B=256): 100%|██████████| 256/256 [00:24<00:00, 10.41prompt/s]
+                                                                    
+[Q2 microbatch 256] 256/256 prompts/s=10.410 elapsed=24.6s eta=0.0s
+
+Q2 SD (B=256): 100%|██████████| 256/256 [00:24<00:00, 10.41prompt/s]
+Q2 SD (B=256): 100%|██████████| 256/256 [00:24<00:00, 10.41prompt/s]
+{
+  "pair_id": "Q2",
+  "prompt_split": "all_40k",
+  "prompt_count": 256,
+  "prompt_ids_sha256": "9f7ddefdb3413b0402cbd8ab4ede8772c5b50b4261ad215d8b66b6a69fe80d1d",
+  "shard_index": 0,
+  "num_shards": 1,
+  "shard_prompt_count": 256,
+  "shard_prompt_ids_sha256": "9f7ddefdb3413b0402cbd8ab4ede8772c5b50b4261ad215d8b66b6a69fe80d1d",
+  "draft_model": "/__modal/volumes/vo-g2ntskY6f5hDhsCQgjBoCL/models/Qwen--Qwen3-0.6B-Base/da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+  "draft_revision": null,
+  "target_model": "/__modal/volumes/vo-g2ntskY6f5hDhsCQgjBoCL/models/Qwen--Qwen3-4B-Base/906bfd4b4dc7f14ee4320094d8b41684abff8539",
+  "target_revision": null,
+  "max_prompt_tokens": 128,
+  "max_new_tokens": 128,
+  "speculative_k": 4,
+  "decoder": "microbatched",
+  "dtype": "bfloat16",
+  "attention_backend": "sdpa",
+  "reference_batch_size": 64,
+  "target_verification": "batched_native",
+  "sd_batch_size": 256,
+  "reference_policy": "block_target_verified_no_scalar_reference",
+  "dataset_revision": "af9c13333eb981300149d5ca60a8e9d659b276b9",
+  "all_outputs_target_verified": true,
+  "all_target_sd_outputs_equal": null,
+  "independent_target_reference": false,
+  "scalar_parity_validated": false,
+  "scalar_fallback_prompt_count": 0,
+  "reference_sources": [
+    "block_target_verified_no_scalar_reference"
+  ],
+  "bonus_token_enabled": true,
+  "elapsed_seconds": 24.907858479999994,
+  "status": "complete",
+  "path": "/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/output with spaces/runs/Q2/shards/shard-00000-of-00001"
+}
+ALIGNMENT_DEFERRED pair=Q2 shard=0; run align-morphology after GPU inference
+{
+  "pair": "Q2",
+  "status": "sd_complete",
+  "mode": "production_without_audit_or_smoke",
+  "shards": [
+    {
+      "shard_index": 0,
+      "status": "sd_complete",
+      "alignment": "deferred"
+    }
+  ],
+  "next": "run align-morphology for each shard, then build-table1"
+}
+FAST_ONLY config=/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/repo/configs/table1_fast_b200.yaml scalar_fallback=disabled
+
+Q2 morphology:   0%|          | 0/256 [00:00<?, ?prompt/s]
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]
+Loading weights: 100%|██████████| 398/398 [00:00<00:00, 4417.39it/s]
+
+Q2 morphology:   0%|          | 1/256 [00:01<04:57,  1.17s/prompt]
+Q2 morphology:  23%|██▎       | 60/256 [00:02<00:06, 32.52prompt/s]
+Q2 morphology:  47%|████▋     | 121/256 [00:03<00:03, 44.90prompt/s]
+Q2 morphology:  69%|██████▉   | 176/256 [00:04<00:01, 48.78prompt/s]
+Q2 morphology:  88%|████████▊ | 226/256 [00:05<00:00, 44.34prompt/s]
+Loading weights:   0%|          | 0/399 [00:00<?, ?it/s]
+Q2 morphology: 100%|██████████| 256/256 [00:06<00:00, 42.48prompt/s]
+
+Loading weights:   4%|▍         | 17/399 [00:00<00:02, 155.46it/s]
+Loading weights:   8%|▊         | 33/399 [00:00<00:02, 142.11it/s]
+Loading weights:  12%|█▏        | 48/399 [00:00<00:03, 104.96it/s]
+Loading weights:  17%|█▋        | 66/399 [00:00<00:02, 123.88it/s]
+Loading weights:  20%|██        | 80/399 [00:00<00:02, 127.61it/s]
+Loading weights:  24%|██▎       | 94/399 [00:00<00:02, 111.58it/s]
+Loading weights:  27%|██▋       | 106/399 [00:00<00:02, 109.16it/s]{
+  "pair_id": "Q2",
+  "shard_index": 0,
+  "num_shards": 1,
+  "prompt_count": 256,
+  "visible_candidate_tokens": 31818,
+  "aligned_rows": 32080,
+  "device": "cpu",
+  "target_model": "/__modal/volumes/vo-g2ntskY6f5hDhsCQgjBoCL/models/Qwen--Qwen3-4B-Base/906bfd4b4dc7f14ee4320094d8b41684abff8539",
+  "target_revision": null,
+  "status": "complete",
+  "path": "/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/output with spaces/runs/Q2/shards/shard-00000-of-00001/aligned_tokens.parquet"
+}
+
+Loading weights:  30%|██▉       | 118/399 [00:01<00:02, 111.24it/s]
+Loading weights:  34%|███▎      | 134/399 [00:01<00:02, 122.25it/s]
+Loading weights:  37%|███▋      | 147/399 [00:01<00:02, 116.24it/s]
+Loading weights:  40%|███▉      | 159/399 [00:01<00:02, 107.94it/s]
+Loading weights:  43%|████▎     | 172/399 [00:01<00:01, 113.70it/s]
+Loading weights:  46%|████▋     | 185/399 [00:01<00:01, 114.25it/s]
+Loading weights:  49%|████▉     | 197/399 [00:01<00:01, 105.58it/s]
+Loading weights:  52%|█████▏    | 208/399 [00:01<00:01, 102.65it/s]
+Loading weights:  55%|█████▌    | 220/399 [00:01<00:01, 105.20it/s]
+Loading weights:  58%|█████▊    | 233/399 [00:02<00:01, 110.48it/s]
+Loading weights:  62%|██████▏   | 246/399 [00:02<00:01, 115.09it/s]
+Loading weights:  66%|██████▌   | 263/399 [00:02<00:01, 130.31it/s]
+Loading weights: 100%|██████████| 399/399 [00:02<00:00, 176.48it/s]
+[Q3 microbatch 256] resumed=0 pending=256 verification=target_block scalar_fallback=disabled
+
+Q3 SD (B=256):   0%|          | 0/256 [00:00<?, ?prompt/s]
+Q3 SD (B=256): 100%|██████████| 256/256 [00:29<00:00,  8.54prompt/s]
+                                                                    
+[Q3 microbatch 256] 256/256 prompts/s=8.540 elapsed=30.0s eta=0.0s
+
+Q3 SD (B=256): 100%|██████████| 256/256 [00:29<00:00,  8.54prompt/s]
+Q3 SD (B=256): 100%|██████████| 256/256 [00:29<00:00,  8.54prompt/s]
+{
+  "pair_id": "Q3",
+  "prompt_split": "common_20k",
+  "prompt_count": 256,
+  "prompt_ids_sha256": "9f7ddefdb3413b0402cbd8ab4ede8772c5b50b4261ad215d8b66b6a69fe80d1d",
+  "shard_index": 0,
+  "num_shards": 1,
+  "shard_prompt_count": 256,
+  "shard_prompt_ids_sha256": "9f7ddefdb3413b0402cbd8ab4ede8772c5b50b4261ad215d8b66b6a69fe80d1d",
+  "draft_model": "/__modal/volumes/vo-g2ntskY6f5hDhsCQgjBoCL/models/Qwen--Qwen3-4B-Base/906bfd4b4dc7f14ee4320094d8b41684abff8539",
+  "draft_revision": null,
+  "target_model": "/__modal/volumes/vo-g2ntskY6f5hDhsCQgjBoCL/models/Qwen--Qwen3-8B-Base/49e3418fbbbca6ecbdf9608b4d22e5a407081db4",
+  "target_revision": null,
+  "max_prompt_tokens": 128,
+  "max_new_tokens": 128,
+  "speculative_k": 4,
+  "decoder": "microbatched",
+  "dtype": "bfloat16",
+  "attention_backend": "sdpa",
+  "reference_batch_size": 64,
+  "target_verification": "batched_native",
+  "sd_batch_size": 256,
+  "reference_policy": "block_target_verified_no_scalar_reference",
+  "dataset_revision": "af9c13333eb981300149d5ca60a8e9d659b276b9",
+  "all_outputs_target_verified": true,
+  "all_target_sd_outputs_equal": null,
+  "independent_target_reference": false,
+  "scalar_parity_validated": false,
+  "scalar_fallback_prompt_count": 0,
+  "reference_sources": [
+    "block_target_verified_no_scalar_reference"
+  ],
+  "bonus_token_enabled": true,
+  "elapsed_seconds": 30.226852498,
+  "status": "complete",
+  "path": "/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/output with spaces/runs/Q3/shards/shard-00000-of-00001"
+}
+ALIGNMENT_DEFERRED pair=Q3 shard=0; run align-morphology after GPU inference
+{
+  "pair": "Q3",
+  "status": "sd_complete",
+  "mode": "production_without_audit_or_smoke",
+  "shards": [
+    {
+      "shard_index": 0,
+      "status": "sd_complete",
+      "alignment": "deferred"
+    }
+  ],
+  "next": "run align-morphology for each shard, then build-table1"
+}
+FAST_ONLY config=/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/repo/configs/table1_fast_b200.yaml scalar_fallback=disabled
+
+Q3 morphology:   0%|          | 0/256 [00:00<?, ?prompt/s]
+Q3 morphology:   0%|          | 1/256 [00:01<04:50,  1.14s/prompt]
+Q3 morphology:  23%|██▎       | 58/256 [00:02<00:06, 31.61prompt/s]
+Q3 morphology:  43%|████▎     | 111/256 [00:03<00:03, 40.68prompt/s]
+Q3 morphology:  60%|██████    | 154/256 [00:04<00:02, 41.35prompt/s]
+Loading weights:   0%|          | 0/458 [00:00<?, ?it/s]
+Loading weights:   3%|▎         | 13/458 [00:00<00:03, 125.59it/s]
+Loading weights:   7%|▋         | 30/458 [00:00<00:02, 148.34it/s]
+Loading weights:  10%|▉         | 45/458 [00:00<00:03, 121.44it/s]
+Loading weights:  13%|█▎        | 60/458 [00:00<00:03, 121.94it/s]
+Loading weights:  16%|█▌        | 73/458 [00:00<00:03, 107.40it/s]
+Loading weights:  19%|█▉        | 89/458 [00:00<00:03, 118.29it/s]
+Q3 morphology:  84%|████████▍ | 215/256 [00:05<00:00, 48.05prompt/s]
+Loading weights:  22%|██▏       | 102/458 [00:00<00:03, 116.20it/s]
+Loading weights:  25%|██▍       | 114/458 [00:00<00:03, 107.64it/s]
+Loading weights:  28%|██▊       | 129/458 [00:01<00:02, 117.94it/s]
+Loading weights:  31%|███       | 142/458 [00:01<00:02, 120.28it/s]
+Loading weights:  37%|███▋      | 171/458 [00:01<00:01, 163.73it/s]
+Loading weights:  46%|████▋     | 212/458 [00:01<00:01, 229.10it/s]
+Loading weights:  56%|█████▌    | 255/458 [00:01<00:00, 285.78it/s]
+Loading weights: 100%|██████████| 458/458 [00:01<00:00, 298.79it/s]
+
+Q3 morphology: 100%|██████████| 256/256 [00:06<00:00, 42.03prompt/s]
+{
+  "pair_id": "Q3",
+  "shard_index": 0,
+  "num_shards": 1,
+  "prompt_count": 256,
+  "visible_candidate_tokens": 31449,
+  "aligned_rows": 31585,
+  "device": "cpu",
+  "target_model": "/__modal/volumes/vo-g2ntskY6f5hDhsCQgjBoCL/models/Qwen--Qwen3-8B-Base/49e3418fbbbca6ecbdf9608b4d22e5a407081db4",
+  "target_revision": null,
+  "status": "complete",
+  "path": "/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/output with spaces/runs/Q3/shards/shard-00000-of-00001/aligned_tokens.parquet"
+}
+
+Loading weights:   0%|          | 0/531 [00:00<?, ?it/s]
+Loading weights:   1%|▏         | 7/531 [00:00<00:16, 31.22it/s]
+Loading weights:   3%|▎         | 15/531 [00:00<00:10, 48.38it/s]
+Loading weights:   5%|▌         | 27/531 [00:00<00:07, 66.09it/s]
+Loading weights:   7%|▋         | 39/531 [00:00<00:06, 78.46it/s]
+Loading weights:   9%|▉         | 48/531 [00:00<00:06, 77.58it/s]
+Loading weights:  11%|█         | 59/531 [00:00<00:05, 84.99it/s]
+Loading weights:  13%|█▎        | 70/531 [00:00<00:05, 83.07it/s]
+Loading weights:  15%|█▍        | 79/531 [00:01<00:05, 84.91it/s]
+Loading weights:  17%|█▋        | 88/531 [00:01<00:05, 82.12it/s]
+Loading weights:  19%|█▉        | 103/531 [00:01<00:04, 96.22it/s]
+Loading weights:  22%|██▏       | 118/531 [00:01<00:03, 103.46it/s]
+Loading weights:  24%|██▍       | 129/531 [00:01<00:03, 100.51it/s]
+Loading weights:  27%|██▋       | 141/531 [00:01<00:03, 103.58it/s]
+Loading weights:  29%|██▊       | 152/531 [00:01<00:03, 98.88it/s] 
+Loading weights:  31%|███       | 162/531 [00:01<00:03, 96.94it/s]
+Loading weights:  33%|███▎      | 174/531 [00:01<00:03, 96.87it/s]
+Loading weights:  35%|███▍      | 185/531 [00:02<00:03, 99.04it/s]
+Loading weights:  41%|████      | 216/531 [00:02<00:02, 153.24it/s]
+Loading weights:  51%|█████     | 270/531 [00:02<00:01, 260.03it/s]
+Loading weights: 100%|██████████| 531/531 [00:02<00:00, 222.07it/s]
+[transformers] The tied weights mapping and config for this model specifies to tie model.language_model.embed_tokens.weight to lm_head.weight, but both are present in the checkpoints with different values, so we will NOT tie them. You should update the config with `tie_word_embeddings=False` to silence this warning.
+[M1 microbatch 256] resumed=0 pending=256 verification=target_block scalar_fallback=disabled
+
+M1 SD (B=256):   0%|          | 0/256 [00:00<?, ?prompt/s]
+M1 SD (B=256): 100%|██████████| 256/256 [00:22<00:00, 11.35prompt/s]
+                                                                    
+[M1 microbatch 256] 256/256 prompts/s=11.347 elapsed=22.6s eta=0.0s
+
+M1 SD (B=256): 100%|██████████| 256/256 [00:22<00:00, 11.35prompt/s]
+M1 SD (B=256): 100%|██████████| 256/256 [00:22<00:00, 11.35prompt/s]
+{
+  "pair_id": "M1",
+  "prompt_split": "common_20k",
+  "prompt_count": 256,
+  "prompt_ids_sha256": "9f7ddefdb3413b0402cbd8ab4ede8772c5b50b4261ad215d8b66b6a69fe80d1d",
+  "shard_index": 0,
+  "num_shards": 1,
+  "shard_prompt_count": 256,
+  "shard_prompt_ids_sha256": "9f7ddefdb3413b0402cbd8ab4ede8772c5b50b4261ad215d8b66b6a69fe80d1d",
+  "draft_model": "/__modal/volumes/vo-g2ntskY6f5hDhsCQgjBoCL/models/mistralai--Ministral-3-3B-Base-2512/6f9c4b12a95b139af68670a6713616b757923735",
+  "draft_revision": null,
+  "target_model": "/__modal/volumes/vo-g2ntskY6f5hDhsCQgjBoCL/models/mistralai--Ministral-3-8B-Base-2512/d4883f9b36aa2e5d775730d3fdba3d30de51a8ef",
+  "target_revision": null,
+  "max_prompt_tokens": 128,
+  "max_new_tokens": 128,
+  "speculative_k": 4,
+  "decoder": "microbatched",
+  "dtype": "bfloat16",
+  "attention_backend": "sdpa",
+  "reference_batch_size": 64,
+  "target_verification": "batched_native",
+  "sd_batch_size": 256,
+  "reference_policy": "block_target_verified_no_scalar_reference",
+  "tokenizer_backend": "tokenizers",
+  "fix_mistral_regex": true,
+  "dataset_revision": "af9c13333eb981300149d5ca60a8e9d659b276b9",
+  "all_outputs_target_verified": true,
+  "all_target_sd_outputs_equal": null,
+  "independent_target_reference": false,
+  "scalar_parity_validated": false,
+  "scalar_fallback_prompt_count": 0,
+  "reference_sources": [
+    "block_target_verified_no_scalar_reference"
+  ],
+  "bonus_token_enabled": true,
+  "elapsed_seconds": 22.83372546199999,
+  "status": "complete",
+  "path": "/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/output with spaces/runs/M1/shards/shard-00000-of-00001"
+}
+ALIGNMENT_DEFERRED pair=M1 shard=0; run align-morphology after GPU inference
+{
+  "pair": "M1",
+  "status": "sd_complete",
+  "mode": "production_without_audit_or_smoke",
+  "shards": [
+    {
+      "shard_index": 0,
+      "status": "sd_complete",
+      "alignment": "deferred"
+    }
+  ],
+  "next": "run align-morphology for each shard, then build-table1"
+}
+FAST_ONLY config=/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/repo/configs/table1_fast_b200.yaml scalar_fallback=disabled
+
+M1 morphology:   0%|          | 0/256 [00:00<?, ?prompt/s]
+M1 morphology:   0%|          | 1/256 [00:01<05:13,  1.23s/prompt]
+M1 morphology:  20%|█▉        | 50/256 [00:02<00:07, 26.48prompt/s]
+M1 morphology:  32%|███▏      | 82/256 [00:03<00:06, 28.85prompt/s]
+Loading weights:   0%|          | 0/883 [00:00<?, ?it/s]
+Loading weights:   2%|▏         | 20/883 [00:00<00:04, 182.53it/s]
+Loading weights:   5%|▍         | 44/883 [00:00<00:04, 206.19it/s]
+Loading weights:   8%|▊         | 70/883 [00:00<00:03, 212.26it/s]
+Loading weights:  11%|█         | 94/883 [00:00<00:03, 209.50it/s]
+Loading weights:  13%|█▎        | 115/883 [00:00<00:03, 199.18it/s]
+Loading weights:  15%|█▌        | 135/883 [00:00<00:03, 191.37it/s]
+Loading weights:  18%|█▊        | 159/883 [00:00<00:03, 196.61it/s]
+M1 morphology:  54%|█████▍    | 139/256 [00:04<00:02, 39.48prompt/s]
+Loading weights:  20%|██        | 181/883 [00:00<00:03, 194.26it/s]
+Loading weights:  24%|██▎       | 209/883 [00:01<00:03, 218.39it/s]
+Loading weights:  26%|██▋       | 233/883 [00:01<00:02, 220.89it/s]
+Loading weights:  30%|███       | 265/883 [00:01<00:02, 249.11it/s]
+Loading weights:  37%|███▋      | 325/883 [00:01<00:01, 350.48it/s]
+Loading weights:  46%|████▌     | 405/883 [00:01<00:00, 481.95it/s]
+Loading weights:  54%|█████▍    | 475/883 [00:01<00:00, 537.81it/s]
+Loading weights: 100%|██████████| 883/883 [00:01<00:00, 554.53it/s]
+
+M1 morphology:  73%|███████▎  | 186/256 [00:05<00:01, 41.97prompt/s]
+M1 morphology:  91%|█████████ | 233/256 [00:06<00:00, 43.58prompt/s]
+M1 morphology: 100%|██████████| 256/256 [00:06<00:00, 38.15prompt/s]
+{
+  "pair_id": "M1",
+  "shard_index": 0,
+  "num_shards": 1,
+  "prompt_count": 256,
+  "visible_candidate_tokens": 32146,
+  "aligned_rows": 32177,
+  "device": "cpu",
+  "target_model": "/__modal/volumes/vo-g2ntskY6f5hDhsCQgjBoCL/models/mistralai--Ministral-3-8B-Base-2512/d4883f9b36aa2e5d775730d3fdba3d30de51a8ef",
+  "target_revision": null,
+  "status": "complete",
+  "path": "/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/output with spaces/runs/M1/shards/shard-00000-of-00001/aligned_tokens.parquet"
+}
+
+Loading weights:   0%|          | 0/1065 [00:00<?, ?it/s]
+Loading weights:   2%|▏         | 16/1065 [00:00<00:06, 151.49it/s]
+Loading weights:   4%|▎         | 38/1065 [00:00<00:05, 184.58it/s]
+Loading weights:   5%|▌         | 57/1065 [00:00<00:05, 173.15it/s]
+Loading weights:   7%|▋         | 75/1065 [00:00<00:06, 160.32it/s]
+Loading weights:   9%|▊         | 93/1065 [00:00<00:05, 162.97it/s]
+Loading weights:  11%|█         | 114/1065 [00:00<00:05, 169.01it/s]
+Loading weights:  13%|█▎        | 134/1065 [00:00<00:05, 168.03it/s]
+Loading weights:  14%|█▍        | 151/1065 [00:00<00:05, 161.63it/s]
+Loading weights:  16%|█▌        | 168/1065 [00:01<00:05, 160.67it/s]
+Loading weights:  17%|█▋        | 186/1065 [00:01<00:05, 158.53it/s]
+Loading weights:  20%|█▉        | 208/1065 [00:01<00:04, 175.46it/s]
+Loading weights:  22%|██▏       | 229/1065 [00:01<00:04, 184.66it/s]
+Loading weights:  23%|██▎       | 248/1065 [00:01<00:04, 182.68it/s]
+Loading weights:  25%|██▌       | 267/1065 [00:01<00:04, 174.99it/s]
+Loading weights:  27%|██▋       | 289/1065 [00:01<00:04, 183.93it/s]
+Loading weights:  29%|██▉       | 308/1065 [00:01<00:04, 181.44it/s]
+Loading weights:  31%|███       | 328/1065 [00:01<00:04, 174.25it/s]
+Loading weights:  32%|███▏      | 346/1065 [00:02<00:04, 170.94it/s]
+Loading weights:  34%|███▍      | 364/1065 [00:02<00:04, 162.49it/s]
+Loading weights:  36%|███▌      | 385/1065 [00:02<00:03, 175.19it/s]
+Loading weights:  42%|████▏     | 445/1065 [00:02<00:02, 293.09it/s]
+Loading weights:  48%|████▊     | 515/1065 [00:02<00:01, 404.69it/s]
+Loading weights:  55%|█████▍    | 582/1065 [00:02<00:01, 480.51it/s]
+Loading weights: 100%|██████████| 1065/1065 [00:02<00:00, 408.03it/s]
+[G1 microbatch 256] resumed=0 pending=256 verification=target_block scalar_fallback=disabled
+
+G1 SD (B=256):   0%|          | 0/256 [00:00<?, ?prompt/s]
+G1 SD (B=256): 100%|██████████| 256/256 [00:24<00:00, 10.47prompt/s]
+                                                                    
+[G1 microbatch 256] 256/256 prompts/s=10.468 elapsed=24.5s eta=0.0s
+
+G1 SD (B=256): 100%|██████████| 256/256 [00:24<00:00, 10.47prompt/s]
+G1 SD (B=256): 100%|██████████| 256/256 [00:24<00:00, 10.47prompt/s]
+{
+  "pair_id": "G1",
+  "prompt_split": "common_20k",
+  "prompt_count": 256,
+  "prompt_ids_sha256": "9f7ddefdb3413b0402cbd8ab4ede8772c5b50b4261ad215d8b66b6a69fe80d1d",
+  "shard_index": 0,
+  "num_shards": 1,
+  "shard_prompt_count": 256,
+  "shard_prompt_ids_sha256": "9f7ddefdb3413b0402cbd8ab4ede8772c5b50b4261ad215d8b66b6a69fe80d1d",
+  "draft_model": "/__modal/volumes/vo-g2ntskY6f5hDhsCQgjBoCL/models/google--gemma-3-4b-pt/cc012e0a6d0787b4adcc0fa2c4da74402494554d",
+  "draft_revision": null,
+  "target_model": "/__modal/volumes/vo-g2ntskY6f5hDhsCQgjBoCL/models/google--gemma-3-12b-pt/295efb63d01a7017928f273a94ebb86105c9526f",
+  "target_revision": null,
+  "max_prompt_tokens": 128,
+  "max_new_tokens": 128,
+  "speculative_k": 4,
+  "decoder": "microbatched",
+  "dtype": "bfloat16",
+  "attention_backend": "sdpa",
+  "reference_batch_size": 64,
+  "target_verification": "batched_native",
+  "sd_batch_size": 256,
+  "reference_policy": "block_target_verified_no_scalar_reference",
+  "dataset_revision": "af9c13333eb981300149d5ca60a8e9d659b276b9",
+  "all_outputs_target_verified": true,
+  "all_target_sd_outputs_equal": null,
+  "independent_target_reference": false,
+  "scalar_parity_validated": false,
+  "scalar_fallback_prompt_count": 0,
+  "reference_sources": [
+    "block_target_verified_no_scalar_reference"
+  ],
+  "bonus_token_enabled": true,
+  "elapsed_seconds": 24.681212176999992,
+  "status": "complete",
+  "path": "/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/output with spaces/runs/G1/shards/shard-00000-of-00001"
+}
+ALIGNMENT_DEFERRED pair=G1 shard=0; run align-morphology after GPU inference
+{
+  "pair": "G1",
+  "status": "sd_complete",
+  "mode": "production_without_audit_or_smoke",
+  "shards": [
+    {
+      "shard_index": 0,
+      "status": "sd_complete",
+      "alignment": "deferred"
+    }
+  ],
+  "next": "run align-morphology for each shard, then build-table1"
+}
+
+G1 morphology:   0%|          | 0/256 [00:00<?, ?prompt/s]
+G1 morphology:   0%|          | 1/256 [00:01<05:03,  1.19s/prompt]
+G1 morphology:  30%|███       | 77/256 [00:02<00:04, 41.50prompt/s]
+G1 morphology:  50%|█████     | 129/256 [00:03<00:02, 46.00prompt/s]
+G1 morphology:  69%|██████▉   | 177/256 [00:04<00:01, 45.44prompt/s]
+G1 morphology:  95%|█████████▌| 244/256 [00:05<00:00, 52.71prompt/s]
+G1 morphology: 100%|██████████| 256/256 [00:05<00:00, 45.03prompt/s]
+{
+  "pair_id": "G1",
+  "shard_index": 0,
+  "num_shards": 1,
+  "prompt_count": 256,
+  "visible_candidate_tokens": 32768,
+  "aligned_rows": 32768,
+  "device": "cpu",
+  "target_model": "/__modal/volumes/vo-g2ntskY6f5hDhsCQgjBoCL/models/google--gemma-3-12b-pt/295efb63d01a7017928f273a94ebb86105c9526f",
+  "target_revision": null,
+  "status": "complete",
+  "path": "/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/output with spaces/runs/G1/shards/shard-00000-of-00001/aligned_tokens.parquet"
+}
+[G1] status=COMPLETE prompts=256 generated=32768 eligible=24257 aligned=74.03% CROSS=2074 WITHIN=11126 single_CROSS=2040 supported_boundaries=4
+[M1] status=COMPLETE prompts=256 generated=32177 eligible=24562 aligned=76.41% CROSS=2259 WITHIN=13036 single_CROSS=2207 supported_boundaries=2
+[Q1] status=COMPLETE prompts=256 generated=31643 eligible=23859 aligned=76.17% CROSS=1035 WITHIN=13484 single_CROSS=1011 supported_boundaries=0
+[Q2] status=COMPLETE prompts=256 generated=32080 eligible=23985 aligned=75.38% CROSS=1134 WITHIN=13704 single_CROSS=1089 supported_boundaries=0
+[Q3] status=COMPLETE prompts=256 generated=31585 eligible=24456 aligned=77.76% CROSS=1045 WITHIN=14258 single_CROSS=1015 supported_boundaries=0
+{
+  "status": "COMPLETE",
+  "rows": 5,
+  "results_dir": "/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/output with spaces/results"
+}

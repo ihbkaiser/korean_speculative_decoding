@@ -1,18 +1,40 @@
 """Artifact integrity checks for the selected no-scalar-fallback workflow."""
 
 import json
+import shutil
+from copy import deepcopy
 from pathlib import Path
+
+
+def snapshot_sources(root, destination):
+    """Freeze an upload allowlist, including the actual root shell launcher."""
+    root, destination = Path(root), Path(destination)
+    for name in ("src", "scripts", "configs", "tests"):
+        shutil.copytree(root / name, destination / name, ignore=shutil.ignore_patterns("__pycache__"))
+    for name in ("pytest.ini", "run_table1.sh"):
+        shutil.copy2(root / name, destination / name)
 
 
 def validate_trial_request(stage, prompts, max_new_tokens, batch_sizes):
     """Allow larger decode-only trials without opening a full-run route."""
-    if stage not in {"inspect", "benchmark", "pilot", "smoke-all", "smoke-finish"}:
+    if stage not in {"inspect", "benchmark", "pilot", "smoke-all", "smoke-finish", "launcher-smoke"}:
         raise ValueError("Unknown bounded trial stage; no full-run stage exists")
     limit = 2048 if stage == "benchmark" else 512
     if not 1 <= prompts <= limit or not 1 <= max_new_tokens <= 128:
         raise ValueError(f"{stage} is limited to {limit} prompts and 128 output tokens")
     if not batch_sizes or any(not 1 <= size <= prompts for size in batch_sizes):
         raise ValueError("Batch sizes must be positive and fit at least one full prompt batch")
+
+
+def make_launcher_smoke_config(config, prompts, batch_size, max_new_tokens, model_paths):
+    """Build an isolated bounded fixture; never alter the production config."""
+    validate_trial_request("launcher-smoke", prompts, max_new_tokens, (batch_size,))
+    bounded = deepcopy(config)
+    bounded["model_paths"] = deepcopy(model_paths)
+    bounded["inference"]["max_new_tokens"] = max_new_tokens
+    for pair in bounded["pairs"].values():
+        pair.update(prompt_count=prompts, sd_batch_size=batch_size)
+    return bounded
 
 
 def validate_fast_shard(shard_dir, *, expected_prompts, max_new_tokens):

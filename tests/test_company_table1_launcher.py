@@ -29,9 +29,9 @@ def company_launcher(tmp_path):
     (tmp_path / "data/prompts_40k.parquet").touch()
     (tmp_path / "metadata/dataset_revision.json").write_text("{}")
     (scripts / "table1_pipeline.py").write_text('''
-import json, os, sys
+import json, os, sys, uuid
 args = sys.argv[1:]
-with open(os.environ["CALL_LOG"] + "." + str(os.getpid()), "w") as handle:
+with open(os.environ["CALL_LOG"] + "." + uuid.uuid4().hex, "w") as handle:
     handle.write(json.dumps({"args": args, "unbuffered": os.environ.get("PYTHONUNBUFFERED")}) + "\\n")
 print("stub stdout " + " ".join(args), flush=True)
 print("stub stderr", file=sys.stderr, flush=True)

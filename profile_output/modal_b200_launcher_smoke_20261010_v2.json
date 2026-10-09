@@ -1,0 +1,100 @@
+{
+  "status": "passed",
+  "stage": "launcher-smoke",
+  "gpu": "NVIDIA B200",
+  "torch": "2.14.1+cu130",
+  "cuda": "13.0",
+  "transformers": "5.19.0",
+  "compute_capability": [
+    10,
+    0
+  ],
+  "prompts_per_pair": 256,
+  "batch_size": 256,
+  "max_new_tokens": 128,
+  "dtype": "bfloat16",
+  "attention_backend": "sdpa",
+  "pairs": {
+    "Q1": {
+      "status": "passed",
+      "integrity": {
+        "prompt_count": 256,
+        "event_count": 34356,
+        "generated_tokens": 31643,
+        "scalar_fallback_prompt_count": 0,
+        "scalar_parity_validated": false,
+        "artifact_integrity_passed": true
+      },
+      "sd_seconds": 24.828656583999997,
+      "sd_prompts_per_second": 10.310666593414107
+    },
+    "Q2": {
+      "status": "passed",
+      "integrity": {
+        "prompt_count": 256,
+        "event_count": 37331,
+        "generated_tokens": 32080,
+        "scalar_fallback_prompt_count": 0,
+        "scalar_parity_validated": false,
+        "artifact_integrity_passed": true
+      },
+      "sd_seconds": 24.907858479999994,
+      "sd_prompts_per_second": 10.277880782306422
+    },
+    "Q3": {
+      "status": "passed",
+      "integrity": {
+        "prompt_count": 256,
+        "event_count": 32691,
+        "generated_tokens": 31585,
+        "scalar_fallback_prompt_count": 0,
+        "scalar_parity_validated": false,
+        "artifact_integrity_passed": true
+      },
+      "sd_seconds": 30.226852498,
+      "sd_prompts_per_second": 8.469290675135248
+    },
+    "M1": {
+      "status": "passed",
+      "integrity": {
+        "prompt_count": 256,
+        "event_count": 33504,
+        "generated_tokens": 32177,
+        "scalar_fallback_prompt_count": 0,
+        "scalar_parity_validated": false,
+        "artifact_integrity_passed": true
+      },
+      "sd_seconds": 22.83372546199999,
+      "sd_prompts_per_second": 11.211486291452378
+    },
+    "G1": {
+      "status": "passed",
+      "integrity": {
+        "prompt_count": 256,
+        "event_count": 27587,
+        "generated_tokens": 32768,
+        "scalar_fallback_prompt_count": 0,
+        "scalar_parity_validated": false,
+        "artifact_integrity_passed": true
+      },
+      "sd_seconds": 24.681212176999992,
+      "sd_prompts_per_second": 10.372262033327607
+    }
+  },
+  "initial_launcher_seconds": 289.175186392,
+  "resume_seconds": 66.253597469,
+  "resume_progress_unchanged": true,
+  "table_status": "COMPLETE",
+  "strict_environment_override_ignored": true,
+  "scalar_fallback_prompt_count": 0,
+  "scalar_parity_validated": false,
+  "full_run_started": false,
+  "source_sha256": {
+    "run_table1.sh": "6a4c8b748b64d2a76534672b75a4ca30e9396a7f582ae6236e172576e37c818b",
+    "scripts/run_company_table1_fast.sh": "7465a39ea159560678198073997877414c962f644a406a2c2fa91c608f3f5ad0",
+    "scripts/table1_pipeline.py": "f80ebe983758512765ceb3da84b637c1df9be8b824c1b6ace8d30b3ecf650093",
+    "src/table1_runner.py": "dedd88c883b7f3a38bd0598a9a9f9c02e902e9d22cf0d0906df19dac22441365"
+  },
+  "artifact_root": "/root/artifacts/benchmarks/launcher_no_fallback_20261010_v2",
+  "output_dir": "/root/artifacts/benchmarks/launcher_no_fallback_20261010_v2/output with spaces"
+}

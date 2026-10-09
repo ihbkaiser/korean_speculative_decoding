@@ -14,6 +14,34 @@ def test_benchmark_allows_one_actual_2048_prompt_batch():
     smoke.validate_trial_request("benchmark", 2048, 128, (256, 2048))
 
 
+def test_launcher_smoke_config_is_bounded_and_keeps_fast_contract():
+    from scripts.table1_pipeline import load_config
+    import src.table1_smoke as smoke
+
+    original = load_config(Path(__file__).resolve().parents[1] / "configs/table1_fast_b200.yaml")
+    paths = {pair: {side: f"/cache/{pair}/{side}" for side in ("draft", "target")}
+             for pair in original["pairs"]}
+    assert hasattr(smoke, "make_launcher_smoke_config"), "launcher smoke configuration helper missing"
+    bounded = smoke.make_launcher_smoke_config(original, 256, 256, 128, paths)
+    assert bounded["model_paths"] == paths
+    assert {row["prompt_count"] for row in bounded["pairs"].values()} == {256}
+    assert {row["decoder"] for row in bounded["pairs"].values()} == {"microbatched"}
+    assert {row["sd_batch_size"] for row in bounded["pairs"].values()} == {256}
+    assert original["pairs"]["Q2"]["prompt_count"] == 40000
+    with pytest.raises(ValueError):
+        smoke.make_launcher_smoke_config(original, 20000, 256, 128, paths)
+
+
+def test_modal_source_snapshot_contains_root_launcher(tmp_path):
+    import src.table1_smoke as smoke
+
+    assert hasattr(smoke, "snapshot_sources"), "Modal source snapshot helper missing"
+    smoke.snapshot_sources(Path(__file__).resolve().parents[1], tmp_path)
+    assert (tmp_path / "run_table1.sh").is_file(), "Modal upload omitted root launcher"
+    assert (tmp_path / "scripts/run_company_table1_fast.sh").is_file()
+    assert not (tmp_path / "hf_token").exists()
+
+
 @pytest.mark.parametrize("stage,prompts,tokens,sizes", [
     ("benchmark", 2049, 128, (2048,)),
     ("benchmark", 512, 128, (2048,)),

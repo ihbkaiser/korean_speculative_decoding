@@ -63,6 +63,20 @@ done
 python3 scripts/table1_pipeline.py --config configs/table1_fast_b200.yaml --root . build-table1 --output-dir /workspace/storage-shared/nlp/tungdd11/table1_b200_output 2>&1 | tee -a /workspace/storage-shared/nlp/tungdd11/table1_b200_output/logs/table1_fast_b200_build.log
 ```
 
+## Bounded launcher smoke on Modal B200 (not a full run)
+
+```bash
+modal run --profile tungkieu6868 scripts/modal_table1_speed.py --stage launcher-smoke --prompts 256 --batch-sizes 256 --max-new-tokens 128 --label fresh_launcher_smoke --output profile_output/modal_launcher_smoke.json
+```
+
+Use a fresh label. This stages a separate copy of the code and 256 frozen
+prompts, maps pinned snapshots to the Modal cache, then invokes the actual
+`bash run_table1.sh all --output-dir ...` twice on one B200. An inherited strict
+`TABLE1_CONFIG` is deliberately injected. Checks cover all five SD/CPU/table
+stages, custom output paths with spaces, no scalar fallback, and unchanged
+progress hashes on resume. Production prompt counts/configs are not edited.
+The stage rejects more than 512 prompts; its table is smoke-only evidence.
+
 ## Resume
 
 Rerun the exact same launch command with the same config, models, batch size

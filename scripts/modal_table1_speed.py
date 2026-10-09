@@ -17,10 +17,10 @@ ROOT = Path(__file__).resolve().parents[1]
 # Freeze only sources, not live logs/artifacts. Previous whole-repo uploads
 # failed when Tee-Object changed a log during Modal's upload.
 if modal.is_local():
+    sys.path.insert(0, str(ROOT))
+    from src.table1_smoke import snapshot_sources
     SOURCE = Path(tempfile.mkdtemp(prefix="table1-speed-source-"))
-    for name in ("src", "scripts", "configs", "tests"):
-        shutil.copytree(ROOT / name, SOURCE / name, ignore=shutil.ignore_patterns("__pycache__"))
-    shutil.copy2(ROOT / "pytest.ini", SOURCE / "pytest.ini")
+    snapshot_sources(ROOT, SOURCE)
 else:
     SOURCE = ROOT
 
@@ -393,6 +393,109 @@ def finish_smoke_remote(pair_id, label, finish_label=""):
     return report
 
 
+@app.function(volumes=VOLUMES, gpu="B200", cpu=16, memory=131072, timeout=1200)
+def launcher_smoke_remote(prompts=256, batch_size=256, max_new_tokens=128, label="launcher_smoke"):
+    """Run the real shell launcher and resume on one B200, with bounded inputs."""
+    _setup()
+    import hashlib
+    import importlib.metadata
+    import re
+    import subprocess
+    import pandas as pd
+    import torch
+    import yaml
+    from scripts.table1_pipeline import load_config
+    from src.table1_runner import load_pair_records
+    from src.table1_smoke import make_launcher_smoke_config, validate_fast_shard
+
+    if not re.fullmatch(r"[A-Za-z0-9_-]+", label):
+        raise ValueError("Smoke label must be a simple directory name")
+    cfg = load_config(REPO / "configs/table1_fast_b200.yaml")
+    model_paths = {pair: _models(pair, cfg) for pair in cfg["pairs"]}
+    bounded = make_launcher_smoke_config(cfg, prompts, batch_size, max_new_tokens, model_paths)
+    root = Path("/root/artifacts/benchmarks") / f"launcher_{label}"
+    if root.exists():
+        raise FileExistsError(f"Use a new label; existing smoke artifacts: {root}")
+    staged_repo, output = root / "repo", root / "output with spaces"
+    shutil.copytree(REPO, staged_repo, ignore=shutil.ignore_patterns("__pycache__"))
+    (staged_repo / "data").mkdir(exist_ok=True)
+    (staged_repo / "metadata").mkdir(exist_ok=True)
+    records = load_pair_records(WORKSPACE / cfg["paths"]["prompts"], cfg["pairs"]["Q1"])[:prompts]
+    if len(records) != prompts:
+        raise AssertionError("Insufficient frozen smoke prompts")
+    pd.DataFrame(records).to_parquet(staged_repo / bounded["paths"]["prompts"], index=False)
+    shutil.copy2(WORKSPACE / cfg["paths"]["dataset_metadata"],
+                 staged_repo / bounded["paths"]["dataset_metadata"])
+    # Only the isolated fixture changes prompt counts and Modal snapshot paths.
+    (staged_repo / "configs/table1_fast_b200.yaml").write_text(yaml.safe_dump(bounded))
+    env = {**os.environ, "TABLE1_CONFIG": str(staged_repo / "configs/table1_pipeline.yaml"),
+           "PYTHON_BIN": sys.executable, "NUM_SHARDS": "1", "SD_BATCH_SIZE": str(batch_size),
+           "TABLE1_LOG_TAG": "launcher-smoke", "DEVICE": "cuda", "ALIGN_DEVICE": "cpu"}
+    command = ["bash", "run_table1.sh", "all", "--output-dir", str(output)]
+
+    def launch(name):
+        print("TABLE1_LAUNCHER_PHASE=" + name, flush=True)
+        started = time.perf_counter()
+        try:
+            with (root / f"{name}.log").open("w") as log:
+                with subprocess.Popen(command, cwd=staged_repo, env=env, stdout=subprocess.PIPE,
+                                      stderr=subprocess.STDOUT, text=True, bufsize=1) as process:
+                    for line in process.stdout:
+                        log.write(line)
+                        log.flush()
+                        print(line, end="", flush=True)
+                    code = process.wait()
+            if code:
+                raise RuntimeError(f"Launcher {name} exited with code {code}; see persistent logs")
+        finally:
+            artifacts.commit()
+        return time.perf_counter() - started
+
+    elapsed = launch("initial")
+    logs = (root / "initial.log").read_text()
+    if "Target references" in logs or "scalar parity fallback" in logs:
+        raise AssertionError("Launcher entered a forbidden reference/fallback path")
+    pairs, hashes = {}, {}
+    for pair in cfg["pairs"]:
+        shard = output / "runs" / pair / "shards/shard-00000-of-00001"
+        integrity = validate_fast_shard(shard, expected_prompts=prompts, max_new_tokens=max_new_tokens)
+        metadata = json.loads((shard / "run_metadata.json").read_text())
+        manifest = json.loads((output / f"metadata/table1_main_{pair}.json").read_text())
+        assert manifest["require_microbatched"] is True
+        assert manifest["resolved_config"]["pairs"][pair]["decoder"] == "microbatched"
+        assert (shard / "ALIGNMENT_COMPLETE").exists()
+        assert f"{pair} SD (B={batch_size})" in logs
+        hashes[pair] = hashlib.sha256((shard / "progress.jsonl").read_bytes()).hexdigest()
+        pairs[pair] = {"status": "passed", "integrity": integrity,
+                       "sd_seconds": metadata["elapsed_seconds"],
+                       "sd_prompts_per_second": prompts / metadata["elapsed_seconds"]}
+    table = json.loads((output / "results/table1_build_metadata.json").read_text())
+    assert table["status"] == "COMPLETE"
+    resume_seconds = launch("resume")
+    for pair in pairs:
+        progress = output / "runs" / pair / "shards/shard-00000-of-00001/progress.jsonl"
+        assert hashlib.sha256(progress.read_bytes()).hexdigest() == hashes[pair], "resume rewrote prompts"
+    assert not (staged_repo / "runs").exists(), "output escaped custom output directory"
+    report = {"status": "passed", "stage": "launcher-smoke", "gpu": torch.cuda.get_device_name(),
+              "torch": torch.__version__, "cuda": torch.version.cuda,
+              "transformers": importlib.metadata.version("transformers"),
+              "compute_capability": list(torch.cuda.get_device_capability()),
+              "prompts_per_pair": prompts, "batch_size": batch_size, "max_new_tokens": max_new_tokens,
+              "dtype": "bfloat16", "attention_backend": "sdpa", "pairs": pairs,
+              "initial_launcher_seconds": elapsed, "resume_seconds": resume_seconds,
+              "resume_progress_unchanged": True, "table_status": table["status"],
+              "strict_environment_override_ignored": True, "scalar_fallback_prompt_count": 0,
+              "scalar_parity_validated": False, "full_run_started": False,
+              "source_sha256": {name: hashlib.sha256((staged_repo / name).read_bytes()).hexdigest()
+                                for name in ("run_table1.sh", "scripts/run_company_table1_fast.sh",
+                                             "scripts/table1_pipeline.py", "src/table1_runner.py")},
+              "artifact_root": str(root), "output_dir": str(output)}
+    (root / "launcher_summary.json").write_text(json.dumps(report, indent=2) + "\n")
+    artifacts.commit()
+    print("TABLE1_LAUNCHER_SMOKE_SUMMARY=" + json.dumps(report), flush=True)
+    return report
+
+
 @app.local_entrypoint()
 def main(stage: str = "inspect", pair: str = "Q1", prompts: int = 256,
          baseline_prompts: int = 0, max_new_tokens: int = 128,
@@ -409,6 +512,10 @@ def main(stage: str = "inspect", pair: str = "Q1", prompts: int = 256,
         raise ValueError("Batch sizes must be positive and baseline-prompts non-negative")
     if stage == "inspect":
         result = inspect_remote.remote()
+    elif stage == "launcher-smoke":
+        if len(sizes) != 1:
+            raise ValueError("launcher-smoke requires exactly one batch size")
+        result = launcher_smoke_remote.remote(prompts, sizes[0], max_new_tokens, label)
     elif stage in {"smoke-all", "smoke-finish"}:
         if len(sizes) != 1 or prompts < sizes[0]:
             raise ValueError("smoke-all requires one batch size and at least one full batch of prompts")

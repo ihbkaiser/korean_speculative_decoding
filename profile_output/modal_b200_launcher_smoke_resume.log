@@ -1,0 +1,140 @@
+FAST_ONLY config=/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/repo/configs/table1_fast_b200.yaml scalar_fallback=disabled
+{
+  "pair_id": "Q1",
+  "shard_index": 0,
+  "status": "already_complete",
+  "path": "/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/output with spaces/runs/Q1/shards/shard-00000-of-00001"
+}
+ALIGNMENT_DEFERRED pair=Q1 shard=0; run align-morphology after GPU inference
+{
+  "pair": "Q1",
+  "status": "sd_complete",
+  "mode": "production_without_audit_or_smoke",
+  "shards": [
+    {
+      "shard_index": 0,
+      "status": "sd_complete",
+      "alignment": "deferred"
+    }
+  ],
+  "next": "run align-morphology for each shard, then build-table1"
+}
+FAST_ONLY config=/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/repo/configs/table1_fast_b200.yaml scalar_fallback=disabled
+{
+  "pair_id": "Q1",
+  "status": "already_complete",
+  "path": "/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/output with spaces/runs/Q1/shards/shard-00000-of-00001/aligned_tokens.parquet"
+}
+{
+  "pair_id": "Q2",
+  "shard_index": 0,
+  "status": "already_complete",
+  "path": "/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/output with spaces/runs/Q2/shards/shard-00000-of-00001"
+}
+ALIGNMENT_DEFERRED pair=Q2 shard=0; run align-morphology after GPU inference
+{
+  "pair": "Q2",
+  "status": "sd_complete",
+  "mode": "production_without_audit_or_smoke",
+  "shards": [
+    {
+      "shard_index": 0,
+      "status": "sd_complete",
+      "alignment": "deferred"
+    }
+  ],
+  "next": "run align-morphology for each shard, then build-table1"
+}
+FAST_ONLY config=/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/repo/configs/table1_fast_b200.yaml scalar_fallback=disabled
+{
+  "pair_id": "Q2",
+  "status": "already_complete",
+  "path": "/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/output with spaces/runs/Q2/shards/shard-00000-of-00001/aligned_tokens.parquet"
+}
+{
+  "pair_id": "Q3",
+  "shard_index": 0,
+  "status": "already_complete",
+  "path": "/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/output with spaces/runs/Q3/shards/shard-00000-of-00001"
+}
+ALIGNMENT_DEFERRED pair=Q3 shard=0; run align-morphology after GPU inference
+{
+  "pair": "Q3",
+  "status": "sd_complete",
+  "mode": "production_without_audit_or_smoke",
+  "shards": [
+    {
+      "shard_index": 0,
+      "status": "sd_complete",
+      "alignment": "deferred"
+    }
+  ],
+  "next": "run align-morphology for each shard, then build-table1"
+}
+FAST_ONLY config=/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/repo/configs/table1_fast_b200.yaml scalar_fallback=disabled
+{
+  "pair_id": "Q3",
+  "status": "already_complete",
+  "path": "/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/output with spaces/runs/Q3/shards/shard-00000-of-00001/aligned_tokens.parquet"
+}
+{
+  "pair_id": "M1",
+  "shard_index": 0,
+  "status": "already_complete",
+  "path": "/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/output with spaces/runs/M1/shards/shard-00000-of-00001"
+}
+ALIGNMENT_DEFERRED pair=M1 shard=0; run align-morphology after GPU inference
+{
+  "pair": "M1",
+  "status": "sd_complete",
+  "mode": "production_without_audit_or_smoke",
+  "shards": [
+    {
+      "shard_index": 0,
+      "status": "sd_complete",
+      "alignment": "deferred"
+    }
+  ],
+  "next": "run align-morphology for each shard, then build-table1"
+}
+FAST_ONLY config=/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/repo/configs/table1_fast_b200.yaml scalar_fallback=disabled
+{
+  "pair_id": "M1",
+  "status": "already_complete",
+  "path": "/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/output with spaces/runs/M1/shards/shard-00000-of-00001/aligned_tokens.parquet"
+}
+{
+  "pair_id": "G1",
+  "shard_index": 0,
+  "status": "already_complete",
+  "path": "/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/output with spaces/runs/G1/shards/shard-00000-of-00001"
+}
+ALIGNMENT_DEFERRED pair=G1 shard=0; run align-morphology after GPU inference
+{
+  "pair": "G1",
+  "status": "sd_complete",
+  "mode": "production_without_audit_or_smoke",
+  "shards": [
+    {
+      "shard_index": 0,
+      "status": "sd_complete",
+      "alignment": "deferred"
+    }
+  ],
+  "next": "run align-morphology for each shard, then build-table1"
+}
+{
+  "pair_id": "G1",
+  "status": "already_complete",
+  "path": "/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/output with spaces/runs/G1/shards/shard-00000-of-00001/aligned_tokens.parquet"
+}
+[G1] status=COMPLETE prompts=256 generated=32768 eligible=24257 aligned=74.03% CROSS=2074 WITHIN=11126 single_CROSS=2040 supported_boundaries=4
+[M1] status=COMPLETE prompts=256 generated=32177 eligible=24562 aligned=76.41% CROSS=2259 WITHIN=13036 single_CROSS=2207 supported_boundaries=2
+[Q1] status=COMPLETE prompts=256 generated=31643 eligible=23859 aligned=76.17% CROSS=1035 WITHIN=13484 single_CROSS=1011 supported_boundaries=0
+[Q2] status=COMPLETE prompts=256 generated=32080 eligible=23985 aligned=75.38% CROSS=1134 WITHIN=13704 single_CROSS=1089 supported_boundaries=0
+[Q3] status=COMPLETE prompts=256 generated=31585 eligible=24456 aligned=77.76% CROSS=1045 WITHIN=14258 single_CROSS=1015 supported_boundaries=0
+{
+  "status": "COMPLETE",
+  "rows": 5,
+  "results_dir": "/__modal/volumes/vo-ZLyaZxRMR9pxXEshSWzDpv/benchmarks/launcher_no_fallback_20261010_v2/output with spaces/results"
+}
