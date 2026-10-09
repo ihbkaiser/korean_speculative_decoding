@@ -1,0 +1,19 @@
+{
+  "dataset_id": "HuggingFaceFW/fineweb-2",
+  "requested_revision": "main",
+  "resolved_revision": "af9c13333eb981300149d5ca60a8e9d659b276b9",
+  "private": false,
+  "gated": false,
+  "config": "kor_Hang",
+  "split": "train",
+  "text_field": "text",
+  "scan_limit": 250000,
+  "boilerplate_cleaner": "none",
+  "pool_size": 40000,
+  "common_size": 20000,
+  "extra_size": 20000,
+  "seed": 42,
+  "min_chars": 64,
+  "min_hangul_ratio": 0.35,
+  "prompt_ids_sha256": "638d21a09e2f080c87e93b63a8f47009016074ddb7ed6fc2b8770991db681cd4"
+}

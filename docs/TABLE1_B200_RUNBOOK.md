@@ -21,6 +21,13 @@ the frozen dataset and pinned model snapshots. `model_paths` in
 `configs/table1_pipeline.yaml` must point to directories containing model
 weights/configs on this machine. Do not resample the prompt pool.
 
+The full frozen 40k input pool, both 20k ID lists and dataset revision metadata
+are now included in Git. From the actual checkout root (the directory containing
+`scripts/table1_pipeline.py`), verify them with
+`sha256sum -c data/table1_frozen.sha256`. For manual download instructions and
+provenance, see [Frozen Table 1 inputs](../data/README_TABLE1.md). A custom output
+directory relocates outputs only, not the required input files.
+
 ```bash
 cd /workspace/storage-shared/nlp/tungdd11/korean_speculative_decoding
 git pull --ff-only origin main

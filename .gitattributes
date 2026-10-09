@@ -1,1 +1,7 @@
 *.sh text eol=lf
+# Preserve bytes of the frozen Modal input bundle on every platform.
+data/prompts_40k.parquet binary
+data/common_20k_ids.txt text eol=lf
+data/extra_20k_ids.txt text eol=lf
+metadata/dataset_revision.json text eol=lf
+data/table1_frozen.sha256 text eol=lf
