@@ -18,18 +18,15 @@ cd /workspace/storage-shared/nlp/tungdd11/korean_speculative_decoding
 git pull --ff-only origin main
 # Only if dependencies are missing; retain your working CUDA/PyTorch installation:
 python3 -m pip install -r requirements.txt
-tmux new -s table1_b200
+bash run_table1.sh all --output-dir /workspace/storage-shared/nlp/tungdd11/table1_b200_output
 ```
 
-Inside tmux:
-
-```bash
-mkdir -p logs
-set -o pipefail
-PYTHONUNBUFFERED=1 NUM_SHARDS=1 bash run_table1.sh all 2>&1 | tee -a logs/table1_fast_b200_full.log
-```
-
-Detach with Ctrl-b, then d. Reattach using `tmux attach -t table1_b200`.
+This runs directly in the foreground; keep the terminal/SSH session open.
+Replace the `--output-dir` path with your experiment storage directory. All
+production artifacts go under its `runs/`, `results/`, `metadata/` and `logs/`
+subdirectories. Input data/model paths remain unchanged. The launcher captures
+stdout/stderr automatically; no extra shell options or `tee` command are needed.
+Omit `--output-dir` to retain the original repository-relative output locations.
 Do not start a second writer against the same checkpoint directory. If
 `git pull` reports local conflicting edits, preserve/reconcile them; do not
 reset or delete experiment artifacts to force an update.
@@ -51,17 +48,17 @@ alignment/join materialization uses host RAM. For a memory-constrained host,
 run pairs with alignment sequentially instead of the overlap launcher:
 
 ```bash
-set -euo pipefail
 for pair in Q1 Q2 Q3 M1 G1; do
-  bash run_table1.sh "$pair"
+  bash run_table1.sh "$pair" --output-dir /workspace/storage-shared/nlp/tungdd11/table1_b200_output || break
 done
-python3 scripts/table1_pipeline.py --config configs/table1_fast_b200.yaml --root . build-table1 2>&1 | tee -a logs/table1_fast_b200_build.log
+# Only after all five pairs finish successfully:
+python3 scripts/table1_pipeline.py --config configs/table1_fast_b200.yaml --root . build-table1 --output-dir /workspace/storage-shared/nlp/tungdd11/table1_b200_output 2>&1 | tee -a /workspace/storage-shared/nlp/tungdd11/table1_b200_output/logs/table1_fast_b200_build.log
 ```
 
 ## Resume
 
 Rerun the exact same launch command with the same config, models, batch size
-and `NUM_SHARDS`. Completed SD/alignments are skipped; unfinished SD resumes
+and `NUM_SHARDS`, including the same `--output-dir`. Completed SD/alignments are skipped; unfinished SD resumes
 from saved prompts. Every completed microbatch flushes its full records to
 `progress.jsonl`; an interrupted in-flight batch can be regenerated. A truncated
 final JSONL record is preserved separately as `*.incomplete-tail-*`; corruption
@@ -69,15 +66,21 @@ before the final record is fatal. Changing inference settings cannot silently
 reuse incompatible fast checkpoints.
 
 Fast artifacts live separately from historical strict `runs/table1` results.
+Choosing a new output directory starts a separate run; existing checkpoints are
+not moved automatically. To resume, use the original output directory.
 Do not copy scalar checkpoints into the fast directory. Set `NUM_SHARDS` only
 before the first launch and keep it fixed; with multiple shards every shard
 is now included in the deferred CPU alignment loop.
 
 ## What is dumped, without sampling away events
 
+The paths below show the legacy defaults. With `--output-dir PATH`, replace
+`runs/table1_fast_b200/` with `PATH/runs/`, `results/table1_fast_b200/` with
+`PATH/results/`, and `logs/`/runtime `metadata/` with `PATH/logs/`/`PATH/metadata/`.
+Frozen dataset/model metadata remains in the repository.
+
 | Location | Contents |
 |---|---|
-| `logs/table1_fast_b200_full.log` | Optional master console capture from the launch command above, append-only |
 | `logs/table1_fast_b200_<PAIR>_sd.log` | SD stdout/stderr, loading, TQDM, throughput, ETA, errors (`all`) |
 | `logs/table1_fast_b200_<PAIR>_align.log` | CPU alignment stdout/stderr for every shard (`all`) |
 | `logs/table1_fast_b200_<PAIR>.log` | Combined pair-stage stdout/stderr when launching a single pair |

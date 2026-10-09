@@ -72,6 +72,16 @@ def _token() -> str | None:
     return os.environ.get("HF_TOKEN") or os.environ.get("HUGGING_FACE_HUB_TOKEN")
 
 
+def _production_config(args: argparse.Namespace) -> dict[str, Any]:
+    """Route production artifacts without moving frozen input/model paths."""
+    config = load_config(args.config)
+    if not getattr(args, "output_dir", None):
+        return config
+    output = Path(args.output_dir).expanduser().resolve()
+    return {**config, "paths": {**config["paths"],
+            "runs": str(output / "runs"), "results": str(output / "results")}}
+
+
 def _abs(root: Path, path: str) -> Path:
     candidate = Path(path)
     return candidate if candidate.is_absolute() else root / candidate
@@ -91,7 +101,7 @@ def _write_parquet(path: Path, rows: list[dict[str, Any]]) -> None:
     temporary.replace(path)
 
 
-def _write_environment_manifest(root: str | Path) -> Path:
+def _write_environment_manifest(root: str | Path, output_dir: str | Path | None = None) -> Path:
     """Persist runtime versions and hardware identity beside Table 1 artifacts."""
     import torch
 
@@ -126,7 +136,7 @@ def _write_environment_manifest(root: str | Path) -> Path:
         ).stdout.strip().splitlines()
     except (OSError, subprocess.SubprocessError):
         gpu_query = []
-    path = root_path / "metadata/environment.json"
+    path = (Path(output_dir).expanduser().resolve() if output_dir else root_path) / "metadata/environment.json"
     _write_json(path, {
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
         "python_version": sys.version,
@@ -559,7 +569,7 @@ def command_run_table1_main(args: argparse.Namespace) -> int:
     if int(args.num_shards) < 1:
         raise ValueError("--num-shards must be at least 1")
     root = Path(args.root).resolve()
-    cfg = load_config(args.config)
+    cfg = _production_config(args)
     configured_paths = cfg.get("model_paths", {}).get(args.pair, {})
     draft_model_path = args.draft_model_path or configured_paths.get("draft")
     target_model_path = args.target_model_path or configured_paths.get("target")
@@ -588,7 +598,7 @@ def command_run_table1_main(args: argparse.Namespace) -> int:
         "draft": _model_info_for_reference(draft_model_path, token=_token()),
         "target": _model_info_for_reference(target_model_path, token=_token()),
     }
-    environment_path = _write_environment_manifest(root)
+    environment_path = _write_environment_manifest(root, getattr(args, "output_dir", None))
     launch_manifest = {
         "pair_id": args.pair,
         "mode": "production_without_audit_or_smoke",
@@ -603,7 +613,7 @@ def command_run_table1_main(args: argparse.Namespace) -> int:
         "align_device": args.align_device,
         "environment": json.loads(environment_path.read_text(encoding="utf-8")),
     }
-    _write_json(root / "metadata" / f"table1_main_{args.pair}.json", launch_manifest)
+    _write_json(environment_path.parent / f"table1_main_{args.pair}.json", launch_manifest)
     launch_stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
     _write_json(_abs(root, cfg["paths"]["runs"]) / args.pair / "launches" / f"{launch_stamp}.json",
                 launch_manifest)
@@ -635,6 +645,7 @@ def command_run_table1_main(args: argparse.Namespace) -> int:
             align_args = argparse.Namespace(
                 config=args.config,
                 root=args.root,
+                output_dir=getattr(args, "output_dir", None),
                 pair=args.pair,
                 shard_index=shard_index,
                 num_shards=args.num_shards,
@@ -660,7 +671,7 @@ def command_run_table1_main(args: argparse.Namespace) -> int:
 def command_align(args: argparse.Namespace) -> int:
     from src.table1_morphology import align_pair_shard
 
-    cfg = load_config(args.config)
+    cfg = _production_config(args)
     result = align_pair_shard(
         root=Path(args.root).resolve(),
         config=cfg,
@@ -679,7 +690,7 @@ def command_align(args: argparse.Namespace) -> int:
 def command_build(args: argparse.Namespace) -> int:
     from src.table1_morphology import build_table1_outputs
 
-    cfg = load_config(args.config)
+    cfg = _production_config(args)
     result = build_table1_outputs(root=Path(args.root).resolve(), config=cfg)
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0
@@ -757,6 +768,11 @@ def build_parser() -> argparse.ArgumentParser:
 
     build = sub.add_parser("build-table1")
     build.set_defaults(func=command_build)
+    for command in (run_table1_main, align, build):
+        command.add_argument(
+            "--output-dir",
+            help="Store production artifacts under PATH/{runs,results,metadata}; inputs still use --root",
+        )
     return parser
 
 

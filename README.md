@@ -299,9 +299,11 @@ bash run_table1.sh Q1
 bash scripts/run_company_table1_fast.sh Q1
 # Or run all five pairs, overlapping CPU alignment with the next GPU pair:
 bash scripts/run_company_table1_fast.sh all
+# Store checkpoints, results, runtime metadata and logs outside the repo:
+bash run_table1.sh all --output-dir /workspace/storage-shared/nlp/tungdd11/table1_b200_output
 ```
 
-Full B200 launch, tmux/resume instructions and the complete NAACL artifact/log
+Direct B200 launch, custom output/resume instructions and the complete NAACL artifact/log
 map are in [the Table 1 runbook](docs/TABLE1_B200_RUNBOOK.md). Production launches
 retain resolved-config/runtime history and per-shard tokenizer fingerprints,
 including when the separate audit/smoke commands are bypassed.

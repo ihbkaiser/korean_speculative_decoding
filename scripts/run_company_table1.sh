@@ -14,6 +14,28 @@ LOG_TAG="${TABLE1_LOG_TAG:-table1}"
 PROGRESS_FLUSH_EVERY="${PROGRESS_FLUSH_EVERY:-64}"
 PROGRESS_LOG_EVERY="${PROGRESS_LOG_EVERY:-100}"
 PAIR="${1:-}"
+if [[ $# -gt 0 ]]; then shift; fi
+output_args=()
+LOG_DIR="$REPO/logs"
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --output-dir)
+      if [[ $# -lt 2 || -z "$2" || "$2" == --* ]]; then
+        echo "--output-dir requires a directory path" >&2
+        exit 2
+      fi
+      mkdir -p -- "$2"
+      OUTPUT_DIR="$(cd -- "$2" && pwd)"
+      output_args=(--output-dir "$OUTPUT_DIR")
+      LOG_DIR="$OUTPUT_DIR/logs"
+      shift 2
+      ;;
+    *)
+      echo "Unknown option: $1" >&2
+      exit 2
+      ;;
+  esac
+done
 batch_args=()
 if [[ -n "${SD_BATCH_SIZE:-}" ]]; then
   batch_args=(--sd-batch-size "$SD_BATCH_SIZE")
@@ -31,11 +53,12 @@ fi
 
 run_pair() {
   local pair="$1"
-  mkdir -p "$REPO/logs"
+  mkdir -p "$LOG_DIR"
   "$PYTHON_BIN" "$REPO/scripts/table1_pipeline.py" \
     --config "$CONFIG" \
     --root "$REPO" \
     run-table1-main \
+    "${output_args[@]}" \
     --pair "$pair" \
     --num-shards "$NUM_SHARDS" \
     --device "$DEVICE" \
@@ -43,16 +66,17 @@ run_pair() {
     --progress-flush-every "$PROGRESS_FLUSH_EVERY" \
     --progress-log-every "$PROGRESS_LOG_EVERY" \
     "${batch_args[@]}" \
-    2>&1 | tee -a "$REPO/logs/${LOG_TAG}_${pair}.log"
+    2>&1 | tee -a "$LOG_DIR/${LOG_TAG}_${pair}.log"
 }
 
 run_pair_sd_deferred_align() {
   local pair="$1"
-  mkdir -p "$REPO/logs"
+  mkdir -p "$LOG_DIR"
   "$PYTHON_BIN" "$REPO/scripts/table1_pipeline.py" \
     --config "$CONFIG" \
     --root "$REPO" \
     run-table1-main \
+    "${output_args[@]}" \
     --pair "$pair" \
     --num-shards "$NUM_SHARDS" \
     --device "$DEVICE" \
@@ -61,23 +85,24 @@ run_pair_sd_deferred_align() {
     --progress-flush-every "$PROGRESS_FLUSH_EVERY" \
     --progress-log-every "$PROGRESS_LOG_EVERY" \
     "${batch_args[@]}" \
-    2>&1 | tee -a "$REPO/logs/${LOG_TAG}_${pair}_sd.log"
+    2>&1 | tee -a "$LOG_DIR/${LOG_TAG}_${pair}_sd.log"
 }
 
 run_pair_align() {
   local pair="$1"
   local shard_index
-  mkdir -p "$REPO/logs"
+  mkdir -p "$LOG_DIR"
   for ((shard_index = 0; shard_index < NUM_SHARDS; shard_index++)); do
     "$PYTHON_BIN" "$REPO/scripts/table1_pipeline.py" \
       --config "$CONFIG" \
       --root "$REPO" \
       align-morphology \
+      "${output_args[@]}" \
       --pair "$pair" \
       --shard-index "$shard_index" \
       --num-shards "$NUM_SHARDS" \
       --device "$ALIGN_DEVICE" \
-      2>&1 | tee -a "$REPO/logs/${LOG_TAG}_${pair}_align.log"
+      2>&1 | tee -a "$LOG_DIR/${LOG_TAG}_${pair}_align.log"
   done
 }
 
@@ -109,10 +134,11 @@ case "$PAIR" in
     "$PYTHON_BIN" "$REPO/scripts/table1_pipeline.py" \
       --config "$CONFIG" \
       --root "$REPO" build-table1 \
-      2>&1 | tee -a "$REPO/logs/${LOG_TAG}_build.log"
+      "${output_args[@]}" \
+      2>&1 | tee -a "$LOG_DIR/${LOG_TAG}_build.log"
     ;;
   *)
-    echo "Usage: $0 {Q1|Q2|Q3|M1|G1|all}" >&2
+    echo "Usage: $0 {Q1|Q2|Q3|M1|G1|all} [--output-dir PATH]" >&2
     exit 2
     ;;
 esac

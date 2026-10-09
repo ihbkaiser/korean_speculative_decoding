@@ -22,6 +22,8 @@ def company_launcher(tmp_path):
     scripts.mkdir()
     root = Path(__file__).resolve().parents[1]
     shutil.copy2(root / "scripts/run_company_table1.sh", scripts)
+    shutil.copy2(root / "scripts/run_company_table1_fast.sh", scripts)
+    shutil.copy2(root / "run_table1.sh", tmp_path)
     (tmp_path / "data").mkdir()
     (tmp_path / "metadata").mkdir()
     (tmp_path / "data/prompts_40k.parquet").touch()
@@ -40,11 +42,12 @@ if "--skip-align" in args and os.environ.get("FAIL_PAIR") in args:
            "NUM_SHARDS": "3", "CALL_LOG": str(tmp_path / "calls.jsonl"),
            "TABLE1_LOG_TAG": "test-full"}
 
-    def invoke(pair="all", **overrides):
-        result = subprocess.run([bash, str(scripts / "run_company_table1.sh"), pair],
+    def invoke(pair="all", extra_args=(), **overrides):
+        result = subprocess.run([bash, str(tmp_path / "run_table1.sh"), pair, *extra_args],
                                 env={**env, **overrides}, text=True,
                                 capture_output=True, timeout=60)
-        calls = [json.loads(line) for line in (tmp_path / "calls.jsonl").read_text().splitlines()]
+        call_log = tmp_path / "calls.jsonl"
+        calls = [json.loads(line) for line in call_log.read_text().splitlines()] if call_log.exists() else []
         return result, calls
 
     return invoke, tmp_path
@@ -79,3 +82,26 @@ def test_gpu_failure_does_not_start_later_pairs_or_build_table(company_launcher)
     assert result.returncode != 0
     assert not any("build-table1" in row["args"] for row in calls)
     assert not any("M1" in row["args"] or "G1" in row["args"] for row in calls)
+
+
+def test_custom_output_directory_is_forwarded_to_every_stage(company_launcher):
+    invoke, root = company_launcher
+    output = root / "external output"
+    result, calls = invoke(extra_args=("--output-dir", output.as_posix()))
+    assert result.returncode == 0, result.stderr
+    assert len(calls) == 21
+    for row in calls:
+        args = row["args"]
+        assert "--output-dir" in args
+        assert Path(args[args.index("--output-dir") + 1]) == output
+    assert not (root / "logs").exists()
+    assert len(list((output / "logs").glob("*.log"))) == 11
+    assert "stub stderr" in (output / "logs/test-full_build.log").read_text()
+
+
+@pytest.mark.parametrize("extra_args", [("--output-dir",), ("--output-dir", ""), ("--unknown",)])
+def test_invalid_launcher_options_fail_before_running(company_launcher, extra_args):
+    invoke, _ = company_launcher
+    result, calls = invoke("Q1", extra_args=extra_args)
+    assert result.returncode != 0
+    assert not calls

@@ -189,7 +189,8 @@ def test_run_table1_rejects_empty_shard_topology(tmp_path):
         command_run_table1(args)
 
 
-def test_main_table1_command_skips_audit_and_smoke(monkeypatch, tmp_path):
+@pytest.mark.parametrize("custom_output", [False, True])
+def test_main_table1_command_skips_audit_and_smoke(monkeypatch, tmp_path, custom_output):
     draft = tmp_path / "draft"
     target = tmp_path / "target"
     draft.mkdir()
@@ -226,24 +227,53 @@ def test_main_table1_command_skips_audit_and_smoke(monkeypatch, tmp_path):
     monkeypatch.setattr(table1_pipeline, "run_sd_shard", lambda **kwargs: run_calls.append(kwargs) or {"status": "complete"})
     monkeypatch.setattr(table1_pipeline, "command_align", lambda args: align_calls.append(args) or 0)
 
+    output = tmp_path / "external output" if custom_output else tmp_path
     args = build_parser().parse_args([
         "--root", str(tmp_path),
         "run-table1-main",
         "--pair", "Q1",
-    ])
+    ] + (["--output-dir", str(output)] if custom_output else []))
 
     assert table1_pipeline.command_run_table1_main(args) == 0
     assert len(run_calls) == 1
     assert run_calls[0]["model_meta"]["draft"]["local_path"] == str(draft.resolve())
     assert align_calls[0].target_model_path == str(target)
-    manifest = json.loads((tmp_path / "metadata/table1_main_Q1.json").read_text())
-    assert manifest["resolved_config"] == config
+    manifest = json.loads((output / "metadata/table1_main_Q1.json").read_text())
+    expected_config = {**config, "paths": {**config["paths"],
+                       "runs": str(output / "runs"), "results": str(output / "results")}} if custom_output else config
+    assert manifest["resolved_config"] == expected_config
+    assert run_calls[0]["config"]["paths"] == expected_config["paths"]
     assert manifest["effective_pair_spec"]["target"] == str(target)
     assert manifest["environment"]["packages"]
     assert "torch_cuda_runtime" in manifest["environment"]
-    launches = list((tmp_path / "runs/table1/Q1/launches").glob("*.json"))
+    launches = list((output / ("runs" if custom_output else "runs/table1") / "Q1/launches").glob("*.json"))
     assert len(launches) == 1
     assert json.loads(launches[0].read_text()) == manifest
+    if custom_output:
+        assert align_calls[0].output_dir == str(output)
+        assert (output / "metadata/environment.json").exists()
+        assert not (tmp_path / "metadata").exists()
+        assert config["paths"]["runs"] == "runs/table1", "do not mutate the input config"
+
+
+@pytest.mark.parametrize("stage", ["align-morphology", "build-table1"])
+def test_postprocessing_uses_custom_output_paths(monkeypatch, tmp_path, stage):
+    from src import table1_morphology
+
+    config = {"paths": {"runs": "runs/old", "results": "results/old", "prompts": "data/frozen.parquet"}}
+    monkeypatch.setattr(table1_pipeline, "load_config", lambda _: config)
+    captured = []
+    operation = "align_pair_shard" if stage == "align-morphology" else "build_table1_outputs"
+    monkeypatch.setattr(table1_morphology, operation, lambda **kwargs: captured.append(kwargs) or {})
+    output = tmp_path / "external output"
+    args = build_parser().parse_args([
+        "--root", str(tmp_path), stage, "--output-dir", str(output),
+    ] + (["--pair", "Q1"] if stage == "align-morphology" else []))
+    assert args.func(args) == 0
+    assert captured[0]["root"] == tmp_path
+    assert captured[0]["config"]["paths"] == {
+        "runs": str(output / "runs"), "results": str(output / "results"), "prompts": "data/frozen.parquet",
+    }
 
 
 def test_main_table1_can_defer_alignment(monkeypatch, tmp_path):
