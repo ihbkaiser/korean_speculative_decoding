@@ -1,0 +1,22 @@
+# Separate numerical / verification contract; never mix with legacy checkpoints.
+base_config: table1_pipeline.yaml
+schema: table1-microbatch-block-verified-v1
+status: smoke_passed_b200_no_scalar_fallback
+paths:
+  runs: runs/table1_fast_b200
+  results: results/table1_fast_b200
+inference:
+  decoder: microbatched
+  target_verification: batched_native
+  sd_batch_size: 256
+  dtype: bfloat16
+  attention_backend: sdpa
+# Override pair-specific FP32/eager pins inherited from the strict configuration.
+# Q1: 512-prompt B200 sweep measured B=256 faster than B=128.
+# All five pairs passed bounded B=256 B200 SD + CPU alignment/table smoke.
+pairs:
+  Q1: {decoder: microbatched, dtype: bfloat16, attention_backend: sdpa, sd_batch_size: 256}
+  Q2: {decoder: microbatched, dtype: bfloat16, attention_backend: sdpa}
+  Q3: {decoder: microbatched, dtype: bfloat16, attention_backend: sdpa}
+  M1: {decoder: microbatched, dtype: bfloat16, attention_backend: sdpa, tokenizer_backend: tokenizers, fix_mistral_regex: true}
+  G1: {decoder: microbatched, dtype: bfloat16, attention_backend: sdpa}

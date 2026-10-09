@@ -1,0 +1,75 @@
+{
+  "pair": "Q1",
+  "prompts": 512,
+  "max_new_tokens": 128,
+  "gpu": "NVIDIA B200",
+  "torch": "2.14.1+cu130",
+  "cuda": "13.0",
+  "transformers": "5.19.0",
+  "model_paths": {
+    "draft": "/root/cache/models/Qwen--Qwen3-0.6B-Base/da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+    "target": "/root/cache/models/Qwen--Qwen3-1.7B-Base/ea980cb0a6c2ae4b936e82123acc929f1cec04c1"
+  },
+  "prompt_ids_sha256": "95fa930e897bdc6ba58b70f6bf0ce784b12e8fba88b564b2d9301e1b6d674af0",
+  "dtype": "bfloat16",
+  "attention_backend": "sdpa",
+  "use_remove_padding": false,
+  "measurements": [
+    {
+      "mode": "microbatched",
+      "batch_size": 128,
+      "prompts": 512,
+      "seconds": 36.324665222,
+      "block_seconds": [
+        10.946491801999997,
+        10.796533710999999,
+        7.4467829020000025,
+        7.132657326999997
+      ],
+      "prompts_per_second": 14.09510581504018,
+      "tokens_per_second": 1745.9486443274673,
+      "generated_tokens": 63421,
+      "proposal_events": 67891,
+      "estimated_20000_seconds": 1418.932235234375,
+      "scalar_diagnostic_prompts": 0,
+      "scalar_mismatch_indices": [],
+      "peak_allocated_gib": 12.9123215675354
+    },
+    {
+      "mode": "microbatched",
+      "batch_size": 256,
+      "prompts": 512,
+      "seconds": 30.293447254000007,
+      "block_seconds": [
+        17.573054946,
+        12.717911618000002
+      ],
+      "prompts_per_second": 16.901344891753595,
+      "tokens_per_second": 2097.747392931948,
+      "generated_tokens": 63548,
+      "proposal_events": 68104,
+      "estimated_20000_seconds": 1183.3377833593752,
+      "scalar_diagnostic_prompts": 0,
+      "scalar_mismatch_indices": [],
+      "peak_allocated_gib": 21.468346118927002
+    }
+  ],
+  "best": {
+    "mode": "microbatched",
+    "batch_size": 256,
+    "prompts": 512,
+    "seconds": 30.293447254000007,
+    "block_seconds": [
+      17.573054946,
+      12.717911618000002
+    ],
+    "prompts_per_second": 16.901344891753595,
+    "tokens_per_second": 2097.747392931948,
+    "generated_tokens": 63548,
+    "proposal_events": 68104,
+    "estimated_20000_seconds": 1183.3377833593752,
+    "scalar_diagnostic_prompts": 0,
+    "scalar_mismatch_indices": [],
+    "peak_allocated_gib": 21.468346118927002
+  }
+}

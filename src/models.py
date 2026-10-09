@@ -10,6 +10,25 @@ class TokenizerCompatibilityError(RuntimeError):
     """Raised when two models cannot safely share token IDs and offsets."""
 
 
+def load_table1_tokenizer(model_name, *, backend="auto", fix_mistral_regex=False, **kwargs):
+    """Pin the Rust tokenizer when offset-based analysis requires it.
+
+    Transformers 5 may select MistralCommonBackend despite use_fast=True.
+    The explicitly selected tokenizers backend reads the pinned tokenizer.json.
+    This is a tokenizer selection, never a decoding/reference fallback.
+    """
+    from transformers import AutoTokenizer, PreTrainedTokenizerFast
+
+    kwargs.setdefault("use_fast", True)
+    if backend == "tokenizers":
+        return PreTrainedTokenizerFast.from_pretrained(
+            model_name, fix_mistral_regex=fix_mistral_regex, **kwargs
+        )
+    if backend != "auto":
+        raise ValueError(f"Unknown Table 1 tokenizer backend: {backend}")
+    return AutoTokenizer.from_pretrained(model_name, **kwargs)
+
+
 def config_vocab_size(config: Any) -> int:
     """Read vocabulary size from plain or multimodal Transformers configs."""
     value = getattr(config, "vocab_size", None)
@@ -212,7 +231,10 @@ def load_models(
             "Unsupported attention backend: "
             f"{attention_backend!r}; expected sdpa, flash_attention_2, or eager"
         )
-    common = {"torch_dtype": dtype_map[dtype], "low_cpu_mem_usage": True}
+    # Transformers 4.x uses torch_dtype; 5.x renamed it to dtype.
+    from transformers import __version__ as transformers_version
+    dtype_key = "dtype" if int(transformers_version.split(".")[0]) >= 5 else "torch_dtype"
+    common = {dtype_key: dtype_map[dtype], "low_cpu_mem_usage": True}
     common["attn_implementation"] = attention_backend
     if token:
         common["token"] = token

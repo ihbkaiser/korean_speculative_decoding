@@ -236,6 +236,14 @@ def test_main_table1_command_skips_audit_and_smoke(monkeypatch, tmp_path):
     assert len(run_calls) == 1
     assert run_calls[0]["model_meta"]["draft"]["local_path"] == str(draft.resolve())
     assert align_calls[0].target_model_path == str(target)
+    manifest = json.loads((tmp_path / "metadata/table1_main_Q1.json").read_text())
+    assert manifest["resolved_config"] == config
+    assert manifest["effective_pair_spec"]["target"] == str(target)
+    assert manifest["environment"]["packages"]
+    assert "torch_cuda_runtime" in manifest["environment"]
+    launches = list((tmp_path / "runs/table1/Q1/launches").glob("*.json"))
+    assert len(launches) == 1
+    assert json.loads(launches[0].read_text()) == manifest
 
 
 def test_main_table1_can_defer_alignment(monkeypatch, tmp_path):

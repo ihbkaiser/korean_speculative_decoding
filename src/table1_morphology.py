@@ -8,6 +8,8 @@ import re
 from pathlib import Path
 from typing import Any
 
+from tqdm.auto import tqdm
+
 from .alignment import token_ids_to_character_offsets
 from .table1_alignment import (
     aggregate_alignment_rows,
@@ -16,6 +18,7 @@ from .table1_alignment import (
     support_counts_by_fine_boundary,
 )
 from .table1_data import load_prompt_pool
+from .models import load_table1_tokenizer
 
 
 def _json_default(value: Any) -> Any:
@@ -222,9 +225,15 @@ def _make_prompt_alignment_rows(
                 exclusion_reason=exclusion_reason,
             )
         else:
+            # Visible tokens outside the retained continuation (including
+            # whitespace/prompt-fragment exclusions) still have a real span.
+            # Retain that surface as the excluded row's coordinate frame;
+            # do not replace it by (0, 0), relax invariants, or change the
+            # visible-candidate denominator / exclusion classification.
+            unmatched_surface = full_text[target["start"]:target["end"]]
             row = build_aligned_token_row(
-                "",
-                (0, 0),
+                unmatched_surface,
+                (0, len(unmatched_surface)),
                 [],
                 token_raw_text=target["raw_text"],
                 token_core_text="",
@@ -234,6 +243,16 @@ def _make_prompt_alignment_rows(
                 visible_candidate=True,
                 exclusion_reason=exclusion_reason or "special_or_non_visible_token",
             )
+        # Kiwi can emit virtual zero-width morphemes. Classification already
+        # excludes these analyses; keep their original output for provenance,
+        # but do not present invalid raw spans as canonical aligned spans.
+        # Eligibility, exclusion reason and all aggregate counts stay intact.
+        if any(not (0 <= span[0] < span[1] <= len(row["eojeol_text"]))
+               for span in row["morpheme_char_spans"]):
+            assert row["alignment_status"] == "EXCLUDED", "invalid morphology cannot be eligible"
+            for field in ("morpheme_surfaces", "morpheme_pos_tags", "morpheme_char_spans"):
+                row[f"raw_{field}"] = row[field]
+                row[field] = []
         rows.append({
             **row,
             "pair_id": reference["pair_id"],
@@ -247,6 +266,7 @@ def _make_prompt_alignment_rows(
             "roundtrip_exact": bool(alignment["roundtrip_exact"]),
             "continuation_text": continuation_text,
             "prompt_boundary_excluded": prompt_boundary_excluded,
+            "eojeol_matched": bool(overlaps),
             "pool_index": reference.get("pool_index"),
             "pool_split": reference.get("pool_split"),
             "source_index": reference.get("source_index"),
@@ -302,10 +322,16 @@ def align_pair_shard(
     refs = pd.read_parquet(references_path).to_dict(orient="records")
     if any(not row.get("exact_sd_target", False) for row in refs):
         raise AssertionError("morphology alignment cannot consume a parity-failed prompt")
-    tokenizer = AutoTokenizer.from_pretrained(model_name, revision=target_revision, use_fast=True, token=token)
+    pair_settings = config.get("pairs", {}).get(pair_id, {})
+    tokenizer = load_table1_tokenizer(
+        model_name, revision=target_revision, token=token,
+        backend=pair_settings.get("tokenizer_backend", "auto"),
+        fix_mistral_regex=pair_settings.get("fix_mistral_regex", False),
+    )
     kiwi = Kiwi()
     aligned_rows: list[dict[str, Any]] = []
-    for reference in refs:
+    for reference in tqdm(refs, desc=f"{pair_id} morphology", unit="prompt",
+                          dynamic_ncols=True, mininterval=1):
         aligned_rows.extend(_make_prompt_alignment_rows(reference, tokenizer=tokenizer, kiwi=kiwi))
     _write_parquet(aligned_rows, output)
     metadata = {
@@ -320,7 +346,9 @@ def align_pair_shard(
         "target_revision": target_revision,
     }
     _write_json(shard / "alignment_metadata.json", metadata)
-    (shard / "ALIGNMENT_COMPLETE").write_text("All exact-parity prompt continuations were aligned.\n", encoding="utf-8")
+    (shard / "ALIGNMENT_COMPLETE").write_text(
+        "All completed target-verified prompt continuations were aligned.\n", encoding="utf-8"
+    )
     return {**metadata, "status": "complete", "path": str(output)}
 
 
@@ -425,7 +453,10 @@ def _table_row(pair_id: str, pair: dict[str, Any], refs: list[dict[str, Any]], a
         {
             "prompt_id": row["doc_id"],
             "completed": bool(row.get("completed", False) and row.get("exact_sd_target", False)),
-            "generated_token_count": len(row.get("target_continuation_token_ids", []) or []),
+            "generated_token_count": (
+                len(row["target_continuation_token_ids"])
+                if row.get("target_continuation_token_ids") is not None else 0
+            ),
         }
         for row in refs
     ]
@@ -476,7 +507,14 @@ def _table_row(pair_id: str, pair: dict[str, Any], refs: list[dict[str, Any]], a
             "threshold_within": support["within_threshold"],
             "supported": counts["supported"],
         })
-    return row, {"summary": summary, "support": support, "missing": missing}, exclusions + boundary_rows
+    verification = {
+        "reference_sources": sorted({str(ref.get("reference_source", "legacy")) for ref in refs}),
+        "independent_target_reference": (
+            all(ref.get("independent_target_reference", True) for ref in refs) if refs else None
+        ),
+    }
+    return row, {"summary": summary, "support": support, "missing": missing,
+                 "verification": verification}, exclusions + boundary_rows
 
 
 def build_table1_outputs(*, root: str | Path, config: dict[str, Any]) -> dict[str, Any]:

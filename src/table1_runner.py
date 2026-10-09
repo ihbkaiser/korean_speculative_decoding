@@ -10,12 +10,16 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any, Iterable, TextIO
 
+from tqdm.auto import tqdm
+
 from .data import encode_prompt
+from .batched_speculative import speculative_greedy_microbatch
 from .models import (
     assert_tokenizer_compatible,
     compare_tokenizers,
     config_vocab_size,
     load_models,
+    load_table1_tokenizer,
 )
 from .speculative_decoding import (
     greedy_generate,
@@ -59,6 +63,32 @@ class ProgressWriter:
     def flush(self) -> None:
         self.handle.flush()
         self.pending = 0
+
+
+def _recover_microbatch_progress_tail(path: Path) -> None:
+    """Preserve and remove only an incomplete final record after a hard kill."""
+    with path.open("r+b") as handle:
+        while True:
+            offset = handle.tell()
+            line = handle.readline()
+            if not line:
+                return
+            if not line.strip():
+                continue
+            try:
+                json.loads(line)
+            except (json.JSONDecodeError, UnicodeDecodeError):
+                if line.endswith(b"\n") or handle.read(1):
+                    raise RuntimeError(f"Corrupt checkpoint record before EOF in {path}")
+                backup = path.with_name(f"{path.name}.incomplete-tail-{time.time_ns()}")
+                with backup.open("xb") as saved:
+                    saved.write(line)
+                handle.truncate(offset)
+                print(f"Recovered incomplete final checkpoint record; saved bytes to {backup}", flush=True)
+                return
+            if not line.endswith(b"\n"):
+                handle.write(b"\n")
+                return
 
 
 def _write_parquet_atomic(rows: list[dict[str, Any]], path: Path) -> None:
@@ -158,7 +188,7 @@ def build_run_identity(
     """Build the immutable identity used to validate resume artifacts."""
     draft_name, draft_revision = _model_kwargs(model_meta, "draft")
     target_name, target_revision = _model_kwargs(model_meta, "target")
-    return {
+    identity = {
         "pair_id": pair_id,
         "prompt_split": pair_spec.get("prompt_split"),
         "prompt_count": len(records),
@@ -184,6 +214,15 @@ def build_run_identity(
             pair_spec, config, "target_verification", "sequential"
         ),
     }
+    if identity["decoder"] == "microbatched":
+        identity["sd_batch_size"] = int(pair_spec.get("sd_batch_size", config.get("sd_batch_size", 8)))
+        if identity["sd_batch_size"] < 1:
+            raise ValueError("sd_batch_size must be positive")
+        identity["reference_policy"] = "block_target_verified_no_scalar_reference"
+        if pair_spec.get("tokenizer_backend"):
+            identity["tokenizer_backend"] = pair_spec["tokenizer_backend"]
+            identity["fix_mistral_regex"] = bool(pair_spec.get("fix_mistral_regex", False))
+    return identity
 
 
 def _pair_inference_setting(
@@ -237,7 +276,10 @@ def generate_reference_ids(
                 int(config["max_new_tokens"]),
                 eos_token_id,
             )
-            for doc_id, prompt_ids in prompt_ids_by_doc.items()
+            for doc_id, prompt_ids in tqdm(
+                prompt_ids_by_doc.items(), desc="Target references", unit="prompt",
+                dynamic_ncols=True, mininterval=1,
+            )
         }
 
     # Grouping by exact prompt length avoids padding/mask-dependent numerical
@@ -246,16 +288,19 @@ def generate_reference_ids(
     for doc_id, prompt_ids in prompt_ids_by_doc.items():
         buckets[len(prompt_ids)].append((doc_id, prompt_ids))
     references: dict[str, list[int]] = {}
-    for bucket in buckets.values():
-        for start in range(0, len(bucket), batch_size):
-            chunk = bucket[start:start + batch_size]
-            outputs = greedy_generate_batch(
-                target_model,
-                [prompt_ids for _, prompt_ids in chunk],
-                int(config["max_new_tokens"]),
-                eos_token_id,
-            )
-            references.update({doc_id: output for (doc_id, _), output in zip(chunk, outputs)})
+    with tqdm(total=len(records), desc="Target references", unit="prompt",
+              dynamic_ncols=True, mininterval=1) as bar:
+        for bucket in buckets.values():
+            for start in range(0, len(bucket), batch_size):
+                chunk = bucket[start:start + batch_size]
+                outputs = greedy_generate_batch(
+                    target_model,
+                    [prompt_ids for _, prompt_ids in chunk],
+                    int(config["max_new_tokens"]),
+                    eos_token_id,
+                )
+                references.update({doc_id: output for (doc_id, _), output in zip(chunk, outputs)})
+                bar.update(len(chunk))
     return references
 
 
@@ -269,15 +314,17 @@ def audit_pair_tokenizers(
     token: str | None = None,
     require_offsets: bool = True,
 ) -> dict[str, Any]:
-    from transformers import AutoConfig, AutoTokenizer
+    from transformers import AutoConfig
 
     draft_name, draft_revision = _model_kwargs(model_meta, "draft")
     target_name, target_revision = _model_kwargs(model_meta, "target")
-    draft_tokenizer = AutoTokenizer.from_pretrained(
-        draft_name, revision=draft_revision, use_fast=True, token=token
+    tokenizer_options = {"backend": pair_spec.get("tokenizer_backend", "auto"),
+                         "fix_mistral_regex": pair_spec.get("fix_mistral_regex", False)}
+    draft_tokenizer = load_table1_tokenizer(
+        draft_name, revision=draft_revision, token=token, **tokenizer_options
     )
-    target_tokenizer = AutoTokenizer.from_pretrained(
-        target_name, revision=target_revision, use_fast=True, token=token
+    target_tokenizer = load_table1_tokenizer(
+        target_name, revision=target_revision, token=token, **tokenizer_options
     )
     probes = [str(row["text"]) for row in prompt_records[:probe_count]]
     compatibility = compare_tokenizers(
@@ -318,11 +365,17 @@ def _event_row(
     tokenizer: Any,
     record: dict[str, Any],
     prompt_token_count: int,
+    token_text_cache: dict[int, str] | None = None,
 ) -> dict[str, Any]:
     token_id = int(event["draft_token_id"])
-    raw_token_text = tokenizer.decode(
-        [token_id], skip_special_tokens=False, clean_up_tokenization_spaces=False
-    )
+    if token_text_cache is not None and token_id in token_text_cache:
+        raw_token_text = token_text_cache[token_id]
+    else:
+        raw_token_text = tokenizer.decode(
+            [token_id], skip_special_tokens=False, clean_up_tokenization_spaces=False
+        )
+        if token_text_cache is not None:
+            token_text_cache[token_id] = raw_token_text
     return {
         "doc_id": record["doc_id"],
         "raw_text_hash": record["raw_text_hash"],
@@ -500,8 +553,10 @@ def run_smoke_test(
 
     draft_name, draft_revision = _model_kwargs(model_meta, "draft")
     target_name, target_revision = _model_kwargs(model_meta, "target")
-    draft_tokenizer = AutoTokenizer.from_pretrained(draft_name, revision=draft_revision, use_fast=True, token=token)
-    target_tokenizer = AutoTokenizer.from_pretrained(target_name, revision=target_revision, use_fast=True, token=token)
+    tokenizer_options = {"backend": pair_spec.get("tokenizer_backend", "auto"),
+                         "fix_mistral_regex": pair_spec.get("fix_mistral_regex", False)}
+    draft_tokenizer = load_table1_tokenizer(draft_name, revision=draft_revision, token=token, **tokenizer_options)
+    target_tokenizer = load_table1_tokenizer(target_name, revision=target_revision, token=token, **tokenizer_options)
     tokenizer_report = compare_tokenizers(
         draft_tokenizer,
         target_tokenizer,
@@ -596,6 +651,95 @@ def smoke_gate_mode(
     return "QUICK_ONLY"
 
 
+def _run_microbatch_shard(
+    *, pair_id, pair_spec, config, draft_model, target_model, tokenizer,
+    shard_records, completed, progress_path, shard_dir, run_identity,
+    progress_flush_every, progress_log_every,
+):
+    """Production block-verified SD; no pre-generation or scalar reruns."""
+    batch_size = int(pair_spec.get("sd_batch_size", config.get("sd_batch_size", 8)))
+    if batch_size < 1:
+        raise ValueError("sd_batch_size must be positive")
+    pending = [row for row in shard_records if str(row["doc_id"]) not in completed]
+    token_text_cache: dict[int, str] = {}
+    started = time.perf_counter()
+    resumed_count = len(completed)
+    next_log = len(completed) + max(1, progress_log_every)
+    prefix = f"[{pair_id} microbatch {batch_size}]"
+    print(f"{prefix} resumed={len(completed)} pending={len(pending)} "
+          "verification=target_block scalar_fallback=disabled", flush=True)
+    with tqdm(total=len(shard_records), initial=resumed_count,
+              desc=f"{pair_id} SD (B={batch_size})", unit="prompt",
+              dynamic_ncols=True, mininterval=1) as bar, \
+            progress_path.open("a", encoding="utf-8") as progress:
+        writer = ProgressWriter(progress, flush_every=progress_flush_every)
+        for start in range(0, len(pending), batch_size):
+            chunk = pending[start:start + batch_size]
+            prompts = [encode_prompt(tokenizer, str(row["text"]), int(config["max_prompt_tokens"]))
+                       for row in chunk]
+            outputs, raw_events = speculative_greedy_microbatch(
+                draft_model, target_model, prompts, int(config["max_new_tokens"]),
+                getattr(tokenizer, "eos_token_id", None), int(config["speculative_k"]),
+                prompt_ids=[str(row["doc_id"]) for row in chunk],
+            )
+            for record, prompt, output, raw in zip(chunk, prompts, outputs, raw_events):
+                reference = {
+                    "doc_id": record["doc_id"], "raw_text_hash": record["raw_text_hash"],
+                    "pair_id": pair_id, "draft_model": pair_spec["draft"], "target_model": pair_spec["target"],
+                    "prompt_token_count": len(prompt), "prompt_token_ids": prompt,
+                    "prompt_text": tokenizer.decode(prompt, skip_special_tokens=True,
+                                                    clean_up_tokenization_spaces=False),
+                    "target_continuation_token_ids": output,
+                    "target_continuation_text": tokenizer.decode(output, skip_special_tokens=True,
+                                                                 clean_up_tokenization_spaces=False),
+                    "speculative_token_ids": output,
+                    # Every emitted token is selected by target block logits.
+                    # This is NOT an independent scalar equivalence check.
+                    "exact_sd_target": True, "completed": True,
+                    "reference_source": "block_target_verified_no_scalar_reference",
+                    "scalar_parity_validated": False, "independent_target_reference": False,
+                    "pool_index": record.get("pool_index"), "pool_split": record.get("pool_split"),
+                    "source_index": record.get("source_index"),
+                }
+                events = [_event_row(event, pair_id=pair_id, draft_model=pair_spec["draft"],
+                                     target_model=pair_spec["target"], tokenizer=tokenizer,
+                                     record=record, prompt_token_count=len(prompt),
+                                     token_text_cache=token_text_cache) for event in raw]
+                writer.write({"reference": reference, "events": events, "run_identity": run_identity})
+                completed[str(record["doc_id"])] = (reference, events)
+            # A completed microbatch is the restart unit. Never retain whole
+            # batches behind the slower legacy 64-prompt flush interval.
+            writer.flush()
+            bar.update(len(chunk))
+            if (progress_log_every and len(completed) >= next_log) or len(completed) == len(shard_records):
+                elapsed = time.perf_counter() - started
+                rate = (len(completed) - resumed_count) / max(elapsed, 1e-9)
+                eta = (len(shard_records) - len(completed)) / max(rate, 1e-9)
+                bar.write(f"{prefix} {len(completed)}/{len(shard_records)} "
+                          f"prompts/s={rate:.3f} elapsed={elapsed:.1f}s eta={eta:.1f}s")
+                next_log = len(completed) + max(1, progress_log_every)
+    references = [completed[str(row["doc_id"])][0] for row in shard_records]
+    events = [event for row in shard_records for event in completed[str(row["doc_id"])][1]]
+    _write_parquet_atomic(references, shard_dir / "references.parquet")
+    _write_parquet_atomic(events, shard_dir / "sd_events.parquet")
+    metadata = {
+        **run_identity, "prompt_count": len(references),
+        "all_outputs_target_verified": True,
+        "all_target_sd_outputs_equal": None,
+        "independent_target_reference": False, "scalar_parity_validated": False,
+        "scalar_fallback_prompt_count": 0,
+        "reference_sources": ["block_target_verified_no_scalar_reference"],
+        "bonus_token_enabled": True,
+        "elapsed_seconds": time.perf_counter() - started,
+    }
+    _write_json(shard_dir / "run_metadata.json", metadata)
+    (shard_dir / "COMPLETE").write_text(
+        "All prompts completed target-block-verified greedy SD; scalar parity not asserted.\n",
+        encoding="utf-8",
+    )
+    return {**metadata, "status": "complete", "path": str(shard_dir)}
+
+
 def run_sd_shard(
     *,
     root: str | Path,
@@ -653,17 +797,20 @@ def run_sd_shard(
     progress_path = shard_dir / "progress.jsonl"
     completed: dict[str, tuple[dict[str, Any], list[dict[str, Any]]]] = {}
     if progress_path.exists():
+        if run_identity["decoder"] == "microbatched":
+            _recover_microbatch_progress_tail(progress_path)
+        expected_records = {str(row["doc_id"]): row for row in shard_records}
         with progress_path.open(encoding="utf-8") as handle:
             for line in handle:
                 if not line.strip():
                     continue
                 item = json.loads(line)
                 reference = item.get("reference", {})
+                if run_identity["decoder"] == "microbatched" and item.get("run_identity") != run_identity:
+                    raise RuntimeError("Cannot resume microbatch SD from a different configuration "
+                                       "or legacy checkpoint; use a separate runs path")
                 doc_id = str(reference.get("doc_id"))
-                expected_record = next(
-                    (row for row in shard_records if str(row["doc_id"]) == doc_id),
-                    None,
-                )
+                expected_record = expected_records.get(doc_id)
                 if expected_record is None:
                     raise RuntimeError(f"progress contains a prompt outside this shard: {doc_id}")
                 if reference.get("raw_text_hash") != expected_record.get("raw_text_hash"):
@@ -674,9 +821,12 @@ def run_sd_shard(
 
     draft_name, draft_revision = _model_kwargs(model_meta, "draft")
     target_name, target_revision = _model_kwargs(model_meta, "target")
-    draft_tokenizer = AutoTokenizer.from_pretrained(draft_name, revision=draft_revision, use_fast=True, token=token)
-    target_tokenizer = AutoTokenizer.from_pretrained(target_name, revision=target_revision, use_fast=True, token=token)
-    assert_tokenizer_compatible(draft_tokenizer, target_tokenizer)
+    tokenizer_options = {"backend": pair_spec.get("tokenizer_backend", "auto"),
+                         "fix_mistral_regex": pair_spec.get("fix_mistral_regex", False)}
+    draft_tokenizer = load_table1_tokenizer(draft_name, revision=draft_revision, token=token, **tokenizer_options)
+    target_tokenizer = load_table1_tokenizer(target_name, revision=target_revision, token=token, **tokenizer_options)
+    tokenizer_report = assert_tokenizer_compatible(draft_tokenizer, target_tokenizer)
+    _write_json(shard_dir / "tokenizer_compatibility.json", tokenizer_report)
     draft_model, target_model = load_models(
         draft_name,
         target_name,
@@ -692,6 +842,14 @@ def run_sd_shard(
         record for record in shard_records
         if str(record["doc_id"]) not in completed
     ]
+    if run_identity["decoder"] == "microbatched":
+        return _run_microbatch_shard(
+            pair_id=pair_id, pair_spec=pair_spec, config=config,
+            draft_model=draft_model, target_model=target_model, tokenizer=target_tokenizer,
+            shard_records=shard_records, completed=completed, progress_path=progress_path,
+            shard_dir=shard_dir, run_identity=run_identity,
+            progress_flush_every=progress_flush_every, progress_log_every=progress_log_every,
+        )
     reference_ids_by_doc = generate_reference_ids(
         pending_records,
         tokenizer=target_tokenizer,
@@ -700,7 +858,9 @@ def run_sd_shard(
         config=config,
     )
     started = time.time()
-    with progress_path.open("a", encoding="utf-8") as progress:
+    with tqdm(total=len(shard_records), initial=len(completed),
+              desc=f"{pair_id} SD", unit="prompt", dynamic_ncols=True,
+              mininterval=1) as bar, progress_path.open("a", encoding="utf-8") as progress:
         progress_writer = ProgressWriter(progress, flush_every=progress_flush_every)
         for index, record in enumerate(shard_records):
             doc_id = str(record["doc_id"])
@@ -768,25 +928,24 @@ def run_sd_shard(
                         tokenizer=target_tokenizer,
                         config=config,
                     )
-                print(
+                bar.write(
                     f"[{pair_id} shard {shard_index}/{num_shards}] "
                     f"scalar parity fallback doc_id={doc_id} "
                     f"batch_first_difference={reference.get('batch_reference_first_difference')}",
-                    flush=True,
                 )
             item = {"reference": reference, "events": events}
             progress_writer.write(item)
             completed[doc_id] = (reference, events)
+            bar.update(1)
             processed = index + 1
             if progress_log_every and (
                 processed % progress_log_every == 0 or processed == len(shard_records)
             ):
-                print(
+                bar.write(
                     f"[{pair_id} shard {shard_index}/{num_shards}] "
                     f"{processed}/{len(shard_records)} doc_id={doc_id} "
                     f"generated={len(reference['target_continuation_token_ids'])} "
                     f"checkpoint_pending={progress_writer.pending}",
-                    flush=True,
                 )
         progress_writer.flush()
 

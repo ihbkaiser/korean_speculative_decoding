@@ -1,0 +1,30 @@
+{
+  "stage": "smoke-all",
+  "prompts_per_pair": 256,
+  "batch_size": 256,
+  "scalar_fallback": false,
+  "full_run_started": false,
+  "pairs": {
+    "Q1": {
+      "status": "failed",
+      "error": "ValueError: The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()"
+    },
+    "Q2": {
+      "status": "failed",
+      "error": "ValueError: The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()"
+    },
+    "Q3": {
+      "status": "failed",
+      "error": "ValueError: The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()"
+    },
+    "M1": {
+      "status": "failed",
+      "error": "TokenizerCompatibilityError: Incompatible draft/target tokenizers: both tokenizers must be fast tokenizers to provide offsets; fast-tokenizer backend serialization is unavailable; probe encoding or offsets differ"
+    },
+    "G1": {
+      "status": "failed",
+      "error": "ValueError: The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()"
+    }
+  },
+  "status": "failed"
+}

@@ -1,0 +1,110 @@
+{
+  "pair": "Q1",
+  "prompts": 2048,
+  "max_new_tokens": 128,
+  "gpu": "NVIDIA B200",
+  "torch": "2.14.1+cu130",
+  "cuda": "13.0",
+  "transformers": "5.19.0",
+  "model_paths": {
+    "draft": "/root/cache/models/Qwen--Qwen3-0.6B-Base/da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+    "target": "/root/cache/models/Qwen--Qwen3-1.7B-Base/ea980cb0a6c2ae4b936e82123acc929f1cec04c1"
+  },
+  "prompt_ids_sha256": "3b29d15e44e9e52b8a3dbbad9d194bf96bb2c7d487dc458aba2bd20eeb056152",
+  "dtype": "bfloat16",
+  "attention_backend": "sdpa",
+  "use_remove_padding": false,
+  "gpu_total_memory_gib": 178.3511962890625,
+  "compute_capability": [
+    10,
+    0
+  ],
+  "pytorch_alloc_conf": "expandable_segments:True",
+  "scalar_fallback": false,
+  "full_run_started": false,
+  "measurements": [
+    {
+      "mode": "microbatched",
+      "batch_size": 256,
+      "prompts": 2048,
+      "seconds": 115.03440022299999,
+      "block_seconds": [
+        19.239039228000003,
+        12.835697672999999,
+        13.102156231000002,
+        13.1101965,
+        16.01522765,
+        13.594303910000008,
+        12.788438743,
+        14.346126158999994
+      ],
+      "prompts_per_second": 17.803370087815892,
+      "tokens_per_second": 2222.8655037475833,
+      "generated_tokens": 255706,
+      "proposal_events": 273061,
+      "estimated_20000_seconds": 1123.3828146777344,
+      "scalar_diagnostic_prompts": 0,
+      "scalar_mismatch_indices": [],
+      "actual_batch_sizes": [
+        256,
+        256,
+        256,
+        256,
+        256,
+        256,
+        256,
+        256
+      ],
+      "warmup_seconds": 4.930519471,
+      "warmup_peak_allocated_gib": 14.436986923217773,
+      "peak_allocated_gib": 21.464622974395752,
+      "peak_reserved_gib": 25.326171875
+    },
+    {
+      "mode": "microbatched",
+      "batch_size": 2048,
+      "prompts": 2048,
+      "seconds": 112.08398655300002,
+      "block_seconds": [
+        112.07956192200001
+      ],
+      "prompts_per_second": 18.27201247014517,
+      "tokens_per_second": 2281.3785257279987,
+      "generated_tokens": 255706,
+      "proposal_events": 273063,
+      "estimated_20000_seconds": 1094.5701811816407,
+      "scalar_diagnostic_prompts": 0,
+      "scalar_mismatch_indices": [],
+      "actual_batch_sizes": [
+        2048
+      ],
+      "warmup_seconds": 6.509182651000003,
+      "warmup_peak_allocated_gib": 85.07159423828125,
+      "peak_allocated_gib": 141.29267930984497,
+      "peak_reserved_gib": 171.296875
+    }
+  ],
+  "best": {
+    "mode": "microbatched",
+    "batch_size": 2048,
+    "prompts": 2048,
+    "seconds": 112.08398655300002,
+    "block_seconds": [
+      112.07956192200001
+    ],
+    "prompts_per_second": 18.27201247014517,
+    "tokens_per_second": 2281.3785257279987,
+    "generated_tokens": 255706,
+    "proposal_events": 273063,
+    "estimated_20000_seconds": 1094.5701811816407,
+    "scalar_diagnostic_prompts": 0,
+    "scalar_mismatch_indices": [],
+    "actual_batch_sizes": [
+      2048
+    ],
+    "warmup_seconds": 6.509182651000003,
+    "warmup_peak_allocated_gib": 85.07159423828125,
+    "peak_allocated_gib": 141.29267930984497,
+    "peak_reserved_gib": 171.296875
+  }
+}

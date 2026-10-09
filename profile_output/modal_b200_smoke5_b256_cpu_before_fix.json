@@ -1,0 +1,30 @@
+{
+  "stage": "smoke-finish",
+  "prompts_per_pair": 256,
+  "batch_size": 256,
+  "scalar_fallback": false,
+  "full_run_started": false,
+  "pairs": {
+    "Q1": {
+      "status": "failed",
+      "error": "AssertionError: morpheme span inside eojeol"
+    },
+    "Q2": {
+      "status": "failed",
+      "error": "AssertionError: morpheme span inside eojeol"
+    },
+    "Q3": {
+      "status": "failed",
+      "error": "AssertionError: morpheme span inside eojeol"
+    },
+    "M1": {
+      "status": "failed",
+      "error": "AssertionError: morpheme span inside eojeol"
+    },
+    "G1": {
+      "status": "failed",
+      "error": "AssertionError: morpheme span inside eojeol"
+    }
+  },
+  "status": "failed"
+}

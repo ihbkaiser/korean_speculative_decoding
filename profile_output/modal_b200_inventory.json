@@ -1,0 +1,97 @@
+{
+  "prompt_pool": "/root/artifacts/workspace/data/prompts_40k.parquet",
+  "prompt_pool_exists": true,
+  "model_metadata_exists": true,
+  "model_directories": [
+    "/root/cache/models/Qwen--Qwen3-0.6B-Base/da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+    "/root/cache/models/Qwen--Qwen3-1.7B-Base/ea980cb0a6c2ae4b936e82123acc929f1cec04c1",
+    "/root/cache/models/Qwen--Qwen3-4B-Base/906bfd4b4dc7f14ee4320094d8b41684abff8539",
+    "/root/cache/models/Qwen--Qwen3-8B-Base/49e3418fbbbca6ecbdf9608b4d22e5a407081db4",
+    "/root/cache/models/google--gemma-3-12b-pt/295efb63d01a7017928f273a94ebb86105c9526f",
+    "/root/cache/models/google--gemma-3-4b-pt/cc012e0a6d0787b4adcc0fa2c4da74402494554d",
+    "/root/cache/models/mistralai--Ministral-3-3B-Base-2512/6f9c4b12a95b139af68670a6713616b757923735",
+    "/root/cache/models/mistralai--Ministral-3-8B-Base-2512/d4883f9b36aa2e5d775730d3fdba3d30de51a8ef"
+  ],
+  "pairs": {
+    "Q1": {
+      "draft": {
+        "id": "Qwen/Qwen3-0.6B-Base",
+        "requested_revision": "main",
+        "resolved_revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+        "private": false,
+        "gated": false
+      },
+      "target": {
+        "id": "Qwen/Qwen3-1.7B-Base",
+        "requested_revision": "main",
+        "resolved_revision": "ea980cb0a6c2ae4b936e82123acc929f1cec04c1",
+        "private": false,
+        "gated": false
+      }
+    },
+    "Q2": {
+      "draft": {
+        "id": "Qwen/Qwen3-0.6B-Base",
+        "requested_revision": "main",
+        "resolved_revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+        "private": false,
+        "gated": false
+      },
+      "target": {
+        "id": "Qwen/Qwen3-4B-Base",
+        "requested_revision": "main",
+        "resolved_revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+        "private": false,
+        "gated": false
+      }
+    },
+    "Q3": {
+      "draft": {
+        "id": "Qwen/Qwen3-4B-Base",
+        "requested_revision": "main",
+        "resolved_revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+        "private": false,
+        "gated": false
+      },
+      "target": {
+        "id": "Qwen/Qwen3-8B-Base",
+        "requested_revision": "main",
+        "resolved_revision": "49e3418fbbbca6ecbdf9608b4d22e5a407081db4",
+        "private": false,
+        "gated": false
+      }
+    },
+    "M1": {
+      "draft": {
+        "id": "mistralai/Ministral-3-3B-Base-2512",
+        "requested_revision": "main",
+        "resolved_revision": "6f9c4b12a95b139af68670a6713616b757923735",
+        "private": false,
+        "gated": false
+      },
+      "target": {
+        "id": "mistralai/Ministral-3-8B-Base-2512",
+        "requested_revision": "main",
+        "resolved_revision": "d4883f9b36aa2e5d775730d3fdba3d30de51a8ef",
+        "private": false,
+        "gated": false
+      }
+    },
+    "G1": {
+      "draft": {
+        "id": "google/gemma-3-4b-pt",
+        "requested_revision": "main",
+        "resolved_revision": "cc012e0a6d0787b4adcc0fa2c4da74402494554d",
+        "private": false,
+        "gated": true
+      },
+      "target": {
+        "id": "google/gemma-3-12b-pt",
+        "requested_revision": "main",
+        "resolved_revision": "295efb63d01a7017928f273a94ebb86105c9526f",
+        "private": false,
+        "gated": true
+      }
+    }
+  }
+}

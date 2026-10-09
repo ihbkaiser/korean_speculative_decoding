@@ -278,13 +278,102 @@ stage also uses one B200 per pair. The upload stage reads `hf_token` only to
 create an ephemeral Modal Secret; the token is ignored by git and excluded
 from the zip.
 
-The production Table 1 path selects the decoder and numeric inference path per
+The legacy strict Table 1 path selects the decoder and numeric inference path per
 pair from the pinned YAML. All five pairs use the persistent draft-cache
 decoder, FP32 + eager attention, reference batch 64, and batched target
 verification with strict singleton fallback. The global decoder default is
 `decoder: cached`; an explicit `decoder: legacy` remains available for an
 isolated comparison. In all cases, target continuation IDs must remain exact
 within the configured numeric path.
+
+The selected B200 throughput path uses **prompt microbatching**, in addition
+to verifying multiple proposal tokens. Run it with:
+
+```bash
+# Measure the real pair first; reports scalar differences without rerunning them.
+python3 scripts/benchmark_table1_fast.py --pair Q1 --prompts 16 --max-new-tokens 32 --batch-sizes 4 8 16
+
+# Selected default: BF16/SDPA, B=256, no scalar reference pass or fallback.
+bash run_table1.sh Q1
+# Equivalent explicit launcher:
+bash scripts/run_company_table1_fast.sh Q1
+# Or run all five pairs, overlapping CPU alignment with the next GPU pair:
+bash scripts/run_company_table1_fast.sh all
+```
+
+Full B200 launch, tmux/resume instructions and the complete NAACL artifact/log
+map are in [the Table 1 runbook](docs/TABLE1_B200_RUNBOOK.md). Production launches
+retain resolved-config/runtime history and per-shard tokenizer fingerprints,
+including when the separate audit/smoke commands are bypassed.
+
+The fast path drafts B prompts together, verifies B x (K+1) positions with one
+target forward per round, accepts the matching prefix plus a target correction
+or bonus token, and gathers each row's retained KV prefix after rejection.
+It computes entropy/logprob/rank on-device and transfers compact audit rows
+once per round. Repeated token text decoding is cached. It neither generates
+all independent target references before the run nor restarts a prompt on the
+scalar path. Every completed microbatch is flushed to `progress.jsonl`; rerun
+the same command to resume. A truncated final JSON record after a hard kill is
+preserved in an `incomplete-tail-*` file and removed from the active checkpoint.
+
+`configs/table1_fast_b200.yaml` inherits the local snapshot paths from the
+original configuration, but selects BF16 + SDPA and writes to
+`runs/table1_fast_b200` and `results/table1_fast_b200`. It is a separate experiment
+contract: block-verified target outputs are not an independent scalar parity
+check. Metadata explicitly sets `independent_target_reference=false`,
+`scalar_parity_validated=false`, and `all_target_sd_outputs_equal=null`.
+The legacy `exact_sd_target` row flag means that emitted tokens were target
+verified in this mode; consult `reference_source` for the validation contract.
+Bonus tokens can also change proposal block boundaries compared with the old
+decoder. Existing strict checkpoints remain in `runs/table1` and are never
+mixed into the fast run. Keep the microbatch size and numerical settings fixed
+when resuming; benchmark them before starting the full run.
+
+M1 explicitly loads the Rust `tokenizer.json` backend with
+`fix_mistral_regex=true` so that SD and morphology use the same tokenizer with
+offset support. These settings are recorded in fast resume identity; changing
+them cannot silently reuse old checkpoints. No scalar decoding fallback is
+enabled by this tokenizer selection.
+
+Both strict and fast runners show TQDM prompt counts, throughput and ETA.
+Resuming initializes the bar at the number of completed prompts. Reference
+generation and CPU morphology alignment also show their own progress bars.
+
+For bounded Modal tests only: decode benchmarks allow at most 2,048 prompts;
+production-path smoke tests still allow at most 512. Both cap output at 128 tokens.
+
+```bash
+modal run --profile tungkieu6868 scripts/modal_table1_speed.py --stage benchmark --pair Q1 --prompts 512 --baseline-prompts 0 --diagnostic-prompts 0 --max-new-tokens 128 --batch-sizes 128,256 --label q1_b256_trial
+modal run --profile tungkieu6868 scripts/modal_table1_speed.py --stage smoke-all --prompts 256 --batch-sizes 256 --label smoke5_trial
+```
+
+Actual B200 measurements, scalar-parity caveats and the 20,000-prompt estimate
+are documented in `profile_output/modal_b200_b256_smoke5_report.md` (latest)
+and `profile_output/modal_b200_q1_report.md` (earlier B=128 trial). These are
+bounded trials, not a completed full Table 1 run. Smoke checks the five-pair
+pipeline through generation, finite audit statistics, alignment and table
+aggregation; it does not claim scalar parity. Scalar diagnostics and the legacy
+baseline benchmark are disabled unless explicitly requested.
+
+The cache gather supports standard dense Transformers KV tensors. Short-context
+sliding layers are supported while their physical caches still contain the
+full prefix; other cache layouts fail explicitly rather than switch to scalar.
+The implementation follows the block verification / bonus-token structure in
+[Transformers assisted decoding](https://github.com/huggingface/transformers/blob/main/src/transformers/generation/utils.py).
+[vLLM documents](https://docs.vllm.ai/en/latest/features/speculative_decoding/#lossless-guarantees-of-speculative-decoding)
+the floating-point and batch-size differences that can prevent bitwise scalar
+parity even with a mathematically equivalent speculative algorithm.
+
+For a download-free smoke benchmark, run:
+
+```bash
+python3 scripts/benchmark_table1_fast.py --synthetic --prompts 16 --max-new-tokens 32
+```
+
+The local random-tiny-model measurement is saved in
+`profile_output/table1_fast_synthetic_rtx3050ti.json`: old cached/block B=1
+26.8 tokens/s, new B=8 308.0 tokens/s, all 16 outputs scalar-exact. This measures
+Python/synchronization overhead on a 4 GB RTX 3050 Ti, not B200 model throughput.
 
 The target-only reference pass uses same-length microbatches of 64 for all five
 pairs. FP32 + eager is selected uniformly for this throughput-oriented run;

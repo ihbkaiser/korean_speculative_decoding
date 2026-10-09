@@ -1,0 +1,28 @@
+{
+  "pair": "Q1",
+  "prompts": 256,
+  "batch_size": 128,
+  "max_new_tokens": 128,
+  "gpu": "NVIDIA B200",
+  "torch": "2.14.1+cu130",
+  "cuda": "13.0",
+  "transformers": "5.19.0",
+  "dtype": "bfloat16",
+  "attention_backend": "sdpa",
+  "model_paths": {
+    "draft": "/root/cache/models/Qwen--Qwen3-0.6B-Base/da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+    "target": "/root/cache/models/Qwen--Qwen3-1.7B-Base/ea980cb0a6c2ae4b936e82123acc929f1cec04c1"
+  },
+  "sd_including_model_setup_seconds": 29.246219749,
+  "sd_generation_checkpoint_parquet_seconds": 21.903306616,
+  "sd_prompts_per_second": 11.68773302077579,
+  "estimated_20000_sd_seconds": 1711.195829375,
+  "alignment_including_setup_seconds": 8.923117575,
+  "alignment_rows": 31516,
+  "generated_tokens": 31516,
+  "peak_allocated_gib": 12.912718296051025,
+  "progress_bytes": 35742260,
+  "scalar_parity_validated": false,
+  "full_run_started": false,
+  "checkpoint_path": "/root/artifacts/benchmarks/pilot_q1_q1_checkpoint_256/runs/Q1/shards/shard-00000-of-00001"
+}

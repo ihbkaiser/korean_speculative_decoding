@@ -9,13 +9,20 @@ PYTHON_BIN="${PYTHON_BIN:-python3}"
 NUM_SHARDS="${NUM_SHARDS:-1}"
 DEVICE="${DEVICE:-cuda}"
 ALIGN_DEVICE="${ALIGN_DEVICE:-cpu}"
+CONFIG="${TABLE1_CONFIG:-$REPO/configs/table1_pipeline.yaml}"
+LOG_TAG="${TABLE1_LOG_TAG:-table1}"
 PROGRESS_FLUSH_EVERY="${PROGRESS_FLUSH_EVERY:-64}"
 PROGRESS_LOG_EVERY="${PROGRESS_LOG_EVERY:-100}"
 PAIR="${1:-}"
+batch_args=()
+if [[ -n "${SD_BATCH_SIZE:-}" ]]; then
+  batch_args=(--sd-batch-size "$SD_BATCH_SIZE")
+fi
 
 export HF_HUB_OFFLINE="${HF_HUB_OFFLINE:-1}"
 export TRANSFORMERS_OFFLINE="${TRANSFORMERS_OFFLINE:-1}"
 export HF_DATASETS_OFFLINE="${HF_DATASETS_OFFLINE:-1}"
+export PYTHONUNBUFFERED=1
 
 if [[ ! -f "$REPO/data/prompts_40k.parquet" || ! -f "$REPO/metadata/dataset_revision.json" ]]; then
   echo "Missing frozen prompt pool or dataset metadata under $REPO" >&2
@@ -26,7 +33,7 @@ run_pair() {
   local pair="$1"
   mkdir -p "$REPO/logs"
   "$PYTHON_BIN" "$REPO/scripts/table1_pipeline.py" \
-    --config "$REPO/configs/table1_pipeline.yaml" \
+    --config "$CONFIG" \
     --root "$REPO" \
     run-table1-main \
     --pair "$pair" \
@@ -35,14 +42,15 @@ run_pair() {
     --align-device "$ALIGN_DEVICE" \
     --progress-flush-every "$PROGRESS_FLUSH_EVERY" \
     --progress-log-every "$PROGRESS_LOG_EVERY" \
-    2>&1 | tee "$REPO/logs/table1_${pair}.log"
+    "${batch_args[@]}" \
+    2>&1 | tee -a "$REPO/logs/${LOG_TAG}_${pair}.log"
 }
 
 run_pair_sd_deferred_align() {
   local pair="$1"
   mkdir -p "$REPO/logs"
   "$PYTHON_BIN" "$REPO/scripts/table1_pipeline.py" \
-    --config "$REPO/configs/table1_pipeline.yaml" \
+    --config "$CONFIG" \
     --root "$REPO" \
     run-table1-main \
     --pair "$pair" \
@@ -52,20 +60,25 @@ run_pair_sd_deferred_align() {
     --skip-align \
     --progress-flush-every "$PROGRESS_FLUSH_EVERY" \
     --progress-log-every "$PROGRESS_LOG_EVERY" \
-    2>&1 | tee "$REPO/logs/table1_${pair}_sd.log"
+    "${batch_args[@]}" \
+    2>&1 | tee -a "$REPO/logs/${LOG_TAG}_${pair}_sd.log"
 }
 
 run_pair_align() {
   local pair="$1"
+  local shard_index
   mkdir -p "$REPO/logs"
-  "$PYTHON_BIN" "$REPO/scripts/table1_pipeline.py" \
-    --config "$REPO/configs/table1_pipeline.yaml" \
-    --root "$REPO" \
-    align-morphology \
-    --pair "$pair" \
-    --num-shards "$NUM_SHARDS" \
-    --device "$ALIGN_DEVICE" \
-    2>&1 | tee "$REPO/logs/table1_${pair}_align.log"
+  for ((shard_index = 0; shard_index < NUM_SHARDS; shard_index++)); do
+    "$PYTHON_BIN" "$REPO/scripts/table1_pipeline.py" \
+      --config "$CONFIG" \
+      --root "$REPO" \
+      align-morphology \
+      --pair "$pair" \
+      --shard-index "$shard_index" \
+      --num-shards "$NUM_SHARDS" \
+      --device "$ALIGN_DEVICE" \
+      2>&1 | tee -a "$REPO/logs/${LOG_TAG}_${pair}_align.log"
+  done
 }
 
 case "$PAIR" in
@@ -94,9 +107,9 @@ case "$PAIR" in
     fi
 
     "$PYTHON_BIN" "$REPO/scripts/table1_pipeline.py" \
-      --config "$REPO/configs/table1_pipeline.yaml" \
+      --config "$CONFIG" \
       --root "$REPO" build-table1 \
-      2>&1 | tee "$REPO/logs/table1_build.log"
+      2>&1 | tee -a "$REPO/logs/${LOG_TAG}_build.log"
     ;;
   *)
     echo "Usage: $0 {Q1|Q2|Q3|M1|G1|all}" >&2

@@ -1,0 +1,109 @@
+{
+  "pair": "Q1",
+  "prompts": 2048,
+  "max_new_tokens": 128,
+  "gpu": "NVIDIA B200",
+  "torch": "2.14.1+cu130",
+  "cuda": "13.0",
+  "transformers": "5.19.0",
+  "model_paths": {
+    "draft": "/root/cache/models/Qwen--Qwen3-0.6B-Base/da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+    "target": "/root/cache/models/Qwen--Qwen3-1.7B-Base/ea980cb0a6c2ae4b936e82123acc929f1cec04c1"
+  },
+  "prompt_ids_sha256": "3b29d15e44e9e52b8a3dbbad9d194bf96bb2c7d487dc458aba2bd20eeb056152",
+  "dtype": "bfloat16",
+  "attention_backend": "sdpa",
+  "use_remove_padding": false,
+  "gpu_total_memory_gib": 178.3511962890625,
+  "compute_capability": [
+    10,
+    0
+  ],
+  "scalar_fallback": false,
+  "full_run_started": false,
+  "measurements": [
+    {
+      "mode": "microbatched",
+      "batch_size": 256,
+      "prompts": 2048,
+      "seconds": 115.101757876,
+      "block_seconds": [
+        19.140920191000003,
+        12.817054454,
+        13.102308049999998,
+        13.239259206,
+        16.043205940999997,
+        13.591310311,
+        12.797221424,
+        14.366981286999987
+      ],
+      "prompts_per_second": 17.792951539509293,
+      "tokens_per_second": 2221.5646808407046,
+      "generated_tokens": 255706,
+      "proposal_events": 273061,
+      "estimated_20000_seconds": 1124.0406042578124,
+      "scalar_diagnostic_prompts": 0,
+      "scalar_mismatch_indices": [],
+      "actual_batch_sizes": [
+        256,
+        256,
+        256,
+        256,
+        256,
+        256,
+        256,
+        256
+      ],
+      "warmup_seconds": 4.849964008000001,
+      "warmup_peak_allocated_gib": 14.439428329467773,
+      "peak_allocated_gib": 21.468040943145752,
+      "peak_reserved_gib": 29.173828125
+    },
+    {
+      "mode": "microbatched",
+      "batch_size": 2048,
+      "status": "oom",
+      "phase": "measurement",
+      "error": "CUDA out of memory. Tried to allocate 9.27 GiB. GPU 0 has a total capacity of 178.35 GiB of which 6.94 GiB is free. Process 1 has 171.39 GiB memory in use. Of the allocated memory 132.02 GiB is allocated by PyTorch, and 38.60 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)",
+      "peak_allocated_gib": 141.29316759109497,
+      "peak_reserved_gib": 175.90625
+    }
+  ],
+  "best": {
+    "mode": "microbatched",
+    "batch_size": 256,
+    "prompts": 2048,
+    "seconds": 115.101757876,
+    "block_seconds": [
+      19.140920191000003,
+      12.817054454,
+      13.102308049999998,
+      13.239259206,
+      16.043205940999997,
+      13.591310311,
+      12.797221424,
+      14.366981286999987
+    ],
+    "prompts_per_second": 17.792951539509293,
+    "tokens_per_second": 2221.5646808407046,
+    "generated_tokens": 255706,
+    "proposal_events": 273061,
+    "estimated_20000_seconds": 1124.0406042578124,
+    "scalar_diagnostic_prompts": 0,
+    "scalar_mismatch_indices": [],
+    "actual_batch_sizes": [
+      256,
+      256,
+      256,
+      256,
+      256,
+      256,
+      256,
+      256
+    ],
+    "warmup_seconds": 4.849964008000001,
+    "warmup_peak_allocated_gib": 14.439428329467773,
+    "peak_allocated_gib": 21.468040943145752,
+    "peak_reserved_gib": 29.173828125
+  }
+}

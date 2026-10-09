@@ -9,6 +9,20 @@
 
 ---
 
+> **Selected B200 execution mode (2026-10-10).** The user selected the separate
+> BF16/SDPA microbatched workflow, batch 256, K=4, with target-block verification
+> and **no independent scalar reference generation or scalar fallback**.
+> Run `bash run_table1.sh all` on the company B200; see
+> [the full-run and artifact runbook](docs/TABLE1_B200_RUNBOOK.md).
+> Frozen splits remain Q2=40k, Q1/Q3/M1/G1=20k common each. All proposal,
+> continuation, morphology, exclusion and support artifacts below remain required.
+> The scalar-parity requirements and fallback description in the original sections
+> below describe the **historical strict protocol**, not a validation claim for
+> this selected mode. Fast metadata must retain `scalar_parity_validated=false`
+> and `independent_target_reference=false`; do not present its completion markers
+> as evidence of independent target-only/scalar equality. Five-pair B256 bounded
+> smoke passed; full-data results are not yet established.
+
 > **Current execution decision (2026-10-08).** The 5kâ€“10k Q2 pilot is
 > intentionally skipped. The final Table 1 path runs each of the five frozen
 > pairs directly on its complete prompt split. This is a declared scope

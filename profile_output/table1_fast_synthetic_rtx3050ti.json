@@ -1,0 +1,78 @@
+{
+  "pair": "Q1",
+  "synthetic": true,
+  "gpu": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+  "torch": "2.3.1+cu121",
+  "config": "D:\\korean_speculative_decoding\\configs\\table1_fast_b200.yaml",
+  "max_new_tokens": 32,
+  "numeric_path": "random_tiny_fp32",
+  "measurements": [
+    {
+      "mode": "cached_block_single_prompt",
+      "batch_size": 1,
+      "status": "complete",
+      "prompts": 16,
+      "seconds": 19.136336899995513,
+      "prompts_per_second": 0.8361056812290837,
+      "tokens_per_second": 26.755381799330678,
+      "scalar_exact_prompts": 16,
+      "scalar_mismatches": [],
+      "proposal_events": 1952,
+      "peak_allocated_gib": 0.020200252532958984
+    },
+    {
+      "mode": "microbatched",
+      "batch_size": 1,
+      "status": "complete",
+      "prompts": 16,
+      "seconds": 12.805404599996109,
+      "prompts_per_second": 1.2494724297899078,
+      "tokens_per_second": 39.98311775327705,
+      "scalar_exact_prompts": 16,
+      "scalar_mismatches": [],
+      "proposal_events": 1952,
+      "peak_allocated_gib": 0.018827438354492188
+    },
+    {
+      "mode": "microbatched",
+      "batch_size": 4,
+      "status": "complete",
+      "prompts": 16,
+      "seconds": 3.342696200001228,
+      "prompts_per_second": 4.7865552364567625,
+      "tokens_per_second": 153.1697675666164,
+      "scalar_exact_prompts": 16,
+      "scalar_mismatches": [],
+      "proposal_events": 1952,
+      "peak_allocated_gib": 0.02142620086669922
+    },
+    {
+      "mode": "microbatched",
+      "batch_size": 8,
+      "status": "complete",
+      "prompts": 16,
+      "seconds": 1.662094800005434,
+      "prompts_per_second": 9.626406387859278,
+      "tokens_per_second": 308.0450044114969,
+      "scalar_exact_prompts": 16,
+      "scalar_mismatches": [],
+      "proposal_events": 1952,
+      "peak_allocated_gib": 0.024890899658203125
+    },
+    {
+      "mode": "microbatched",
+      "batch_size": 16,
+      "status": "complete",
+      "prompts": 16,
+      "seconds": 0.9252999999953317,
+      "prompts_per_second": 17.291689181974196,
+      "tokens_per_second": 553.3340538231743,
+      "scalar_exact_prompts": 16,
+      "scalar_mismatches": [],
+      "proposal_events": 1952,
+      "peak_allocated_gib": 0.03182172775268555
+    }
+  ],
+  "recommended_batch_size": 16,
+  "note": "Scalar differences are reported, never silently repaired. Timing includes audit collection but excludes model loading and checkpoint serialization."
+}

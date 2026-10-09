@@ -8,3 +8,15 @@ __pycache__/
 hf_token
 .hf_token
 metadata/model_revisions.json
+
+# Full Table 1 artifacts stay on the experiment disk; never auto-push large runs.
+/runs/table1/
+/runs/table1_fast_b200/
+/results/table1_fast_b200/
+/logs/
+/models/
+/metadata/environment.json
+/metadata/table1_main_*.json
+# Private account billing and redundant local transfer bundles are not evidence.
+/profile_output/modal_billing*.json
+/profile_output/*.zip

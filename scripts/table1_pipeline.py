@@ -47,9 +47,25 @@ from src.table1_runner import (
 )
 
 
-def load_config(path: str | Path) -> dict[str, Any]:
-    with Path(path).open(encoding="utf-8") as handle:
-        return yaml.safe_load(handle)
+def load_config(path: str | Path, _seen: frozenset[Path] = frozenset()) -> dict[str, Any]:
+    path = Path(path).resolve()
+    if path in _seen:
+        raise ValueError(f"Cyclic base_config: {path}")
+    with path.open(encoding="utf-8") as handle:
+        config = yaml.safe_load(handle)
+    base = config.pop("base_config", None)
+    if not base:
+        return config
+
+    def merge(left, right):
+        result = dict(left)
+        for key, value in right.items():
+            result[key] = (merge(result[key], value)
+                           if isinstance(value, dict) and isinstance(result.get(key), dict)
+                           else value)
+        return result
+
+    return merge(load_config(path.parent / base, _seen | {path}), config)
 
 
 def _token() -> str | None:
@@ -77,6 +93,8 @@ def _write_parquet(path: Path, rows: list[dict[str, Any]]) -> None:
 
 def _write_environment_manifest(root: str | Path) -> Path:
     """Persist runtime versions and hardware identity beside Table 1 artifacts."""
+    import torch
+
     root_path = Path(root).resolve()
     package_names = (
         "torch", "transformers", "datasets", "accelerate", "huggingface-hub",
@@ -117,6 +135,12 @@ def _write_environment_manifest(root: str | Path) -> Path:
         "git_commit": git_commit,
         "packages": packages,
         "gpu_query": gpu_query,
+        "torch_cuda_runtime": torch.version.cuda,
+        # Never dump the entire environment: it may contain HF/Modal credentials.
+        "runtime_options": {key: os.environ.get(key) for key in (
+            "CUDA_VISIBLE_DEVICES", "PYTORCH_ALLOC_CONF", "PYTORCH_CUDA_ALLOC_CONF",
+            "TOKENIZERS_PARALLELISM", "PYTHONUNBUFFERED",
+        )},
     })
     return path
 
@@ -426,6 +450,8 @@ def command_run_sd(args: argparse.Namespace) -> int:
         target_model_path=args.target_model_path,
         model_meta=model_meta,
     )
+    if getattr(args, "sd_batch_size", None) is not None:
+        pair_spec["sd_batch_size"] = args.sd_batch_size
     compatibility = model_meta.get("compatibility", {})
     smoke = model_meta.get("smoke", {})
     smoke_mode = smoke.get("smoke_mode")
@@ -500,6 +526,7 @@ def command_run_table1(args: argparse.Namespace) -> int:
             target_model_path=args.target_model_path,
             progress_flush_every=args.progress_flush_every,
             progress_log_every=args.progress_log_every,
+            sd_batch_size=getattr(args, "sd_batch_size", None),
         )
         command_run_sd(run_args)
         align_args = argparse.Namespace(
@@ -524,9 +551,10 @@ def command_run_table1(args: argparse.Namespace) -> int:
 def command_run_table1_main(args: argparse.Namespace) -> int:
     """Run production inference/alignment without audit or smoke gates.
 
-    This intentionally bypasses the compatibility audit and the 200-prompt
-    smoke run.  The SD worker still enforces prompt-split integrity and exact
-    target-token parity for every production prompt before writing COMPLETE.
+    This intentionally bypasses the full audit and the 200-prompt smoke run.
+    The worker checks tokenizer compatibility and prompt-split integrity.
+    Strict mode checks independent target parity; microbatched mode records
+    target-block verification without claiming independent scalar parity.
     """
     if int(args.num_shards) < 1:
         raise ValueError("--num-shards must be at least 1")
@@ -554,12 +582,14 @@ def command_run_table1_main(args: argparse.Namespace) -> int:
         draft_model_path=draft_model_path,
         target_model_path=target_model_path,
     )
+    if getattr(args, "sd_batch_size", None) is not None:
+        pair_spec["sd_batch_size"] = args.sd_batch_size
     model_meta = {
         "draft": _model_info_for_reference(draft_model_path, token=_token()),
         "target": _model_info_for_reference(target_model_path, token=_token()),
     }
-    _write_environment_manifest(root)
-    _write_json(root / "metadata" / f"table1_main_{args.pair}.json", {
+    environment_path = _write_environment_manifest(root)
+    launch_manifest = {
         "pair_id": args.pair,
         "mode": "production_without_audit_or_smoke",
         "draft": model_meta["draft"],
@@ -567,7 +597,16 @@ def command_run_table1_main(args: argparse.Namespace) -> int:
         "num_shards": int(args.num_shards),
         "config": str(Path(args.config).resolve()),
         "alignment_deferred": bool(args.skip_align),
-    })
+        "resolved_config": cfg,
+        "effective_pair_spec": pair_spec,
+        "device": args.device,
+        "align_device": args.align_device,
+        "environment": json.loads(environment_path.read_text(encoding="utf-8")),
+    }
+    _write_json(root / "metadata" / f"table1_main_{args.pair}.json", launch_manifest)
+    launch_stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+    _write_json(_abs(root, cfg["paths"]["runs"]) / args.pair / "launches" / f"{launch_stamp}.json",
+                launch_manifest)
 
     stage_results: list[dict[str, Any]] = []
     for shard_index in range(args.num_shards):
@@ -629,7 +668,8 @@ def command_align(args: argparse.Namespace) -> int:
         shard_index=args.shard_index,
         num_shards=args.num_shards,
         device=args.device,
-        target_model_path=getattr(args, "target_model_path", None),
+        target_model_path=(getattr(args, "target_model_path", None)
+                           or cfg.get("model_paths", {}).get(args.pair, {}).get("target")),
         token=_token(),
     )
     print(json.dumps(result, ensure_ascii=False, indent=2))
@@ -671,6 +711,7 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--device", default="cuda")
     run.add_argument("--progress-flush-every", type=int, default=64)
     run.add_argument("--progress-log-every", type=int, default=100)
+    run.add_argument("--sd-batch-size", type=int, help="Override prompt microbatch size for decoder=microbatched")
     _add_model_override_args(run)
     run.set_defaults(func=command_run_sd)
 
@@ -684,6 +725,7 @@ def build_parser() -> argparse.ArgumentParser:
     run_table1.add_argument("--align-device", default="cpu")
     run_table1.add_argument("--progress-flush-every", type=int, default=64)
     run_table1.add_argument("--progress-log-every", type=int, default=100)
+    run_table1.add_argument("--sd-batch-size", type=int)
     _add_model_override_args(run_table1)
     run_table1.set_defaults(func=command_run_table1)
 
@@ -701,6 +743,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     run_table1_main.add_argument("--progress-flush-every", type=int, default=64)
     run_table1_main.add_argument("--progress-log-every", type=int, default=100)
+    run_table1_main.add_argument("--sd-batch-size", type=int)
     _add_model_override_args(run_table1_main)
     run_table1_main.set_defaults(func=command_run_table1_main)
 
