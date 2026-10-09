@@ -31,7 +31,7 @@ def company_launcher(tmp_path):
     (scripts / "table1_pipeline.py").write_text('''
 import json, os, sys
 args = sys.argv[1:]
-with open(os.environ["CALL_LOG"], "a") as handle:
+with open(os.environ["CALL_LOG"] + "." + str(os.getpid()), "w") as handle:
     handle.write(json.dumps({"args": args, "unbuffered": os.environ.get("PYTHONUNBUFFERED")}) + "\\n")
 print("stub stdout " + " ".join(args), flush=True)
 print("stub stderr", file=sys.stderr, flush=True)
@@ -46,8 +46,9 @@ if "--skip-align" in args and os.environ.get("FAIL_PAIR") in args:
         result = subprocess.run([bash, str(tmp_path / "run_table1.sh"), pair, *extra_args],
                                 env={**env, **overrides}, text=True,
                                 capture_output=True, timeout=60)
-        call_log = tmp_path / "calls.jsonl"
-        calls = [json.loads(line) for line in call_log.read_text().splitlines()] if call_log.exists() else []
+        # Each concurrent stand-in owns a separate file: Windows append writes
+        # from CPU/GPU child processes are not guaranteed to be atomic.
+        calls = [json.loads(path.read_text()) for path in tmp_path.glob("calls.jsonl.*")]
         return result, calls
 
     return invoke, tmp_path
@@ -105,3 +106,14 @@ def test_invalid_launcher_options_fail_before_running(company_launcher, extra_ar
     result, calls = invoke("Q1", extra_args=extra_args)
     assert result.returncode != 0
     assert not calls
+
+
+def test_default_launcher_cannot_be_redirected_to_strict_config(company_launcher):
+    invoke, root = company_launcher
+    result, calls = invoke(TABLE1_CONFIG=str(root / "configs/table1_pipeline.yaml"))
+    assert result.returncode == 0, result.stderr
+    for row in calls:
+        args = row["args"]
+        assert Path(args[args.index("--config") + 1]) == root / "configs/table1_fast_b200.yaml"
+        if "run-table1-main" in args:
+            assert "--require-microbatched" in args

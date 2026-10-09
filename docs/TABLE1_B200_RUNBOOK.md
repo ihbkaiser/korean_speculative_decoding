@@ -6,6 +6,14 @@ automatic batch reduction or OOM fallback. B256 passed all five bounded B200
 pair smokes. B2048 only passed Q1 with a special allocator, for a small measured
 throughput gain, and is not the full-run default.
 
+`run_table1.sh` and the fast launcher pin `configs/table1_fast_b200.yaml`:
+an inherited `TABLE1_CONFIG` cannot switch these entrypoints to strict mode.
+Before loading models, `--require-microbatched` checks every pair's decoder and
+verification policy. Startup must print `FAST_ONLY ... scalar_fallback=disabled`,
+then `Q1 SD (B=256)` (or your explicit batch override), never `Target references`.
+The Table 1 runner's scalar repair/decoder retry branches have been removed;
+an explicitly launched historical strict job now fails on a parity mismatch.
+
 ## Start all five pairs
 
 Use the existing company Python environment with B200-compatible PyTorch,

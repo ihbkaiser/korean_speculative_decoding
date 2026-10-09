@@ -37,6 +37,10 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 batch_args=()
+decoder_args=()
+if [[ "${TABLE1_REQUIRE_MICROBATCHED:-0}" == 1 ]]; then
+  decoder_args=(--require-microbatched)
+fi
 if [[ -n "${SD_BATCH_SIZE:-}" ]]; then
   batch_args=(--sd-batch-size "$SD_BATCH_SIZE")
 fi
@@ -58,6 +62,7 @@ run_pair() {
     --config "$CONFIG" \
     --root "$REPO" \
     run-table1-main \
+    "${decoder_args[@]}" \
     "${output_args[@]}" \
     --pair "$pair" \
     --num-shards "$NUM_SHARDS" \
@@ -76,6 +81,7 @@ run_pair_sd_deferred_align() {
     --config "$CONFIG" \
     --root "$REPO" \
     run-table1-main \
+    "${decoder_args[@]}" \
     "${output_args[@]}" \
     --pair "$pair" \
     --num-shards "$NUM_SHARDS" \

@@ -52,10 +52,10 @@ inference:
   dtype: float16
   attention_backend: sdpa
   decoder: cached
-  # Cached SD verifies k proposals in one target block on B200.  If a
-  # near-tie disagrees with the batch-64 reference, Table 1 retries only that
-  # prompt on the strict singleton target path.
-  target_verification: batched_fallback
+  # Historical strict decoder: a reference mismatch now fails immediately,
+  # never regenerates scalar references or retries the decoder.
+  # run_table1.sh pins table1_fast_b200.yaml instead of this strict config.
+  target_verification: batched
   smoke_prompts: 200
   compatibility_probe_prompts: 1000
   shard_size: 200

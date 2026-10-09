@@ -570,6 +570,17 @@ def command_run_table1_main(args: argparse.Namespace) -> int:
         raise ValueError("--num-shards must be at least 1")
     root = Path(args.root).resolve()
     cfg = _production_config(args)
+    if getattr(args, "require_microbatched", False):
+        # Check every pair before the first model load, not after Q1 finishes.
+        for pair_id, settings in cfg["pairs"].items():
+            decoder = settings.get("decoder", cfg["inference"].get("decoder", "cached"))
+            verification = settings.get("target_verification", cfg["inference"].get("target_verification"))
+            if decoder != "microbatched" or verification != "batched_native":
+                raise ValueError(
+                    f"{pair_id}: fast launcher requires decoder=microbatched and "
+                    "target_verification=batched_native; scalar fallback is disabled"
+                )
+        print(f"FAST_ONLY config={Path(args.config).resolve()} scalar_fallback=disabled", flush=True)
     configured_paths = cfg.get("model_paths", {}).get(args.pair, {})
     draft_model_path = args.draft_model_path or configured_paths.get("draft")
     target_model_path = args.target_model_path or configured_paths.get("target")
@@ -607,6 +618,7 @@ def command_run_table1_main(args: argparse.Namespace) -> int:
         "num_shards": int(args.num_shards),
         "config": str(Path(args.config).resolve()),
         "alignment_deferred": bool(args.skip_align),
+        "require_microbatched": bool(getattr(args, "require_microbatched", False)),
         "resolved_config": cfg,
         "effective_pair_spec": pair_spec,
         "device": args.device,
@@ -755,6 +767,10 @@ def build_parser() -> argparse.ArgumentParser:
     run_table1_main.add_argument("--progress-flush-every", type=int, default=64)
     run_table1_main.add_argument("--progress-log-every", type=int, default=100)
     run_table1_main.add_argument("--sd-batch-size", type=int)
+    run_table1_main.add_argument(
+        "--require-microbatched", action="store_true",
+        help="Fail before loading models unless every pair uses the no-fallback microbatched decoder",
+    )
     _add_model_override_args(run_table1_main)
     run_table1_main.set_defaults(func=command_run_table1_main)
 

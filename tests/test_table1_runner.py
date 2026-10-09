@@ -17,7 +17,6 @@ from src.table1_runner import (
     load_pair_records,
     prompt_ids_sha256,
     ProgressWriter,
-    _repair_reference_mismatch,
     resolve_model_reference,
     select_speculative_decoder,
     smoke_gate_mode,
@@ -366,31 +365,6 @@ def test_event_artifact_contains_margin_and_top1_fields():
     assert row["draft_top1_logprob"] == -1.0
     assert row["target_margin"] == pytest.approx(1.5)
     assert row["pool_index"] == 4
-
-
-def test_batch_reference_mismatch_uses_scalar_target_fallback():
-    from tests.test_pipeline import CharTokenizer, ScriptedModel
-
-    tokenizer = CharTokenizer()
-    tokenizer.eos_token_id = 4
-    record = {"doc_id": "p1"}
-    reference = {
-        "prompt_token_ids": [6, 6],
-        "target_continuation_token_ids": [1, 0, 0, 0],
-        "speculative_token_ids": [1, 2, 3, 4],
-    }
-    repaired = _repair_reference_mismatch(
-        record,
-        reference,
-        target_model=ScriptedModel([1, 2, 3, 4]),
-        tokenizer=tokenizer,
-        config={"max_new_tokens": 8},
-    )
-
-    assert repaired["target_continuation_token_ids"] == [1, 2, 3, 4]
-    assert repaired["exact_sd_target"] is True
-    assert repaired["reference_source"] == "scalar_target_fallback_after_batch_mismatch"
-    assert repaired["batch_reference_first_difference"] == 1
 
 
 def test_run_identity_covers_prompt_and_decoding_provenance():

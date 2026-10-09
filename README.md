@@ -307,6 +307,9 @@ Direct B200 launch, custom output/resume instructions and the complete NAACL art
 map are in [the Table 1 runbook](docs/TABLE1_B200_RUNBOOK.md). Production launches
 retain resolved-config/runtime history and per-shard tokenizer fingerprints,
 including when the separate audit/smoke commands are bypassed.
+The default/fast launchers pin the fast config even if `TABLE1_CONFIG` was
+exported by an earlier run. They reject non-microbatched pair settings before
+model loading; scalar mismatch repair/retry is removed from the Table 1 runner.
 
 The fast path drafts B prompts together, verifies B x (K+1) positions with one
 target forward per round, accepts the matching prefix plus a target correction

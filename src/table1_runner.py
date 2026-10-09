@@ -436,6 +436,8 @@ def _prompt_run(
                 pair_spec, config, "target_verification", "sequential"
             ).lower()
             batch_target_verification = verification_mode in {
+                # Legacy name accepted only as an alias for block verification;
+                # scalar retry/repair no longer exists in the Table 1 runner.
                 "batched", "batched_fallback", "block",
             }
         decoder_kwargs["batch_target_verification"] = bool(batch_target_verification)
@@ -490,53 +492,6 @@ def _prompt_run(
         for event in raw_events
     ]
     return reference_row, event_rows
-
-
-def _repair_reference_mismatch(
-    record: dict[str, Any],
-    reference: dict[str, Any],
-    *,
-    target_model: Any,
-    tokenizer: Any,
-    config: dict[str, Any],
-) -> dict[str, Any]:
-    """Replace a rare batch-reference disagreement with a scalar target ref.
-
-    B200 batch kernels are normally parity-stable, but a near-tied argmax can
-    differ between a batch-64 prefill and the singleton cached path used by
-    the strict verifier.  Regenerating only this prompt keeps the common case
-    fast without weakening the exact token-ID gate.
-    """
-    prompt_ids = [int(token_id) for token_id in reference["prompt_token_ids"]]
-    eos_token_id = getattr(tokenizer, "eos_token_id", None)
-    scalar_ids = greedy_generate(
-        target_model,
-        prompt_ids,
-        int(config["max_new_tokens"]),
-        eos_token_id,
-    )
-    speculative_ids = [int(token_id) for token_id in reference["speculative_token_ids"]]
-    verify_greedy_equivalence(scalar_ids, speculative_ids, record["doc_id"])
-    batch_ids = [int(token_id) for token_id in reference["target_continuation_token_ids"]]
-    reference["batch_reference_token_ids"] = batch_ids
-    reference["batch_reference_first_difference"] = next(
-        (
-            index
-            for index, (left, right) in enumerate(zip(batch_ids, scalar_ids))
-            if left != right
-        ),
-        min(len(batch_ids), len(scalar_ids))
-        if len(batch_ids) != len(scalar_ids)
-        else None,
-    )
-    reference["target_continuation_token_ids"] = scalar_ids
-    reference["target_continuation_text"] = tokenizer.decode(
-        scalar_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False
-    )
-    reference["exact_sd_target"] = True
-    reference["reference_source"] = "scalar_target_fallback_after_batch_mismatch"
-    reference["scalar_parity_validated"] = True
-    return reference
 
 
 def run_smoke_test(
@@ -601,12 +556,8 @@ def run_smoke_test(
             batch_target_verification=False,
         )
         if not reference["exact_sd_target"]:
-            reference = _repair_reference_mismatch(
-                record,
-                reference,
-                target_model=target_model,
-                tokenizer=target_tokenizer,
-                config=config,
+            raise RuntimeError(
+                f"Smoke SD/target mismatch for {record['doc_id']}: scalar fallback is disabled"
             )
         checked.append(str(record["doc_id"]))
         reference_rows.append(reference)
@@ -878,60 +829,10 @@ def run_sd_shard(
                 strict_reference_check=False,
             )
             if not reference["exact_sd_target"]:
-                verification_mode = _pair_inference_setting(
-                    pair_spec, config, "target_verification", "sequential"
-                ).lower()
-                if verification_mode in {"batched", "batched_fallback", "block"}:
-                    # Any batch-reference disagreement is a local slow-path:
-                    # regenerate the scalar target IDs and rerun the decoder
-                    # with singleton target verification so event rows are
-                    # strict as well as the final continuation.
-                    scalar_ids = greedy_generate(
-                        target_model,
-                        [int(token_id) for token_id in reference["prompt_token_ids"]],
-                        int(config["max_new_tokens"]),
-                        getattr(target_tokenizer, "eos_token_id", None),
-                    )
-                    batch_ids = list(reference["target_continuation_token_ids"])
-                    reference, events = _prompt_run(
-                        record,
-                        pair_id=pair_id,
-                        pair_spec=pair_spec,
-                        draft_model=draft_model,
-                        target_model=target_model,
-                        tokenizer=target_tokenizer,
-                        config=config,
-                        reference_ids=scalar_ids,
-                        strict_reference_check=True,
-                        batch_target_verification=False,
-                    )
-                    reference["batch_reference_token_ids"] = batch_ids
-                    reference["batch_reference_first_difference"] = next(
-                        (
-                            offset
-                            for offset, (left, right) in enumerate(zip(batch_ids, scalar_ids))
-                            if left != right
-                        ),
-                        min(len(batch_ids), len(scalar_ids))
-                        if len(batch_ids) != len(scalar_ids)
-                        else None,
-                    )
-                    reference["reference_source"] = (
-                        "scalar_decoder_fallback_after_batched_reference_mismatch"
-                    )
-                    reference["scalar_parity_validated"] = True
-                else:
-                    reference = _repair_reference_mismatch(
-                        record,
-                        reference,
-                        target_model=target_model,
-                        tokenizer=target_tokenizer,
-                        config=config,
-                    )
-                bar.write(
-                    f"[{pair_id} shard {shard_index}/{num_shards}] "
-                    f"scalar parity fallback doc_id={doc_id} "
-                    f"batch_first_difference={reference.get('batch_reference_first_difference')}",
+                raise RuntimeError(
+                    f"SD/target mismatch for {doc_id}: scalar fallback is disabled; "
+                    "the failed prompt was not checkpointed. Use the fast launcher "
+                    "with a separate output directory for block-verified inference."
                 )
             item = {"reference": reference, "events": events}
             progress_writer.write(item)

@@ -307,8 +307,8 @@ def speculative_greedy_cached(
     target forward and rolls the target cache back after a rejection.  It is
     substantially faster on GPUs.  Because batched and singleton kernels can
     disagree on a numerically near-tied argmax, callers that require strict
-    singleton parity must compare the returned IDs and retry with this option
-    disabled when needed.
+    singleton parity must compare the returned IDs and report a mismatch.
+    The Table 1 runner does not retry with a different verification mode.
     """
     if not prompt_ids:
         raise ValueError("prompt_ids must not be empty")

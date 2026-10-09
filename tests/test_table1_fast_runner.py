@@ -64,6 +64,70 @@ def test_fast_shard_writes_target_verified_artifacts_without_scalar_calls(fast_r
     assert target.calls == calls
 
 
+@pytest.mark.parametrize("verification", ["batched", "sequential"])
+def test_strict_mismatch_fails_without_scalar_repair_or_decoder_retry(fast_run, monkeypatch, verification):
+    kwargs, records, _ = fast_run
+    kwargs["config"] = {**kwargs["config"], "decoder": "cached", "target_verification": verification}
+    monkeypatch.setattr(runner, "generate_reference_ids", lambda *args, **options: {
+        row["doc_id"]: [99] for row in records
+    })
+    prompt_runs = []
+    original = runner._prompt_run
+
+    def track(*args, **options):
+        prompt_runs.append(args[0]["doc_id"])
+        return original(*args, **options)
+
+    monkeypatch.setattr(runner, "_prompt_run", track)
+    with pytest.raises(RuntimeError, match="scalar fallback is disabled"):
+        runner.run_sd_shard(**kwargs)
+    assert prompt_runs == ["p0"]
+    shard = kwargs["root"] / "runs/fast/Q1/shards/shard-00000-of-00001"
+    assert not (shard / "COMPLETE").exists()
+    assert not (shard / "progress.jsonl").read_text().strip()
+
+
+@pytest.mark.parametrize("broken_pair", ["Q1", "Q2", "Q3", "M1", "G1"])
+def test_fast_launch_checks_all_pair_decoders_before_loading_models(monkeypatch, tmp_path, broken_pair):
+    from scripts import table1_pipeline
+
+    config = load_config(Path(__file__).resolve().parents[1] / "configs/table1_fast_b200.yaml")
+    config["pairs"][broken_pair]["decoder"] = "cached"
+    monkeypatch.setattr(table1_pipeline, "load_config", lambda _: config)
+    monkeypatch.setattr(table1_pipeline, "command_prepare_data", lambda *_: pytest.fail("preflight ran too late"))
+    monkeypatch.setattr(table1_pipeline, "run_sd_shard", lambda **_: pytest.fail("models must not load"))
+    args = table1_pipeline.build_parser().parse_args([
+        "--root", str(tmp_path), "run-table1-main", "--pair", "Q1", "--require-microbatched",
+    ])
+    with pytest.raises(ValueError, match=f"{broken_pair}.*microbatched"):
+        args.func(args)
+
+
+def test_fast_decoder_error_propagates_without_retry(fast_run, monkeypatch):
+    kwargs, _, _ = fast_run
+    batches = []
+
+    def oom(*args, **options):
+        batches.append(options["prompt_ids"])
+        raise RuntimeError("simulated CUDA OOM")
+
+    monkeypatch.setattr(runner, "speculative_greedy_microbatch", oom)
+    with pytest.raises(RuntimeError, match="simulated CUDA OOM"):
+        runner.run_sd_shard(**kwargs)
+    assert batches == [["p0", "p1"]]
+
+
+def test_smoke_mismatch_fails_without_scalar_repair(fast_run, monkeypatch):
+    kwargs, records, _ = fast_run
+    config = {**kwargs["config"], "decoder": "cached", "target_verification": "sequential"}
+    monkeypatch.setattr(runner, "generate_reference_ids", lambda *args, **options: {
+        row["doc_id"]: [99] for row in records
+    })
+    with pytest.raises(RuntimeError, match="scalar fallback is disabled"):
+        runner.run_smoke_test("Q1", kwargs["pair_spec"], kwargs["model_meta"], records,
+                              device="cpu", config=config)
+
+
 def test_fast_shard_resumes_completed_microbatch_after_interruption(fast_run, monkeypatch):
     kwargs, records, target = fast_run
     original = runner.speculative_greedy_microbatch
@@ -218,7 +282,7 @@ def test_cli_microbatch_override_is_recorded_in_identity(fast_run, monkeypatch):
     monkeypatch.setattr(table1_pipeline, "run_sd_shard", lambda **options: captured.append(options) or {})
     args = table1_pipeline.build_parser().parse_args([
         "--root", str(kwargs["root"]), "run-table1-main", "--pair", "Q1",
-        "--skip-align", "--sd-batch-size", "16",
+        "--skip-align", "--sd-batch-size", "16", "--require-microbatched",
     ])
     table1_pipeline.command_run_table1_main(args)
     identity = runner.build_run_identity(
