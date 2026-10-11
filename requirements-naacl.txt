@@ -1,0 +1,4 @@
+-r requirements.txt
+# Version used by the repository's B200 smoke and pinned for this experiment.
+transformers==5.19.0
+mistral-common==1.12.0
