@@ -20,3 +20,4 @@ metadata/model_revisions.json
 # Private account billing and redundant local transfer bundles are not evidence.
 /profile_output/modal_billing*.json
 /profile_output/*.zip
+github_token

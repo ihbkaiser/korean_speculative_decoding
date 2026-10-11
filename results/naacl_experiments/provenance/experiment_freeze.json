@@ -1,0 +1,20 @@
+{
+  "status": "FROZEN_BEFORE_RESULTS",
+  "created_utc": "2026-10-11T12:58:18.415972+00:00",
+  "git_commit": "7a3d1c599c21aed47728aa7830a06575b38a371b",
+  "files_sha256": {
+    "NAACL_experiments.md": "044132ea6cc8ff7aa7209a93888d167778efb0d4cc85980694bb41e63b8bd59f",
+    "configs/naacl_experiments.yaml": "088c0a269ef79d016f87710fb9179ac536f7d69313e87e2599a502fdb28f7c92",
+    "data/prompts_40k.parquet": "d0d316155380aac0d6aa3ade8bddd93f96579a7c88c750167c9d012162fa72eb"
+  },
+  "environment": {
+    "python": "3.12.14",
+    "torch": "2.11.0+cu128",
+    "transformers": "5.19.0",
+    "cuda_available": true,
+    "gpu": "NVIDIA RTX A6000",
+    "cuda_runtime": "12.8"
+  },
+  "execution_code_commit": "2eed8dbf33abb4a60b47ec6e2ff8969a43effee4",
+  "post_freeze_code_change": "Added tabulate dependency for Markdown reports and conditioned live-vs-simulation labels on the shared committed prefix; no model, prompt, generation, or TF logic changed."
+}

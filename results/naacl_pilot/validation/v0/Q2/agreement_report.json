@@ -1,0 +1,41 @@
+{
+  "pair": "Q2",
+  "draft": "qwen06",
+  "target": "qwen4",
+  "sample_prompts": 100,
+  "batch_size": 64,
+  "block_size": 4,
+  "target_sequence_exact_prompts": 43,
+  "target_sequence_exact_fraction": 0.43,
+  "target_sequence_common_prefix_fraction": 0.5775095298602287,
+  "target_tokens_in_generation_reference": 12591,
+  "live_vs_simulation_eligible_label_agreement_all_positions": {
+    "compared": 10130,
+    "rejection_label_agreement": 0.8842053307008885,
+    "draft_id_agreement": 0.6301085883514314,
+    "target_id_agreement": 0.6400789733464955
+  },
+  "live_vs_simulation_cross_label_agreement_all_positions": {
+    "compared": 402,
+    "rejection_label_agreement": 0.8159203980099502,
+    "draft_id_agreement": 0.599502487562189,
+    "target_id_agreement": 0.6218905472636815
+  },
+  "live_vs_simulation_eligible_label_agreement_shared_context": {
+    "compared": 6143,
+    "rejection_label_agreement": 0.9811167182158554,
+    "draft_id_agreement": 0.9754191762982256,
+    "target_id_agreement": 0.9920234413153183
+  },
+  "live_vs_simulation_cross_label_agreement_shared_context": {
+    "compared": 247,
+    "rejection_label_agreement": 0.9635627530364372,
+    "draft_id_agreement": 0.9595141700404858,
+    "target_id_agreement": 0.9878542510121457
+  },
+  "live_vs_simulation_joined_proposal_positions_all": 10130,
+  "live_vs_simulation_joined_proposal_positions_shared_context": 6143,
+  "g0_gate_status": "FAIL",
+  "wall_seconds": 27.144044329994358,
+  "status": "COMPLETE"
+}
