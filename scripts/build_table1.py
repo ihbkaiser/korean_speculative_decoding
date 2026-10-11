@@ -208,16 +208,26 @@ def main() -> int:
             validity[pair_id] = {"status": "PENDING", "path": str(report_path)}
             continue
         report = json.loads(report_path.read_text(encoding="utf-8"))
-        agreement = report.get("live_vs_simulation_eligible_label_agreement", {})
+        agreement = report.get(
+            "live_vs_simulation_eligible_label_agreement_shared_context",
+            report.get("live_vs_simulation_eligible_label_agreement", {}),
+        )
         validity[pair_id] = {
             "status": report.get("status", "UNKNOWN"),
+            "g0_gate_status": report.get("g0_gate_status"),
             "sample_prompts": report.get("sample_prompts"),
             "eligible_label_agreement": agreement.get("rejection_label_agreement"),
-            "cross_label_agreement": report.get("live_vs_simulation_cross_label_agreement", {}).get("rejection_label_agreement"),
+            "cross_label_agreement": report.get(
+                "live_vs_simulation_cross_label_agreement_shared_context",
+                report.get("live_vs_simulation_cross_label_agreement", {}),
+            ).get("rejection_label_agreement"),
             "path": str(report_path),
         }
     pair_artifacts_complete = all(row["Status"] == "COMPLETE" for row in rows)
-    validity_complete = all(item["status"] == "COMPLETE" for item in validity.values())
+    validity_complete = all(
+        item["status"] == "COMPLETE" and item.get("g0_gate_status") == "PASS"
+        for item in validity.values()
+    )
     atomic_json(results / "table1_build_metadata.json", {
         "status": "COMPLETE" if pair_artifacts_complete and validity_complete else "INCOMPLETE",
         "pair_artifacts_status": "COMPLETE" if pair_artifacts_complete else "INCOMPLETE",

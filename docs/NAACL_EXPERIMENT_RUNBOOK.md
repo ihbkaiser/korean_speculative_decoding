@@ -168,7 +168,11 @@ python scripts/simulate_sd.py --pair M1 --split common
 ```
 
 The live validation entry point is restricted to Q2 and G1, as specified in
-the plan. M1 does not need a V0 run.
+the plan. Its report includes both all-position agreement and agreement on
+positions whose preceding committed tokens still match the generated target
+continuation. The latter is the valid simulator comparison after a numerical
+near-tie changes a target continuation; later contexts are no longer the same.
+M1 does not need a V0 run.
 
 ## Table 1
 

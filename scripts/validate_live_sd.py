@@ -48,7 +48,12 @@ def _load_refs(out, target, prompts):
     return [refs[str(row["doc_id"])] for row in prompts]
 
 
-def _label_agreement(live: pd.DataFrame, simulated: pd.DataFrame, aligned: pd.DataFrame | None):
+def _label_agreement(
+    live: pd.DataFrame,
+    simulated: pd.DataFrame,
+    aligned: pd.DataFrame | None,
+    common_prefix_lengths: dict[str, int],
+):
     live_eligible = live[~live["invalidated_after_first_rejection"].fillna(False).astype(bool)].copy()
     simulated_eligible = simulated[simulated["eligible"].astype(bool)].copy()
     live_eligible = live_eligible.rename(columns={
@@ -69,12 +74,21 @@ def _label_agreement(live: pd.DataFrame, simulated: pd.DataFrame, aligned: pd.Da
         how="inner",
         validate="one_to_one",
     )
+    join["common_prefix_length"] = join["doc_id"].map(common_prefix_lengths).fillna(0).astype(int)
+    # A proposal at position t is comparable when the committed prefix before
+    # t matches. If the output at t is the first divergence, its verification
+    # still used the same context; later proposals did not.
+    shared_context = join[join["position"] <= join["common_prefix_length"]]
     cross_join = None
+    shared_cross_join = None
     if aligned is not None and not join.empty:
         labels = aligned[["doc_id", "generated_token_position", "alignment_class", "alignment_status"]].copy()
         labels["position"] = labels["generated_token_position"].astype(int)
         cross_join = join.merge(labels[["doc_id", "position", "alignment_class", "alignment_status"]], on=["doc_id", "position"], how="left", validate="many_to_one")
         cross_join = cross_join[cross_join["alignment_class"].eq("CROSS") & cross_join["alignment_status"].eq("ALIGNED")]
+        shared_cross_join = cross_join[
+            cross_join["position"] <= cross_join["common_prefix_length"]
+        ]
 
     def measure(frame):
         if frame is None or frame.empty:
@@ -86,7 +100,14 @@ def _label_agreement(live: pd.DataFrame, simulated: pd.DataFrame, aligned: pd.Da
             "target_id_agreement": float((frame["live_target_id"].astype("int64") == frame["sim_target_id"].astype("int64")).mean()),
         }
 
-    return measure(join), measure(cross_join), join
+    return {
+        "all_positions": measure(join),
+        "shared_context": measure(shared_context),
+        "cross_all_positions": measure(cross_join),
+        "cross_shared_context": measure(shared_cross_join),
+        "all_joined_positions": len(join),
+        "shared_context_joined_positions": len(shared_context),
+    }
 
 
 def main() -> int:
@@ -140,6 +161,7 @@ def main() -> int:
     target = load_model(config, pair["target"])
     all_events = []
     parity_rows = []
+    common_prefix_lengths = {}
     started = time.monotonic()
     max_new = int(config["data"]["max_new_tokens"])
     eos = tokenizer.eos_token_id
@@ -157,15 +179,19 @@ def main() -> int:
         for local, (output_ids, events) in enumerate(zip(outputs, event_batches)):
             doc_id = str(selected[start + local]["doc_id"])
             reference_ids = [int(x) for x in ref_by_id[doc_id]["continuation_ids"]]
-            common = min(len(output_ids), len(reference_ids))
-            matches = sum(int(output_ids[i]) == reference_ids[i] for i in range(common))
+            common = 0
+            for generated_id, reference_id in zip(output_ids, reference_ids):
+                if int(generated_id) != reference_id:
+                    break
+                common += 1
+            common_prefix_lengths[doc_id] = common
             parity_rows.append({
                 "pair_id": args.pair,
                 "doc_id": doc_id,
                 "pool_index": int(selected[start + local]["pool_index"]),
                 "target_generated_length": len(reference_ids),
                 "live_sd_length": len(output_ids),
-                "same_prefix_tokens": matches,
+                "common_prefix_length": common,
                 "compared_tokens": max(len(output_ids), len(reference_ids)),
                 "exact_sequence_match": output_ids == reference_ids,
             })
@@ -197,11 +223,18 @@ def main() -> int:
     aligned = pd.concat((pd.read_parquet(path) for path in aligned_files), ignore_index=True) if aligned_files else None
     if aligned is not None:
         aligned = aligned[aligned["doc_id"].astype(str).isin(selected_ids)]
-    overall, cross, compared = _label_agreement(live, simulation, aligned)
+    agreement = _label_agreement(live, simulation, aligned, common_prefix_lengths)
     parity = pd.DataFrame(parity_rows)
     total_ref_tokens = int(parity["target_generated_length"].sum())
     exact_sequences = int(parity["exact_sequence_match"].sum())
-    sequence_position_agreement = int(parity["same_prefix_tokens"].sum()) / max(1, int(parity["compared_tokens"].sum()))
+    sequence_position_agreement = int(parity["common_prefix_length"].sum()) / max(1, int(parity["compared_tokens"].sum()))
+    shared_agreement = agreement["shared_context"]
+    gate_status = (
+        "PASS"
+        if shared_agreement["rejection_label_agreement"] is not None
+        and shared_agreement["rejection_label_agreement"] >= 0.99
+        else "FAIL"
+    )
     metadata = {
         "pair": args.pair,
         "draft": pair["draft"],
@@ -211,19 +244,24 @@ def main() -> int:
         "block_size": 4,
         "target_sequence_exact_prompts": exact_sequences,
         "target_sequence_exact_fraction": exact_sequences / count,
-        "target_sequence_position_agreement": sequence_position_agreement,
+        "target_sequence_common_prefix_fraction": sequence_position_agreement,
         "target_tokens_in_generation_reference": total_ref_tokens,
-        "live_vs_simulation_eligible_label_agreement": overall,
-        "live_vs_simulation_cross_label_agreement": cross,
-        "live_vs_simulation_joined_proposal_positions": len(compared),
+        "live_vs_simulation_eligible_label_agreement_all_positions": agreement["all_positions"],
+        "live_vs_simulation_cross_label_agreement_all_positions": agreement["cross_all_positions"],
+        "live_vs_simulation_eligible_label_agreement_shared_context": agreement["shared_context"],
+        "live_vs_simulation_cross_label_agreement_shared_context": agreement["cross_shared_context"],
+        "live_vs_simulation_joined_proposal_positions_all": agreement["all_joined_positions"],
+        "live_vs_simulation_joined_proposal_positions_shared_context": agreement["shared_context_joined_positions"],
+        "g0_gate_status": gate_status,
         "wall_seconds": time.monotonic() - started,
         "status": "COMPLETE",
     }
     atomic_json(destination / "agreement_report.json", metadata)
     print(
         f"V0_COMPLETE pair={args.pair} prompts={count} exact_sequences={exact_sequences}/{count} "
-        f"eligible_label_agreement={overall['rejection_label_agreement']} "
-        f"cross_label_agreement={cross['rejection_label_agreement']}",
+        f"shared_context_label_agreement={shared_agreement['rejection_label_agreement']} "
+        f"all_position_label_agreement={agreement['all_positions']['rejection_label_agreement']} "
+        f"g0_gate={gate_status}",
         flush=True,
     )
     return 0
