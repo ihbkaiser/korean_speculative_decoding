@@ -1,0 +1,5 @@
+LOAD_FINEWEB2 dataset=HuggingFaceFW/fineweb-2 config=jpn_Jpan split=train revision=af9c13333eb981300149d5ca60a8e9d659b276b9 source_range=[0,250000)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+O2_JAPANESE_PROMPTS_FROZEN rows=5000 eligible=249,968 id_sha256=540d04a066ba303982784186d0908c21a1308e645773bfa6f6f66c1ac8789032
+{"duplicate": 0, "empty_or_nontext": 0, "low_japanese_ratio": 32, "no_kana": 0, "scanned": 250000, "short": 0}
+O2_JAPANESE_CONFIG configs/naacl_o2_japanese.yaml

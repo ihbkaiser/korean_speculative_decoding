@@ -116,8 +116,16 @@ def load_pair_frame(
     events["position"] = events.position.astype("int64")
     docs = set(events.doc_id.unique())
 
-    alignment_dir = resolve_split_dir(root / "aligned" / "kiwi", target, split)
-    alignment = read_shards(alignment_dir, PAIR_ALIGN_COLUMNS)
+    alignment_analyzer = str(config.get("paths", {}).get("alignment_analyzer", "kiwi"))
+    alignment_columns = list(PAIR_ALIGN_COLUMNS)
+    if alignment_analyzer == "fugashi":
+        alignment_columns.extend([
+            "crossed_boundary_positions", "nearest_boundary_position", "nearest_boundary_ambiguous",
+            "japanese_particle_roles_crossed", "japanese_particle_surfaces_crossed",
+            "japanese_particle_role_nearest", "japanese_particle_surface_nearest",
+        ])
+    alignment_dir = resolve_split_dir(root / "aligned" / alignment_analyzer, target, split)
+    alignment = read_shards(alignment_dir, alignment_columns)
     alignment["doc_id"] = alignment.doc_id.astype(str)
     if alignment_dir.name == "all" and split == "common":
         alignment = alignment.loc[alignment.pool_index.astype(int) < 20_000]
@@ -163,6 +171,7 @@ def load_pair_frame(
         "target": target,
         "draft": draft,
         "split": split,
+        "alignment_analyzer": alignment_analyzer,
         "documents": len(docs),
         "target_positions": int(len(target_tf)),
         "eligible_k4_proposals": int(len(events)),

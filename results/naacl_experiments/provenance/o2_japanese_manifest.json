@@ -1,0 +1,38 @@
+{
+  "experiment": "NAACL optional O2: FineWeb2 Japanese control",
+  "dataset_id": "HuggingFaceFW/fineweb-2",
+  "config": "jpn_Jpan",
+  "split": "train",
+  "resolved_revision": "af9c13333eb981300149d5ca60a8e9d659b276b9",
+  "source_range": [
+    0,
+    250000
+  ],
+  "selection": {
+    "target_documents": 5000,
+    "min_chars": 64,
+    "min_japanese_script_ratio": 0.35,
+    "requires_hiragana_or_katakana": true,
+    "seed": 42,
+    "eligible_unique_before_shuffle": 249968,
+    "counts": {
+      "scanned": 250000,
+      "empty_or_nontext": 0,
+      "short": 0,
+      "no_kana": 0,
+      "low_japanese_ratio": 32,
+      "duplicate": 0
+    }
+  },
+  "prompt_pool": "data/naacl_fineweb2_jpn_5000.parquet",
+  "prompt_pool_sha256": "379208751a7cfcc3cef32b19f7389b0da0c3d7c303d73c4c7ba9162d88215504",
+  "ids_path": "data/naacl_fineweb2_jpn_5000_ids.txt",
+  "ordered_doc_ids_sha256": "540d04a066ba303982784186d0908c21a1308e645773bfa6f6f66c1ac8789032",
+  "ordered_text_hashes_sha256": "14f7850765c23ecd871d9365bab6ae37b609fee4d9fa1ddf35cf3068ab19bdf2",
+  "config_path": "configs/naacl_o2_japanese.yaml",
+  "pair_keys": [
+    "O2_Q06",
+    "O2_G4_12"
+  ],
+  "language_alignment": "Fugashi with full UniDic; topic は and case が retain their own particle role labels."
+}

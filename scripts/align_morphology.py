@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Align frozen target continuations with Kiwi or optional MeCab-ko morphology."""
+"""Align frozen target continuations with Kiwi, MeCab-ko, or Japanese UniDic."""
 
 from __future__ import annotations
 
 import argparse
+from importlib.metadata import version
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -55,6 +56,124 @@ class MecabKoAdapter:
                 offset += len(surface)
             node = node.next
         return result
+
+
+class FugashiUniDicAdapter:
+    """Expose UniDic morphemes through the repository's canonical POS groups."""
+
+    def __init__(self):
+        try:
+            from fugashi import Tagger
+            import unidic  # noqa: F401 - makes the selected dictionary explicit
+        except ImportError as exc:
+            raise RuntimeError("Japanese alignment requires `fugashi[unidic]` and its downloaded UniDic dictionary") from exc
+        self.tagger = Tagger()
+
+    @staticmethod
+    def _canonical_pos(surface: str, feature) -> str:
+        pos1 = str(getattr(feature, "pos1", ""))
+        pos2 = str(getattr(feature, "pos2", ""))
+        if pos1 == "名詞":
+            return "NNP" if pos2 == "固有名詞" else "NNG"
+        if pos1 == "助詞":
+            if surface == "は" and pos2 == "係助詞":
+                return "JX"
+            if surface == "が" and pos2 == "格助詞":
+                return "JKS"
+            if pos2 == "格助詞":
+                return "JKB"
+            if pos2 == "接続助詞":
+                return "JC"
+            return "JX"
+        if pos1 == "動詞":
+            return "VV"
+        if pos1 == "形容詞":
+            return "VA"
+        if pos1 == "助動詞":
+            return "EP"
+        if pos1 == "副詞":
+            return "MAG"
+        if pos1 == "連体詞":
+            return "MM"
+        if pos1 == "接続詞":
+            return "JC"
+        if pos1 == "接頭辞":
+            return "XPN"
+        if pos1 == "接尾辞":
+            return "XSN"
+        if pos1 == "感動詞":
+            return "IC"
+        if pos1 == "記号":
+            return "SP"
+        return "UN"
+
+    def tokenize(self, text):
+        offset = 0
+        result = []
+        for word in self.tagger(text):
+            surface = str(word.surface or "")
+            if not surface:
+                continue
+            if text[offset : offset + len(surface)] != surface:
+                found = text.find(surface, offset)
+                if found < 0:
+                    raise RuntimeError(f"UniDic surface is not in eojeol at offset {offset}: {surface!r}")
+                offset = found
+            result.append(SimpleNamespace(
+                form=surface,
+                tag=self._canonical_pos(surface, word.feature),
+                start=offset,
+                len=len(surface),
+            ))
+            offset += len(surface)
+        return result
+
+
+def _japanese_particle_roles(row: dict) -> dict:
+    """Identify nominal→は / nominal→が boundaries using aligned UniDic spans."""
+    surfaces = row.get("morpheme_surfaces") or []
+    tags = row.get("morpheme_pos_tags") or []
+    spans = row.get("morpheme_char_spans") or []
+    morphemes = []
+    for surface, tag, span in zip(surfaces, tags, spans):
+        if not isinstance(span, (list, tuple)) or len(span) != 2 or span[0] is None or span[1] is None:
+            continue
+        morphemes.append((int(span[0]), int(span[1]), str(surface), str(tag)))
+
+    def role_at(position):
+        left = next((item for item in morphemes if item[1] == position), None)
+        right = next((item for item in morphemes if item[0] == position), None)
+        if left is None or right is None or left[3] not in {"NNG", "NNP", "NNB", "NP", "NR"}:
+            return None, None
+        if right[2] == "は" and right[3] == "JX":
+            return "TOPIC_HA", right[2]
+        if right[2] == "が" and right[3] == "JKS":
+            return "SUBJECT_GA", right[2]
+        return None, right[2]
+
+    roles_crossed = []
+    surfaces_crossed = []
+    if row.get("alignment_class") == "CROSS":
+        for position in row.get("crossed_boundary_positions") or []:
+            role, surface = role_at(int(position))
+            if role:
+                roles_crossed.append(role)
+            if surface:
+                surfaces_crossed.append(surface)
+
+    nearest_role = None
+    nearest_surface = None
+    if row.get("alignment_class") == "WITHIN_SPLIT" and not row.get("nearest_boundary_ambiguous"):
+        position = row.get("nearest_boundary_position")
+        if position is not None:
+            nearest_role, nearest_surface = role_at(int(position))
+
+    return {
+        "japanese_particle_roles_crossed": roles_crossed,
+        "japanese_particle_surfaces_crossed": surfaces_crossed,
+        "japanese_particle_role_nearest": nearest_role,
+        "japanese_particle_surface_nearest": nearest_surface,
+    }
 
 
 def _references(directory: Path, selection):
@@ -152,7 +271,7 @@ def main() -> int:
     parser.add_argument("--target", required=True, help="Target model key, e.g. qwen4")
     parser.add_argument("--split", choices=("common", "all", "extra"), required=True)
     parser.add_argument("--continuation", choices=("generated", "human"), default="generated")
-    parser.add_argument("--analyzer", choices=("kiwi", "mecab"), default="kiwi")
+    parser.add_argument("--analyzer", choices=("kiwi", "mecab", "fugashi"), default="kiwi")
     parser.add_argument("--output-dir", type=Path)
     parser.add_argument("--model-path", type=Path, help="Tokenizer snapshot override; weights are not loaded")
     parser.add_argument("--max-prompts", type=int)
@@ -177,8 +296,10 @@ def main() -> int:
         )
     if args.analyzer == "kiwi":
         analyzer = Kiwi()
-    else:
+    elif args.analyzer == "mecab":
         analyzer = MecabKoAdapter()
+    else:
+        analyzer = FugashiUniDicAdapter()
     destination = out / "aligned" / args.analyzer / args.target
     if args.continuation == "human":
         destination = destination / "human"
@@ -205,7 +326,13 @@ def main() -> int:
                 "pool_split": str(reference["pool_split"]),
                 "source_index": int(reference["source_index"]),
             }
-            aligned.extend(_make_prompt_alignment_rows(adapter_reference, tokenizer=tokenizer, kiwi=analyzer))
+            prompt_rows = _make_prompt_alignment_rows(adapter_reference, tokenizer=tokenizer, kiwi=analyzer)
+            if args.analyzer == "fugashi":
+                prompt_rows = [
+                    {**row, **_japanese_particle_roles(row)}
+                    for row in prompt_rows
+                ]
+            aligned.extend(prompt_rows)
         atomic_parquet(aligned, shard_path)
         completed.append({
             "shard": shard_index,
@@ -214,6 +341,14 @@ def main() -> int:
             "resumed": False,
         })
         print(f"ALIGN_SHARD_COMPLETE target={args.target} analyzer={args.analyzer} shard={shard_index:05d} rows={len(aligned)}", flush=True)
+    analyzer_metadata = {}
+    if args.analyzer == "fugashi":
+        analyzer_metadata = {
+            "fugashi_version": version("fugashi"),
+            "unidic_package_version": version("unidic"),
+            "unidic_dictionary_version": "3.1.0",
+            "pos_mapping": "UniDic 名詞→NNG/NNP; は(係助詞)→JX; が(格助詞)→JKS; other particles map to canonical particle tags.",
+        }
     atomic_json(destination / "run_metadata.json", {
         "stage": "target_path_morphology_alignment",
         "continuation": args.continuation,
@@ -221,6 +356,7 @@ def main() -> int:
         "revision": config["models"][args.target]["revision"],
         "split": args.split,
         "analyzer": args.analyzer,
+        **analyzer_metadata,
         "prompt_count": len(references),
         "requested_prompt_count": requested_prompts,
         "skipped_short_document_count": len(skipped),
