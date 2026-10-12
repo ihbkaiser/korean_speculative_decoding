@@ -1,0 +1,9 @@
+START_UTC=2026-10-12 22:39:04 UTC
+COMMAND=timeout --foreground --signal=TERM --kill-after=10s 3600s /venv/main/bin/python -u scripts/download_models.py --config configs/naacl_o1_qwen14.yaml --model qwen06 
+MODEL_STORAGE root=/dev/shm/naacl_models free_gib=30.81 requested_weight_gib=1.11
+MODEL qwen06 repo=Qwen/Qwen3-0.6B-Base revision=da87bfb608c14b7cf20ba1ce41287e8de496c0cd gated=False weight_gib=1.11 shards=1
+DOWNLOAD_START qwen06 files=10 gated=False
+Fetching 10 files:   0%|          | 0/10 [00:00<?, ?it/s]Fetching 10 files: 100%|██████████| 10/10 [00:14<00:00,  1.42s/it]Fetching 10 files: 100%|██████████| 10/10 [00:14<00:00,  1.42s/it]
+DOWNLOAD_COMPLETE qwen06 local_path=/dev/shm/naacl_models/Qwen--Qwen3-0.6B-Base/da87bfb608c14b7cf20ba1ce41287e8de496c0cd
+COMMAND_EXIT=0
+END_UTC=2026-10-12 22:39:21 UTC

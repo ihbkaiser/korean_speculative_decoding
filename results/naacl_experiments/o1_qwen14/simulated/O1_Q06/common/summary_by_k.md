@@ -1,0 +1,3 @@
+| Pair   | Split   |   Block size |   Prompts |   Target tokens |   Target calls |   Eligible proposals |   Accepted proposals |   Rejections |   Rejection rate |   Invalidated suffix work |   Bonus tokens |   Target TF label disagreement |
+|:-------|:--------|-------------:|----------:|----------------:|---------------:|---------------------:|---------------------:|-------------:|-----------------:|--------------------------:|---------------:|-------------------------------:|
+| O1_Q06 | common  |            4 |     20000 |         2459709 |         770881 |              2152653 |              1703676 |       448977 |         0.208569 |                    899069 |         307056 |                          35158 |
