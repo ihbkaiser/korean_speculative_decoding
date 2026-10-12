@@ -41,7 +41,9 @@ def _fit(frame: pd.DataFrame, label: str) -> dict[str, Any]:
 def _role_subset(frame: pd.DataFrame, role: str) -> pd.DataFrame:
     cross = frame.loc[
         frame.alignment_class.eq("CROSS")
-        & frame.japanese_particle_roles_crossed.map(lambda values: role in (values or []))
+        & frame.japanese_particle_roles_crossed.map(
+            lambda values: role in values if values is not None else False
+        )
     ]
     within = frame.loc[
         frame.alignment_class.eq("WITHIN_SPLIT")
