@@ -477,3 +477,22 @@ Across the complete H study, tokenizer-specific filtering left 9,722 Qwen, 9,604
 - Dedicated run config: `configs/naacl_wikipedia.yaml`; it points to the frozen 2k pool and isolates W outputs under `results/naacl_experiments/wikipedia/`. W inference remains pending: generate Qwen4 and Gemma12 continuations; score/alignment for each target; teacher-force the Qwen06 and Gemma4 drafts; then run Q2 and G1 replay summaries.
 
 **Queue status at 11:25 UTC:** Qwen grid, G1 cross-model TF/replay/full V0, M1 draft TF/replay, and all 10 H cells are complete and preserved. W data is frozen and ready for inference at the plan-approved 2,000-document size; W target generation, target TF/alignment, draft TF, and replay remain. Q2 and G1 V0 exceed the 95% shared-context agreement level but fail the additional zero-unmatched check. Interpret that condition before claiming full live validation.
+
+### W Wikipedia-ko Q2 run
+
+- Pair: Qwen3-0.6B draft → Qwen3-4B target, on the frozen 2,000-document Wikipedia-ko pool. Generation used greedy decoding with 128 prompt and 128 new-token limits, bfloat16, SDPA, and the pinned Qwen revisions in the run metadata. The target produced 249,908 continuation tokens across four 500-document shards; generation wall time was 307.86 s.
+- The target self-score and draft score each covered all 2,000 prompts / 249,908 tokens in four shards. Every shard passed its head check (`head_scale=1`, maximum absolute error 0); summed shard times were 91.69 s for the target and 31.43 s for the draft. Kiwi alignment completed all four shards with 249,908 aligned rows.
+- Offline replay completed for k ∈ {1, 2, 4, 8, 16}:
+
+| Block size k | Eligible proposals | Rejections | Rejection rate |
+| ---: | ---: | ---: | ---: |
+| 1 | 138,123 | 25,406 | 18.3938% |
+| 2 | 181,734 | 31,978 | 17.5960% |
+| 4 | 215,490 | 37,629 | 17.4621% |
+| 8 | 234,647 | 39,570 | 16.8636% |
+| 16 | 243,885 | 40,362 | 16.5496% |
+
+- These are deterministic offline replay rates over the saved target continuation and teacher-forced logits; they are not live decoding latency measurements. The Q2 full-V0 unmatched-context caveat above also applies, so describe these as offline estimates pending resolution of that live-validation issue.
+- Artifacts are under `results/naacl_experiments/wikipedia/`: generated continuations, target and draft TF shards, Kiwi alignment shards, and per-k event tables plus summaries. Run metadata records pinned model revisions, prompt/data hashes, runtime environment, shard counts, and head checks. Logs: `W-Q2-download-smoke.log`, `W-Q2-generation.log`, `W-Q2-target-TF.log`, `W-Q2-alignment.log`, `W-Q2-draft-TF.log`, `W-Q2-simulate.log`, and `W-Q2-eviction.log` under `logs/naacl_experiments/20261012/`. Both Qwen model weight sets were evicted after the pair; tokenizer/config files were retained.
+
+**Queue status after W-Q2:** Q2's 2k Wikipedia generation, target TF, alignment, draft TF, and offline replay are complete and preserved. Next run G1 (Gemma4→Gemma12) on the same frozen pool. Continue to report replay as offline estimates; the Q2/G1 full-V0 unmatched-position failures remain unresolved.

@@ -1,0 +1,12 @@
+TF_LOAD model=qwen06 target=qwen4 role=draft
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 3620.53it/s]
+TF qwen06 on qwen4 shard 0:   0%|          | 0/19 [00:00<?, ?batch/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+TF qwen06 on qwen4 shard 0:   5%|▌         | 1/19 [00:01<00:25,  1.43s/batch]TF qwen06 on qwen4 shard 0:  16%|█▌        | 3/19 [00:03<00:17,  1.07s/batch]TF qwen06 on qwen4 shard 0:  26%|██▋       | 5/19 [00:05<00:14,  1.01s/batch]TF qwen06 on qwen4 shard 0:  37%|███▋      | 7/19 [00:07<00:11,  1.02batch/s]TF qwen06 on qwen4 shard 0: 100%|██████████| 19/19 [00:08<00:00,  2.34batch/s]
+TF_SHARD_COMPLETE model=qwen06 shard=00000 prompts=500 tokens=63315
+TF qwen06 on qwen4 shard 1:   0%|          | 0/16 [00:00<?, ?batch/s]TF qwen06 on qwen4 shard 1:  12%|█▎        | 2/16 [00:01<00:13,  1.07batch/s]TF qwen06 on qwen4 shard 1:  25%|██▌       | 4/16 [00:03<00:11,  1.07batch/s]TF qwen06 on qwen4 shard 1:  38%|███▊      | 6/16 [00:05<00:09,  1.05batch/s]TF qwen06 on qwen4 shard 1:  50%|█████     | 8/16 [00:07<00:07,  1.12batch/s]TF qwen06 on qwen4 shard 1: 100%|██████████| 16/16 [00:07<00:00,  2.11batch/s]
+TF_SHARD_COMPLETE model=qwen06 shard=00001 prompts=500 tokens=63781
+TF qwen06 on qwen4 shard 2:   0%|          | 0/31 [00:00<?, ?batch/s]TF qwen06 on qwen4 shard 2:   6%|▋         | 2/31 [00:01<00:27,  1.06batch/s]TF qwen06 on qwen4 shard 2:  13%|█▎        | 4/31 [00:03<00:25,  1.06batch/s]TF qwen06 on qwen4 shard 2:  19%|█▉        | 6/31 [00:05<00:23,  1.06batch/s]TF qwen06 on qwen4 shard 2:  39%|███▊      | 12/31 [00:06<00:08,  2.29batch/s]TF qwen06 on qwen4 shard 2: 100%|██████████| 31/31 [00:07<00:00,  4.07batch/s]
+TF_SHARD_COMPLETE model=qwen06 shard=00002 prompts=500 tokens=60455
+TF qwen06 on qwen4 shard 3:   0%|          | 0/18 [00:00<?, ?batch/s]TF qwen06 on qwen4 shard 3:  11%|█         | 2/18 [00:01<00:15,  1.06batch/s]TF qwen06 on qwen4 shard 3:  22%|██▏       | 4/18 [00:03<00:13,  1.05batch/s]TF qwen06 on qwen4 shard 3:  33%|███▎      | 6/18 [00:05<00:11,  1.05batch/s]TF qwen06 on qwen4 shard 3:  44%|████▍     | 8/18 [00:07<00:08,  1.18batch/s]TF qwen06 on qwen4 shard 3: 100%|██████████| 18/18 [00:07<00:00,  2.37batch/s]
+TF_SHARD_COMPLETE model=qwen06 shard=00003 prompts=500 tokens=62357
+TF_COMPLETE model=qwen06 target=qwen4 files=4

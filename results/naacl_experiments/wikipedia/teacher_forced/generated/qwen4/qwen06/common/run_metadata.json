@@ -1,0 +1,86 @@
+{
+  "stage": "teacher_forced_scoring",
+  "continuation": "generated",
+  "target_key": "qwen4",
+  "target_id": "Qwen/Qwen3-4B-Base",
+  "target_revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+  "scored_model_key": "qwen06",
+  "scored_model_id": "Qwen/Qwen3-0.6B-Base",
+  "scored_model_revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+  "role": "draft",
+  "split": "common",
+  "prompt_count": 2000,
+  "prompt_ids_sha256": "253828149e0965473f39be6b70d984f08d3fac729d83d9fcfef7593bb81cbbc2",
+  "chunk_positions": 32,
+  "requested_batch_size": 64,
+  "dtype": "bfloat16",
+  "attention_backend": "sdpa",
+  "transformers": "5.19.0",
+  "torch": "2.11.0+cu128",
+  "gpu": "NVIDIA RTX A6000",
+  "model_path": "/dev/shm/naacl_models/Qwen--Qwen3-0.6B-Base/da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+  "prompt_pool_sha256": "a96dc3086f73c587373036b287cf53708f43a5a69d0d0d8464c2f3ea0785944b",
+  "completed_shards": [
+    {
+      "shard": 0,
+      "prompt_count": 500,
+      "scored_token_count": 63315,
+      "actual_batch_sizes": [
+        1,
+        41,
+        64
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 8.241389682050794
+    },
+    {
+      "shard": 1,
+      "prompt_count": 500,
+      "scored_token_count": 63781,
+      "actual_batch_sizes": [
+        1,
+        44,
+        64
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 7.73395633592736
+    },
+    {
+      "shard": 2,
+      "prompt_count": 500,
+      "scored_token_count": 60455,
+      "actual_batch_sizes": [
+        1,
+        2,
+        4,
+        5,
+        7,
+        8,
+        57,
+        64
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 7.738133393926546
+    },
+    {
+      "shard": 3,
+      "prompt_count": 500,
+      "scored_token_count": 62357,
+      "actual_batch_sizes": [
+        1,
+        2,
+        4,
+        6,
+        29,
+        64
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 7.712850896990858
+    }
+  ],
+  "status": "COMPLETE"
+}
