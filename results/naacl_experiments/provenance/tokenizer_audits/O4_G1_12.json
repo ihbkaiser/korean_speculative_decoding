@@ -1,0 +1,87 @@
+{
+  "pair": "O4_G1_12",
+  "draft_key": "gemma1",
+  "draft_id": "google/gemma-3-1b-pt",
+  "draft_revision": "fcf18a2a879aab110ca39f8bffbccd5d49d8eb29",
+  "target_key": "gemma12",
+  "target_id": "google/gemma-3-12b-pt",
+  "target_revision": "295efb63d01a7017928f273a94ebb86105c9526f",
+  "compatible": true,
+  "draft_class": "transformers.models.gemma.tokenization_gemma.GemmaTokenizer",
+  "target_class": "transformers.models.gemma.tokenization_gemma.GemmaTokenizer",
+  "backend_serialization_equal": true,
+  "backend_sha256": {
+    "draft": "c1a087240686a7d141101217051f76d5cd4cbe2b6093e3c3553fb26dcc4d0e9a",
+    "target": "c1a087240686a7d141101217051f76d5cd4cbe2b6093e3c3553fb26dcc4d0e9a"
+  },
+  "vocab_size_draft": 262145,
+  "vocab_size_target": 262145,
+  "vocab_equal": true,
+  "added_vocab_equal": true,
+  "special_tokens_equal": true,
+  "offsets_supported": true,
+  "offsets_required": true,
+  "draft_special_tokens": {
+    "bos_token": "<bos>",
+    "bos_token_id": 2,
+    "eos_token": "<eos>",
+    "eos_token_id": 1,
+    "unk_token": "<unk>",
+    "unk_token_id": 3,
+    "sep_token": null,
+    "sep_token_id": null,
+    "pad_token": "<pad>",
+    "pad_token_id": 0,
+    "cls_token": null,
+    "cls_token_id": null,
+    "mask_token": "<mask>",
+    "mask_token_id": 4,
+    "additional_special_tokens": null,
+    "additional_special_tokens_id": null
+  },
+  "target_special_tokens": {
+    "bos_token": "<bos>",
+    "bos_token_id": 2,
+    "eos_token": "<eos>",
+    "eos_token_id": 1,
+    "unk_token": "<unk>",
+    "unk_token_id": 3,
+    "sep_token": null,
+    "sep_token_id": null,
+    "pad_token": "<pad>",
+    "pad_token_id": 0,
+    "cls_token": null,
+    "cls_token_id": null,
+    "mask_token": "<mask>",
+    "mask_token_id": 4,
+    "additional_special_tokens": null,
+    "additional_special_tokens_id": null
+  },
+  "probes": [
+    {
+      "text": "한국어 형태소 분석과 토큰 경계",
+      "ids_equal": true,
+      "offsets_equal": true,
+      "error": null
+    },
+    {
+      "text": "서울은 대한민국의 수도이다.",
+      "ids_equal": true,
+      "offsets_equal": true,
+      "error": null
+    },
+    {
+      "text": "English mixed with 한글 and numbers 3090.",
+      "ids_equal": true,
+      "offsets_equal": true,
+      "error": null
+    },
+    {
+      "text": "띄어쓰기\n여러 줄 테스트",
+      "ids_equal": true,
+      "offsets_equal": true,
+      "error": null
+    }
+  ],
+  "reasons": []
+}
