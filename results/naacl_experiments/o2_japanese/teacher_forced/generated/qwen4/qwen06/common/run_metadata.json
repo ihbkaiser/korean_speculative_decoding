@@ -1,0 +1,72 @@
+{
+  "stage": "teacher_forced_scoring",
+  "continuation": "generated",
+  "target_key": "qwen4",
+  "target_id": "Qwen/Qwen3-4B-Base",
+  "target_revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+  "scored_model_key": "qwen06",
+  "scored_model_id": "Qwen/Qwen3-0.6B-Base",
+  "scored_model_revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+  "role": "draft",
+  "split": "common",
+  "prompt_count": 5000,
+  "prompt_ids_sha256": "540d04a066ba303982784186d0908c21a1308e645773bfa6f6f66c1ac8789032",
+  "chunk_positions": 32,
+  "requested_batch_size": 32,
+  "dtype": "bfloat16",
+  "attention_backend": "sdpa",
+  "transformers": "5.19.0",
+  "torch": "2.11.0+cu128",
+  "gpu": "NVIDIA RTX A6000",
+  "model_path": "/dev/shm/naacl_models/Qwen--Qwen3-0.6B-Base/da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+  "prompt_pool_sha256": "379208751a7cfcc3cef32b19f7389b0da0c3d7c303d73c4c7ba9162d88215504",
+  "completed_shards": [
+    {
+      "shard": 0,
+      "prompt_count": 2000,
+      "scored_token_count": 239973,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        6,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 37.58633657300379
+    },
+    {
+      "shard": 1,
+      "prompt_count": 2000,
+      "scored_token_count": 239126,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        8,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 36.91429340397008
+    },
+    {
+      "shard": 2,
+      "prompt_count": 1000,
+      "scored_token_count": 120028,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        7,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 18.724600955029018
+    }
+  ],
+  "status": "COMPLETE"
+}

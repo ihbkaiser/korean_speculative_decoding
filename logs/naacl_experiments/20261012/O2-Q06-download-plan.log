@@ -1,0 +1,7 @@
+START_UTC=2026-10-12 23:30:24 UTC
+COMMAND=/venv/main/bin/python -u scripts/download_models.py --config configs/naacl_o2_japanese.yaml --plan --pair O2_Q06 
+MODEL_STORAGE root=/dev/shm/naacl_models free_gib=22.21 requested_weight_gib=8.60
+MODEL qwen06 repo=Qwen/Qwen3-0.6B-Base revision=da87bfb608c14b7cf20ba1ce41287e8de496c0cd gated=False weight_gib=1.11 shards=1
+MODEL qwen4 repo=Qwen/Qwen3-4B-Base revision=906bfd4b4dc7f14ee4320094d8b41684abff8539 gated=False weight_gib=7.49 shards=3
+COMMAND_EXIT=0
+END_UTC=2026-10-12 23:30:25 UTC

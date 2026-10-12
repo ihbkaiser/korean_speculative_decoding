@@ -1,0 +1,10 @@
+START_UTC=2026-10-12 23:30:29 UTC
+COMMAND=env PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout --foreground --signal=TERM --kill-after=10s 14400s /venv/main/bin/python -u scripts/gen_target.py --config configs/naacl_o2_japanese.yaml --target qwen4 --split common --batch-size 128 
+GEN_START target=qwen4 split=common prompts=5000 requested_batch=128 max_new_tokens=128
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights:  88%|████████▊ | 349/398 [00:00<00:00, 3485.01it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 3503.84it/s]
+GEN_RESUME_SKIP /workspace/korean_speculative_decoding/results/naacl_experiments/o2_japanese/continuations/qwen4/common/shard-00000.parquet
+GEN_RESUME_SKIP /workspace/korean_speculative_decoding/results/naacl_experiments/o2_japanese/continuations/qwen4/common/shard-00001.parquet
+GEN_RESUME_SKIP /workspace/korean_speculative_decoding/results/naacl_experiments/o2_japanese/continuations/qwen4/common/shard-00002.parquet
+GEN_COMPLETE target=qwen4 output=/workspace/korean_speculative_decoding/results/naacl_experiments/o2_japanese/continuations/qwen4/common wall_seconds=3.5
+COMMAND_EXIT=0
+END_UTC=2026-10-12 23:30:46 UTC

@@ -1,0 +1,36 @@
+{
+  "stage": "target_path_morphology_alignment",
+  "continuation": "generated",
+  "target_key": "qwen4",
+  "revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+  "split": "common",
+  "analyzer": "fugashi",
+  "fugashi_version": "1.5.2",
+  "unidic_package_version": "1.1.0",
+  "unidic_dictionary_version": "3.1.0",
+  "pos_mapping": "UniDic 名詞→NNG/NNP; は(係助詞)→JX; が(格助詞)→JKS; other particles map to canonical particle tags.",
+  "prompt_count": 5000,
+  "requested_prompt_count": 5000,
+  "skipped_short_document_count": 0,
+  "completed_shards": [
+    {
+      "shard": 0,
+      "prompts": 2000,
+      "aligned_rows": 239973,
+      "resumed": false
+    },
+    {
+      "shard": 1,
+      "prompts": 2000,
+      "aligned_rows": 239126,
+      "resumed": false
+    },
+    {
+      "shard": 2,
+      "prompts": 1000,
+      "aligned_rows": 120028,
+      "resumed": false
+    }
+  ],
+  "status": "COMPLETE"
+}

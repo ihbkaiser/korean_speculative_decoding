@@ -1,0 +1,22 @@
+{
+  "stage": "target_greedy_generation",
+  "model_key": "qwen4",
+  "model_id": "Qwen/Qwen3-4B-Base",
+  "revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+  "split": "common",
+  "prompt_count": 5000,
+  "prompt_ids_sha256": "540d04a066ba303982784186d0908c21a1308e645773bfa6f6f66c1ac8789032",
+  "max_prompt_tokens": 128,
+  "max_new_tokens": 128,
+  "dtype": "bfloat16",
+  "attention_backend": "sdpa",
+  "requested_batch_size": 128,
+  "transformers": "5.19.0",
+  "torch": "2.11.0+cu128",
+  "gpu": "NVIDIA RTX A6000",
+  "prompt_pool_sha256": "379208751a7cfcc3cef32b19f7389b0da0c3d7c303d73c4c7ba9162d88215504",
+  "model_path": "/dev/shm/naacl_models/Qwen--Qwen3-4B-Base/906bfd4b4dc7f14ee4320094d8b41684abff8539",
+  "actual_batch_sizes": [],
+  "wall_seconds": 3.459521926008165,
+  "status": "COMPLETE"
+}
