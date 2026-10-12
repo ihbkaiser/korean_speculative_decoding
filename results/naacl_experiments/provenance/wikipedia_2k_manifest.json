@@ -1,0 +1,18 @@
+{
+  "dataset": "wikimedia/wikipedia",
+  "config": "20231101.ko",
+  "split": "train",
+  "revision": "b04c8d1ceb2f5cd4588862100d08de323dccfbaa",
+  "prompt_count": 2000,
+  "seed_count": 1000,
+  "extension_count": 1000,
+  "extension_duplicate_texts_skipped": 0,
+  "cached_seed_path": "data/korean_wikipedia_20231101_ko.jsonl",
+  "cached_seed_sha256": "6f5a90e25f62ba84f49cfd84285aab17b6f91c6c3c6a06ebb4c129059d72563e",
+  "seed_matches_pinned_revision": true,
+  "parquet_path": "data/naacl_wikipedia_2k.parquet",
+  "parquet_sha256": "a96dc3086f73c587373036b287cf53708f43a5a69d0d0d8464c2f3ea0785944b",
+  "ids_path": "data/naacl_wikipedia_2k_ids.txt",
+  "ordered_doc_ids_sha256": "253828149e0965473f39be6b70d984f08d3fac729d83d9fcfef7593bb81cbbc2",
+  "ordered_text_hashes_sha256": "fd6faa0353b82bf78056a52c3494dddf023f21aa93c80d2a9607ae4b343f519b"
+}
