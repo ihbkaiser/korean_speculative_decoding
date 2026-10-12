@@ -1,0 +1,74 @@
+{
+  "stage": "target_path_morphology_alignment",
+  "continuation": "generated",
+  "target_key": "qwen14",
+  "revision": "0b0bd3732e2c374d483664439ea334928b65f304",
+  "split": "common",
+  "analyzer": "kiwi",
+  "prompt_count": 20000,
+  "requested_prompt_count": 20000,
+  "skipped_short_document_count": 0,
+  "completed_shards": [
+    {
+      "shard": 0,
+      "prompts": 2000,
+      "aligned_rows": 247190,
+      "resumed": false
+    },
+    {
+      "shard": 1,
+      "prompts": 2000,
+      "aligned_rows": 246086,
+      "resumed": false
+    },
+    {
+      "shard": 2,
+      "prompts": 2000,
+      "aligned_rows": 246158,
+      "resumed": false
+    },
+    {
+      "shard": 3,
+      "prompts": 2000,
+      "aligned_rows": 245937,
+      "resumed": false
+    },
+    {
+      "shard": 4,
+      "prompts": 2000,
+      "aligned_rows": 245172,
+      "resumed": false
+    },
+    {
+      "shard": 5,
+      "prompts": 2000,
+      "aligned_rows": 246011,
+      "resumed": false
+    },
+    {
+      "shard": 6,
+      "prompts": 2000,
+      "aligned_rows": 245615,
+      "resumed": false
+    },
+    {
+      "shard": 7,
+      "prompts": 2000,
+      "aligned_rows": 245184,
+      "resumed": false
+    },
+    {
+      "shard": 8,
+      "prompts": 2000,
+      "aligned_rows": 247092,
+      "resumed": false
+    },
+    {
+      "shard": 9,
+      "prompts": 2000,
+      "aligned_rows": 245264,
+      "resumed": false
+    }
+  ],
+  "status": "COMPLETE"
+}
