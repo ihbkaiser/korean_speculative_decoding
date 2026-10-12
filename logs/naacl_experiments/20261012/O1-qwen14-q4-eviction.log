@@ -1,0 +1,6 @@
+START_UTC=2026-10-12 23:09:09 UTC
+COMMAND=timeout --foreground --signal=TERM --kill-after=10s 1800s /venv/main/bin/python -u scripts/download_models.py --config configs/naacl_o1_qwen14.yaml --evict-pair O1_Q4 
+EVICT qwen4: removed 3 weight shards; kept tokenizer/config
+EVICT qwen14: removed 8 weight shards; kept tokenizer/config
+COMMAND_EXIT=0
+END_UTC=2026-10-12 23:09:10 UTC

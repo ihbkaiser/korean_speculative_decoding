@@ -1,0 +1,5 @@
+START_UTC=2026-10-12 23:08:20 UTC
+COMMAND=timeout --foreground --signal=TERM --kill-after=10s 3600s /venv/main/bin/python -u scripts/simulate_sd.py --config configs/naacl_o1_qwen14.yaml --pair O1_Q4 --split common --block-sizes 4 
+SIM pair=O1_Q4 k=4 prompts=20000 eligible=2099565 reject=287275 rate=0.136826
+COMMAND_EXIT=0
+END_UTC=2026-10-12 23:09:09 UTC

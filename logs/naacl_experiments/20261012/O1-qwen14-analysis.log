@@ -1,0 +1,23 @@
+START_UTC=2026-10-12 23:09:10 UTC
+COMMAND=timeout --foreground --signal=TERM --kill-after=10s 3600s /venv/main/bin/python -u scripts/analyze_naacl_o1_qwen14.py --config configs/naacl_o1_qwen14.yaml 
+O1_LOAD pair=O1_Q06
+MODEL_START O1-O1_Q06-global rows=1,006,883 docs=18,081
+MODEL_DONE O1-O1_Q06-global status=COMPLETE converged=True AME=0.004656912 raw_AME=0.004656912 SE=0.00118237 warnings=
+MODEL_START O1-O1_Q06-nominal_to_particle rows=291,587 docs=15,996
+MODEL_DONE O1-O1_Q06-nominal_to_particle status=COMPLETE converged=True AME=0.03232008 raw_AME=0.03232008 SE=0.003495238 warnings=
+O1_READY pair=O1_Q06 docs=20,000 eligible=2,152,653 aligned=2,152,653
+O1_LOAD pair=O1_Q17
+MODEL_START O1-O1_Q17-global rows=993,045 docs=18,083
+MODEL_DONE O1-O1_Q17-global status=COMPLETE converged=True AME=-0.006229612 raw_AME=-0.006229612 SE=0.001096149 warnings=
+MODEL_START O1-O1_Q17-nominal_to_particle rows=287,179 docs=15,991
+MODEL_DONE O1-O1_Q17-nominal_to_particle status=COMPLETE converged=True AME=0.001351577 raw_AME=0.001351577 SE=0.003172651 warnings=
+O1_READY pair=O1_Q17 docs=20,000 eligible=2,121,799 aligned=2,121,799
+O1_LOAD pair=O1_Q4
+MODEL_START O1-O1_Q4-global rows=983,548 docs=18,082
+MODEL_DONE O1-O1_Q4-global status=COMPLETE converged=True AME=-0.01257916 raw_AME=-0.01257916 SE=0.001007552 warnings=
+MODEL_START O1-O1_Q4-nominal_to_particle rows=284,536 docs=15,996
+MODEL_DONE O1-O1_Q4-nominal_to_particle status=COMPLETE converged=True AME=-0.009847589 raw_AME=-0.009847589 SE=0.002905971 warnings=
+O1_READY pair=O1_Q4 docs=20,000 eligible=2,099,565 aligned=2,099,565
+O1_ANALYSIS_COMPLETE pairs=3 fits=6
+COMMAND_EXIT=0
+END_UTC=2026-10-12 23:18:50 UTC
