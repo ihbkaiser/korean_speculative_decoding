@@ -426,4 +426,20 @@ G1 TF and replay outputs are under `results/naacl_experiments/teacher_forced/gen
 
 M1 outputs are under `results/naacl_experiments/teacher_forced/generated/ministral8/ministral3/common/` and `results/naacl_experiments/simulated/M1/common/`. These are offline replay estimates; M1 has not had full live validation.
 
-**Queue status at 09:53 UTC:** Qwen grid, G1 cross-model TF/replay/full V0, and M1 draft TF/replay are complete and preserved. Q2 and G1 V0 exceed the 95% shared-context agreement level but fail the additional zero-unmatched check. Remaining core jobs: H human-text scoring for all draft/target models, followed by the plan-approved 2,000-document Wikipedia-ko job. Resolve/interpret the strict V0 condition before claiming full live validation.
+### H human-text scoring: Qwen cells
+
+- Command template: `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout --foreground --signal=TERM --kill-after=10s 14400s /venv/main/bin/python -u scripts/tf_score.py --model MODEL --target TARGET --split common --role ROLE --continuation human --max-prompts 10000 --batch-size 32 --chunk-positions 32 --output-dir results/naacl_experiments`. The six concrete commands are captured by the per-cell logs below; each loaded its exact pinned Qwen revision from `/dev/shm/naacl_models`.
+- The human branch uses each model's tokenizer to take the document's real next 128 tokens after a 128-token prompt. It considered the first 10,000 common-split documents and skipped the same 278 documents without a full prompt and continuation, leaving 9,722 prompts / 1,171,450 continuation positions per cell.
+
+| Cell | Model / target | Prompts | Positions | Summed shard time | Result |
+| --- | --- | ---: | ---: | ---: | --- |
+| Target qwen17 | qwen17 / qwen17 | 9,722 | 1,171,450 | 256.41 s | Complete; all five head checks pass |
+| Target qwen4 | qwen4 / qwen4 | 9,722 | 1,171,450 | 404.28 s | Complete; all five head checks pass |
+| Target qwen8 | qwen8 / qwen8 | 9,722 | 1,171,450 | 573.44 s | Complete; all five head checks pass |
+| Draft qwen06 | qwen06 / qwen4 | 9,722 | 1,171,450 | 178.43 s | Complete; all five head checks pass |
+| Draft qwen17 | qwen17 / qwen8 | 9,722 | 1,171,450 | 235.98 s | Complete; all five head checks pass |
+| Draft qwen4 | qwen4 / qwen8 | 9,722 | 1,171,450 | 342.34 s | Complete; all five head checks pass |
+
+All outputs are under `results/naacl_experiments/teacher_forced/human/{target}/{model}/common/`; run metadata records model revisions, prompt hashes, and each shard's head check and timing. Logs are `logs/naacl_experiments/20261012/H-{qwen17-target,qwen4-target,qwen8-target,qwen06-draft-qwen4,qwen17-draft-qwen8,qwen4-draft-qwen8}.log`; model download/smoke logs are `H-qwen*-download-smoke.log`. The Qwen weight files were evicted after these cells; `H-Qwen-eviction.log` records the four pair-scoped evictions.
+
+**Queue status at 10:37 UTC:** Qwen grid, G1 cross-model TF/replay/full V0, M1 draft TF/replay, and six Qwen H cells are complete and preserved. Q2 and G1 V0 exceed the 95% shared-context agreement level but fail the additional zero-unmatched check. Remaining core jobs: four H cells for Gemma and Ministral, followed by the plan-approved 2,000-document Wikipedia-ko job. Resolve/interpret the strict V0 condition before claiming full live validation.
