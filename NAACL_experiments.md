@@ -442,6 +442,18 @@ M1 outputs are under `results/naacl_experiments/teacher_forced/generated/ministr
 
 All outputs are under `results/naacl_experiments/teacher_forced/human/{target}/{model}/common/`; run metadata records model revisions, prompt hashes, and each shard's head check and timing. Logs are `logs/naacl_experiments/20261012/H-{qwen17-target,qwen4-target,qwen8-target,qwen06-draft-qwen4,qwen17-draft-qwen8,qwen4-draft-qwen8}.log`; model download/smoke logs are `H-qwen*-download-smoke.log`. The Qwen weight files were evicted after these cells; `H-Qwen-eviction.log` records the four pair-scoped evictions.
 
+### H human-text scoring: Gemma cells
+
+- Command template: `NAACL_MODEL_DIR_GEMMA4=/workspace/naacl_gemma_models NAACL_MODEL_DIR_GEMMA12=/dev/shm/naacl_models PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout --foreground --signal=TERM --kill-after=10s 14400s /venv/main/bin/python -u scripts/tf_score.py --model MODEL --target gemma12 --split common --role ROLE --continuation human --max-prompts 10000 --batch-size 32 --chunk-positions 32 --output-dir results/naacl_experiments`.
+- Gemma tokenization skipped 396 of the first 10,000 common documents because they were too short for a 128-token prompt plus continuation; both cells scored the remaining 9,604 documents / 1,127,951 continuation positions across five shards. Every shard passed (`head_scale=1`, `head_check_max_abs_error=0`).
+
+| Cell | Model / target | Prompts | Positions | Summed shard time | Result |
+| --- | --- | ---: | ---: | ---: | --- |
+| Target gemma12 | gemma12 / gemma12 | 9,604 | 1,127,951 | 844.90 s | Complete; all five head checks pass |
+| Draft gemma4 | gemma4 / gemma12 | 9,604 | 1,127,951 | 348.11 s | Complete; all five head checks pass |
+
+Gemma outputs are under `results/naacl_experiments/teacher_forced/human/gemma12/{gemma12,gemma4}/common/`. Logs: `H-gemma12-target.log`, `H-gemma4-draft-gemma12.log`, and `H-gemma12-download-smoke.log`. Gemma12 weights were removed from `/dev/shm` after scoring; Gemma4 remains in `/workspace/naacl_gemma_models` for W. The first attempted eviction mistakenly used the download `--model` flag and stopped at the storage preflight without changing files; the subsequent `--evict-pair G1 --model-root /dev/shm/naacl_models` removed all Gemma12 weight shards. Both command logs are preserved as `H-Gemma12-eviction-misflagged-download-attempt.log` and `H-G1-eviction.log`.
+
 ### W Wikipedia-ko data preparation
 
 - Applied the plan's storage cut from 5,000 to 2,000 prompts: retain the original 1,000-document local seed and append 1,000 additional unique articles.
@@ -450,4 +462,4 @@ All outputs are under `results/naacl_experiments/teacher_forced/human/{target}/{
 - Frozen data: `data/naacl_wikipedia_2k.parquet` (SHA-256 `a96dc3086f73c587373036b287cf53708f43a5a69d0d0d8464c2f3ea0785944b`) and `data/naacl_wikipedia_2k_ids.txt`. Provenance, seed hash, ordered ID/text hashes: `results/naacl_experiments/provenance/wikipedia_2k_manifest.json`.
 - Dedicated run config: `configs/naacl_wikipedia.yaml`; it points to the frozen 2k pool and isolates W outputs under `results/naacl_experiments/wikipedia/`. W inference remains pending: generate Qwen4 and Gemma12 continuations; score/alignment for each target; teacher-force the Qwen06 and Gemma4 drafts; then run Q2 and G1 replay summaries.
 
-**Queue status at 10:51 UTC:** Qwen grid, G1 cross-model TF/replay/full V0, M1 draft TF/replay, and six Qwen H cells are complete and preserved. The two Gemma H cells are running; two Ministral H cells remain. W data is frozen and ready for inference at the plan-approved 2,000-document size. Q2 and G1 V0 exceed the 95% shared-context agreement level but fail the additional zero-unmatched check. Interpret that condition before claiming full live validation.
+**Queue status at 11:05 UTC:** Qwen grid, G1 cross-model TF/replay/full V0, M1 draft TF/replay, and all eight Qwen/Gemma H cells are complete and preserved. Two Ministral H cells remain. W data is frozen and ready for inference at the plan-approved 2,000-document size. Q2 and G1 V0 exceed the 95% shared-context agreement level but fail the additional zero-unmatched check. Interpret that condition before claiming full live validation.

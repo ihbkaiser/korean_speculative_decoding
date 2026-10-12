@@ -1,0 +1,7 @@
+MODEL_STORAGE root=/dev/shm/naacl_models free_gib=30.86 requested_weight_gib=22.70
+MODEL gemma12 repo=google/gemma-3-12b-pt revision=295efb63d01a7017928f273a94ebb86105c9526f gated=manual weight_gib=22.70 shards=5
+DOWNLOAD_START gemma12 files=17 gated=manual
+Fetching 17 files:   0%|          | 0/17 [00:00<?, ?it/s]Fetching 17 files:  76%|███████▋  | 13/17 [03:11<00:58, 14.73s/it]Fetching 17 files:  82%|████████▏ | 14/17 [03:19<00:42, 14.03s/it]Fetching 17 files:  94%|█████████▍| 16/17 [03:19<00:10, 10.98s/it]Fetching 17 files: 100%|██████████| 17/17 [03:20<00:00,  9.56s/it]Fetching 17 files: 100%|██████████| 17/17 [03:20<00:00, 11.77s/it]
+DOWNLOAD_COMPLETE gemma12 local_path=/dev/shm/naacl_models/google--gemma-3-12b-pt/295efb63d01a7017928f273a94ebb86105c9526f
+Loading weights:   0%|          | 0/1065 [00:00<?, ?it/s]Loading weights:  34%|███▎      | 357/1065 [00:00<00:00, 3564.44it/s]Loading weights:  67%|██████▋   | 714/1065 [00:00<00:00, 3150.03it/s]Loading weights:  97%|█████████▋| 1033/1065 [00:00<00:00, 3049.67it/s]Loading weights: 100%|██████████| 1065/1065 [00:00<00:00, 3111.39it/s]
+SMOKE_LOAD_OK gemma12 google/gemma-3-12b-pt@295efb63d01a7017928f273a94ebb86105c9526f on NVIDIA RTX A6000

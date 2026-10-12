@@ -1,0 +1,86 @@
+{
+  "stage": "teacher_forced_scoring",
+  "continuation": "human",
+  "target_key": "gemma12",
+  "target_id": "google/gemma-3-12b-pt",
+  "target_revision": "295efb63d01a7017928f273a94ebb86105c9526f",
+  "scored_model_key": "gemma4",
+  "scored_model_id": "google/gemma-3-4b-pt",
+  "scored_model_revision": "cc012e0a6d0787b4adcc0fa2c4da74402494554d",
+  "role": "draft",
+  "split": "common",
+  "prompt_count": 9604,
+  "prompt_ids_sha256": "eaccab8c198d99ddf443dbd085df1fc919e3a1e69049296433a3c9c93aa6786a",
+  "chunk_positions": 32,
+  "requested_batch_size": 32,
+  "dtype": "bfloat16",
+  "attention_backend": "sdpa",
+  "transformers": "5.19.0",
+  "torch": "2.11.0+cu128",
+  "gpu": "NVIDIA RTX A6000",
+  "model_path": "/workspace/naacl_gemma_models/google--gemma-3-4b-pt/cc012e0a6d0787b4adcc0fa2c4da74402494554d",
+  "prompt_pool_sha256": "d0d316155380aac0d6aa3ade8bddd93f96579a7c88c750167c9d012162fa72eb",
+  "completed_shards": [
+    {
+      "shard": 0,
+      "prompt_count": 2000,
+      "scored_token_count": 234417,
+      "actual_batch_sizes": [
+        16,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 72.6001900100382
+    },
+    {
+      "shard": 1,
+      "prompt_count": 2000,
+      "scored_token_count": 235229,
+      "actual_batch_sizes": [
+        16,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 72.39590594696347
+    },
+    {
+      "shard": 2,
+      "prompt_count": 2000,
+      "scored_token_count": 235025,
+      "actual_batch_sizes": [
+        16,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 72.45690878294408
+    },
+    {
+      "shard": 3,
+      "prompt_count": 2000,
+      "scored_token_count": 233633,
+      "actual_batch_sizes": [
+        16,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 72.43642580904998
+    },
+    {
+      "shard": 4,
+      "prompt_count": 1604,
+      "scored_token_count": 189647,
+      "actual_batch_sizes": [
+        4,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 58.216038379934616
+    }
+  ],
+  "status": "COMPLETE"
+}
