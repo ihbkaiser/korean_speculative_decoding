@@ -1,0 +1,14 @@
+AFFIX_LOCUS single_boundary_cross_rows=168,861 fine_boundaries=191
+REJECTIONS n=717,681 aligned=717,681
+PARTICLE_CONFUSION n2p_cross_rejections=6,038 mapped_targets=6,038
+Traceback (most recent call last):
+  File "/workspace/korean_speculative_decoding/scripts/analyze_naacl_rq3.py", line 329, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/analyze_naacl_rq3.py", line 302, in main
+    slopes = slope_table(out / "rq2_qwen_grid.csv")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/analyze_naacl_rq3.py", line 212, in slope_table
+    "target_size_b": size[target],
+                     ~~~~^^^^^^^^
+KeyError: 'qwen8'

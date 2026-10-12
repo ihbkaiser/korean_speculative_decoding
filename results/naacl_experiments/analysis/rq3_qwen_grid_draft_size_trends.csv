@@ -1,0 +1,7 @@
+target,target_size_b,estimand,n_draft_sizes,draft_sizes_b,slope_pp_per_draft_billion,intercept_pp,r_squared_descriptive,status
+qwen17,1.7,global,1,0.6,,,,NOT_ESTIMABLE_LT2_DRAFT_SIZES
+qwen17,1.7,nominal_to_particle,1,0.6,,,,NOT_ESTIMABLE_LT2_DRAFT_SIZES
+qwen4,4.0,global,2,0.6;1.7,-0.6420376233908457,0.40165789072280794,1.0,DESCRIPTIVE_SLOPE
+qwen4,4.0,nominal_to_particle,2,0.6;1.7,-2.205799887556555,2.7622360880061345,1.0,DESCRIPTIVE_SLOPE
+qwen8,8.0,global,3,0.6;1.7;4,-0.4892540421821045,0.41315331750681256,0.8719880148686282,DESCRIPTIVE_SLOPE
+qwen8,8.0,nominal_to_particle,3,0.6;1.7;4,-1.3382523515843152,3.0458764911302247,0.8472366525469127,DESCRIPTIVE_SLOPE

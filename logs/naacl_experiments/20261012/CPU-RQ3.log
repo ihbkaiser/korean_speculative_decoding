@@ -1,0 +1,3 @@
+AFFIX_LOCUS single_boundary_cross_rows=168,861 fine_boundaries=191
+REJECTIONS n=717,681 aligned=717,681
+PARTICLE_CONFUSION target_consistent_n2p_cross_rejections=5,842 mapped_targets=5,842
