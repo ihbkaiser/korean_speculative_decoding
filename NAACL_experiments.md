@@ -409,4 +409,21 @@ Q3 outputs are under `results/naacl_experiments/teacher_forced/generated/qwen8/q
 
 G1 TF and replay outputs are under `results/naacl_experiments/teacher_forced/generated/gemma12/gemma4/common/` and `results/naacl_experiments/simulated/G1/common/`. G1 live validation is under `results/naacl_experiments/validation/v0/G1/`.
 
-**Queue status at 09:34 UTC:** Qwen grid and G1 cross-model TF/replay/full V0 are complete and preserved; Q2 and G1 V0 both exceed the 95% shared-context agreement level but fail the additional zero-unmatched check. Remaining core jobs: M1 draft TF/replay, H human-text scoring for all drafts/targets, and the plan-approved 2,000-document Wikipedia-ko job. Resolve/interpret the strict V0 condition before claiming full live validation.
+### M1 cross-model draft scoring and replay
+
+- Ministral pair tokenizer audit: `TOKENIZER_AUDIT M1 PASS`; both pinned models have identical serialized tokenizers, vocabularies, special tokens, and probe IDs/offsets. Report: `results/naacl_experiments/provenance/tokenizer_audits/M1.json`; log: `logs/naacl_experiments/20261012/TF-M1-tokenizer-audit.log`.
+- Draft TF command: `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout --foreground --signal=TERM --kill-after=10s 14400s /venv/main/bin/python -u scripts/tf_score.py --model ministral3 --target ministral8 --split common --role draft --batch-size 64 --chunk-positions 32 --output-dir results/naacl_experiments`. Log: `logs/naacl_experiments/20261012/TF-M1-draft.log`.
+- TF completed all 20,000 common prompts in 10 shards, totaling 2,498,617 positions. Every shard passed the LM-head check (`scale=1`, `max_abs_error=0`); summed shard wall time was 565.54 seconds. Manifest status: `COMPLETE`. Model revisions: Ministral-3-3B `6f9c4b12a95b139af68670a6713616b757923735`; Ministral-3-8B `d4883f9b36aa2e5d775730d3fdba3d30de51a8ef`.
+- Simulation command: `timeout --foreground --signal=TERM --kill-after=10s 21600s /venv/main/bin/python -u scripts/simulate_sd.py --pair M1 --split common --output-dir results/naacl_experiments`. Log: `logs/naacl_experiments/20261012/TF-M1-simulate.log`; all five block sizes completed.
+
+| Block size | Eligible proposals | Rejections | Rejection rate |
+| ---: | ---: | ---: | ---: |
+| 1 | 1,335,792 | 163,248 | 0.122211 |
+| 2 | 1,774,690 | 216,690 | 0.122100 |
+| 4 | 2,115,278 | 254,827 | 0.120470 |
+| 8 | 2,324,623 | 275,176 | 0.118374 |
+| 16 | 2,428,883 | 282,755 | 0.116414 |
+
+M1 outputs are under `results/naacl_experiments/teacher_forced/generated/ministral8/ministral3/common/` and `results/naacl_experiments/simulated/M1/common/`. These are offline replay estimates; M1 has not had full live validation.
+
+**Queue status at 09:53 UTC:** Qwen grid, G1 cross-model TF/replay/full V0, and M1 draft TF/replay are complete and preserved. Q2 and G1 V0 exceed the 95% shared-context agreement level but fail the additional zero-unmatched check. Remaining core jobs: H human-text scoring for all draft/target models, followed by the plan-approved 2,000-document Wikipedia-ko job. Resolve/interpret the strict V0 condition before claiming full live validation.
