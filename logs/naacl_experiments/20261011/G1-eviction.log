@@ -1,0 +1,6 @@
+COMMAND_START_UTC=2026-10-11 21:55:42
+COMMAND=/venv/main/bin/python -u scripts/download_models.py --evict-pair G1 
+EVICT gemma4: already absent (/dev/shm/naacl_models/google--gemma-3-4b-pt/cc012e0a6d0787b4adcc0fa2c4da74402494554d)
+EVICT gemma12: removed 5 weight shards; kept tokenizer/config
+COMMAND_EXIT=0
+COMMAND_END_UTC=2026-10-11 21:55:45

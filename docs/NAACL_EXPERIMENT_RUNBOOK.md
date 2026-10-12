@@ -134,6 +134,30 @@ python scripts/validate_live_sd.py --pair Q2 --prompts 100 --output-dir "$pilot"
 
 Record measured per-job ETAs before starting the full split.
 
+The validator requires at least 95% rejection-label agreement on eligible
+proposals whose committed context is shared, with zero unmatched positions
+in that context. It also writes `position_comparison.parquet`,
+prompt-cluster bootstrap intervals, and agreement sensitivity at fixed
+minimum-margin thresholds. Margin sensitivity is diagnostic and does not
+change the gate. If simulation events predate the margin fields, regenerate
+them with `--force` before validation:
+
+```bash
+python scripts/simulate_sd.py --pair Q2 --split common --max-prompts 100 \
+  --output-dir "$pilot" --force
+python scripts/validate_live_sd.py --pair Q2 --prompts 100 \
+  --output-dir "$pilot" --force
+```
+
+The report's `g0_gate_status` covers label agreement only; the job-ETA check
+remains a separate G0 requirement and must be recorded with the measured
+schedule. The V0 report records that this ETA component was not assessed by
+the validator.
+
+The 95% threshold is a post-freeze amendment made after the 100-prompt Q2
+pilot measured 98.11% agreement and was accepted. The original measurement is
+retained; see `results/naacl_experiments/provenance/experiment_decisions.json`.
+
 For G1, generate and score the Gemma-12B target on the common split, align its
 continuations, and then load Gemma-4B as the draft. Since Gemma-4B plus 12B is
 slightly larger than the 31 GiB tmpfs, use separate model roots for the V0 live
@@ -172,6 +196,8 @@ the plan. Its report includes both all-position agreement and agreement on
 positions whose preceding committed tokens still match the generated target
 continuation. The latter is the valid simulator comparison after a numerical
 near-tie changes a target continuation; later contexts are no longer the same.
+For the full validity check, run Q2 on 1,000 prompts and G1 on 500 prompts as
+specified in the plan; pilot-sized or custom runs are labeled separately.
 M1 does not need a V0 run.
 
 ## Table 1

@@ -1,0 +1,71 @@
+{
+  "stage": "target_path_morphology_alignment",
+  "target_key": "ministral8",
+  "revision": "d4883f9b36aa2e5d775730d3fdba3d30de51a8ef",
+  "split": "common",
+  "analyzer": "kiwi",
+  "prompt_count": 20000,
+  "completed_shards": [
+    {
+      "shard": 0,
+      "prompts": 2000,
+      "aligned_rows": 250504,
+      "resumed": false
+    },
+    {
+      "shard": 1,
+      "prompts": 2000,
+      "aligned_rows": 249654,
+      "resumed": false
+    },
+    {
+      "shard": 2,
+      "prompts": 2000,
+      "aligned_rows": 249880,
+      "resumed": false
+    },
+    {
+      "shard": 3,
+      "prompts": 2000,
+      "aligned_rows": 250566,
+      "resumed": false
+    },
+    {
+      "shard": 4,
+      "prompts": 2000,
+      "aligned_rows": 249353,
+      "resumed": false
+    },
+    {
+      "shard": 5,
+      "prompts": 2000,
+      "aligned_rows": 249527,
+      "resumed": false
+    },
+    {
+      "shard": 6,
+      "prompts": 2000,
+      "aligned_rows": 248743,
+      "resumed": false
+    },
+    {
+      "shard": 7,
+      "prompts": 2000,
+      "aligned_rows": 250104,
+      "resumed": false
+    },
+    {
+      "shard": 8,
+      "prompts": 2000,
+      "aligned_rows": 251271,
+      "resumed": false
+    },
+    {
+      "shard": 9,
+      "prompts": 2000,
+      "aligned_rows": 249015,
+      "resumed": false
+    }
+  ],
+  "status": "COMPLETE"
+}

@@ -1,0 +1,7 @@
+COMMAND_START_UTC=2026-10-11 21:57:19
+COMMAND=/venv/main/bin/python -u scripts/download_models.py --plan --pair M1 
+MODEL_STORAGE root=/dev/shm/naacl_models free_gib=30.92 requested_weight_gib=23.78
+MODEL ministral3 repo=mistralai/Ministral-3-3B-Base-2512 revision=6f9c4b12a95b139af68670a6713616b757923735 gated=False weight_gib=7.17 shards=2
+MODEL ministral8 repo=mistralai/Ministral-3-8B-Base-2512 revision=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef gated=False weight_gib=16.61 shards=4
+COMMAND_EXIT=0
+COMMAND_END_UTC=2026-10-11 21:57:20

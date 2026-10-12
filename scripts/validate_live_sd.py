@@ -9,6 +9,7 @@ import time
 from pathlib import Path
 
 import pandas as pd
+import numpy as np
 import torch
 from tqdm import tqdm
 
@@ -26,9 +27,16 @@ from src.naacl_experiment import (
     load_model,
     model_path,
     output_root,
+    prompt_ids_sha256,
     read_parquet_records,
     select_prompts,
+    sha256_file,
 )
+
+
+G0_REJECTION_AGREEMENT_THRESHOLD = 0.95
+PROMPT_BOOTSTRAP_REPLICATES = 2_000
+MARGIN_THRESHOLDS = (0.0, 0.001, 0.01, 0.1, 0.5)
 
 
 def _load_refs(out, target, prompts):
@@ -62,51 +70,188 @@ def _label_agreement(
         "rejected": "live_rejected",
         "draft_token_id": "live_draft_id",
         "target_greedy_token_id": "live_target_id",
+        "draft_top2_margin": "live_draft_top2_margin",
+        "target_top2_margin": "live_target_top2_margin",
     })
     simulated_eligible = simulated_eligible.rename(columns={
         "rejected": "sim_rejected",
         "draft_argmax_id": "sim_draft_id",
         "target_token_id": "sim_target_id",
+        "draft_top2_margin": "sim_draft_top2_margin",
+        "target_top2_margin": "sim_target_top2_margin",
     })
-    join = live_eligible.merge(
-        simulated_eligible[["doc_id", "position", "sim_rejected", "sim_draft_id", "sim_target_id"]],
+    margin_columns = [
+        "live_draft_top2_margin",
+        "live_target_top2_margin",
+        "sim_draft_top2_margin",
+        "sim_target_top2_margin",
+    ]
+    missing_margins = [
+        column for column in margin_columns if column.startswith("live_")
+        and column not in live_eligible.columns
+    ] + [
+        column for column in margin_columns if column.startswith("sim_")
+        and column not in simulated_eligible.columns
+    ]
+    if missing_margins:
+        raise RuntimeError(
+            "V0 margin audit inputs are missing: " + ", ".join(missing_margins)
+            + ". Regenerate the simulation and live validation outputs with the current code."
+        )
+    comparison = live_eligible.merge(
+        simulated_eligible[[
+            "doc_id", "position", "sim_rejected", "sim_draft_id", "sim_target_id",
+            "sim_draft_top2_margin", "sim_target_top2_margin",
+        ]],
         on=["doc_id", "position"],
-        how="inner",
+        how="outer",
         validate="one_to_one",
+        indicator="position_join_status",
     )
-    join["common_prefix_length"] = join["doc_id"].map(common_prefix_lengths).fillna(0).astype(int)
+    comparison["position_join_status"] = comparison["position_join_status"].astype(str)
+    comparison["common_prefix_length"] = comparison["doc_id"].map(common_prefix_lengths).fillna(0).astype(int)
     # A proposal at position t is comparable when the committed prefix before
     # t matches. If the output at t is the first divergence, its verification
     # still used the same context; later proposals did not.
-    shared_context = join[join["position"] <= join["common_prefix_length"]]
-    cross_join = None
-    shared_cross_join = None
-    if aligned is not None and not join.empty:
+    comparison["shared_context"] = comparison["position"] <= comparison["common_prefix_length"]
+    if aligned is not None and not comparison.empty:
         labels = aligned[["doc_id", "generated_token_position", "alignment_class", "alignment_status"]].copy()
         labels["position"] = labels["generated_token_position"].astype(int)
-        cross_join = join.merge(labels[["doc_id", "position", "alignment_class", "alignment_status"]], on=["doc_id", "position"], how="left", validate="many_to_one")
-        cross_join = cross_join[cross_join["alignment_class"].eq("CROSS") & cross_join["alignment_status"].eq("ALIGNED")]
-        shared_cross_join = cross_join[
-            cross_join["position"] <= cross_join["common_prefix_length"]
-        ]
+        comparison = comparison.merge(
+            labels[["doc_id", "position", "alignment_class", "alignment_status"]],
+            on=["doc_id", "position"],
+            how="left",
+            validate="many_to_one",
+        )
+    else:
+        comparison["alignment_class"] = None
+        comparison["alignment_status"] = None
 
-    def measure(frame):
+    joined = comparison[comparison["position_join_status"].eq("both")]
+    shared_context = joined[joined["shared_context"]]
+    cross_join = joined[
+        joined["alignment_class"].eq("CROSS")
+        & joined["alignment_status"].eq("ALIGNED")
+    ]
+    shared_cross_join = cross_join[cross_join["shared_context"]]
+
+    def prompt_cluster_ci(frame: pd.DataFrame):
+        if frame.empty:
+            return None
+        matches = (
+            frame["live_rejected"].fillna(False).astype(bool)
+            == frame["sim_rejected"].fillna(False).astype(bool)
+        )
+        per_prompt = pd.DataFrame({"doc_id": frame["doc_id"].astype(str), "match": matches})
+        grouped = per_prompt.groupby("doc_id", sort=True)["match"].agg(["sum", "count"])
+        successes = grouped["sum"].to_numpy(dtype=np.float64)
+        totals = grouped["count"].to_numpy(dtype=np.float64)
+        if len(successes) == 1:
+            point = float(successes.sum() / totals.sum())
+            return {
+                "method": "prompt_cluster_bootstrap_percentile",
+                "confidence_level": 0.95,
+                "replicates": PROMPT_BOOTSTRAP_REPLICATES,
+                "lower": point,
+                "upper": point,
+                "prompt_clusters": 1,
+            }
+        rng = np.random.default_rng(20261011)
+        draws = rng.integers(
+            0,
+            len(successes),
+            size=(PROMPT_BOOTSTRAP_REPLICATES, len(successes)),
+        )
+        sampled_successes = successes[draws].sum(axis=1)
+        sampled_totals = totals[draws].sum(axis=1)
+        values = sampled_successes / sampled_totals
+        lower, upper = np.quantile(values, [0.025, 0.975])
+        return {
+            "method": "prompt_cluster_bootstrap_percentile",
+            "confidence_level": 0.95,
+            "replicates": PROMPT_BOOTSTRAP_REPLICATES,
+            "lower": float(lower),
+            "upper": float(upper),
+            "prompt_clusters": int(len(successes)),
+        }
+
+    def measure(frame: pd.DataFrame, include_ci: bool = True):
         if frame is None or frame.empty:
-            return {"compared": 0, "rejection_label_agreement": None, "draft_id_agreement": None, "target_id_agreement": None}
+            return {
+                "compared": 0,
+                "prompt_count": 0,
+                "rejection_label_agreement": None,
+                "rejection_label_agreement_ci95_prompt_cluster_bootstrap": None,
+                "draft_id_agreement": None,
+                "target_id_agreement": None,
+                "rejection_confusion": {
+                    "both_reject": 0,
+                    "both_accept": 0,
+                    "live_reject_sim_accept": 0,
+                    "live_accept_sim_reject": 0,
+                },
+            }
+        live_rejected = frame["live_rejected"].fillna(False).astype(bool)
+        sim_rejected = frame["sim_rejected"].fillna(False).astype(bool)
+        confusion = {
+            "both_reject": int((live_rejected & sim_rejected).sum()),
+            "both_accept": int((~live_rejected & ~sim_rejected).sum()),
+            "live_reject_sim_accept": int((live_rejected & ~sim_rejected).sum()),
+            "live_accept_sim_reject": int((~live_rejected & sim_rejected).sum()),
+        }
         return {
             "compared": len(frame),
-            "rejection_label_agreement": float((frame["live_rejected"].astype(bool) == frame["sim_rejected"].fillna(False).astype(bool)).mean()),
+            "prompt_count": int(frame["doc_id"].nunique()),
+            "rejection_label_agreement": float((live_rejected == sim_rejected).mean()),
+            "rejection_label_agreement_ci95_prompt_cluster_bootstrap": (
+                prompt_cluster_ci(frame) if include_ci else None
+            ),
             "draft_id_agreement": float((frame["live_draft_id"].astype("int64") == frame["sim_draft_id"].astype("int64")).mean()),
             "target_id_agreement": float((frame["live_target_id"].astype("int64") == frame["sim_target_id"].astype("int64")).mean()),
+            "rejection_confusion": confusion,
+        }
+
+    def margin_sensitivity(frame: pd.DataFrame):
+        usable = frame[margin_columns].apply(pd.to_numeric, errors="coerce")
+        complete = usable.notna().all(axis=1)
+        minimum_margin = usable.min(axis=1)
+        rows = []
+        for threshold in MARGIN_THRESHOLDS:
+            selected = frame[complete & minimum_margin.ge(threshold)]
+            measured = measure(selected, include_ci=False)
+            rows.append({
+                "minimum_margin_threshold": threshold,
+                "compared": measured["compared"],
+                "coverage_of_compared_positions": (
+                    float(measured["compared"] / len(frame)) if len(frame) else None
+                ),
+                "rejection_label_agreement": measured["rejection_label_agreement"],
+            })
+        return {
+            "definition": "Minimum of live and teacher-forced draft and target top-two logit margins.",
+            "positions_with_all_four_margins": int(complete.sum()),
+            "positions_missing_a_margin": int((~complete).sum()),
+            "by_minimum_margin_threshold": rows,
         }
 
     return {
-        "all_positions": measure(join),
+        "all_positions": measure(joined),
         "shared_context": measure(shared_context),
         "cross_all_positions": measure(cross_join),
         "cross_shared_context": measure(shared_cross_join),
-        "all_joined_positions": len(join),
+        "all_joined_positions": len(joined),
         "shared_context_joined_positions": len(shared_context),
+        "shared_context_unmatched_live_positions": int((
+            comparison["shared_context"] & comparison["position_join_status"].eq("left_only")
+        ).sum()),
+        "shared_context_unmatched_simulation_positions": int((
+            comparison["shared_context"] & comparison["position_join_status"].eq("right_only")
+        ).sum()),
+        "unmatched_live_positions_all_contexts": int(comparison["position_join_status"].eq("left_only").sum()),
+        "unmatched_simulation_positions_all_contexts": int(comparison["position_join_status"].eq("right_only").sum()),
+        "margin_sensitivity_shared_context": margin_sensitivity(shared_context),
+        "margin_sensitivity_cross_shared_context": margin_sensitivity(shared_cross_join),
+        "comparison": comparison,
     }
 
 
@@ -127,12 +272,36 @@ def main() -> int:
     pair = config["pairs"][args.pair]
     default_count = 1_000 if args.pair == "Q2" else 500
     default_batch = 64 if args.pair == "Q2" else 32
-    count = args.prompts or default_count
-    batch_size = args.batch_size or default_batch
+    count = args.prompts if args.prompts is not None else default_count
+    batch_size = args.batch_size if args.batch_size is not None else default_batch
     if count < 1 or batch_size < 1:
         parser.error("--prompts and --batch-size must be positive")
-    selected = select_prompts(config, "common")[:count]
+    available_prompts = select_prompts(config, "common")
+    if count > len(available_prompts):
+        parser.error(f"requested {count} prompts but common split contains only {len(available_prompts)}")
+    selected = available_prompts[:count]
     out = output_root(config, args.output_dir)
+    simulation_path = out / "simulated" / args.pair / "common" / "events_k4.parquet"
+    if not simulation_path.is_file():
+        raise FileNotFoundError(f"Run scripts/simulate_sd.py --pair {args.pair} --split common before V0")
+    simulation = pd.read_parquet(simulation_path)
+    required_simulation_margins = {"draft_top2_margin", "target_top2_margin"}
+    missing_simulation_margins = required_simulation_margins - set(simulation.columns)
+    if missing_simulation_margins:
+        raise RuntimeError(
+            "Simulation events lack margin audit columns: "
+            + ", ".join(sorted(missing_simulation_margins))
+            + ". Rerun scripts/simulate_sd.py with the current code before V0."
+        )
+    selected_ids = {str(row["doc_id"]) for row in selected}
+    simulation["doc_id"] = simulation["doc_id"].astype(str)
+    simulation = simulation[simulation["doc_id"].isin(selected_ids)]
+    missing_simulated_prompts = selected_ids - set(simulation["doc_id"])
+    if missing_simulated_prompts:
+        raise RuntimeError(
+            f"Simulation events are missing {len(missing_simulated_prompts)} selected prompts; "
+            "regenerate the simulation for the requested sample."
+        )
     target_refs = _load_refs(out, pair["target"], selected)
     tokenizer_spec = config["models"][pair["target"]]
     tokenizer = load_table1_tokenizer(
@@ -154,7 +323,13 @@ def main() -> int:
     destination.mkdir(parents=True, exist_ok=True)
     events_path = destination / "live_events.parquet"
     parity_path = destination / "target_sequence_parity.parquet"
-    if (events_path.exists() or parity_path.exists()) and not args.force:
+    comparison_path = destination / "position_comparison.parquet"
+    report_path = destination / "agreement_report.json"
+    existing_outputs = [
+        path for path in (events_path, parity_path, comparison_path, report_path)
+        if path.exists()
+    ]
+    if existing_outputs and not args.force:
         raise FileExistsError(f"V0 output already exists under {destination}; pass --force to replace")
 
     draft = load_model(config, pair["draft"])
@@ -210,12 +385,6 @@ def main() -> int:
     cleanup_cuda(torch)
 
     live = pd.DataFrame(all_events)
-    simulation_path = out / "simulated" / args.pair / "common" / "events_k4.parquet"
-    if not simulation_path.is_file():
-        raise FileNotFoundError(f"Run scripts/simulate_sd.py --pair {args.pair} --split common before V0")
-    simulation = pd.read_parquet(simulation_path)
-    selected_ids = {str(row["doc_id"]) for row in selected}
-    simulation = simulation[simulation["doc_id"].astype(str).isin(selected_ids)]
     aligned_path = out / "aligned" / "kiwi" / pair["target"] / "common"
     if not list(aligned_path.glob("shard-*.parquet")):
         aligned_path = out / "aligned" / "kiwi" / pair["target"] / "all"
@@ -224,24 +393,53 @@ def main() -> int:
     if aligned is not None:
         aligned = aligned[aligned["doc_id"].astype(str).isin(selected_ids)]
     agreement = _label_agreement(live, simulation, aligned, common_prefix_lengths)
+    comparison = agreement.pop("comparison")
+    atomic_parquet(comparison.to_dict(orient="records"), comparison_path)
     parity = pd.DataFrame(parity_rows)
     total_ref_tokens = int(parity["target_generated_length"].sum())
     exact_sequences = int(parity["exact_sequence_match"].sum())
     sequence_position_agreement = int(parity["common_prefix_length"].sum()) / max(1, int(parity["compared_tokens"].sum()))
     shared_agreement = agreement["shared_context"]
+    shared_context_unmatched = (
+        agreement["shared_context_unmatched_live_positions"]
+        + agreement["shared_context_unmatched_simulation_positions"]
+    )
     gate_status = (
         "PASS"
         if shared_agreement["rejection_label_agreement"] is not None
-        and shared_agreement["rejection_label_agreement"] >= 0.99
+        and shared_agreement["rejection_label_agreement"] >= G0_REJECTION_AGREEMENT_THRESHOLD
+        and shared_context_unmatched == 0
         else "FAIL"
+    )
+    if gate_status == "PASS":
+        gate_reason = None
+    elif shared_context_unmatched:
+        gate_reason = "One or more shared-context positions are missing from one side of the comparison."
+    else:
+        gate_reason = "Shared-context rejection-label agreement is below the configured threshold."
+    validation_scope = (
+        "g0_pilot"
+        if args.pair == "Q2" and count == 100
+        else "full_v0"
+        if (args.pair == "Q2" and count == 1_000) or (args.pair == "G1" and count == 500)
+        else "custom"
     )
     metadata = {
         "pair": args.pair,
         "draft": pair["draft"],
         "target": pair["target"],
+        "draft_revision": config["models"][pair["draft"]]["revision"],
+        "target_revision": config["models"][pair["target"]]["revision"],
         "sample_prompts": count,
+        "validation_scope": validation_scope,
+        "prompt_ids_sha256": prompt_ids_sha256(selected),
+        "config_sha256": sha256_file(args.config),
+        "experiment_plan_sha256": sha256_file(ROOT / "NAACL_experiments.md"),
+        "simulation_events_sha256": sha256_file(simulation_path),
         "batch_size": batch_size,
         "block_size": 4,
+        "g0_gate_metric": "shared-context eligible rejection-label agreement",
+        "g0_gate_threshold": G0_REJECTION_AGREEMENT_THRESHOLD,
         "target_sequence_exact_prompts": exact_sequences,
         "target_sequence_exact_fraction": exact_sequences / count,
         "target_sequence_common_prefix_fraction": sequence_position_agreement,
@@ -252,11 +450,30 @@ def main() -> int:
         "live_vs_simulation_cross_label_agreement_shared_context": agreement["cross_shared_context"],
         "live_vs_simulation_joined_proposal_positions_all": agreement["all_joined_positions"],
         "live_vs_simulation_joined_proposal_positions_shared_context": agreement["shared_context_joined_positions"],
+        "shared_context_unmatched_live_positions": agreement["shared_context_unmatched_live_positions"],
+        "shared_context_unmatched_simulation_positions": agreement["shared_context_unmatched_simulation_positions"],
+        "unmatched_live_positions_all_contexts": agreement["unmatched_live_positions_all_contexts"],
+        "unmatched_simulation_positions_all_contexts": agreement["unmatched_simulation_positions_all_contexts"],
+        "margin_sensitivity_shared_context": agreement["margin_sensitivity_shared_context"],
+        "margin_sensitivity_cross_shared_context": agreement["margin_sensitivity_cross_shared_context"],
         "g0_gate_status": gate_status,
+        "g0_gate_reason": gate_reason,
+        "g0_eta_status": "NOT_ASSESSED_BY_VALIDATION_SCRIPT",
+        "position_comparison_artifact": str(comparison_path),
+        "position_comparison_rows": len(comparison),
+        "confidence_interval_method": "2,000-replicate percentile bootstrap sampling prompts as clusters; seed 20261011",
+        "runtime": {
+            "python": sys.version.split()[0],
+            "torch": torch.__version__,
+            "cuda_runtime": torch.version.cuda,
+            "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else None,
+            "pandas": pd.__version__,
+            "numpy": np.__version__,
+        },
         "wall_seconds": time.monotonic() - started,
         "status": "COMPLETE",
     }
-    atomic_json(destination / "agreement_report.json", metadata)
+    atomic_json(report_path, metadata)
     print(
         f"V0_COMPLETE pair={args.pair} prompts={count} exact_sequences={exact_sequences}/{count} "
         f"shared_context_label_agreement={shared_agreement['rejection_label_agreement']} "

@@ -96,11 +96,21 @@ def _build_human_refs(prompts, tokenizer, max_prompt, max_new):
 
 def _body_and_head(model):
     if getattr(model.config, "model_type", None) == "mistral3":
+        # Mistral3ForConditionalGeneration nests the text model under its
+        # multimodal wrapper: model.model.language_model. Older/alternate
+        # implementations may expose language_model directly.
         language_model = getattr(model, "language_model", None)
+        if language_model is None:
+            wrapper = getattr(model, "model", None)
+            language_model = getattr(wrapper, "language_model", None)
         if language_model is None:
             raise RuntimeError("Mistral3 checkpoint has no text-only language_model")
         body = getattr(language_model, "model", None)
-        head = getattr(language_model, "lm_head", None)
+        if body is None:
+            body = language_model
+        head = getattr(model, "lm_head", None)
+        if head is None:
+            head = getattr(language_model, "lm_head", None)
     else:
         body = getattr(model, "model", None)
         head = model.get_output_embeddings()

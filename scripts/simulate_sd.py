@@ -78,6 +78,8 @@ def _simulate_prompt(group, block_size, pair_id, split):
                 "draft_argmax_id": proposal_id,
                 "target_argmax_id": int(row.target_argmax_id),
                 "target_matches_continuation": bool(int(row.target_argmax_id) == target_id),
+                "draft_top2_margin": float(row.draft_top2_margin),
+                "target_top2_margin": float(row.target_top2_margin),
                 "eligible": True,
                 "accepted": bool(match),
                 "rejected": bool(not match),
@@ -112,6 +114,8 @@ def _simulate_prompt(group, block_size, pair_id, split):
                     "draft_argmax_id": None,
                     "target_argmax_id": int(row.target_argmax_id),
                     "target_matches_continuation": bool(int(row.target_argmax_id) == int(row.target_token_id)),
+                    "draft_top2_margin": None,
+                    "target_top2_margin": None,
                     "eligible": False,
                     "accepted": False,
                     "rejected": None,
@@ -165,10 +169,16 @@ def main() -> int:
     out = output_root(config, args.output_dir)
     target_frame = _read_tf(out, pair["target"], pair["target"], args.split, pool_indices)
     draft_frame = _read_tf(out, pair["target"], pair["draft"], args.split, pool_indices)
-    draft_frame = draft_frame.rename(columns={"argmax_id": "draft_argmax_id"})
+    draft_frame = draft_frame.rename(columns={
+        "argmax_id": "draft_argmax_id",
+        "top2_margin": "draft_top2_margin",
+    })
     merged = draft_frame.merge(
-        target_frame[["doc_id", "pool_index", "position", "target_token_id", "argmax_id"]].rename(
-            columns={"argmax_id": "target_argmax_id"}
+        target_frame[["doc_id", "pool_index", "position", "target_token_id", "argmax_id", "top2_margin"]].rename(
+            columns={
+                "argmax_id": "target_argmax_id",
+                "top2_margin": "target_top2_margin",
+            }
         ),
         on=["doc_id", "pool_index", "position"],
         suffixes=("_draft", "_target"),

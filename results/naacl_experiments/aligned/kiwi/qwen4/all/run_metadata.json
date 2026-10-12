@@ -1,0 +1,131 @@
+{
+  "stage": "target_path_morphology_alignment",
+  "target_key": "qwen4",
+  "revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+  "split": "all",
+  "analyzer": "kiwi",
+  "prompt_count": 40000,
+  "completed_shards": [
+    {
+      "shard": 0,
+      "prompts": 2000,
+      "aligned_rows": 249181,
+      "resumed": false
+    },
+    {
+      "shard": 1,
+      "prompts": 2000,
+      "aligned_rows": 247555,
+      "resumed": false
+    },
+    {
+      "shard": 2,
+      "prompts": 2000,
+      "aligned_rows": 247338,
+      "resumed": false
+    },
+    {
+      "shard": 3,
+      "prompts": 2000,
+      "aligned_rows": 246679,
+      "resumed": false
+    },
+    {
+      "shard": 4,
+      "prompts": 2000,
+      "aligned_rows": 247439,
+      "resumed": false
+    },
+    {
+      "shard": 5,
+      "prompts": 2000,
+      "aligned_rows": 246652,
+      "resumed": false
+    },
+    {
+      "shard": 6,
+      "prompts": 2000,
+      "aligned_rows": 248314,
+      "resumed": false
+    },
+    {
+      "shard": 7,
+      "prompts": 2000,
+      "aligned_rows": 246227,
+      "resumed": false
+    },
+    {
+      "shard": 8,
+      "prompts": 2000,
+      "aligned_rows": 248736,
+      "resumed": false
+    },
+    {
+      "shard": 9,
+      "prompts": 2000,
+      "aligned_rows": 246926,
+      "resumed": false
+    },
+    {
+      "shard": 10,
+      "prompts": 2000,
+      "aligned_rows": 248630,
+      "resumed": false
+    },
+    {
+      "shard": 11,
+      "prompts": 2000,
+      "aligned_rows": 248008,
+      "resumed": false
+    },
+    {
+      "shard": 12,
+      "prompts": 2000,
+      "aligned_rows": 247194,
+      "resumed": false
+    },
+    {
+      "shard": 13,
+      "prompts": 2000,
+      "aligned_rows": 246694,
+      "resumed": false
+    },
+    {
+      "shard": 14,
+      "prompts": 2000,
+      "aligned_rows": 247596,
+      "resumed": false
+    },
+    {
+      "shard": 15,
+      "prompts": 2000,
+      "aligned_rows": 246735,
+      "resumed": false
+    },
+    {
+      "shard": 16,
+      "prompts": 2000,
+      "aligned_rows": 246219,
+      "resumed": false
+    },
+    {
+      "shard": 17,
+      "prompts": 2000,
+      "aligned_rows": 247227,
+      "resumed": false
+    },
+    {
+      "shard": 18,
+      "prompts": 2000,
+      "aligned_rows": 247153,
+      "resumed": false
+    },
+    {
+      "shard": 19,
+      "prompts": 2000,
+      "aligned_rows": 244723,
+      "resumed": false
+    }
+  ],
+  "status": "COMPLETE"
+}

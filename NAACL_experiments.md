@@ -66,7 +66,7 @@ The GPU never idles: one queue runs jobs back to back, and CPU alignment of each
 | When | GPU queue | You / CPU | Gate at end |
 | --- | --- | --- | --- |
 | Sun 18:30–20:30 | Download models (Qwen first, then Gemma, Ministral; about 90 GB). Smoke-load each model once | Write `gen_target.py`, `tf_score.py`, `simulate_sd.py` (Section 6). Freeze the analysis plan (this doc + a commit hash) before any result | — |
-| Sun 20:30–21:30 | Timing pilot: 200 prompts per target gen and TF pass. V0 on the first 100 Q2 prompts | Run the simulator on the 100 prompts; compare with V0 labels | **G0:** agreement ≥ 99% and every job's ETA known; fix tier |
+| Sun 20:30–21:30 | Timing pilot: 200 prompts per target gen and TF pass. V0 on the first 100 Q2 prompts | Run the simulator on the 100 prompts; compare with V0 labels | **G0 (amended):** agreement ≥ 95% and every job's ETA known; fix tier |
 | Sun 21:30–Mon 04:00 | G-Q4 (40k), G-Q1.7, G-Q8, then TF-Qwen | Kiwi alignment of each continuation set as it lands | — |
 | Mon 04:00–09:00 | G-G12, TF-G | RQ1: Tab. 2 and Fig. 2 on Q2. Draw the 300-item human-validation sample | **G1 (09:00):** RQ1 result checked against Section 2's last column; Qwen grid complete |
 | Mon 09:00–13:00 | G-M8, TF-M, rest of V0 (1,000 Q2 + 500 G1) | RQ3 diagnostics and particle confusion matrix; send the validation sheet to the annotator | — |
@@ -75,6 +75,12 @@ The GPU never idles: one queue runs jobs back to back, and CPU alignment of each
 | Tue 09:00–11:30 | Buffer only; no new long jobs after 09:00 | Checksum and copy all outputs (continuations, TF logs, V0, timings) off the machine | **G3 (11:30):** artifacts safe; GPU released at 12:00 |
 
 All analysis after Tue 12:00 is CPU-only and can continue until the submission deadline.
+
+**Post-freeze G0 amendment (2026-10-11).** After observing 98.11% shared-context
+rejection-label agreement on the 100-prompt Q2 pilot, the user accepted that
+result and set the operational G0 agreement threshold to 95%. This is a
+post-result amendment; preserve and report the measured 98.11% value. The V0
+full-sample plan (1,000 Q2 and 500 G1 prompts) is unchanged.
 
 ## 5. CPU analyses and the paper artifact each fills
 
@@ -155,3 +161,94 @@ These changes keep the paper's argument and make its methods match what will act
 - **Section 9, Implications and future directions:** tokenizer design, boundary-aware adaptive drafting, draft distillation on particle decisions, other agglutinative languages (Japanese if O2 ran). Keep claims hedged: these are directions, not results.
 - **Limitations:** observational design; automatic morphology with a 300-item human check; greedy decoding only; base models; no wall-clock measurements.
 - **Appendix:** completed, cut and skipped jobs with reasons, plus provenance (Section 6).
+
+## 9. Execution log (2026-10-11)
+
+Run logs and resumable outputs are being written under
+`logs/naacl_experiments/20261011/` and `results/naacl_experiments/`.
+The execution host has an NVIDIA RTX A6000, Python 3.12.14, PyTorch
+2.11.0+cu128, Transformers 5.19.0, and CUDA runtime 12.8. Model weights are
+staged in `/dev/shm/naacl_models`; the filesystem has about 27 GiB free. There
+is no mounted persistent volume in this session, and `/workspace` is ephemeral.
+Copy the results, provenance, and logs off-host before the instance is recycled.
+
+The requested generation targets are run as complete target units: greedy
+generation, target self teacher-forced scoring, then Kiwi alignment. Each
+target's configured pair is evicted after those jobs finish, preserving its
+tokenizer/config files. For Qwen, the eviction commands are `--evict-pair Q2`
+(4B), `--evict-pair Q1` (1.7B), and `--evict-pair Q5` (8B). Ministral uses
+`--evict-pair M1` after its target unit. The full command lines and per-command
+logs are kept in the dated log directory. Job status below reflects actual
+execution, not estimates.
+
+| Job | Target revision | Planned command sequence | Status | Evidence |
+| --- | --- | --- | --- | --- |
+| G-Q4 | `906bfd4b4dc7f14ee4320094d8b41684abff8539` | `gen_target.py --target qwen4 --split all`; target self-score; Kiwi alignment; evict Q2 | Complete | Stage manifests and dated command logs |
+| G-Q1.7 | `ea980cb0a6c2ae4b936e82123acc929f1cec04c1` | `gen_target.py --target qwen17 --split common`; target self-score; Kiwi alignment; evict Q1 | Complete | Dated command logs and output manifests |
+| G-Q8 | `49e3418fbbbca6ecbdf9608b4d22e5a407081db4` | `gen_target.py --target qwen8 --split common`; `tf_score.py --model qwen8 --target qwen8 --split common --role target`; `align_morphology.py --target qwen8 --split common`; evict Q5 | Complete | Dated command logs and output manifests |
+| G-G12 | `295efb63d01a7017928f273a94ebb86105c9526f` | Gemma-12B generation, target self-score, alignment; evict G1 | Complete | Dated command logs and complete generation, TF, and alignment manifests; `hf_token` access verified |
+| G-M8 | `d4883f9b36aa2e5d775730d3fdba3d30de51a8ef` | Download M1; generation, target self-score, alignment; evict M1 | Complete | Dated logs and complete generation, TF, and alignment manifests; M1 evicted |
+
+G-G12 requires access to `google/gemma-3-12b-pt`. On 2026-10-11 the local
+`hf_token` file was found and verified against the pinned revision
+`295efb63d01a7017928f273a94ebb86105c9526f`; access is granted. The credential
+is read from the file only when downloading and is not written to logs or this
+record. The Qwen8 target unit has completed and Q5 was evicted. The Gemma-12B
+target-only download completed within the storage limit described below.
+
+### G-Q4 run record
+
+- Generation command: `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout --foreground --signal=TERM --kill-after=10s 10800s /venv/main/bin/python -u scripts/gen_target.py --target qwen4 --split all --output-dir results/naacl_experiments`.
+- Generation stdout/stderr: `logs/naacl_experiments/20261011/G-Q4-generation.log`.
+- Requested batch 128, 40,000 prompts, 128 new tokens, BF16/SDPA. The model loaded at pinned revision `906bfd4b4dc7f14ee4320094d8b41684abff8539`; the manifest records 40,000 prompts, 20 completed shards, actual batch sizes from 1 through 128, and 4,158.3 seconds wall time. Generation completed successfully at about 16:51 UTC; generation logs and manifest preserve the exact completion.
+- Target self-score command: `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout --foreground --signal=TERM --kill-after=10s 7200s /venv/main/bin/python -u scripts/tf_score.py --model qwen4 --target qwen4 --split all --role target --output-dir results/naacl_experiments`. Log: `logs/naacl_experiments/20261011/G-Q4-target-TF.log`.
+- Alignment command: `timeout --foreground --signal=TERM --kill-after=10s 3600s /venv/main/bin/python -u scripts/align_morphology.py --target qwen4 --split all --output-dir results/naacl_experiments`. Log: `logs/naacl_experiments/20261011/G-Q4-alignment.log`.
+- Target score and alignment started at 16:52 UTC. The score model loaded at the same pinned revision and reported `TF_HEAD_CHECK_OK scale=1 max_abs_error=0`. At 17:06 UTC, all 20 alignment shards completed successfully: 40,000 prompts, 4,945,226 aligned rows. The alignment log file was created at 16:52:11 and finalized at 17:06:47 (about 14m35s elapsed); the alignment manifest has `status=COMPLETE`.
+- Target self-score completed all 20 shards with 40,000 prompts and 4,945,226 token positions. Every shard recorded `head_scale=1.0` and `head_check_max_abs_error=0.0`; summed shard scoring time was 1,641.96 seconds, and the command log ran from 16:52:11 to 17:19:48. The score manifest has `status=COMPLETE`.
+- Q2 eviction completed at about 17:20 UTC. `download_models.py --evict-pair Q2` removed the qwen06 and qwen4 weight shards while retaining tokenizer/config files. `/dev/shm` free space rose to 13 GiB. Eviction log: `logs/naacl_experiments/20261011/Q2-eviction.log`.
+
+### G-Q1.7 run record
+
+- Generation command: `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout --foreground --signal=TERM --kill-after=10s 3600s /venv/main/bin/python -u scripts/gen_target.py --target qwen17 --split common --output-dir results/naacl_experiments`.
+- Generation stdout/stderr: `logs/naacl_experiments/20261011/G-Q1.7-generation.log`.
+- Started at about 17:20 UTC on pinned revision `ea980cb0a6c2ae4b936e82123acc929f1cec04c1`, requested batch 192, common split (20,000 prompts), 128 new tokens, BF16/SDPA. The completed run metadata records 10 shards, actual batch sizes from 1 through 192, prompt-pool SHA-256 `d0d316155380aac0d6aa3ade8bddd93f96579a7c88c750167c9d012162fa72eb`, and `wall_seconds=1841.43` (30m41s). All 20,000 prompts completed successfully; the log finalized at 17:51:53 UTC.
+- Target self-score command: `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout --foreground --signal=TERM --kill-after=10s 7200s /venv/main/bin/python -u scripts/tf_score.py --model qwen17 --target qwen17 --split common --role target --output-dir results/naacl_experiments`. Log: `logs/naacl_experiments/20261011/G-Q1.7-target-TF.log`.
+- Alignment command: `timeout --foreground --signal=TERM --kill-after=10s 3600s /venv/main/bin/python -u scripts/align_morphology.py --target qwen17 --split common --output-dir results/naacl_experiments`. Log: `logs/naacl_experiments/20261011/G-Q1.7-alignment.log`.
+- Target self-score and Kiwi alignment started at 17:52:10 UTC. Alignment completed all 20,000 prompts across 10 shards, producing 2,485,747 aligned rows; the alignment manifest reports `status=COMPLETE`. Its log ran from 17:52:10 to 17:59:35. Target self-score completed all 10 shards at 18:01:35: 20,000 prompts, 2,485,747 token positions, `head_scale=1.0` and `head_check_max_abs_error=0.0` for every shard. Summed shard scoring time was 553.23 seconds; the score manifest reports `status=COMPLETE`.
+- Q1 eviction completed at 18:02 UTC. `download_models.py --evict-pair Q1` removed qwen06 and qwen17 weight shards while retaining tokenizer/config files. The eviction log is `logs/naacl_experiments/20261011/Q1-eviction.log`; `/dev/shm` free space rose to 16 GiB and Qwen8 remains staged.
+
+### G-Q8 run record
+
+- Generation command: `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout --foreground --signal=TERM --kill-after=10s 10800s /venv/main/bin/python -u scripts/gen_target.py --target qwen8 --split common --output-dir results/naacl_experiments`.
+- Generation stdout/stderr: `logs/naacl_experiments/20261011/G-Q8-generation.log`.
+- Started at 18:02:42 UTC on pinned revision `49e3418fbbbca6ecbdf9608b4d22e5a407081db4`, requested batch 96, common split (20,000 prompts), 128 new tokens, BF16/SDPA. All 20,000 prompts completed in 2,676.28 seconds (44m36s) across 10 shards. The generation manifest reports `status=COMPLETE`; the log finalized at 18:48:05 UTC.
+- Target self-score command: `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout --foreground --signal=TERM --kill-after=10s 7200s /venv/main/bin/python -u scripts/tf_score.py --model qwen8 --target qwen8 --split common --role target --output-dir results/naacl_experiments`. Log: `logs/naacl_experiments/20261011/G-Q8-target-TF.log`.
+- Alignment command: `timeout --foreground --signal=TERM --kill-after=10s 3600s /venv/main/bin/python -u scripts/align_morphology.py --target qwen8 --split common --output-dir results/naacl_experiments`. Log: `logs/naacl_experiments/20261011/G-Q8-alignment.log`.
+- Target self-score and Kiwi alignment started at 18:48:43 UTC. Alignment completed all 20,000 prompts across 10 shards, producing 2,465,034 aligned rows; its manifest reports `status=COMPLETE` and the log ran to 18:56:15 UTC. Target self-score completed all 10 shards by 19:08:37: 20,000 prompts and 2,465,034 token positions, `head_scale=1.0` and `head_check_max_abs_error=0.0` for every shard. Summed shard scoring time was 1,179.13 seconds; the score manifest reports `status=COMPLETE`.
+- Q5 eviction completed after the target unit. `download_models.py --evict-pair Q5` removed the qwen06 and qwen8 weight files while retaining tokenizer/config files. Log: `logs/naacl_experiments/20261011/Q5-eviction.log`.
+
+### G-G12 run record
+
+- Hugging Face access to `google/gemma-3-12b-pt` at revision `295efb63d01a7017928f273a94ebb86105c9526f` was verified using the ignored local `hf_token` file; no token contents are logged or written here.
+- `download_models.py --plan --pair G1` reported 30.71 GiB for Gemma-4B plus Gemma-12B against 30.96 GiB free. The downloader requires an additional 1 GiB for metadata, so the full pair cannot fit in `/dev/shm`. The planned target-only generation, target self-score, and alignment require Gemma-12B only; its 22.70 GiB checkpoint fits with the required reserve. The 4B draft is therefore not staged for this target-only unit.
+- Target download command: `HF_TOKEN` was read from the ignored `hf_token` file into the process environment, then `/venv/main/bin/python -u scripts/download_models.py --model gemma12` was run with a two-hour timeout. Log: `logs/naacl_experiments/20261011/G-G12-download.log`. No credential value is recorded.
+- The target download completed in 3m40s, pinned to revision `295efb63d01a7017928f273a94ebb86105c9526f`, with five indexed weight shards and 24,374,793,024 weight bytes.
+- Generation command: `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout --foreground --signal=TERM --kill-after=10s 21600s /venv/main/bin/python -u scripts/gen_target.py --target gemma12 --split common --output-dir results/naacl_experiments`. Log: `logs/naacl_experiments/20261011/G-G12-generation.log`.
+- Generation started at about 19:13:38 UTC on the pinned revision, requested batch 48, common split (20,000 prompts), 128 new tokens, BF16/SDPA. All ten 2,000-prompt shards completed: shard sizes were 779,355; 781,473; 784,769; 782,823; 788,418; 781,881; 767,721; 777,939; 783,227; and 780,256 bytes. `GEN_COMPLETE` was logged at 21:25:51 UTC. The complete manifest records 20,000 prompts, `wall_seconds=7895.85` (2h11m36s), requested batch 48, actual batch sizes 1–48, BF16/SDPA, and `status=COMPLETE`. GPU memory use during generation was about 29 GiB.
+- Target self-score and Kiwi alignment started at 21:25:57 UTC. Kiwi alignment completed all 10 shards by 21:33:48 UTC: 20,000 prompts and 2,549,337 aligned rows; the manifest reports `status=COMPLETE`. The continuation runner validates both `status=COMPLETE` manifests before evicting G1 and staging M1.
+- The target scorer loaded the pinned Gemma model and passed `TF_HEAD_CHECK_OK scale=1 max_abs_error=0`. All 10 target-score shards completed successfully by 21:55:42 UTC: 20,000 prompts and 2,549,337 token positions, with `head_scale=1.0` and `head_check_max_abs_error=0.0` on every shard. The manifest reports `status=COMPLETE`; summed shard scoring time was 1,765.07 seconds, and the command log records `COMMAND_EXIT=0`.
+- G1 eviction completed at 21:55:45 UTC. Gemma-12B's five weight shards were removed; Gemma-4B weights were already absent. Tokenizer/config files were retained. Eviction log: `logs/naacl_experiments/20261011/G1-eviction.log`.
+- Queued target self-score command: `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout --foreground --signal=TERM --kill-after=10s 14400s /venv/main/bin/python -u scripts/tf_score.py --model gemma12 --target gemma12 --split common --role target --output-dir results/naacl_experiments`. Log: `logs/naacl_experiments/20261011/G-G12-target-TF.log`.
+- Queued Kiwi alignment command: `timeout --foreground --signal=TERM --kill-after=10s 3600s /venv/main/bin/python -u scripts/align_morphology.py --target gemma12 --split common --output-dir results/naacl_experiments`. Log: `logs/naacl_experiments/20261011/G-G12-alignment.log`. The continuation runner waits for the generation completion line and validates its manifest before launching these two jobs; it validates both scoring and alignment manifests before evicting G1.
+
+### G-M8 run record
+
+- Following G1 eviction, `download_models.py --plan --pair M1` reported 30.92 GiB free and 23.78 GiB requested (Ministral-3-3B 7.17 GiB plus Ministral-3-8B 16.61 GiB). The full M1 pair download ran from 21:57:20 to 22:00:51 UTC and completed successfully. Logs: `logs/naacl_experiments/20261011/G-M8-download-plan.log` and `logs/naacl_experiments/20261011/G-M8-download.log`.
+- Generation started at 22:00:51 UTC with `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout --foreground --signal=TERM --kill-after=10s 10800s /venv/main/bin/python -u scripts/gen_target.py --target ministral8 --split common --batch-size 96 --output-dir results/naacl_experiments`. It is processing the common split (20,000 prompts), 128 new tokens, BF16/SDPA, requested batch 96. OOM backoff records any smaller actual batch sizes. Log: `logs/naacl_experiments/20261011/G-M8-generation.log`.
+- All ten generation shards completed by 22:50:50 UTC. In shard order, their 2,000-prompt Parquet sizes were 877,148; 876,622; 880,848; 873,949; 883,578; 880,078; 872,634; 875,539; 875,280; and 878,064 bytes. The manifest records 20,000 prompts, revision `d4883f9b36aa2e5d775730d3fdba3d30de51a8ef`, requested batch 96, actual batch sizes `[1, 2, 3, 4, 5, 6, 7, 11, 13, 14, 85, 90, 91, 96]`, and `wall_seconds=2939.60` (48m59.6s), with `status=COMPLETE`. No OOM or generation error occurred; GPU memory stayed near 21 GiB.
+- Transformers emitted nonfatal warnings that the checkpoint contains separate embedding and language-model head weights despite the config's tied-weight mapping, and that `max_new_tokens=128` takes precedence over the model's `max_length=262144`. Both warnings are preserved in the generation log; generation loaded and proceeded.
+- Target self-score command: `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout --foreground --signal=TERM --kill-after=10s 14400s /venv/main/bin/python -u scripts/tf_score.py --model ministral8 --target ministral8 --split common --role target --output-dir results/naacl_experiments`. The first attempt at 22:50:36 failed before scoring because `_body_and_head` looked for `model.language_model`; Transformers 5.19 nests the text transformer at `model.model.language_model` with the LM head at `model.lm_head`. No TF shard or metadata was written. The failed attempt is preserved as `logs/naacl_experiments/20261011/G-M8-target-TF-loader-failure.log`. `scripts/tf_score.py` was corrected to support the actual Mistral3 wrapper, and the retry is logged to `logs/naacl_experiments/20261011/G-M8-target-TF.log`; it passed `TF_HEAD_CHECK_OK scale=1 max_abs_error=0` and is scoring shard 0. Keep this unit open until the retry manifest is complete.
+- Kiwi alignment command: `timeout --foreground --signal=TERM --kill-after=10s 3600s /venv/main/bin/python -u scripts/align_morphology.py --target ministral8 --split common --output-dir results/naacl_experiments`. Log: `logs/naacl_experiments/20261011/G-M8-alignment.log`. After the corrected TF retry and alignment manifests both report `status=COMPLETE`, verify them and evict M1 with `/venv/main/bin/python -u scripts/download_models.py --evict-pair M1`; log: `logs/naacl_experiments/20261011/M1-eviction.log`.
+- The corrected TF retry passed `TF_HEAD_CHECK_OK scale=1 max_abs_error=0` and completed at 23:13:28 UTC. All 10 shards scored 20,000 prompts and 2,498,617 token positions; every shard recorded `head_scale=1.0` and `head_check_max_abs_error=0.0`. The manifest reports `status=COMPLETE`; summed shard scoring time was 1,221.75 seconds.
+- Kiwi alignment completed at 22:58:06 UTC. Its manifest reports `status=COMPLETE`, 20,000 prompts, 10 shards, and 2,498,617 aligned rows; the command exited 0.
+- The first M8 pipeline attempt ended after the initial loader failure, with target scoring exit 1 and alignment exit 0 at 22:58:06 UTC. After correcting `_body_and_head`, the scoring retry completed and both manifests were validated. M1 eviction ran from 23:13:45 to 23:13:48 UTC: two Ministral-3-3B and four Ministral-3-8B weight shards were removed; tokenizer/config files were kept. Log: `logs/naacl_experiments/20261011/M1-eviction.log`. `/dev/shm` returned to about 31 GiB free.

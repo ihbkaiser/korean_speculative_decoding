@@ -1,0 +1,71 @@
+{
+  "stage": "target_path_morphology_alignment",
+  "target_key": "qwen17",
+  "revision": "ea980cb0a6c2ae4b936e82123acc929f1cec04c1",
+  "split": "common",
+  "analyzer": "kiwi",
+  "prompt_count": 20000,
+  "completed_shards": [
+    {
+      "shard": 0,
+      "prompts": 2000,
+      "aligned_rows": 249930,
+      "resumed": false
+    },
+    {
+      "shard": 1,
+      "prompts": 2000,
+      "aligned_rows": 247780,
+      "resumed": false
+    },
+    {
+      "shard": 2,
+      "prompts": 2000,
+      "aligned_rows": 248483,
+      "resumed": false
+    },
+    {
+      "shard": 3,
+      "prompts": 2000,
+      "aligned_rows": 249045,
+      "resumed": false
+    },
+    {
+      "shard": 4,
+      "prompts": 2000,
+      "aligned_rows": 248347,
+      "resumed": false
+    },
+    {
+      "shard": 5,
+      "prompts": 2000,
+      "aligned_rows": 247886,
+      "resumed": false
+    },
+    {
+      "shard": 6,
+      "prompts": 2000,
+      "aligned_rows": 248297,
+      "resumed": false
+    },
+    {
+      "shard": 7,
+      "prompts": 2000,
+      "aligned_rows": 248141,
+      "resumed": false
+    },
+    {
+      "shard": 8,
+      "prompts": 2000,
+      "aligned_rows": 249064,
+      "resumed": false
+    },
+    {
+      "shard": 9,
+      "prompts": 2000,
+      "aligned_rows": 248774,
+      "resumed": false
+    }
+  ],
+  "status": "COMPLETE"
+}

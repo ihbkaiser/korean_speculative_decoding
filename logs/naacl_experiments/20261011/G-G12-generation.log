@@ -1,0 +1,13 @@
+GEN_START target=gemma12 split=common prompts=20000 requested_batch=48 max_new_tokens=128
+Loading weights:   0%|          | 0/1065 [00:00<?, ?it/s]Loading weights:  33%|███▎      | 350/1065 [00:00<00:00, 3475.34it/s]Loading weights:  66%|██████▌   | 698/1065 [00:00<00:00, 2977.65it/s]Loading weights:  94%|█████████▍| 1001/1065 [00:00<00:00, 2863.56it/s]Loading weights: 100%|██████████| 1065/1065 [00:00<00:00, 2937.34it/s]
+GEN_SHARD_COMPLETE target=gemma12 shard=00000 prompts=2000
+GEN_SHARD_COMPLETE target=gemma12 shard=00001 prompts=2000
+GEN_SHARD_COMPLETE target=gemma12 shard=00002 prompts=2000
+GEN_SHARD_COMPLETE target=gemma12 shard=00003 prompts=2000
+GEN_SHARD_COMPLETE target=gemma12 shard=00004 prompts=2000
+GEN_SHARD_COMPLETE target=gemma12 shard=00005 prompts=2000
+GEN_SHARD_COMPLETE target=gemma12 shard=00006 prompts=2000
+GEN_SHARD_COMPLETE target=gemma12 shard=00007 prompts=2000
+GEN_SHARD_COMPLETE target=gemma12 shard=00008 prompts=2000
+GEN_SHARD_COMPLETE target=gemma12 shard=00009 prompts=2000
+GEN_COMPLETE target=gemma12 output=results/naacl_experiments/continuations/gemma12/common wall_seconds=7895.9

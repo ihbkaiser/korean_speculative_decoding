@@ -1,0 +1,7 @@
+M8_PIPELINE_START_UTC=2026-10-11 21:57:19
+G-M8_GENERATION_MANIFEST_OK prompts=20000 wall_seconds=2939.60 actual_batch_sizes=[1, 2, 3, 4, 5, 6, 7, 11, 13, 14, 85, 90, 91, 96]
+G-M8_POSTPROCESS_EXIT score=1 alignment=0 at 2026-10-11 22:58:06
+PIPELINE_ATTEMPT1_EXIT score=1 alignment=0 at 2026-10-11 22:58:06 UTC; target TF loader failure is preserved in G-M8-target-TF-loader-failure.log.
+SCORER_FIX: scripts/tf_score.py now extracts text body from model.model.language_model and LM head from model.lm_head for Transformers 5.19 Mistral3 wrappers.
+TF_RETRY_COMPLETE at 2026-10-11 23:13:28 UTC; generation, TF, and alignment manifests validated complete for 20000 prompts.
+M1_EVICTION_COMPLETE at 2026-10-11 23:13:48 UTC; pair weights removed, tokenizer/config retained.

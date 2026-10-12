@@ -1,0 +1,23 @@
+GEN_START target=qwen4 split=all prompts=40000 requested_batch=128 max_new_tokens=128
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights:  93%|█████████▎| 372/398 [00:00<00:00, 3717.22it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 3655.21it/s]
+GEN_SHARD_COMPLETE target=qwen4 shard=00000 prompts=2000
+GEN_SHARD_COMPLETE target=qwen4 shard=00001 prompts=2000
+GEN_SHARD_COMPLETE target=qwen4 shard=00002 prompts=2000
+GEN_SHARD_COMPLETE target=qwen4 shard=00003 prompts=2000
+GEN_SHARD_COMPLETE target=qwen4 shard=00004 prompts=2000
+GEN_SHARD_COMPLETE target=qwen4 shard=00005 prompts=2000
+GEN_SHARD_COMPLETE target=qwen4 shard=00006 prompts=2000
+GEN_SHARD_COMPLETE target=qwen4 shard=00007 prompts=2000
+GEN_SHARD_COMPLETE target=qwen4 shard=00008 prompts=2000
+GEN_SHARD_COMPLETE target=qwen4 shard=00009 prompts=2000
+GEN_SHARD_COMPLETE target=qwen4 shard=00010 prompts=2000
+GEN_SHARD_COMPLETE target=qwen4 shard=00011 prompts=2000
+GEN_SHARD_COMPLETE target=qwen4 shard=00012 prompts=2000
+GEN_SHARD_COMPLETE target=qwen4 shard=00013 prompts=2000
+GEN_SHARD_COMPLETE target=qwen4 shard=00014 prompts=2000
+GEN_SHARD_COMPLETE target=qwen4 shard=00015 prompts=2000
+GEN_SHARD_COMPLETE target=qwen4 shard=00016 prompts=2000
+GEN_SHARD_COMPLETE target=qwen4 shard=00017 prompts=2000
+GEN_SHARD_COMPLETE target=qwen4 shard=00018 prompts=2000
+GEN_SHARD_COMPLETE target=qwen4 shard=00019 prompts=2000
+GEN_COMPLETE target=qwen4 output=results/naacl_experiments/continuations/qwen4/all wall_seconds=4158.3

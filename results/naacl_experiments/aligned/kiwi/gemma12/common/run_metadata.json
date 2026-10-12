@@ -1,0 +1,71 @@
+{
+  "stage": "target_path_morphology_alignment",
+  "target_key": "gemma12",
+  "revision": "295efb63d01a7017928f273a94ebb86105c9526f",
+  "split": "common",
+  "analyzer": "kiwi",
+  "prompt_count": 20000,
+  "completed_shards": [
+    {
+      "shard": 0,
+      "prompts": 2000,
+      "aligned_rows": 255235,
+      "resumed": false
+    },
+    {
+      "shard": 1,
+      "prompts": 2000,
+      "aligned_rows": 255184,
+      "resumed": false
+    },
+    {
+      "shard": 2,
+      "prompts": 2000,
+      "aligned_rows": 255408,
+      "resumed": false
+    },
+    {
+      "shard": 3,
+      "prompts": 2000,
+      "aligned_rows": 254721,
+      "resumed": false
+    },
+    {
+      "shard": 4,
+      "prompts": 2000,
+      "aligned_rows": 255136,
+      "resumed": false
+    },
+    {
+      "shard": 5,
+      "prompts": 2000,
+      "aligned_rows": 255465,
+      "resumed": false
+    },
+    {
+      "shard": 6,
+      "prompts": 2000,
+      "aligned_rows": 254347,
+      "resumed": false
+    },
+    {
+      "shard": 7,
+      "prompts": 2000,
+      "aligned_rows": 255115,
+      "resumed": false
+    },
+    {
+      "shard": 8,
+      "prompts": 2000,
+      "aligned_rows": 253897,
+      "resumed": false
+    },
+    {
+      "shard": 9,
+      "prompts": 2000,
+      "aligned_rows": 254829,
+      "resumed": false
+    }
+  ],
+  "status": "COMPLETE"
+}

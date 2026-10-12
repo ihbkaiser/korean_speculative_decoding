@@ -1,0 +1,183 @@
+{
+  "stage": "teacher_forced_scoring",
+  "continuation": "generated",
+  "target_key": "qwen17",
+  "target_id": "Qwen/Qwen3-1.7B-Base",
+  "target_revision": "ea980cb0a6c2ae4b936e82123acc929f1cec04c1",
+  "scored_model_key": "qwen17",
+  "scored_model_id": "Qwen/Qwen3-1.7B-Base",
+  "scored_model_revision": "ea980cb0a6c2ae4b936e82123acc929f1cec04c1",
+  "role": "target",
+  "split": "common",
+  "prompt_count": 20000,
+  "prompt_ids_sha256": "dfadd2f648e94956307b79082ee0a943fe922e1280586cb9126377b329190aaa",
+  "chunk_positions": 32,
+  "requested_batch_size": 32,
+  "dtype": "bfloat16",
+  "attention_backend": "sdpa",
+  "transformers": "5.19.0",
+  "torch": "2.11.0+cu128",
+  "gpu": "NVIDIA RTX A6000",
+  "model_path": "/dev/shm/naacl_models/Qwen--Qwen3-1.7B-Base/ea980cb0a6c2ae4b936e82123acc929f1cec04c1",
+  "prompt_pool_sha256": "d0d316155380aac0d6aa3ade8bddd93f96579a7c88c750167c9d012162fa72eb",
+  "completed_shards": [
+    {
+      "shard": 0,
+      "prompt_count": 2000,
+      "scored_token_count": 249930,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        25,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 64.20774294901639
+    },
+    {
+      "shard": 1,
+      "prompt_count": 2000,
+      "scored_token_count": 247780,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        23,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 62.48027224210091
+    },
+    {
+      "shard": 2,
+      "prompt_count": 2000,
+      "scored_token_count": 248483,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        26,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 52.91873069899157
+    },
+    {
+      "shard": 3,
+      "prompt_count": 2000,
+      "scored_token_count": 249045,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        29,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 53.21907218196429
+    },
+    {
+      "shard": 4,
+      "prompt_count": 2000,
+      "scored_token_count": 248347,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        5,
+        23,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 52.76035917503759
+    },
+    {
+      "shard": 5,
+      "prompt_count": 2000,
+      "scored_token_count": 247886,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        5,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 52.72448270395398
+    },
+    {
+      "shard": 6,
+      "prompt_count": 2000,
+      "scored_token_count": 248297,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        13,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 53.27942369808443
+    },
+    {
+      "shard": 7,
+      "prompt_count": 2000,
+      "scored_token_count": 248141,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        6,
+        17,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 54.12011318502482
+    },
+    {
+      "shard": 8,
+      "prompt_count": 2000,
+      "scored_token_count": 249064,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        23,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 53.957127379952
+    },
+    {
+      "shard": 9,
+      "prompt_count": 2000,
+      "scored_token_count": 248774,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        14,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 53.56422060600016
+    }
+  ],
+  "status": "COMPLETE"
+}

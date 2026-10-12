@@ -1,0 +1,17 @@
+{
+  "decisions": [
+    {
+      "decision_utc": "2026-10-11T15:17:59Z",
+      "area": "G0 live-versus-simulated rejection-label agreement threshold",
+      "previous_threshold": 0.99,
+      "new_threshold": 0.95,
+      "basis": "The 100-prompt Q2 pilot measured 0.9811167182158554 shared-context agreement; the user accepted this result and selected a 95% gate.",
+      "classification": "post-result amendment",
+      "measurement_preserved": true,
+      "full_v0_sample_sizes_unchanged": {
+        "Q2": 1000,
+        "G1": 500
+      }
+    }
+  ]
+}

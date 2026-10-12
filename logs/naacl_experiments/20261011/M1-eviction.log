@@ -1,0 +1,6 @@
+COMMAND_START_UTC=2026-10-11 23:13:45
+COMMAND=/venv/main/bin/python -u scripts/download_models.py --evict-pair M1
+EVICT ministral3: removed 2 weight shards; kept tokenizer/config
+EVICT ministral8: removed 4 weight shards; kept tokenizer/config
+COMMAND_EXIT=0
+COMMAND_END_UTC=2026-10-11 23:13:48

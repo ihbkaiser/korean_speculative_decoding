@@ -1,0 +1,17 @@
+COMMAND_START_UTC=2026-10-11 22:50:36
+COMMAND=env PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout --foreground --signal=TERM --kill-after=10s 14400s /venv/main/bin/python -u scripts/tf_score.py --model ministral8 --target ministral8 --split common --role target --output-dir results/naacl_experiments 
+TF_LOAD model=ministral8 target=ministral8 role=target
+Loading weights:   0%|          | 0/531 [00:00<?, ?it/s]Loading weights:  69%|██████▉   | 367/531 [00:00<00:00, 3661.14it/s]Loading weights: 100%|██████████| 531/531 [00:00<00:00, 3593.70it/s]
+[transformers] The tied weights mapping and config for this model specifies to tie model.language_model.embed_tokens.weight to lm_head.weight, but both are present in the checkpoints with different values, so we will NOT tie them. You should update the config with `tie_word_embeddings=False` to silence this warning.
+Traceback (most recent call last):
+  File "/workspace/korean_speculative_decoding/scripts/tf_score.py", line 436, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/tf_score.py", line 393, in main
+    body, head = _body_and_head(model)
+                 ^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/tf_score.py", line 101, in _body_and_head
+    raise RuntimeError("Mistral3 checkpoint has no text-only language_model")
+RuntimeError: Mistral3 checkpoint has no text-only language_model
+COMMAND_EXIT=1
+COMMAND_END_UTC=2026-10-11 22:50:51

@@ -1,0 +1,13 @@
+GEN_START target=qwen17 split=common prompts=20000 requested_batch=192 max_new_tokens=128
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 4055.55it/s]
+GEN_SHARD_COMPLETE target=qwen17 shard=00000 prompts=2000
+GEN_SHARD_COMPLETE target=qwen17 shard=00001 prompts=2000
+GEN_SHARD_COMPLETE target=qwen17 shard=00002 prompts=2000
+GEN_SHARD_COMPLETE target=qwen17 shard=00003 prompts=2000
+GEN_SHARD_COMPLETE target=qwen17 shard=00004 prompts=2000
+GEN_SHARD_COMPLETE target=qwen17 shard=00005 prompts=2000
+GEN_SHARD_COMPLETE target=qwen17 shard=00006 prompts=2000
+GEN_SHARD_COMPLETE target=qwen17 shard=00007 prompts=2000
+GEN_SHARD_COMPLETE target=qwen17 shard=00008 prompts=2000
+GEN_SHARD_COMPLETE target=qwen17 shard=00009 prompts=2000
+GEN_COMPLETE target=qwen17 output=results/naacl_experiments/continuations/qwen17/common wall_seconds=1841.4

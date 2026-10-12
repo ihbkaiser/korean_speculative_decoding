@@ -15,7 +15,7 @@ import torch
 
 
 def distribution_stats_batch(logits: torch.Tensor, token_ids: torch.Tensor | None = None):
-    """Compute audit statistics on-device; callers transfer compact rows once."""
+    """Compute the established four audit statistics on-device."""
     values = logits.float()
     greedy = values.argmax(-1)
     selected = greedy if token_ids is None else token_ids
@@ -28,6 +28,16 @@ def distribution_stats_batch(logits: torch.Tensor, token_ids: torch.Tensor | Non
         (values > selected_logits.unsqueeze(-1)).sum(-1).float() + 1,
     ), dim=-1)
     return greedy, stats
+
+
+def _distribution_stats_with_margin_batch(
+    logits: torch.Tensor, token_ids: torch.Tensor | None = None,
+):
+    """Compute audit statistics and top-two margins on-device."""
+    greedy, stats = distribution_stats_batch(logits, token_ids)
+    top2_values = logits.float().topk(2, dim=-1).values
+    top2_margin = top2_values[..., 0] - top2_values[..., 1]
+    return greedy, stats, top2_margin
 
 
 def _padded(rows: list[list[int]], device: torch.device):
@@ -147,9 +157,9 @@ def speculative_greedy_microbatch(
         block_k = min(k, max(max_new_tokens - len(row) for row in outputs))
         proposal_columns, draft_stats = [], []
         for slot in range(block_k):
-            proposed, stats = distribution_stats_batch(draft_logits)
+            proposed, stats, draft_margin = _distribution_stats_with_margin_batch(draft_logits)
             proposal_columns.append(proposed)
-            draft_stats.append(stats)
+            draft_stats.append(torch.cat((stats, draft_margin.unsqueeze(-1)), dim=-1))
             if slot + 1 < block_k:
                 draft_mask = torch.cat((draft_mask, torch.ones((count, 1), dtype=torch.long, device=device)), -1)
                 draft_result = _forward(draft_model, proposed[:, None], draft_mask,
@@ -163,7 +173,10 @@ def speculative_greedy_microbatch(
                                  target_past, logits_to_keep=block_k + 1)
         target_past = target_result.past_key_values
         logits = target_result.logits[:, -(block_k + 1):]
-        target_ids, target_stats = distribution_stats_batch(logits[:, :-1], proposals)
+        target_ids, target_stats, target_margins = _distribution_stats_with_margin_batch(
+            logits[:, :-1], proposals,
+        )
+        target_stats = torch.cat((target_stats, target_margins.unsqueeze(-1)), dim=-1)
         bonus_ids = logits[:, -1].argmax(-1)
         slots = torch.arange(block_k, device=device)[None, :]
         budgets = torch.tensor([max_new_tokens - len(row) if live else 0
@@ -200,7 +213,7 @@ def speculative_greedy_microbatch(
                 outputs[row].extend(committed)
                 first_rejection = None if rejection is None else base_position + rejection
                 for slot in range(limit):
-                    p, t, dl, de, dt, dr, tl, te, tt, tr = packed[row][slot][:10]
+                    p, t, dl, de, dt, dr, dm, tl, te, tt, tr, tm = packed[row][slot][:12]
                     invalidated = rejection is not None and slot > rejection
                     events[row].append({
                         "prompt_id": labels[row], "round_index": round_index,
@@ -211,7 +224,9 @@ def speculative_greedy_microbatch(
                         "invalidated_after_first_rejection": invalidated,
                         "proposal_position": slot + 1, "output_token_position": base_position + slot,
                         "draft_logprob": dl, "draft_entropy": de, "draft_top1_logprob": dt,
+                        "draft_top2_margin": dm,
                         "target_logprob": tl, "target_entropy": te, "target_top1_logprob": tt,
+                        "target_top2_margin": tm,
                         "target_rank_of_proposed_token": int(tr),
                         "accepted_prefix_length": accepted,
                         "first_rejection_output_position": first_rejection,
