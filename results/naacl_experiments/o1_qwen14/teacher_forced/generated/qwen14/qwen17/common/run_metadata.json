@@ -1,0 +1,183 @@
+{
+  "stage": "teacher_forced_scoring",
+  "continuation": "generated",
+  "target_key": "qwen14",
+  "target_id": "Qwen/Qwen3-14B-Base",
+  "target_revision": "0b0bd3732e2c374d483664439ea334928b65f304",
+  "scored_model_key": "qwen17",
+  "scored_model_id": "Qwen/Qwen3-1.7B-Base",
+  "scored_model_revision": "ea980cb0a6c2ae4b936e82123acc929f1cec04c1",
+  "role": "draft",
+  "split": "common",
+  "prompt_count": 20000,
+  "prompt_ids_sha256": "dfadd2f648e94956307b79082ee0a943fe922e1280586cb9126377b329190aaa",
+  "chunk_positions": 32,
+  "requested_batch_size": 32,
+  "dtype": "bfloat16",
+  "attention_backend": "sdpa",
+  "transformers": "5.19.0",
+  "torch": "2.11.0+cu128",
+  "gpu": "NVIDIA RTX A6000",
+  "model_path": "/dev/shm/naacl_models/Qwen--Qwen3-1.7B-Base/ea980cb0a6c2ae4b936e82123acc929f1cec04c1",
+  "prompt_pool_sha256": "d0d316155380aac0d6aa3ade8bddd93f96579a7c88c750167c9d012162fa72eb",
+  "completed_shards": [
+    {
+      "shard": 0,
+      "prompt_count": 2000,
+      "scored_token_count": 247190,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        25,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 49.48929344199132
+    },
+    {
+      "shard": 1,
+      "prompt_count": 2000,
+      "scored_token_count": 246086,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        23,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 48.631980052101426
+    },
+    {
+      "shard": 2,
+      "prompt_count": 2000,
+      "scored_token_count": 246158,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        26,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 48.80070695397444
+    },
+    {
+      "shard": 3,
+      "prompt_count": 2000,
+      "scored_token_count": 245937,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        29,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 48.80142407503445
+    },
+    {
+      "shard": 4,
+      "prompt_count": 2000,
+      "scored_token_count": 245172,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        5,
+        23,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 49.01557245897129
+    },
+    {
+      "shard": 5,
+      "prompt_count": 2000,
+      "scored_token_count": 246011,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        5,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 49.117547437082976
+    },
+    {
+      "shard": 6,
+      "prompt_count": 2000,
+      "scored_token_count": 245615,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        13,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 48.94835031207185
+    },
+    {
+      "shard": 7,
+      "prompt_count": 2000,
+      "scored_token_count": 245184,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        6,
+        17,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 48.5235233589774
+    },
+    {
+      "shard": 8,
+      "prompt_count": 2000,
+      "scored_token_count": 247092,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        23,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 48.65644403209444
+    },
+    {
+      "shard": 9,
+      "prompt_count": 2000,
+      "scored_token_count": 245264,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        14,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 48.57073360495269
+    }
+  ],
+  "status": "COMPLETE"
+}
