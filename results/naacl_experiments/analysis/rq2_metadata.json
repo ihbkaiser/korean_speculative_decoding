@@ -1,0 +1,202 @@
+{
+  "core_boundary_settings": [
+    "core_generated_k4:Q1",
+    "core_generated_k4:Q2",
+    "core_generated_k4:Q3",
+    "core_generated_k4:Q4",
+    "core_generated_k4:Q5",
+    "core_generated_k4:Q6",
+    "core_generated_k4:G1",
+    "core_generated_k4:M1"
+  ],
+  "core_split": "common 20,000 prompts, including Q2 restricted from its 40,000-prompt all split",
+  "figure_boundary_family": "coarse Kiwi boundary label; CROSS uses actual crossed label, WITHIN uses nearest label",
+  "table3_boundary_unit": "fine Kiwi POS-transition boundary; CROSS uses actual crossed label, WITHIN uses nearest label",
+  "figure_minimum_class_support": 200,
+  "table_minimum_class_support": 100,
+  "core_outcome": "k=4 offline greedy-SD replay rejection indicator; simulator estimates are scoped by V0 shared-prefix validation",
+  "wikipedia_outcome": "k=4 offline greedy-SD replay rejection indicator on frozen Wikipedia sample",
+  "human_outcome": "teacher-forced draft-vs-target argmax disagreement at the same human-written prefix; not a live SD rejection",
+  "stability_metrics": "Spearman rank correlation and sign agreement over shared fine boundaries supported by at least 100 CROSS and 100 WITHIN rows in each setting; top five are the largest positive CROSS-minus-WITHIN effects among each setting's supported fine boundaries",
+  "settings_in_stability_table": 18,
+  "pairwise_rows": 153,
+  "pairwise_status_counts": {
+    "COMPLETE": 136,
+    "NOT_ESTIMABLE_LT3_SHARED_BOUNDARIES": 17
+  },
+  "supported_fine_boundaries_by_setting": {
+    "core_generated_k4:G1": 43,
+    "core_generated_k4:M1": 41,
+    "core_generated_k4:Q1": 37,
+    "core_generated_k4:Q2": 37,
+    "core_generated_k4:Q3": 39,
+    "core_generated_k4:Q4": 37,
+    "core_generated_k4:Q5": 40,
+    "core_generated_k4:Q6": 40,
+    "human_teacher_forced_disagreement:G1": 34,
+    "human_teacher_forced_disagreement:M1": 36,
+    "human_teacher_forced_disagreement:Q1": 28,
+    "human_teacher_forced_disagreement:Q2": 28,
+    "human_teacher_forced_disagreement:Q3": 28,
+    "human_teacher_forced_disagreement:Q4": 28,
+    "human_teacher_forced_disagreement:Q5": 28,
+    "human_teacher_forced_disagreement:Q6": 28,
+    "wikipedia_generated_k4:G1": 8,
+    "wikipedia_generated_k4:Q2": 1
+  },
+  "human_join_meta": {
+    "Q1": {
+      "target_tf_positions": 1171450,
+      "draft_tf_positions": 1171450,
+      "matched_tf_positions": 1171450,
+      "unmatched_tf_positions": 0,
+      "aligned_rows": 1171450
+    },
+    "Q2": {
+      "target_tf_positions": 1171450,
+      "draft_tf_positions": 1171450,
+      "matched_tf_positions": 1171450,
+      "unmatched_tf_positions": 0,
+      "aligned_rows": 1171450
+    },
+    "Q3": {
+      "target_tf_positions": 1171450,
+      "draft_tf_positions": 1171450,
+      "matched_tf_positions": 1171450,
+      "unmatched_tf_positions": 0,
+      "aligned_rows": 1171450
+    },
+    "Q4": {
+      "target_tf_positions": 1171450,
+      "draft_tf_positions": 1171450,
+      "matched_tf_positions": 1171450,
+      "unmatched_tf_positions": 0,
+      "aligned_rows": 1171450
+    },
+    "Q5": {
+      "target_tf_positions": 1171450,
+      "draft_tf_positions": 1171450,
+      "matched_tf_positions": 1171450,
+      "unmatched_tf_positions": 0,
+      "aligned_rows": 1171450
+    },
+    "Q6": {
+      "target_tf_positions": 1171450,
+      "draft_tf_positions": 1171450,
+      "matched_tf_positions": 1171450,
+      "unmatched_tf_positions": 0,
+      "aligned_rows": 1171450
+    },
+    "G1": {
+      "target_tf_positions": 1127951,
+      "draft_tf_positions": 1127951,
+      "matched_tf_positions": 1127951,
+      "unmatched_tf_positions": 0,
+      "aligned_rows": 1127951
+    },
+    "M1": {
+      "target_tf_positions": 1133929,
+      "draft_tf_positions": 1133929,
+      "matched_tf_positions": 1133929,
+      "unmatched_tf_positions": 0,
+      "aligned_rows": 1133929
+    }
+  },
+  "core_event_join_meta": [
+    {
+      "pair_id": "Q1",
+      "target": "qwen17",
+      "draft": "qwen06",
+      "split": "common",
+      "documents": 20000,
+      "target_positions": 2485747,
+      "eligible_k4_proposals": 2111560,
+      "event_positions_with_alignment": 2111560,
+      "event_positions_without_alignment": 0
+    },
+    {
+      "pair_id": "Q2",
+      "target": "qwen4",
+      "draft": "qwen06",
+      "split": "common",
+      "documents": 20000,
+      "target_positions": 2475047,
+      "eligible_k4_proposals": 2132560,
+      "event_positions_with_alignment": 2132560,
+      "event_positions_without_alignment": 0
+    },
+    {
+      "pair_id": "Q3",
+      "target": "qwen8",
+      "draft": "qwen4",
+      "split": "common",
+      "documents": 20000,
+      "target_positions": 2465034,
+      "eligible_k4_proposals": 2085610,
+      "event_positions_with_alignment": 2085610,
+      "event_positions_without_alignment": 0
+    },
+    {
+      "pair_id": "Q4",
+      "target": "qwen4",
+      "draft": "qwen17",
+      "split": "common",
+      "documents": 20000,
+      "target_positions": 2475047,
+      "eligible_k4_proposals": 2105535,
+      "event_positions_with_alignment": 2105535,
+      "event_positions_without_alignment": 0
+    },
+    {
+      "pair_id": "Q5",
+      "target": "qwen8",
+      "draft": "qwen06",
+      "split": "common",
+      "documents": 20000,
+      "target_positions": 2465034,
+      "eligible_k4_proposals": 2142767,
+      "event_positions_with_alignment": 2142767,
+      "event_positions_without_alignment": 0
+    },
+    {
+      "pair_id": "Q6",
+      "target": "qwen8",
+      "draft": "qwen17",
+      "split": "common",
+      "documents": 20000,
+      "target_positions": 2465034,
+      "eligible_k4_proposals": 2112493,
+      "event_positions_with_alignment": 2112493,
+      "event_positions_without_alignment": 0
+    },
+    {
+      "pair_id": "G1",
+      "target": "gemma12",
+      "draft": "gemma4",
+      "split": "common",
+      "documents": 20000,
+      "target_positions": 2549337,
+      "eligible_k4_proposals": 2059836,
+      "event_positions_with_alignment": 2059836,
+      "event_positions_without_alignment": 0
+    },
+    {
+      "pair_id": "M1",
+      "target": "ministral8",
+      "draft": "ministral3",
+      "split": "common",
+      "documents": 20000,
+      "target_positions": 2498617,
+      "eligible_k4_proposals": 2115278,
+      "event_positions_with_alignment": 2115278,
+      "event_positions_without_alignment": 0
+    }
+  ],
+  "qwen_grid_formula": "Adjusted logistic AME from shared analyze_naacl_cpu GLOBAL_FORMULA; document-clustered sandwich SE",
+  "qwen_grid_provenance": "Q1, Q2 common, and N-to-P estimates are retained from direct RQ2 fit logs; global Q3-Q6 estimates are reused from RQ1 Table 2b after exact row-count and common-sample checks",
+  "files": {
+    "boundary_effects": "/workspace/korean_speculative_decoding/results/naacl_experiments/analysis/rq2_boundary_effects.csv",
+    "stability_table": "/workspace/korean_speculative_decoding/results/naacl_experiments/analysis/rq2_table3_setting_stability.csv",
+    "qwen_grid": "/workspace/korean_speculative_decoding/results/naacl_experiments/analysis/rq2_qwen_grid.csv"
+  }
+}

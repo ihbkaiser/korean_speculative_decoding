@@ -6,18 +6,18 @@ The paper becomes a pure analysis paper built on five research questions, with n
 
 **Revision (18:50, Oct 11).** The method (BADS) and everything that only served it are removed: the step-cost benchmark, policy replay and the live wall-clock check. Added in their place: a quantified cost of fusion for SD (RQ5), a particle confusion analysis, a human-written-text replication, and human validation of the morphology labels.
 
-## 1. The key change: simulate SD exactly instead of running it
+## 1. The key change: replay greedy SD decisions from saved model scores
 
-Under greedy SD, a draft proposal at position t is only verified if every earlier proposal in its block was accepted. Each of those accepted proposals equals the target's token, so the draft always predicts position t from the target's own greedy prefix. Its proposal is therefore exactly the draft's greedy prediction when teacher-forced on the target continuation.
+Under greedy SD, a draft proposal at position t is only verified if every earlier proposal in its block was accepted. Each accepted proposal equals the target's token, so the draft predicts position t from the target's greedy prefix. Teacher-forced draft scores on that continuation therefore reproduce the proposal decisions when the same deterministic argmax decisions are used. This is an exact replay conditional on the saved continuation and matching runtime decisions; cache, precision, or near-tie differences can make a live decoder diverge.
 
 Two cheap passes give everything the live decoder gave:
 
 1. **Target pass:** batched greedy generation (HF `generate`, 128 new tokens), then one teacher-forced forward to log the target's entropy, top-5 tokens and margin at every position.
 2. **Draft pass:** one teacher-forced forward over prompt + target continuation, logging the draft argmax, its log-probability, entropy and top-2 margin at every position.
 
-A CPU simulator then walks each continuation with block size k: it accepts while draft argmax equals the target token, marks the first mismatch as a rejection, and drops the rest of the block. This gives the eligible proposals and rejection labels for k = 4, and for any other k, at no extra GPU cost.
+A CPU replay then walks each continuation with block size k: it accepts while draft argmax equals the target token, marks the first mismatch as a rejection, and drops the rest of the block. This gives eligible proposals and rejection labels for k = 4 and other k values, without another GPU pass. It does not measure live decoding latency.
 
-**Why this is safe to claim.** The discovery study already found SD and teacher-forced labels agree at 99.88% of positions. On the A6000 we re-run the repo's real cached SD decoder on 1,000 Q2 prompts and 500 G1 prompts and report label agreement. The paper says "computed exactly by teacher forcing and validated against live SD"; residual disagreement comes from numerical near-ties and is reported, not hidden.
+**Validation scope.** The discovery study found SD and teacher-forced labels agree at 99.88% of positions. The dedicated Q2 V0 run reports 98.0577% agreement on joined shared-context proposal positions, above the user-selected 95% gate, while the strict zero-unmatched check failed; outer-joined agreement was 88.6536%, and the common-prefix token fraction was 54.5771%. These figures support the planned shared-context token analyses with explicit scope limits. They do not validate diverged positions or establish live latency; see Section 4 for unmatched counts and the G1 status.
 
 **What it buys.** Batched autoregressive generation of a target is far faster than the batched SD decoder, and one target continuation serves every draft paired with it. Three Qwen targets (1.7B, 4B, 8B) and three drafts (0.6B, 1.7B, 4B) give six Qwen pairs for the price of three generations.
 
@@ -554,4 +554,25 @@ Across the complete H study, tokenizer-specific filtering left 9,722 Qwen, 9,604
 - Target TF label disagreement is 204 positions for each block size. As for W-Q2, these are deterministic offline saved-logit replay estimates, not live decoding or latency measurements. G1 live V0 supports agreement on shared-prefix contexts; unmatched/diverged positions remain a limit on claims about full live behavior.
 - Artifacts are under `results/naacl_experiments/wikipedia/continuations/gemma12/`, `teacher_forced/generated/gemma12/`, `aligned/kiwi/gemma12/`, and `simulated/G1/`. Logs under `logs/naacl_experiments/20261012/`: `W-G1-download-smoke.log`, `W-G1-generation.log`, `W-G1-target-TF.log`, `W-G1-alignment.log`, `W-G1-draft-TF.log`, `W-G1-simulate.log`, and `W-G1-eviction.log`. Gemma12 weights were evicted from `/dev/shm` after scoring; Gemma4 remains in `/workspace/naacl_gemma_models`.
 
-**Queue status after W-G1 (2026-10-12 12:03 UTC):** W-Q2 and W-G1 are complete on the frozen 2k Wikipedia sample, and the planned H and W GPU cells are complete. Next, run the CPU analyses in Section 5 (RQ1–RQ5 tables/figures, including the H/W stability comparisons), finish the morphology/frequency falsification and validation artifacts in Section 5, then update the paper draft. V0 is accepted under the user's 95% shared-prefix agreement gate; report unmatched-position counts as a scope diagnostic and do not present offline replay as a live latency result.
+**Queue status after W-G1 (2026-10-12 12:03 UTC):** W-Q2 and W-G1 are complete on the frozen 2k Wikipedia sample, and the planned H and W GPU cells are complete. CPU RQ1 and RQ2 analyses have since been completed. Next: RQ3–RQ5 analyses, remaining morphology/frequency falsification and validation artifacts, then update the paper draft. V0 is accepted under the user's 95% shared-prefix agreement gate; report unmatched-position counts as a scope diagnostic and do not present offline replay as a live latency result.
+
+### RQ2 CPU analysis: boundary stability across pairs and text settings
+
+- Analysis command: `/venv/main/bin/python -u scripts/analyze_naacl_rq2.py`; final log: `logs/naacl_experiments/20261012/CPU-RQ2-final.log`. Boundary summaries cover eight core pairs on the common 20k prompt pool, Q2 and G1 on the frozen 2k Wikipedia pool, and all eight human-text pairs. Each human target/draft TF join matched at every scored position; the human outcome is **draft-versus-target argmax disagreement at the same human-written prefix**, not a live speculative-decoding rejection.
+- **Figure 3a** uses coarse Kiwi boundary families. A cell is shown only with at least 200 CROSS and 200 WITHIN k=4 replay proposals. All 40 core pair-by-family cells meet this threshold. The global rate differences vary by tokenizer family: Qwen pairs show a positive N→P difference from +6.7 to +15.5 pp, while G1 is −0.3 pp and M1 is +6.2 pp. The fine-boundary source table retains counts and rates for every supported label.
+- **Figure 3b** reports adjusted CROSS−WITHIN AMEs with document-clustered 95% CIs. Qwen global and N→P estimates (percentage points) are:
+
+| Pair | Global AME [95% CI] | N→P AME [95% CI] |
+| --- | ---: | ---: |
+| Q1 0.6B→1.7B | +0.09 [−0.11, +0.28] | −0.01 [−0.62, +0.61] |
+| Q2 0.6B→4B | +0.02 [−0.20, +0.23] | +1.44 [+0.79, +2.09] |
+| Q3 4B→8B | −1.42 [−1.61, −1.24] | −1.95 [−2.49, −1.40] |
+| Q4 1.7B→4B | −0.69 [−0.89, −0.49] | −0.99 [−1.57, −0.41] |
+| Q5 0.6B→8B | +0.37 [+0.14, +0.59] | +3.00 [+2.34, +3.66] |
+| Q6 1.7B→8B | −0.79 [−0.99, −0.58] | −0.34 [−0.96, +0.27] |
+
+- **Table 3** compares all 18 settings pairwise on fine Kiwi POS-transition boundaries. Spearman rank and sign agreement use only boundaries with at least 100 CROSS and 100 WITHIN rows in both settings. The top-five set is the five largest positive CROSS−WITHIN effects among each setting's supported fine boundaries. Of 153 setting pairs, 136 are estimable and 17 are marked not estimable because fewer than three boundaries meet shared support; every non-estimable comparison involves Wikipedia Q2, which has only one supported fine boundary. Among core generated pairs, mean rank correlation is 0.618, mean sign agreement 0.796, and mean top-five Jaccard is 0.306 (28 comparisons). Human-versus-human values are 0.668, 0.794, and 0.413 (28 comparisons). Same-pair generated-versus-human comparisons average 0.367 rank correlation, 0.792 sign agreement, and 0.186 top-five Jaccard (8 comparisons). These summarize stability across distinct outcomes; human disagreement is not treated as an SD rejection.
+- Replay outcomes remain scoped by V0: the accepted ≥95% threshold applies to shared-context Q2 proposal positions. The 54.58% common-prefix fraction and 88.65% outer-joined agreement remain visible validation diagnostics. These RQ2 replay associations are not live-latency results, and their estimates do not cover diverged contexts. Wikipedia Q2 stability is underpowered at the fine-boundary level.
+- Artifacts: `results/naacl_experiments/analysis/rq2_boundary_effects.csv` (coarse and fine boundary rates/support), `rq2_qwen_grid.csv` (fit status and estimate provenance), `rq2_table3_setting_stability.csv`, and `rq2_metadata.json`. Figures: `figure3a_rq2_boundary_pair_heatmap.{pdf,png}` and `figure3b_rq2_qwen_grid.{pdf,png}`. Figure source: `figures/gen_fig_naacl_rq2.py`; analysis source: `scripts/analyze_naacl_rq2.py`.
+
+**Queue status after RQ2 (2026-10-12):** RQ1 and RQ2 CPU exhibits are complete. Next per plan: RQ3 token-level mechanism analyses, RQ4 falsification/robustness analyses, and RQ5 rejection-cost decomposition; then finalize remaining morphology validation and paper-facing summaries. Continue to label replay estimates with the V0 shared-context scope and keep the human-text disagreement outcome separate.

@@ -1,0 +1,55 @@
+LOAD_CORE pair=Q1
+CORE_READY pair=Q1 rows=968,737 docs=17,875
+MODEL_REUSE RQ2-Q1-global source=rq2_qwen_grid.csv rows=968,737
+MODEL_REUSE RQ2-Q1-nominal_to_particle source=rq2_qwen_grid.csv rows=277,593
+LOAD_CORE pair=Q2
+CORE_READY pair=Q2 rows=987,806 docs=17,983
+MODEL_REUSE RQ2-Q2-global source=rq2_qwen_grid.csv rows=987,806
+MODEL_REUSE RQ2-Q2-nominal_to_particle source=rq2_qwen_grid.csv rows=286,125
+LOAD_CORE pair=Q3
+CORE_READY pair=Q3 rows=973,884 docs=18,059
+MODEL_REUSE RQ2-Q3-global source=rq1_table2b_cross_within.csv rows=973,884
+MODEL_START RQ2-Q3-nominal_to_particle rows=282,008 docs=15,884
+MODEL_DONE RQ2-Q3-nominal_to_particle status=COMPLETE converged=True AME=-0.01946241 raw_AME=-0.01946241 SE=0.00276599 warnings=
+LOAD_CORE pair=Q4
+CORE_READY pair=Q4 rows=976,040 docs=17,984
+MODEL_REUSE RQ2-Q4-global source=rq1_table2b_cross_within.csv rows=976,040
+MODEL_START RQ2-Q4-nominal_to_particle rows=282,276 docs=15,639
+MODEL_DONE RQ2-Q4-nominal_to_particle status=COMPLETE converged=True AME=-0.009876237 raw_AME=-0.009876237 SE=0.002971106 warnings=
+LOAD_CORE pair=Q5
+CORE_READY pair=Q5 rows=999,387 docs=18,059
+MODEL_REUSE RQ2-Q5-global source=rq1_table2b_cross_within.csv rows=999,387
+MODEL_START RQ2-Q5-nominal_to_particle rows=289,701 docs=15,890
+MODEL_DONE RQ2-Q5-nominal_to_particle status=COMPLETE converged=True AME=0.02997518 raw_AME=0.02997518 SE=0.003369373 warnings=
+LOAD_CORE pair=Q6
+CORE_READY pair=Q6 rows=985,750 docs=18,059
+MODEL_REUSE RQ2-Q6-global source=rq1_table2b_cross_within.csv rows=985,750
+MODEL_START RQ2-Q6-nominal_to_particle rows=285,625 docs=15,886
+MODEL_DONE RQ2-Q6-nominal_to_particle status=COMPLETE converged=True AME=-0.00344637 raw_AME=-0.00344637 SE=0.003128934 warnings=
+LOAD_CORE pair=G1
+CORE_READY pair=G1 rows=822,145 docs=15,762
+LOAD_CORE pair=M1
+CORE_READY pair=M1 rows=1,010,655 docs=18,445
+LOAD_WIKIPEDIA pair=Q2
+WIKIPEDIA_READY pair=Q2 eligible=215,490
+LOAD_WIKIPEDIA pair=G1
+WIKIPEDIA_READY pair=G1 eligible=206,325
+LOAD_HUMAN pair=Q1
+HUMAN_READY pair=Q1 rows=1,171,450 aligned=1,171,450 unmatched_tf=0
+LOAD_HUMAN pair=Q2
+HUMAN_READY pair=Q2 rows=1,171,450 aligned=1,171,450 unmatched_tf=0
+LOAD_HUMAN pair=Q3
+HUMAN_READY pair=Q3 rows=1,171,450 aligned=1,171,450 unmatched_tf=0
+LOAD_HUMAN pair=Q4
+HUMAN_READY pair=Q4 rows=1,171,450 aligned=1,171,450 unmatched_tf=0
+LOAD_HUMAN pair=Q5
+HUMAN_READY pair=Q5 rows=1,171,450 aligned=1,171,450 unmatched_tf=0
+LOAD_HUMAN pair=Q6
+HUMAN_READY pair=Q6 rows=1,171,450 aligned=1,171,450 unmatched_tf=0
+LOAD_HUMAN pair=G1
+HUMAN_READY pair=G1 rows=1,127,951 aligned=1,127,951 unmatched_tf=0
+LOAD_HUMAN pair=M1
+HUMAN_READY pair=M1 rows=1,133,929 aligned=1,133,929 unmatched_tf=0
+WROTE /workspace/korean_speculative_decoding/results/naacl_experiments/analysis/rq2_boundary_effects.csv rows=90
+WROTE /workspace/korean_speculative_decoding/results/naacl_experiments/analysis/rq2_table3_setting_stability.csv rows=153
+WROTE /workspace/korean_speculative_decoding/results/naacl_experiments/analysis/rq2_qwen_grid.csv rows=12

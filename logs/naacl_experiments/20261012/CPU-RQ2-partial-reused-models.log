@@ -1,0 +1,38 @@
+LOAD_CORE pair=Q1
+CORE_READY pair=Q1 rows=968,737 docs=17,875
+MODEL_START RQ2-Q1-global rows=968,737 docs=17,875
+MODEL_DONE RQ2-Q1-global status=COMPLETE converged=True AME=0.000853013 raw_AME=0.000853013 SE=0.0009978917 warnings=
+MODEL_START RQ2-Q1-nominal_to_particle rows=277,593 docs=15,338
+MODEL_DONE RQ2-Q1-nominal_to_particle status=COMPLETE converged=True AME=-6.52034e-05 raw_AME=-6.52034e-05 SE=0.00314353 warnings=
+LOAD_CORE pair=Q2
+CORE_READY pair=Q2 rows=987,806 docs=17,983
+MODEL_START RQ2-Q2-global rows=987,806 docs=17,983
+MODEL_DONE RQ2-Q2-global status=COMPLETE converged=True AME=0.0001643532 raw_AME=0.0001643532 SE=0.001092486 warnings=
+MODEL_START RQ2-Q2-nominal_to_particle rows=286,125 docs=15,644
+MODEL_DONE RQ2-Q2-nominal_to_particle status=COMPLETE converged=True AME=0.01438756 raw_AME=0.01438756 SE=0.003302545 warnings=
+LOAD_CORE pair=Q3
+CORE_READY pair=Q3 rows=973,884 docs=18,059
+MODEL_START RQ2-Q3-global rows=973,884 docs=18,059
+Traceback (most recent call last):
+  File "/workspace/korean_speculative_decoding/scripts/analyze_naacl_rq2.py", line 328, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/analyze_naacl_rq2.py", line 250, in main
+    fitted = fit_cross_ame(subset, label=f"RQ2-{pair_id}-{label}")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/analyze_naacl_cpu.py", line 552, in fit_cross_ame
+    result = smf.glm(formula, data=model_data, family=sm.families.Binomial()).fit(maxiter=50)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/statsmodels/genmod/generalized_linear_model.py", line 1269, in fit
+    return self._fit_irls(
+           ^^^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/statsmodels/genmod/generalized_linear_model.py", line 1466, in _fit_irls
+    wls_results = wls_mod.fit(method=wls_method)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/statsmodels/regression/_tools.py", line 104, in fit
+    params, _, _, _ = np.linalg.lstsq(self.wexog, self.wendog,
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/numpy/linalg/_linalg.py", line 2564, in lstsq
+    x, resids, rank, s = _umath_linalg.lstsq(a, b, rcond,
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

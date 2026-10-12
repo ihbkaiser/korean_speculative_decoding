@@ -41,7 +41,7 @@ PAIR_ALIGN_COLUMNS = [
     "alignment_status", "visible_candidate", "token_eojeol_count",
     "eojeol_char_len", "eojeol_token_count", "token_index_in_eojeol",
     "relative_position_in_eojeol", "is_first_token", "is_last_token",
-    "fine_boundary", "nearest_fine_boundary", "nearest_coarse_boundary",
+    "fine_boundary", "coarse_boundary", "nearest_fine_boundary", "nearest_coarse_boundary",
     "boundary_position_ratio", "pool_index",
 ]
 EVENT_COLUMNS = [
@@ -68,10 +68,17 @@ def resolve_split_dir(base: Path, target: str, split: str) -> Path:
     raise FileNotFoundError(f"No artifacts for target={target} split={split} under {base}")
 
 
-def read_tf_for_pair(root: Path, target: str, model: str, split: str, docs: set[str]) -> pd.DataFrame:
-    directory = root / "teacher_forced" / "generated" / target / model / split
+def read_tf_for_pair(
+    root: Path,
+    target: str,
+    model: str,
+    split: str,
+    docs: set[str],
+    continuation: str = "generated",
+) -> pd.DataFrame:
+    directory = root / "teacher_forced" / continuation / target / model / split
     if not list(directory.glob("shard-*.parquet")) and split == "common":
-        directory = root / "teacher_forced" / "generated" / target / model / "all"
+        directory = root / "teacher_forced" / continuation / target / model / "all"
     if not list(directory.glob("shard-*.parquet")):
         raise FileNotFoundError(f"TF shards missing for target={target}, model={model}, split={split}")
     columns = ["doc_id", "position", "target_token_id", "argmax_id", "entropy", "top2_margin", "pool_index"]
@@ -90,9 +97,15 @@ def read_tf_for_pair(root: Path, target: str, model: str, split: str, docs: set[
     return result
 
 
-def load_pair_frame(root: Path, pair_id: str, config: dict[str, Any]) -> tuple[pd.DataFrame, dict[str, Any]]:
+def load_pair_frame(
+    root: Path,
+    pair_id: str,
+    config: dict[str, Any],
+    split_override: str | None = None,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
     pair = config["pairs"][pair_id]
-    target, draft, split = pair["target"], pair["draft"], pair["split"]
+    target, draft = pair["target"], pair["draft"]
+    split = split_override or pair["split"]
     events_path = root / "simulated" / pair_id / split / "events_k4.parquet"
     events = pd.read_parquet(events_path, columns=EVENT_COLUMNS)
     events = events.loc[events.eligible.fillna(False).astype(bool)].copy()
