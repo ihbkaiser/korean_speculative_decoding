@@ -1,0 +1,7 @@
+GEN_START target=gemma12 split=common prompts=2000 requested_batch=48 max_new_tokens=128
+Loading weights:   0%|          | 0/1065 [00:00<?, ?it/s]Loading weights:  37%|███▋      | 389/1065 [00:00<00:00, 3877.44it/s]Loading weights:  73%|███████▎  | 777/1065 [00:00<00:00, 3456.69it/s]Loading weights: 100%|██████████| 1065/1065 [00:00<00:00, 3452.78it/s]
+GEN_SHARD_COMPLETE target=gemma12 shard=00000 prompts=500
+GEN_SHARD_COMPLETE target=gemma12 shard=00001 prompts=500
+GEN_SHARD_COMPLETE target=gemma12 shard=00002 prompts=500
+GEN_SHARD_COMPLETE target=gemma12 shard=00003 prompts=500
+GEN_COMPLETE target=gemma12 output=/workspace/korean_speculative_decoding/results/naacl_experiments/wikipedia/continuations/gemma12/common wall_seconds=923.2

@@ -496,3 +496,22 @@ Across the complete H study, tokenizer-specific filtering left 9,722 Qwen, 9,604
 - Artifacts are under `results/naacl_experiments/wikipedia/`: generated continuations, target and draft TF shards, Kiwi alignment shards, and per-k event tables plus summaries. Run metadata records pinned model revisions, prompt/data hashes, runtime environment, shard counts, and head checks. Logs: `W-Q2-download-smoke.log`, `W-Q2-generation.log`, `W-Q2-target-TF.log`, `W-Q2-alignment.log`, `W-Q2-draft-TF.log`, `W-Q2-simulate.log`, and `W-Q2-eviction.log` under `logs/naacl_experiments/20261012/`. Both Qwen model weight sets were evicted after the pair; tokenizer/config files were retained.
 
 **Queue status after W-Q2:** Q2's 2k Wikipedia generation, target TF, alignment, draft TF, and offline replay are complete and preserved. Next run G1 (Gemma4→Gemma12) on the same frozen pool. Continue to report replay as offline estimates; the Q2/G1 full-V0 unmatched-position failures remain unresolved.
+
+### W Wikipedia-ko G1 run
+
+- Pair: Gemma-3-4B-pt draft → Gemma-3-12B-pt target on the same frozen 2,000-document pool. Target generation used greedy decoding, 128-token prompt/continuation limits, bfloat16, SDPA, and pinned Gemma revisions. All four 500-document shards completed; generation wall time was 923.21 s.
+- Target and draft TF each scored 2,000 prompts / 255,179 continuation tokens across four shards. Every shard passed its head check (`head_scale=1`, maximum absolute error 0). Summed shard times: 176.93 s target, 74.15 s draft. Kiwi alignment completed all four shards with 255,179 aligned rows.
+- Offline replay completed for k ∈ {1, 2, 4, 8, 16}:
+
+| Block size k | Eligible proposals | Rejections | Rejection rate |
+| ---: | ---: | ---: | ---: |
+| 1 | 129,587 | 3,025 | 2.3343% |
+| 2 | 172,358 | 3,601 | 2.0893% |
+| 4 | 206,325 | 4,094 | 1.9843% |
+| 8 | 228,711 | 4,254 | 1.8600% |
+| 16 | 241,794 | 4,324 | 1.7883% |
+
+- Target TF label disagreement is 204 positions for each block size. As for W-Q2, these are deterministic offline saved-logit replay estimates, not live decoding or latency measurements. G1 live V0 supports agreement on shared-prefix contexts; unmatched/diverged positions remain a limit on claims about full live behavior.
+- Artifacts are under `results/naacl_experiments/wikipedia/continuations/gemma12/`, `teacher_forced/generated/gemma12/`, `aligned/kiwi/gemma12/`, and `simulated/G1/`. Logs under `logs/naacl_experiments/20261012/`: `W-G1-download-smoke.log`, `W-G1-generation.log`, `W-G1-target-TF.log`, `W-G1-alignment.log`, `W-G1-draft-TF.log`, `W-G1-simulate.log`, and `W-G1-eviction.log`. Gemma12 weights were evicted from `/dev/shm` after scoring; Gemma4 remains in `/workspace/naacl_gemma_models`.
+
+**Queue status after W-G1 (2026-10-12 12:03 UTC):** W-Q2 and W-G1 are complete on the frozen 2k Wikipedia sample, and the planned H and W GPU cells are complete. Next, run the CPU analyses in Section 5 (RQ1–RQ5 tables/figures, including the H/W stability comparisons), finish the morphology/frequency falsification and validation artifacts in Section 5, then update the paper draft. Apply the user-selected 95% shared-prefix agreement threshold for V0 while reporting unmatched-position counts as a scope diagnostic; do not present offline replay as a live latency result.
