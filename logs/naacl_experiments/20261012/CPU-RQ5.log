@@ -1,0 +1,12 @@
+LOAD_Q2_TARGET_PATH
+TARGET_PATH rows=4,945,226 docs=40,000
+COST_BLOCK_START k=1
+COST_BLOCK_DONE k=1 rejections=475,043 wasted=475,043 actual_mean=1.81823 cf_mean=1.82146 ci=[1.82041,1.82240]
+COST_BLOCK_START k=2
+COST_BLOCK_DONE k=2 rejections=614,575 wasted=989,800 actual_mean=2.48272 cf_mean=2.49186 ci=[2.48952,2.49416]
+COST_BLOCK_START k=4
+COST_BLOCK_DONE k=4 rejections=717,681 wasted=2,128,451 actual_mean=3.45230 cf_mean=3.47728 ci=[3.47100,3.48278]
+COST_BLOCK_START k=8
+COST_BLOCK_DONE k=8 rejections=765,982 wasted=4,703,697 actual_mean=4.51415 cf_mean=4.56861 ci=[4.55551,4.58211]
+COST_BLOCK_START k=16
+COST_BLOCK_DONE k=16 rejections=781,240 wasted=10,325,026 actual_mean=5.30387 cf_mean=5.38824 ci=[5.36566,5.40833]

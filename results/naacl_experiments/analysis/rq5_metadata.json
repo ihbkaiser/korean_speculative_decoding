@@ -1,0 +1,70 @@
+{
+  "pair": "Q2",
+  "split": "all / 40,000 prompts",
+  "outcome_scope": "offline greedy-SD replay on the saved Qwen4 target continuation; V0 shared-context scope caveat applies",
+  "rejection_cost": "One rejected proposal plus the invalidated draft suffix work in its k-sized block are charged to the boundary family at the rejection position.",
+  "counterfactual": "For each k, estimate within rejection probability by coarse boundary from eligible aligned visible WITHIN proposals. Replace each CROSS position's rejection indicator with an independent Bernoulli draw at that boundary's within rate; keep all other positions' observed mismatch indicators. Dynamic programming computes expected target calls per continuation, including correction and bonus-token transitions. Mean accepted length is total target tokens / expected target calls.",
+  "bootstrap": "500 document-cluster resamples of expected token/call ratios; within-rate estimates are held fixed in each resample.",
+  "random_seed": 20261012,
+  "within_rates": {
+    "1": {
+      "within_rejection_rate_pooled": 0.1513898698222022,
+      "within_rejection_rate_by_boundary": {
+        "ENDING_TO_ENDING": 0.23356926188068755,
+        "LEXICAL_TO_LEXICAL": 0.15222172443285953,
+        "NOMINAL_TO_PARTICLE": 0.15009633477178236,
+        "OTHER": 0.169895801248582,
+        "OTHER_OR_UNALIGNED": 0.13698862269157902,
+        "PREDICATE_TO_ENDING": 0.19503974710613176
+      }
+    },
+    "2": {
+      "within_rejection_rate_pooled": 0.14744160868313536,
+      "within_rejection_rate_by_boundary": {
+        "ENDING_TO_ENDING": 0.2178723404255319,
+        "LEXICAL_TO_LEXICAL": 0.15065237672047505,
+        "NOMINAL_TO_PARTICLE": 0.14515709926319792,
+        "OTHER": 0.16378396251154412,
+        "OTHER_OR_UNALIGNED": 0.13309556451197263,
+        "PREDICATE_TO_ENDING": 0.18713825221278338
+      }
+    },
+    "4": {
+      "within_rejection_rate_pooled": 0.14412769572841158,
+      "within_rejection_rate_by_boundary": {
+        "ENDING_TO_ENDING": 0.2050909090909091,
+        "LEXICAL_TO_LEXICAL": 0.14681913799334637,
+        "NOMINAL_TO_PARTICLE": 0.1425448217102043,
+        "OTHER": 0.1593107588624326,
+        "OTHER_OR_UNALIGNED": 0.13014239044673345,
+        "PREDICATE_TO_ENDING": 0.18384879725085912
+      }
+    },
+    "8": {
+      "within_rejection_rate_pooled": 0.14074546327566384,
+      "within_rejection_rate_by_boundary": {
+        "ENDING_TO_ENDING": 0.19892833221701273,
+        "LEXICAL_TO_LEXICAL": 0.1438787626253644,
+        "NOMINAL_TO_PARTICLE": 0.13888446294489035,
+        "OTHER": 0.1557731835192691,
+        "OTHER_OR_UNALIGNED": 0.12705561811029095,
+        "PREDICATE_TO_ENDING": 0.1781674679709863
+      }
+    },
+    "16": {
+      "within_rejection_rate_pooled": 0.13812696179788064,
+      "within_rejection_rate_by_boundary": {
+        "ENDING_TO_ENDING": 0.19402985074626866,
+        "LEXICAL_TO_LEXICAL": 0.1413390374192161,
+        "NOMINAL_TO_PARTICLE": 0.1362176667956743,
+        "OTHER": 0.15259528130671507,
+        "OTHER_OR_UNALIGNED": 0.12494639845246376,
+        "PREDICATE_TO_ENDING": 0.17375255774143072
+      }
+    }
+  },
+  "outputs": [
+    "rq5_cost_decomposition.csv",
+    "rq5_counterfactual_accepted_length.csv"
+  ]
+}
