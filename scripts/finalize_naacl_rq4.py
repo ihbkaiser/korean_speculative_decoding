@@ -189,8 +189,27 @@ def main() -> int:
     pseudo.to_csv(out / "rq4_pseudo_boundary_draws.csv", index=False)
 
     human_meta = rq4.create_human_sheet(all_frame, out / "rq4_human_validation_300.csv")
+    proposal_sample_path = out / "rq4_proposal_side_sample_summary.json"
+    proposal_sample = json.loads(proposal_sample_path.read_text(encoding="utf-8")) if proposal_sample_path.exists() else None
+    if proposal_sample is not None:
+        sample_fit = proposal_sample["ame_fit"]
+        sample_ame, sample_se = float(sample_fit["AME_cross_minus_within"]), float(sample_fit["clustered_SE"])
+        table_rows.append({
+            "variant": "proposal_side_random_1k_common_sample",
+            "status": "EXPLORATORY_SAMPLE_COMPLETE",
+            "ame_pp": 100.0 * sample_ame,
+            "se_pp": 100.0 * sample_se,
+            "ci_low_pp": 100.0 * float(sample_fit["CI_low_95"]),
+            "ci_high_pp": 100.0 * float(sample_fit["CI_high_95"]),
+            "p_value": float(sample_fit["p_value"]),
+            "n_rows": int(sample_fit["n_rows"]), "n_docs": int(sample_fit["n_docs"]),
+            "n_cross": int(sample_fit["n_cross"]), "n_within": int(sample_fit["n_within"]),
+            "cross_rejection_rate": float(sample_fit["cross_rejection_rate"]),
+            "within_rejection_rate": float(sample_fit["within_rejection_rate"]),
+        })
     table_rows.append({
-        "variant": "proposal_side_draft_candidate_labels", "status": "PENDING_PROPOSAL_BLOCK_PROJECTION",
+        "variant": "proposal_side_full40k_candidate_labels",
+        "status": "PENDING_PROPOSAL_BLOCK_PROJECTION",
         "ame_pp": np.nan, "se_pp": np.nan, "ci_low_pp": np.nan, "ci_high_pp": np.nan,
         "p_value": np.nan, "n_rows": np.nan, "n_docs": np.nan, "n_cross": np.nan, "n_within": np.nan,
         "cross_rejection_rate": np.nan, "within_rejection_rate": np.nan,
@@ -214,13 +233,16 @@ def main() -> int:
         "pseudo_boundary": pseudo_meta,
         "human_validation": human_meta,
         "proposal_side": {
-            "status": "PENDING_PROPOSAL_BLOCK_PROJECTION",
-            "reason": "The available Q2 artifacts store teacher-forced candidate argmaxes; proposal-side labels require projecting eligible candidate blocks through the tokenizer and Kiwi on their committed contexts. This separate full-context projection has not been run.",
+            "status": "PARTIAL_RANDOM_1K_COMPLETE_FULL40K_PENDING" if proposal_sample is not None else "PENDING_PROPOSAL_BLOCK_PROJECTION",
+            "sample_result": proposal_sample,
+            "full40k_status": "PENDING_PROPOSAL_BLOCK_PROJECTION",
+            "reason": "The random 1k common-pool sample projects each eligible teacher-forced draft argmax on its saved target-prefix context. A full 40k projection remains unrun; the sample row does not replace the full Table 4 variant.",
         },
         "join": join_meta,
         "outputs": [
             "rq4_table4_robustness.csv", "rq4_top_type_removal.csv", "rq4_pseudo_boundary_draws.csv",
             "rq4_human_validation_300.csv", "rq4_metadata.json",
+            "rq4_proposal_side_sample_rows.parquet", "rq4_proposal_side_sample_summary.json",
         ],
         "notes": "Saved-continuation replay analysis within the V0 shared-context scope. Human annotation is pending; MeCab is an automatic analyzer comparison, not human validation. The log parser recovers converged fit AMEs and clustered SEs from completed model runs; support and observed rates are recomputed from the fit populations.",
     }

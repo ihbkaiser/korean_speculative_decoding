@@ -1,0 +1,19 @@
+PROPOSAL_SAMPLE_DOCS n=1000 seed=20261012
+LOAD_PINNED_QWEN06_TOKENIZER
+LOAD_Q2_COMMON_EVENTS_ALIGNMENT_AND_CONTROLS
+Traceback (most recent call last):
+  File "/workspace/korean_speculative_decoding/scripts/analyze_naacl_rq4_proposal_side_sample.py", line 207, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/analyze_naacl_rq4_proposal_side_sample.py", line 97, in main
+    sample = sample.sort_values(["doc_id", "block_id", "slot"], kind="stable")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/pandas/core/frame.py", line 8353, in sort_values
+    keys_data = list(keys)  # type: ignore[arg-type]
+                ^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/pandas/core/frame.py", line 8342, in <genexpr>
+    keys = (self._get_label_or_level_values(x, axis=axis) for x in by)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/pandas/core/generic.py", line 1764, in _get_label_or_level_values
+    raise KeyError(key)
+KeyError: 'block_id'
