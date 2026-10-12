@@ -92,6 +92,7 @@ verify_generation() {
   local path="results/naacl_experiments/o2_japanese/continuations/$model/common/run_metadata.json"
   /venv/main/bin/python - "$path" "$model" <<'PY'
 import json, pathlib, sys
+import pyarrow.parquet as pq
 p, model = pathlib.Path(sys.argv[1]), sys.argv[2]
 if not p.exists():
     raise SystemExit(f"missing generation manifest: {p}")
@@ -99,7 +100,9 @@ d = json.loads(p.read_text())
 assert d.get("status") == "COMPLETE", f"{model} generation status={d.get('status')}"
 assert d.get("model_key") == model, f"{model} generation model key mismatch"
 assert d.get("prompt_count") == 5000, f"{model} generation prompts={d.get('prompt_count')}"
-assert len(d.get("completed_shards", [])) == 3
+shards = sorted(p.parent.glob("shard-*.parquet"))
+rows = [pq.ParquetFile(shard).metadata.num_rows for shard in shards]
+assert rows == [2000, 2000, 1000], f"{model} generation shard rows={rows}"
 print(f"O2_GENERATION_VALIDATED target={model} prompts=5000 shards=3")
 PY
 }
