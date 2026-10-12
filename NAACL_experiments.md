@@ -118,6 +118,29 @@ The first full-sample RQ1 fit is complete from the Q2 40k `all` artifacts. The a
 
 All three logistic fits converged. These conditional associations are negative for F1 error and splitting error, while fusion error is not distinguishable from zero; they do not support the plan's anticipated positive scalar-error story. This is an observational association, not a causal effect. The operational boundary-set definition and empty-set convention are recorded in the metadata and should accompany the table. Boundary error is 1−score; both empty boundary sets give precision/recall/F1=1, while an empty predicted or gold set scores 0 on the corresponding precision or recall. Reproduction command: `/venv/main/bin/python -u scripts/analyze_naacl_cpu.py --config configs/naacl_experiments.yaml`. CSV, Markdown, and fit metadata are under `results/naacl_experiments/analysis/rq1_table2a_ame.*`; execution log: `logs/naacl_experiments/20261012/CPU-Q2-RQ1.log`.
 
+### CPU result: Table 1, Table 2b, and Figure 2
+
+All eight core pairs joined without unmatched event-to-alignment rows; target token IDs and target/draft TF argmax IDs matched the saved k=4 replay. Q2 uses the 40k `all` split; the other pairs use the frozen common 20k split. Pair-level counts and rejection rates are in `table1_pair_summary.csv`; class counts, shares, and class rejection rates are in `table1_alignment_classes.csv`.
+
+Table 2b reports adjusted discrete AMEs for CROSS versus WITHIN proposals from pair-specific logistic models with eojeol-token-count fixed effects, k=4 slot fixed effects, a 5-df cubic position spline, log eojeol length, draft/target entropy, and draft/target top-two margins. Standard errors cluster by document.
+
+| Pair | N proposals | Raw CROSS rejection | Raw WITHIN rejection | Adjusted CROSS−WITHIN AME | 95% CI | p |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Q1 0.6B→1.7B | 968,737 | 18.44% | 11.01% | +0.09 pp | [−0.11, +0.28] | 0.393 |
+| Q2 0.6B→4B | 1,974,984 | 23.44% | 14.41% | +0.04 pp | [−0.11, +0.19] | 0.600 |
+| Q3 4B→8B | 973,884 | 14.43% | 10.29% | −1.42 pp | [−1.61, −1.24] | 2.20e−50 |
+| Q4 1.7B→4B | 976,040 | 17.31% | 11.28% | −0.69 pp | [−0.89, −0.49] | 4.83e−12 |
+| Q5 0.6B→8B | 999,387 | 26.43% | 16.69% | +0.37 pp | [+0.14, +0.59] | 0.00128 |
+| Q6 1.7B→8B | 985,750 | 19.41% | 13.08% | −0.79 pp | [−0.99, −0.58] | 4.63e−14 |
+| G1 4B→12B | 822,145 | 1.36% | 1.55% | −0.39 pp | [−0.46, −0.32] | 5.08e−30 |
+| M1 3B→8B | 1,010,655 | 15.95% | 10.29% | −0.01 pp | [−0.18, +0.16] | 0.920 |
+
+All eight models converged. The controlled effects vary in sign across the Qwen grid; Q1, Q2, and M1 are not distinguishable from zero. This is an observational model result, not a causal effect. Full counts, raw rates, and estimates are in `rq1_table2b_cross_within.csv` and `rq1_table2b_metadata.json`.
+
+Figure 2 uses each CROSS token's observed fine Kiwi boundary and assigns each WITHIN token to its nearest fine boundary. **Thirty-eight** boundaries met the planned minimum of 200 proposals in each class. **Thirty-six** boundary-specific adjusted contrasts were estimable; two supported fits are retained as diagnostics but excluded from the plot and Benjamini–Hochberg tests: `NP→JKO` had zero clustered variance, and `VA-I→EC` had a rank-deficient design. Nine of the 36 estimable contrasts have BH q<0.05. The largest positive estimates are `NNB→JKS` (+33.94 pp, q=1.51e−235), `NNG→JC` (+31.78 pp, q=2.49e−28), and `VCP→EC` (+15.00 pp, q=1.03e−8); negative estimates include `EP→EF` (−9.80 pp, q=9.97e−4) and `XSV→EC` (−6.42 pp, q=7.30e−4). Full estimates and diagnostics are in `rq1_fig2_boundary_landscape.csv` and `rq1_fig2_metadata.json`.
+
+Reproduction: `/venv/main/bin/python -u scripts/analyze_naacl_cpu.py --config configs/naacl_experiments.yaml --analysis rq1b-table1-fig2`, followed by the final boundary pass `/venv/main/bin/python -u scripts/analyze_naacl_cpu.py --config configs/naacl_experiments.yaml --analysis rq1-fig2`, then `figures/gen_fig_naacl_rq1_boundary_landscape.py`. Figure exports are `figure2_boundary_landscape.pdf` and `figure2_boundary_landscape.png`. Logs: `CPU-RQ1-table1-fig2.log`, `CPU-Q2-RQ1-fig2-final.log`, and `CPU-RQ1-summary.log` under `logs/naacl_experiments/20261012/`.
+
 ## 6. Engineering checklist
 
 Three new scripts, each built from functions already in the repo (`greedy_generate_batch` in `src/speculative_decoding.py`, `score_teacher_forced_batch` in `src/e2_model_pairs.py`, the Table 1 morphology aligner). Write all outputs as resumable Parquet shards of 2,000 prompts.

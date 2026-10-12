@@ -1,0 +1,21 @@
+{
+  "analysis": "Q2 boundary-specific adjusted CROSS minus WITHIN rejection probability",
+  "pair_data": {
+    "pair_id": "Q2",
+    "target": "qwen4",
+    "draft": "qwen06",
+    "split": "all",
+    "documents": 40000,
+    "target_positions": 4945226,
+    "eligible_k4_proposals": 4260935,
+    "event_positions_with_alignment": 4260935,
+    "event_positions_without_alignment": 0
+  },
+  "boundary_assignment": "CROSS uses its observed fine_boundary; WITHIN_SPLIT uses nearest_fine_boundary.",
+  "support_threshold": "At least 200 eligible ALIGNED visible proposals in each class per boundary.",
+  "model": "rejected ~ is_cross + C(eojeol_token_count) + C(slot) + bs(position, df=5, degree=3, include_intercept=False) + log_eojeol_len + draft_entropy + target_entropy + draft_margin + target_margin",
+  "multiplicity": "Benjamini-Hochberg q-values over all estimable supported-boundary tests.",
+  "notes": "Boundary-specific associations are observational; the within class is assigned to its nearest Kiwi boundary. Fragmentation fixed effects use the observed eojeol-token-count categories. Non-converged, rank-deficient, zero-SE, or invalid-SE fits are retained in the CSV but excluded from Fig. 2 and the BH family.",
+  "n_supported_boundaries": 38,
+  "n_estimable_tests": 36
+}

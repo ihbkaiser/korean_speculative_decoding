@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""CPU analysis of frozen NAACL teacher-forced SD artifacts.
+"""CPU analyses of frozen NAACL teacher-forced SD artifacts.
 
-The initial implementation produces the Q2 RQ1 Table 2a models from the
-saved k=4 replay and target-path Kiwi alignment. It does not run inference.
+This script analyzes saved k=4 replay events, target-path morphology alignment,
+and teacher-forced controls. It does not run model inference.
 """
 
 from __future__ import annotations
@@ -11,6 +11,7 @@ import argparse
 import json
 import math
 import sys
+import warnings
 from pathlib import Path
 from typing import Any
 
@@ -35,6 +36,18 @@ ALIGN_COLUMNS = [
     "roundtrip_exact", "eojeol_matched", "fine_boundary",
     "nearest_fine_boundary", "nearest_coarse_boundary", "boundary_position_ratio",
 ]
+PAIR_ALIGN_COLUMNS = [
+    "doc_id", "generated_token_position", "token_id", "alignment_class",
+    "alignment_status", "visible_candidate", "token_eojeol_count",
+    "eojeol_char_len", "eojeol_token_count", "token_index_in_eojeol",
+    "relative_position_in_eojeol", "is_first_token", "is_last_token",
+    "fine_boundary", "nearest_fine_boundary", "nearest_coarse_boundary",
+    "boundary_position_ratio", "pool_index",
+]
+EVENT_COLUMNS = [
+    "doc_id", "position", "slot", "target_token_id", "draft_argmax_id",
+    "target_argmax_id", "rejected", "eligible", "event_type",
+]
 
 
 def read_shards(directory: Path, columns: list[str] | None = None) -> pd.DataFrame:
@@ -53,6 +66,98 @@ def resolve_split_dir(base: Path, target: str, split: str) -> Path:
     if split == "common" and fallback.exists() and list(fallback.glob("shard-*.parquet")):
         return fallback
     raise FileNotFoundError(f"No artifacts for target={target} split={split} under {base}")
+
+
+def read_tf_for_pair(root: Path, target: str, model: str, split: str, docs: set[str]) -> pd.DataFrame:
+    directory = root / "teacher_forced" / "generated" / target / model / split
+    if not list(directory.glob("shard-*.parquet")) and split == "common":
+        directory = root / "teacher_forced" / "generated" / target / model / "all"
+    if not list(directory.glob("shard-*.parquet")):
+        raise FileNotFoundError(f"TF shards missing for target={target}, model={model}, split={split}")
+    columns = ["doc_id", "position", "target_token_id", "argmax_id", "entropy", "top2_margin", "pool_index"]
+    frames = []
+    for path in sorted(directory.glob("shard-*.parquet")):
+        frame = pd.read_parquet(path, columns=columns)
+        frame["doc_id"] = frame.doc_id.astype(str)
+        if split == "common" and directory.name == "all":
+            frame = frame.loc[frame.pool_index.astype(int) < 20_000]
+        frame = frame.loc[frame.doc_id.isin(docs)]
+        frames.append(frame)
+    result = pd.concat(frames, ignore_index=True)
+    result["position"] = result.position.astype("int64")
+    if result.duplicated(["doc_id", "position"]).any():
+        raise AssertionError(f"Duplicate TF positions for target={target}, model={model}")
+    return result
+
+
+def load_pair_frame(root: Path, pair_id: str, config: dict[str, Any]) -> tuple[pd.DataFrame, dict[str, Any]]:
+    pair = config["pairs"][pair_id]
+    target, draft, split = pair["target"], pair["draft"], pair["split"]
+    events_path = root / "simulated" / pair_id / split / "events_k4.parquet"
+    events = pd.read_parquet(events_path, columns=EVENT_COLUMNS)
+    events = events.loc[events.eligible.fillna(False).astype(bool)].copy()
+    events["doc_id"] = events.doc_id.astype(str)
+    events["position"] = events.position.astype("int64")
+    docs = set(events.doc_id.unique())
+
+    alignment_dir = resolve_split_dir(root / "aligned" / "kiwi", target, split)
+    alignment = read_shards(alignment_dir, PAIR_ALIGN_COLUMNS)
+    alignment["doc_id"] = alignment.doc_id.astype(str)
+    if alignment_dir.name == "all" and split == "common":
+        alignment = alignment.loc[alignment.pool_index.astype(int) < 20_000]
+    alignment["generated_token_position"] = alignment.generated_token_position.astype("int64")
+
+    target_tf = read_tf_for_pair(root, target, target, split, docs).rename(columns={
+        "target_token_id": "target_tf_token_id",
+        "argmax_id": "target_argmax_tf",
+        "entropy": "target_entropy",
+        "top2_margin": "target_margin",
+    })
+    draft_tf = read_tf_for_pair(root, target, draft, split, docs).rename(columns={
+        "target_token_id": "draft_tf_target_token_id",
+        "argmax_id": "draft_argmax_tf",
+        "entropy": "draft_entropy",
+        "top2_margin": "draft_margin",
+    })
+
+    joined = events.merge(
+        alignment,
+        left_on=["doc_id", "position"],
+        right_on=["doc_id", "generated_token_position"],
+        how="left",
+        validate="one_to_one",
+        indicator="alignment_join",
+    )
+    joined = joined.merge(target_tf, on=["doc_id", "position"], how="left", validate="one_to_one")
+    joined = joined.merge(draft_tf, on=["doc_id", "position"], how="left", validate="one_to_one")
+    if joined.target_tf_token_id.isna().any() or joined.draft_tf_target_token_id.isna().any():
+        raise AssertionError(f"Missing TF rows after event join for {pair_id}")
+    matched = joined.alignment_join.eq("both")
+    for left, right in (
+        ("target_token_id", "token_id"),
+        ("target_token_id", "target_tf_token_id"),
+        ("target_token_id", "draft_tf_target_token_id"),
+        ("target_argmax_id", "target_argmax_tf"),
+        ("draft_argmax_id", "draft_argmax_tf"),
+    ):
+        if not (joined.loc[matched, left].astype("int64") == joined.loc[matched, right].astype("int64")).all():
+            raise AssertionError(f"{pair_id} {left} differs from {right}")
+    join_meta = {
+        "pair_id": pair_id,
+        "target": target,
+        "draft": draft,
+        "split": split,
+        "documents": len(docs),
+        "target_positions": int(len(target_tf)),
+        "eligible_k4_proposals": int(len(events)),
+        "event_positions_with_alignment": int(matched.sum()),
+        "event_positions_without_alignment": int((~matched).sum()),
+    }
+    joined["pair_id"] = pair_id
+    joined["rejected"] = joined.rejected.astype("boolean")
+    joined["doc_id"] = joined.doc_id.astype(str)
+    joined["position"] = joined.position.astype("int64")
+    return joined, join_meta
 
 
 def add_eojeol_keys(alignment: pd.DataFrame) -> pd.DataFrame:
@@ -394,19 +499,252 @@ def fit_rq1(frame: pd.DataFrame, output: Path) -> dict[str, Any]:
     return {"rows": int(len(controls)), "docs": int(controls.doc_id.nunique()), "table": str(output / "rq1_table2a_ame.csv")}
 
 
+GLOBAL_FORMULA = (
+    "rejected ~ is_cross + C(eojeol_token_count) + C(slot) + "
+    "bs(position, df=5, degree=3, include_intercept=False) + log_eojeol_len + "
+    "draft_entropy + target_entropy + draft_margin + target_margin"
+)
+
+
+def fit_cross_ame(frame: pd.DataFrame, *, label: str, coarse_fragmentation: bool = False) -> dict[str, Any]:
+    """Fit a CROSS-vs-WITHIN logit and compute its discrete AME and cluster CI."""
+    model_data = frame.copy()
+    model_data["rejected"] = model_data.rejected.astype(int)
+    model_data["is_cross"] = model_data.alignment_class.eq("CROSS").astype(int)
+    model_data["slot"] = model_data.slot.astype(str)
+    model_data["eojeol_token_count"] = model_data.eojeol_token_count.astype(int)
+    if coarse_fragmentation:
+        count = model_data.eojeol_token_count
+        model_data["fragmentation_bin"] = pd.Categorical(
+            np.select([count <= 1, count == 2], ["1", "2"], default="3+"),
+            categories=["1", "2", "3+"],
+        )
+    model_data["position"] = model_data.position.astype(float)
+    model_data["log_eojeol_len"] = np.log1p(model_data.eojeol_char_len.astype(float))
+    required = [
+        "rejected", "is_cross", "doc_id", "slot", "eojeol_token_count", "position",
+        "log_eojeol_len", "draft_entropy", "target_entropy", "draft_margin", "target_margin",
+    ]
+    if coarse_fragmentation:
+        required.append("fragmentation_bin")
+    model_data = model_data.replace([np.inf, -np.inf], np.nan).dropna(subset=required)
+    if model_data.is_cross.nunique() != 2 or model_data.rejected.nunique() != 2:
+        raise ValueError(f"{label}: CROSS/WITHIN or rejection outcome lacks both levels")
+    print(f"MODEL_START {label} rows={len(model_data):,} docs={model_data.doc_id.nunique():,}", flush=True)
+    formula = GLOBAL_FORMULA
+    if coarse_fragmentation:
+        formula = formula.replace("C(eojeol_token_count)", "C(fragmentation_bin)")
+    with warnings.catch_warnings(record=True) as fit_warnings:
+        warnings.simplefilter("always")
+        result = smf.glm(formula, data=model_data, family=sm.families.Binomial()).fit(maxiter=50)
+    warning_names = sorted({warning.category.__name__ for warning in fit_warnings})
+    rank_deficient = "SingularMatrixWarning" in warning_names
+    design = np.asarray(result.model.exog, dtype=np.float64)
+    y = np.asarray(result.model.endog, dtype=np.float64)
+    beta = np.asarray(result.params, dtype=np.float64)
+    j = result.model.exog_names.index("is_cross")
+    eta = design @ beta
+    eta0 = eta - beta[j] * design[:, j]
+    p0 = 1.0 / (1.0 + np.exp(-np.clip(eta0, -35.0, 35.0)))
+    p1 = 1.0 / (1.0 + np.exp(-np.clip(eta0 + beta[j], -35.0, 35.0)))
+    raw_ame = float(np.mean(p1 - p0))
+    w0, w1 = p0 * (1.0 - p0), p1 * (1.0 - p1)
+    gradient = design.T @ (w1 - w0) / len(y)
+    gradient[j] = float(w1.mean())
+
+    scores = design * (y - (1.0 / (1.0 + np.exp(-np.clip(eta, -35.0, 35.0)))))[:, None]
+    cluster_codes, cluster_names = pd.factorize(model_data.doc_id.astype(str), sort=False)
+    score_frame = pd.DataFrame(scores)
+    score_frame["_cluster"] = cluster_codes
+    cluster_scores = score_frame.groupby("_cluster", sort=False).sum().to_numpy(dtype=np.float64)
+    bread = np.asarray(result.normalized_cov_params, dtype=np.float64)
+    meat = cluster_scores.T @ cluster_scores
+    n_rows, n_params = design.shape
+    n_clusters = len(cluster_names)
+    correction = (n_clusters / (n_clusters - 1)) * ((n_rows - 1) / (n_rows - n_params))
+    covariance = correction * bread @ meat @ bread
+    ame_se = math.sqrt(max(0.0, float(gradient @ covariance @ gradient)))
+    estimable = bool(result.converged and not rank_deficient and np.isfinite(ame_se) and ame_se > 1e-12)
+    ame = raw_ame if estimable else float("nan")
+    z_value = ame / ame_se if estimable else float("nan")
+    p_value = float(2.0 * norm.sf(abs(z_value))) if math.isfinite(z_value) else float("nan")
+    result_row = {
+        "AME_cross_minus_within": ame,
+        "raw_AME_before_estimability_audit": raw_ame,
+        "clustered_SE": ame_se,
+        "CI_low_95": ame - 1.96 * ame_se,
+        "CI_high_95": ame + 1.96 * ame_se,
+        "z": z_value,
+        "p_value": p_value,
+        "n_rows": int(n_rows),
+        "n_docs": int(n_clusters),
+        "n_cross": int((model_data.is_cross == 1).sum()),
+        "n_within": int((model_data.is_cross == 0).sum()),
+        "cross_rejection_rate": float(model_data.loc[model_data.is_cross == 1, "rejected"].mean()),
+        "within_rejection_rate": float(model_data.loc[model_data.is_cross == 0, "rejected"].mean()),
+        "converged": bool(result.converged),
+        "rank_deficient": rank_deficient,
+        "fit_warnings": ";".join(warning_names),
+        "status": "COMPLETE" if estimable else (
+            "NOT_ESTIMABLE_RANK_DEFICIENT" if rank_deficient else
+            "NOT_ESTIMABLE_ZERO_OR_INVALID_SE" if result.converged else "NOT_CONVERGED"
+        ),
+        "deviance": float(result.deviance),
+    }
+    print(f"MODEL_DONE {label} status={result_row['status']} converged={result.converged} AME={ame:.7g} raw_AME={raw_ame:.7g} SE={ame_se:.7g} warnings={','.join(warning_names)}", flush=True)
+    del result, design, scores, score_frame, cluster_scores, covariance, model_data
+    return result_row
+
+
+def eligible_cross_within(frame: pd.DataFrame) -> pd.DataFrame:
+    return frame.loc[
+        frame.alignment_join.eq("both")
+        & frame.alignment_status.eq("ALIGNED")
+        & frame.visible_candidate.fillna(False).astype(bool)
+        & frame.alignment_class.isin(["CROSS", "WITHIN_SPLIT"])
+        & frame.rejected.notna()
+    ].copy()
+
+
+def produce_table1_and_rq1b(root: Path, config: dict[str, Any], output: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
+    pair_summaries = []
+    class_tables = []
+    rq1_rows = []
+    pair_ids = list(config["pairs"])
+    for pair_id in pair_ids:
+        frame, join_meta = load_pair_frame(root, pair_id, config)
+        pair_summary = {
+            **join_meta,
+            "overall_k4_rejection_rate": float(frame.rejected.mean()),
+            "aligned_visible_proposals": int((frame.alignment_status.eq("ALIGNED") & frame.visible_candidate.fillna(False)).sum()),
+            "cross_proposals": int((frame.alignment_class == "CROSS").sum()),
+            "within_proposals": int((frame.alignment_class == "WITHIN_SPLIT").sum()),
+        }
+        pair_summaries.append(pair_summary)
+        class_frame = frame.copy()
+        class_frame["alignment_class"] = class_frame.alignment_class.fillna("NO_ALIGNMENT")
+        class_summary = class_frame.groupby("alignment_class", dropna=False, sort=True).agg(
+            eligible_proposals=("rejected", "size"),
+            rejections=("rejected", "sum"),
+            rejection_rate=("rejected", "mean"),
+            aligned_rows=("alignment_status", lambda s: int(s.eq("ALIGNED").sum())),
+        ).reset_index()
+        class_summary["pair_id"] = pair_id
+        class_summary["class_share"] = class_summary.eligible_proposals / len(class_frame)
+        class_tables.append(class_summary)
+
+        target, draft = config["pairs"][pair_id]["target"], config["pairs"][pair_id]["draft"]
+        model_frame = eligible_cross_within(frame)
+        model = fit_cross_ame(model_frame, label=f"{pair_id}:{draft}->{target}")
+        rq1_rows.append({"pair_id": pair_id, "draft": draft, "target": target, **join_meta, **model})
+        del frame, model_frame
+
+    summary = pd.DataFrame(pair_summaries)
+    classes = pd.concat(class_tables, ignore_index=True)
+    rq1b = pd.DataFrame(rq1_rows)
+    output.mkdir(parents=True, exist_ok=True)
+    summary.to_csv(output / "table1_pair_summary.csv", index=False)
+    classes.to_csv(output / "table1_alignment_classes.csv", index=False)
+    rq1b.to_csv(output / "rq1_table2b_cross_within.csv", index=False)
+    rq1b.to_markdown(output / "rq1_table2b_cross_within.md", index=False, floatfmt=".5g")
+    atomic_json(output / "rq1_table2b_metadata.json", {
+        "analysis": "Pairwise global CROSS versus WITHIN rejection risk, k=4 replay",
+        "pair_data": pair_summaries,
+        "population": "eligible k=4 proposals with visible target token, ALIGNED morphology, and class CROSS or WITHIN_SPLIT",
+        "formula": GLOBAL_FORMULA,
+        "standard_errors": "Document-clustered sandwich covariance; discrete-change AME delta method.",
+        "qwen_q2_uses": "40k all split; all other pair jobs use their frozen 20k common split.",
+        "outputs": ["table1_pair_summary.csv", "table1_alignment_classes.csv", "rq1_table2b_cross_within.csv"],
+    })
+    return rq1b, summary
+
+
+def produce_q2_boundary_landscape(root: Path, config: dict[str, Any], output: Path) -> pd.DataFrame:
+    frame, join_meta = load_pair_frame(root, "Q2", config)
+    rows = eligible_cross_within(frame)
+    rows["boundary"] = np.where(
+        rows.alignment_class.eq("CROSS"),
+        rows.fine_boundary.astype("string"),
+        rows.nearest_fine_boundary.astype("string"),
+    )
+    rows["boundary"] = rows.boundary.replace({"<NA>": np.nan, "nan": np.nan, "None": np.nan})
+    rows = rows.dropna(subset=["boundary"])
+    support = rows.groupby(["boundary", "alignment_class"], observed=True).size().unstack(fill_value=0)
+    if "CROSS" not in support:
+        support["CROSS"] = 0
+    if "WITHIN_SPLIT" not in support:
+        support["WITHIN_SPLIT"] = 0
+    supported = support.loc[(support.CROSS >= 200) & (support.WITHIN_SPLIT >= 200)]
+    print(f"FIG2_SUPPORT supported_boundaries={len(supported)} cross_within_min=200", flush=True)
+    boundary_rows = []
+    for boundary in supported.index:
+        subset = rows.loc[rows.boundary.eq(boundary)].copy()
+        try:
+            fit = fit_cross_ame(subset, label=f"Fig2:{boundary}")
+            status = fit["status"]
+        except Exception as exc:
+            fit = {"AME_cross_minus_within": np.nan, "clustered_SE": np.nan,
+                   "raw_AME_before_estimability_audit": np.nan,
+                   "CI_low_95": np.nan, "CI_high_95": np.nan, "z": np.nan,
+                   "p_value": np.nan, "n_rows": len(subset),
+                   "n_docs": subset.doc_id.nunique(), "n_cross": int((subset.alignment_class == "CROSS").sum()),
+                   "n_within": int((subset.alignment_class == "WITHIN_SPLIT").sum()),
+                   "cross_rejection_rate": float(subset.loc[subset.alignment_class == "CROSS", "rejected"].mean()),
+                   "within_rejection_rate": float(subset.loc[subset.alignment_class == "WITHIN_SPLIT", "rejected"].mean()),
+                   "converged": False, "rank_deficient": False, "fit_warnings": "",
+                   "deviance": np.nan}
+            status = f"FAILED: {type(exc).__name__}: {exc}"
+            print(f"FIG2_MODEL_FAILURE boundary={boundary} reason={status}", flush=True)
+        boundary_rows.append({"boundary": boundary, **fit, "status": status})
+        del subset
+    result = pd.DataFrame(boundary_rows)
+    result["q_value_bh"] = np.nan
+    p_mask = result.p_value.notna() & result.status.eq("COMPLETE")
+    if p_mask.any():
+        from statsmodels.stats.multitest import multipletests
+        result.loc[p_mask, "q_value_bh"] = multipletests(result.loc[p_mask, "p_value"].to_numpy(), method="fdr_bh")[1]
+    result = result.sort_values("AME_cross_minus_within", na_position="last").reset_index(drop=True)
+    output.mkdir(parents=True, exist_ok=True)
+    result.to_csv(output / "rq1_fig2_boundary_landscape.csv", index=False)
+    result.to_markdown(output / "rq1_fig2_boundary_landscape.md", index=False, floatfmt=".5g")
+    atomic_json(output / "rq1_fig2_metadata.json", {
+        "analysis": "Q2 boundary-specific adjusted CROSS minus WITHIN rejection probability",
+        "pair_data": join_meta,
+        "boundary_assignment": "CROSS uses its observed fine_boundary; WITHIN_SPLIT uses nearest_fine_boundary.",
+        "support_threshold": "At least 200 eligible ALIGNED visible proposals in each class per boundary.",
+        "model": GLOBAL_FORMULA,
+        "multiplicity": "Benjamini-Hochberg q-values over all estimable supported-boundary tests.",
+        "notes": "Boundary-specific associations are observational; the within class is assigned to its nearest Kiwi boundary. Fragmentation fixed effects use the observed eojeol-token-count categories. Non-converged, rank-deficient, zero-SE, or invalid-SE fits are retained in the CSV but excluded from Fig. 2 and the BH family.",
+        "n_supported_boundaries": int(len(supported)),
+        "n_estimable_tests": int(p_mask.sum()),
+    })
+    return result
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, default=ROOT / "configs/naacl_experiments.yaml")
     parser.add_argument("--output-dir", type=Path)
-    parser.add_argument("--pair", default="Q2", choices=["Q2"])
+    parser.add_argument("--analysis", choices=["rq1a", "rq1b-table1", "rq1b-table1-fig2", "rq1-fig2"], default="rq1a")
     args = parser.parse_args()
     config = load_config(args.config)
     root = output_root(config, args.output_dir)
     output = root / "analysis"
-    joined, scores = load_q2_frame(root, config)
-    print(f"Q2_JOIN rows={len(joined)} aligned_eojeols={len(scores)}", flush=True)
-    summary = fit_rq1(joined, output)
-    print("RQ1_COMPLETE " + json.dumps(summary, sort_keys=True), flush=True)
+    if args.analysis == "rq1a":
+        joined, scores = load_q2_frame(root, config)
+        print(f"Q2_JOIN rows={len(joined)} aligned_eojeols={len(scores)}", flush=True)
+        summary = fit_rq1(joined, output)
+        print("RQ1A_COMPLETE " + json.dumps(summary, sort_keys=True), flush=True)
+    elif args.analysis == "rq1b-table1":
+        table2b, table1 = produce_table1_and_rq1b(root, config, output)
+        print(f"TABLE1_RQ1B_COMPLETE pairs={len(table2b)} table1_pairs={len(table1)}", flush=True)
+    elif args.analysis == "rq1b-table1-fig2":
+        table2b, table1 = produce_table1_and_rq1b(root, config, output)
+        boundary = produce_q2_boundary_landscape(root, config, output)
+        print(f"RQ1_COMPLETE pairs={len(table2b)} table1_pairs={len(table1)} q2_boundaries={len(boundary)}", flush=True)
+    else:
+        boundary = produce_q2_boundary_landscape(root, config, output)
+        print(f"FIG2_COMPLETE q2_boundaries={len(boundary)}", flush=True)
     return 0
 
 

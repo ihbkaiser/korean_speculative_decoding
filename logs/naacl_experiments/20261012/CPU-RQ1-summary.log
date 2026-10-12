@@ -1,0 +1,41 @@
+NAACL CPU analyses: Table 1, Table 2b, and Figure 2
+Completed: 2026-10-12 13:40 UTC
+Repository base revision: 808ca00b27b045bb511ce91e7c24fe98f4efc551
+
+Commands:
+- /venv/main/bin/python -u scripts/analyze_naacl_cpu.py --config configs/naacl_experiments.yaml --analysis rq1b-table1-fig2
+- /venv/main/bin/python -u scripts/analyze_naacl_cpu.py --config configs/naacl_experiments.yaml --analysis rq1-fig2
+- /venv/main/bin/python figures/gen_fig_naacl_rq1_boundary_landscape.py --input results/naacl_experiments/analysis/rq1_fig2_boundary_landscape.csv --output-dir results/naacl_experiments/analysis
+
+Table 1 / join audit:
+- All eight core pairs have COMPLETE simulation manifests and k=4 events.
+- Q2 uses its 40k all split; the other seven pairs use their frozen common 20k split.
+- Joined eligible k=4 events to the target morphology alignment and both TF sources for every pair.
+- Event-to-alignment row matches: 100% for all eight pairs; target token IDs and TF argmax IDs were checked by the loader.
+- Pair counts, target positions, eligible proposals, overall rejection rates, and class counts/shares are in table1_pair_summary.csv and table1_alignment_classes.csv.
+
+RQ1 Table 2b:
+- One logistic model per pair: rejection ~ CROSS + eojeol-token-count FE + k=4 slot FE + 5-df cubic position spline + log eojeol length + draft/target entropy and top-two margins.
+- Analysis population: visible, ALIGNED CROSS/WITHIN proposals. Document-clustered sandwich covariance; discrete-change AME and delta-method CI.
+- All eight models converged. Full counts, raw rates, estimates, intervals and p-values are in rq1_table2b_cross_within.csv.
+
+RQ1 Figure 2:
+- Q2 boundary assignment: observed fine boundary for CROSS; nearest fine boundary for WITHIN_SPLIT.
+- 38 boundary types meet the planned minimum support of 200 eligible proposals in each class.
+- Boundary-specific models use the same controls and observed eojeol-token-count fixed effects; document-clustered sandwich covariance.
+- Two supported-boundary fits are marked non-estimable and excluded from the figure/BH family: NP→JKO (clustered SE=0) and VA-I→EC (rank-deficient design). Their diagnostics and raw model estimates remain in rq1_fig2_boundary_landscape.csv.
+- 36 contrasts are estimable; Benjamini-Hochberg was applied over those 36 tests. Nine have q<0.05.
+- Final figure outputs: figure2_boundary_landscape.pdf and figure2_boundary_landscape.png. The render script is figures/gen_fig_naacl_rq1_boundary_landscape.py.
+
+Final artifacts:
+- results/naacl_experiments/analysis/table1_pair_summary.csv
+- results/naacl_experiments/analysis/table1_alignment_classes.csv
+- results/naacl_experiments/analysis/rq1_table2b_cross_within.csv
+- results/naacl_experiments/analysis/rq1_table2b_metadata.json
+- results/naacl_experiments/analysis/rq1_fig2_boundary_landscape.csv
+- results/naacl_experiments/analysis/rq1_fig2_boundary_landscape.md
+- results/naacl_experiments/analysis/rq1_fig2_metadata.json
+- results/naacl_experiments/analysis/figure2_boundary_landscape.pdf
+- results/naacl_experiments/analysis/figure2_boundary_landscape.png
+
+Detailed execution logs: CPU-RQ1-table1-fig2.log (pair fits and first boundary attempt) and CPU-Q2-RQ1-fig2-final.log (final boundary models). The coarse-fragmentation diagnostic attempt is preserved separately as CPU-Q2-RQ1-fig2-refit.log; its results were superseded by the final observed-count specification.
