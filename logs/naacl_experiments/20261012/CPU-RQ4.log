@@ -1,0 +1,37 @@
+RQ4_LOAD_Q2_ALL
+RQ4_Q2_ALL rows=4,260,935 docs=40,000
+Traceback (most recent call last):
+  File "/workspace/korean_speculative_decoding/scripts/analyze_naacl_rq4.py", line 521, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/analyze_naacl_rq4.py", line 387, in main
+    baseline, _ = fit_row("Q2_all_baseline", primary)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/analyze_naacl_rq4.py", line 62, in fit_row
+    result = fit_cross_ame(rows, label=label, formula_override=formula)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/analyze_naacl_cpu.py", line 552, in fit_cross_ame
+    model_data = model_data.replace([np.inf, -np.inf], np.nan).dropna(subset=required)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/pandas/core/generic.py", line 7800, in replace
+    new_data = self._mgr.replace_list(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/pandas/core/internals/managers.py", line 530, in replace_list
+    bm = self.apply(
+         ^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/pandas/core/internals/managers.py", line 445, in apply
+    applied = getattr(b, f)(**kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/pandas/core/internals/blocks.py", line 835, in replace_list
+    for i, ((src, dest), mask) in enumerate(zip(pairs, masks, strict=True)):
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/pandas/core/internals/blocks.py", line 819, in <genexpr>
+    compare_or_regex_search(values, s[0], regex=regex, mask=na_mask),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/pandas/core/array_algos/replace.py", line 101, in compare_or_regex_search
+    result = op(a)
+             ^^^^^
+  File "/venv/main/lib/python3.12/site-packages/pandas/core/array_algos/replace.py", line 87, in <lambda>
+    op = lambda x: operator.eq(x, b)
+                   ^^^^^^^^^^^^^^^^^
+ValueError: The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()

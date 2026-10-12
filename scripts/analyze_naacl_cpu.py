@@ -39,6 +39,9 @@ ALIGN_COLUMNS = [
 PAIR_ALIGN_COLUMNS = [
     "doc_id", "generated_token_position", "token_id", "alignment_class",
     "alignment_status", "visible_candidate", "token_eojeol_count",
+    "eojeol_text", "morpheme_surfaces", "morpheme_pos_tags", "morpheme_char_spans",
+    "token_raw_text", "token_core_text", "token_char_span", "token_start", "token_end",
+    "global_token_char_span", "crossed_boundary_count", "roundtrip_exact", "eojeol_matched",
     "eojeol_char_len", "eojeol_token_count", "token_index_in_eojeol",
     "relative_position_in_eojeol", "is_first_token", "is_last_token",
     "fine_boundary", "coarse_boundary", "nearest_fine_boundary", "nearest_coarse_boundary",
@@ -519,7 +522,13 @@ GLOBAL_FORMULA = (
 )
 
 
-def fit_cross_ame(frame: pd.DataFrame, *, label: str, coarse_fragmentation: bool = False) -> dict[str, Any]:
+def fit_cross_ame(
+    frame: pd.DataFrame,
+    *,
+    label: str,
+    coarse_fragmentation: bool = False,
+    formula_override: str | None = None,
+) -> dict[str, Any]:
     """Fit a CROSS-vs-WITHIN logit and compute its discrete AME and cluster CI."""
     model_data = frame.copy()
     model_data["rejected"] = model_data.rejected.astype(int)
@@ -540,11 +549,13 @@ def fit_cross_ame(frame: pd.DataFrame, *, label: str, coarse_fragmentation: bool
     ]
     if coarse_fragmentation:
         required.append("fragmentation_bin")
-    model_data = model_data.replace([np.inf, -np.inf], np.nan).dropna(subset=required)
+    numeric_columns = model_data.select_dtypes(include=[np.number]).columns
+    model_data.loc[:, numeric_columns] = model_data.loc[:, numeric_columns].replace([np.inf, -np.inf], np.nan)
+    model_data = model_data.dropna(subset=required)
     if model_data.is_cross.nunique() != 2 or model_data.rejected.nunique() != 2:
         raise ValueError(f"{label}: CROSS/WITHIN or rejection outcome lacks both levels")
     print(f"MODEL_START {label} rows={len(model_data):,} docs={model_data.doc_id.nunique():,}", flush=True)
-    formula = GLOBAL_FORMULA
+    formula = formula_override or GLOBAL_FORMULA
     if coarse_fragmentation:
         formula = formula.replace("C(eojeol_token_count)", "C(fragmentation_bin)")
     with warnings.catch_warnings(record=True) as fit_warnings:

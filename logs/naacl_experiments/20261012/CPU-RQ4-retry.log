@@ -1,0 +1,3 @@
+RQ4_LOAD_Q2_ALL
+RQ4_Q2_ALL rows=4,260,935 docs=40,000
+MODEL_START Q2_all_baseline rows=1,974,984 docs=35,960

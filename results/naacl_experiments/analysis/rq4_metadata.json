@@ -1,0 +1,251 @@
+{
+  "pair": "Q2",
+  "split": "all / 40,000 FineWeb2 prompts",
+  "seed": 20261012,
+  "primary_population": "eligible k=4 proposals with visible ALIGNED Kiwi class CROSS or WITHIN_SPLIT",
+  "model": "rejected ~ is_cross + C(eojeol_token_count) + C(slot) + bs(position, df=5, degree=3, include_intercept=False) + log_eojeol_len + draft_entropy + target_entropy + draft_margin + target_margin",
+  "fit_log": "logs/naacl_experiments/20261012/CPU-RQ4-final.log",
+  "fit_log_records": {
+    "single_boundary_cross_only": {
+      "n_rows": 1971165,
+      "n_docs": 35958,
+      "status": "COMPLETE",
+      "converged": true,
+      "ame": 0.0001973327,
+      "raw_ame": 0.0001973327,
+      "se": 0.0007791203,
+      "warnings": ""
+    },
+    "top_10_cross_token_types_per_fine_boundary_removed": {
+      "n_rows": 1369247,
+      "n_docs": 35243,
+      "status": "COMPLETE",
+      "converged": true,
+      "ame": 0.03778644,
+      "raw_ame": 0.03778644,
+      "se": 0.003509343,
+      "warnings": ""
+    },
+    "top_25_cross_token_types_per_fine_boundary_removed": {
+      "n_rows": 1365147,
+      "n_docs": 35235,
+      "status": "COMPLETE",
+      "converged": true,
+      "ame": 0.03533371,
+      "raw_ame": 0.03533371,
+      "se": 0.006891908,
+      "warnings": ""
+    },
+    "top_50_cross_token_types_per_fine_boundary_removed": {
+      "n_rows": 1363961,
+      "n_docs": 35234,
+      "status": "COMPLETE",
+      "converged": true,
+      "ame": 0.03423102,
+      "raw_ame": 0.03423102,
+      "se": 0.009168386,
+      "warnings": ""
+    },
+    "top_100_cross_token_types_per_fine_boundary_removed": {
+      "n_rows": 1363514,
+      "n_docs": 35234,
+      "status": "COMPLETE",
+      "converged": true,
+      "ame": 0.0453968,
+      "raw_ame": 0.0453968,
+      "se": 0.01368239,
+      "warnings": ""
+    },
+    "Q2_common20k": {
+      "n_rows": 987806,
+      "n_docs": 17983,
+      "status": "COMPLETE",
+      "converged": true,
+      "ame": 0.0001643532,
+      "raw_ame": 0.0001643532,
+      "se": 0.001092486,
+      "warnings": ""
+    },
+    "Wikipedia_frequency_spline": {
+      "n_rows": 1974984,
+      "n_docs": 35960,
+      "status": "COMPLETE",
+      "converged": true,
+      "ame": -0.01855705,
+      "raw_ame": -0.01855705,
+      "se": 0.0007678752,
+      "warnings": ""
+    },
+    "Wikipedia_frequency_decile": {
+      "n_rows": 1974984,
+      "n_docs": 35960,
+      "status": "COMPLETE",
+      "converged": true,
+      "ame": -0.01911913,
+      "raw_ame": -0.01911913,
+      "se": 0.000774606,
+      "warnings": ""
+    },
+    "MeCab_ko_strict_alignment": {
+      "n_rows": 1860584,
+      "n_docs": 35903,
+      "status": "COMPLETE",
+      "converged": true,
+      "ame": -0.0003718659,
+      "raw_ame": -0.0003718659,
+      "se": 0.0007918093,
+      "warnings": ""
+    }
+  },
+  "strict_alignment": {
+    "same_rows_as_primary": true,
+    "fit_reused": "rq1_table2b_cross_within.csv",
+    "rows": 1974984
+  },
+  "common20k_join": {
+    "pair_id": "Q2",
+    "target": "qwen4",
+    "draft": "qwen06",
+    "split": "common",
+    "documents": 20000,
+    "target_positions": 2475047,
+    "eligible_k4_proposals": 2132560,
+    "event_positions_with_alignment": 2132560,
+    "event_positions_without_alignment": 0
+  },
+  "frequency_source": {
+    "cache_key": "15d29735986b8591103f9c1b23b6f879f5ec7f55b0061d0909dc2915b1dff7fd",
+    "corpus_path": "data/korean_wikipedia_20231101_ko.jsonl",
+    "corpus_sha256": "6f5a90e25f62ba84f49cfd84285aab17b6f91c6c3c6a06ebb4c129059d72563e",
+    "corpus": "Local Korean Wikipedia prompt cache (wikimedia/wikipedia, config 20231101.ko, train; first 1,000 non-empty articles)",
+    "document_count": 1000,
+    "total_corpus_tokens": 3425737,
+    "distinct_eojeol_surfaces": 270763,
+    "token_frequency_rows": 151669,
+    "tokenizer_name": "Qwen/Qwen3-4B-Base",
+    "tokenizer_class": "Qwen2Tokenizer",
+    "tokenizer_revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+    "tokenizer_backend_sha256": "41e00eccf531cffc2e562d38bdd879d41e5044ea279af5b73c6a32aabcc8fe04",
+    "vocab_size": 151669,
+    "use_fast": true
+  },
+  "frequency_domain_caveat": "Frequency values come from the prior 1,000-article Korean Wikipedia cache, not the planned disjoint FineWeb2 frequency slice; the cache source is Wikipedia while Q2 is FineWeb2.",
+  "mecab": {
+    "analyzer": "mecab-ko",
+    "package_version": "1.0.2",
+    "dictionary_version": "1.0.0",
+    "unique_eojeol_texts": 162137,
+    "concatenation_exact_unique_eojeols": 162137,
+    "strict_rows": 1974984,
+    "classified_rows": 1860584,
+    "mecab_cross_rows": 151076,
+    "mecab_within_rows": 1709508,
+    "not_in_model_rows": 114400,
+    "label_definition": "MeCab-ko morpheme boundaries are cumulative character offsets from parseToNode surfaces. CROSS spans contain at least one internal MeCab boundary; exact endpoint matches are excluded; remaining valid token spans are WITHIN_SPLIT.",
+    "fit": {
+      "n_rows": 1860584,
+      "n_docs": 35903,
+      "status": "COMPLETE",
+      "converged": true,
+      "ame": -0.0003718659,
+      "raw_ame": -0.0003718659,
+      "se": 0.0007918093,
+      "warnings": ""
+    }
+  },
+  "pseudo_boundary": {
+    "seed": 20261012,
+    "requested_draws": 100,
+    "real_cross_n": 149457,
+    "real_within_n": 1377109,
+    "pseudo_population_rows": 1526566,
+    "pseudo_population_docs": 35403,
+    "real_cross_rejection_rate": 0.23442194075888048,
+    "real_within_rejection_rate": 0.14807179388123962,
+    "real_cross_minus_within_pp": 8.635014687764087,
+    "pseudo_effect_q025_pp": 7.303299063641949,
+    "pseudo_effect_median_pp": 7.392296710584871,
+    "pseudo_effect_q975_pp": 7.497026284203481,
+    "empirical_two_sided_tail_probability": 0.009900990099009901,
+    "within_95_percent_pseudo_interval": false,
+    "pseudo_definition": "For each strict aligned eojeol containing at least one Kiwi boundary, sample the same number of distinct internal character cuts uniformly without replacement. A token is pseudo-CROSS if its character span contains any sampled cut; all other eligible CROSS/WITHIN target proposals in the morphology-affected population are pseudo-WITHIN. Report raw rate differences, not adjusted GLM effects."
+  },
+  "human_validation": {
+    "path": "results/naacl_experiments/analysis/rq4_human_validation_300.csv",
+    "rows": 300,
+    "strata": [
+      {
+        "class": "EXACT",
+        "outcome": "accepted",
+        "population_n": 972963,
+        "sample_n": 50,
+        "sample_n2p": 0
+      },
+      {
+        "class": "EXACT",
+        "outcome": "rejected",
+        "population_n": 225505,
+        "sample_n": 50,
+        "sample_n2p": 0
+      },
+      {
+        "class": "WITHIN_SPLIT",
+        "outcome": "accepted",
+        "population_n": 1562418,
+        "sample_n": 50,
+        "sample_n2p": 0
+      },
+      {
+        "class": "WITHIN_SPLIT",
+        "outcome": "rejected",
+        "population_n": 263109,
+        "sample_n": 50,
+        "sample_n2p": 0
+      },
+      {
+        "class": "CROSS",
+        "outcome": "accepted",
+        "population_n": 114421,
+        "sample_n": 50,
+        "sample_n2p": 35
+      },
+      {
+        "class": "CROSS",
+        "outcome": "rejected",
+        "population_n": 35036,
+        "sample_n": 50,
+        "sample_n2p": 35
+      }
+    ],
+    "status": "PENDING_HUMAN_ANNOTATION",
+    "sample_seed": 20261012,
+    "annotation_columns": [
+      "annotator_class_correct",
+      "annotator_boundary_correct",
+      "annotator_notes"
+    ]
+  },
+  "proposal_side": {
+    "status": "PENDING_PROPOSAL_BLOCK_PROJECTION",
+    "reason": "The available Q2 artifacts store teacher-forced candidate argmaxes; proposal-side labels require projecting eligible candidate blocks through the tokenizer and Kiwi on their committed contexts. This separate full-context projection has not been run."
+  },
+  "join": {
+    "pair_id": "Q2",
+    "target": "qwen4",
+    "draft": "qwen06",
+    "split": "all",
+    "documents": 40000,
+    "target_positions": 4945226,
+    "eligible_k4_proposals": 4260935,
+    "event_positions_with_alignment": 4260935,
+    "event_positions_without_alignment": 0
+  },
+  "outputs": [
+    "rq4_table4_robustness.csv",
+    "rq4_top_type_removal.csv",
+    "rq4_pseudo_boundary_draws.csv",
+    "rq4_human_validation_300.csv",
+    "rq4_metadata.json"
+  ],
+  "notes": "Saved-continuation replay analysis within the V0 shared-context scope. Human annotation is pending; MeCab is an automatic analyzer comparison, not human validation. The log parser recovers converged fit AMEs and clustered SEs from completed model runs; support and observed rates are recomputed from the fit populations."
+}

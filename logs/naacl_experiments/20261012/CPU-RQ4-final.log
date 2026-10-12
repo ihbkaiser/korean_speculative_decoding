@@ -1,0 +1,39 @@
+RQ4_LOAD_Q2_ALL
+RQ4_Q2_ALL rows=4,260,935 docs=40,000
+RQ4_STRICT support rows=1,974,984
+MODEL_START single_boundary_cross_only rows=1,971,165 docs=35,958
+MODEL_DONE single_boundary_cross_only status=COMPLETE converged=True AME=0.0001973327 raw_AME=0.0001973327 SE=0.0007791203 warnings=
+MODEL_START top_10_cross_token_types_per_fine_boundary_removed rows=1,369,247 docs=35,243
+MODEL_DONE top_10_cross_token_types_per_fine_boundary_removed status=COMPLETE converged=True AME=0.03778644 raw_AME=0.03778644 SE=0.003509343 warnings=
+MODEL_START top_25_cross_token_types_per_fine_boundary_removed rows=1,365,147 docs=35,235
+MODEL_DONE top_25_cross_token_types_per_fine_boundary_removed status=COMPLETE converged=True AME=0.03533371 raw_AME=0.03533371 SE=0.006891908 warnings=
+MODEL_START top_50_cross_token_types_per_fine_boundary_removed rows=1,363,961 docs=35,234
+MODEL_DONE top_50_cross_token_types_per_fine_boundary_removed status=COMPLETE converged=True AME=0.03423102 raw_AME=0.03423102 SE=0.009168386 warnings=
+MODEL_START top_100_cross_token_types_per_fine_boundary_removed rows=1,363,514 docs=35,234
+MODEL_DONE top_100_cross_token_types_per_fine_boundary_removed status=COMPLETE converged=True AME=0.0453968 raw_AME=0.0453968 SE=0.01368239 warnings=
+RQ4_LOAD_Q2_COMMON
+MODEL_START Q2_common20k rows=987,806 docs=17,983
+MODEL_DONE Q2_common20k status=COMPLETE converged=True AME=0.0001643532 raw_AME=0.0001643532 SE=0.001092486 warnings=
+MODEL_START Wikipedia_frequency_spline rows=1,974,984 docs=35,960
+MODEL_DONE Wikipedia_frequency_spline status=COMPLETE converged=True AME=-0.01855705 raw_AME=-0.01855705 SE=0.0007678752 warnings=
+MODEL_START Wikipedia_frequency_decile rows=1,974,984 docs=35,960
+MODEL_DONE Wikipedia_frequency_decile status=COMPLETE converged=True AME=-0.01911913 raw_AME=-0.01911913 SE=0.000774606 warnings=
+RQ4_MECAB_START
+MECAB_PROGRESS unique_eojeols=100,000/162,137
+MODEL_START MeCab_ko_strict_alignment rows=1,860,584 docs=35,903
+MODEL_DONE MeCab_ko_strict_alignment status=COMPLETE converged=True AME=-0.0003718659 raw_AME=-0.0003718659 SE=0.0007918093 warnings=
+TypeError: only length-1 arrays can be converted to Python scalars
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/workspace/korean_speculative_decoding/scripts/analyze_naacl_rq4.py", line 556, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/analyze_naacl_rq4.py", line 498, in main
+    pseudo, pseudo_meta = pseudo_boundary_analysis(all_frame, reps=args.pseudo_reps)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/analyze_naacl_rq4.py", line 139, in pseudo_boundary_analysis
+    spans = np.asarray(morphs, dtype=np.int64).reshape(-1, 2)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: setting an array element with a sequence.
