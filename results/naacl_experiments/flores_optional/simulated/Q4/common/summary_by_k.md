@@ -1,0 +1,3 @@
+| Pair   | Split   |   Block size |   Prompts |   Target tokens |   Target calls |   Eligible proposals |   Accepted proposals |   Rejections |   Rejection rate |   Invalidated suffix work |   Bonus tokens |   Target TF label disagreement |
+|:-------|:--------|-------------:|----------:|----------------:|---------------:|---------------------:|---------------------:|-------------:|-----------------:|--------------------------:|---------------:|-------------------------------:|
+| Q4     | common  |            4 |      1012 |           46829 |          15357 |                41647 |                32324 |         9323 |         0.223858 |                     18361 |           5182 |                            638 |

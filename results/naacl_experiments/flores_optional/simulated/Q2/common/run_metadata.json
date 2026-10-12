@@ -1,0 +1,16 @@
+{
+  "pair": "Q2",
+  "draft": "qwen06",
+  "target": "qwen4",
+  "split": "common",
+  "block_sizes": [
+    4
+  ],
+  "prompt_count": 1012,
+  "position_count": 46829,
+  "event_files": [
+    "events_k4.parquet"
+  ],
+  "status": "COMPLETE",
+  "semantics": "Only target-verified proposals count toward rejection rate; invalidated suffix slots have no inferred draft token ID; fully accepted blocks skip the target bonus position."
+}

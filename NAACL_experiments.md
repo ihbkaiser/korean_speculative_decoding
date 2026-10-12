@@ -611,3 +611,25 @@ Across the complete H study, tokenizer-specific filtering left 9,722 Qwen, 9,604
 - As with RQ1–RQ5, these are saved-continuation replay analyses within V0's shared-context agreement scope. They do not measure live decoding latency or validate unmatched/diverged contexts.
 
 **Queue status after RQ4 update (2026-10-12):** The RQ1–RQ3 and RQ5 analyses are complete and their artifacts are on `origin/main`. RQ4's type-removal, pseudo-boundary, MeCab, exploratory 1k proposal-side, Wikipedia-frequency, and disjoint FineWeb2-frequency analyses are assembled. The full 40k proposal-side projection is running; human annotation is pending because no annotator is available. The optional O1–O4 tier is not counted as complete. Saved-token analyses remain within the user's 95% V0 shared-prefix agreement gate and do not measure live decoding latency.
+
+### Optional O3: FLORES-200 domain extension
+
+- O3 used all **1,012** official FLORES-200 English `devtest` prompts with the frozen template “Translate the following sentence into Korean. English: … Korean:”. The prompt pool and config are reproducible with `scripts/prepare_naacl_flores_o3.py`; the script verifies the pinned source checksums and copies only English source text into `data/naacl_flores_1012.parquet`. Korean references remain checksum-verified provenance and were not passed to generation, scoring, alignment, or analysis.
+- All five planned target models completed greedy generation, target self-TF, and Kiwi alignment: Qwen3-1.7B, 4B, and 8B; Gemma-3-12B; and Ministral-3-8B. Draft TF and k=4 replay completed for Q1–Q6, G1, and M1. Every target and draft TF log has a passing head-calibration record (`scale=1`, `max_abs_error=0`). Pair replay logs report 45,586 / 43,086 / 40,317 / 41,647 / 43,041 / 41,461 / 104,419 / 110,163 eligible proposals, respectively; observed k=4 rejection rates were 32.31%, 31.74%, 15.35%, 22.39%, 32.70%, 21.99%, 1.05%, and 12.65%.
+- Adjusted global CROSS−WITHIN and nominal→particle (N→P) estimates use the same covariates and document-clustered uncertainty as the core RQ2 fit. Values are percentage points:
+
+| Pair | Global AME (95% CI) | N→P AME (95% CI) |
+| --- | ---: | ---: |
+| Q1, 0.6B→1.7B | −2.01 [−3.86, −0.17] | +6.66 [+1.70, +11.62] |
+| Q2, 0.6B→4B | +0.17 [−1.54, +1.88] | +6.72 [+0.35, +13.10] |
+| Q3, 4B→8B | −1.20 [−2.51, +0.11] | +1.07 [−2.34, +4.48] |
+| Q4, 1.7B→4B | −0.50 [−2.06, +1.07] | +2.94 [−2.17, +8.05] |
+| Q5, 0.6B→8B | −0.93 [−2.77, +0.91] | +13.90 [+8.60, +19.20] |
+| Q6, 1.7B→8B | −1.74 [−3.20, −0.28] | +1.94 [−2.12, +5.99] |
+| G1, Gemma-4B→12B | −0.18 [−0.64, +0.29] | Not estimable: N→P lacked both outcome levels |
+| M1, Ministral-3B→8B | +0.18 [−0.75, +1.10] | +4.44 [+1.62, +7.25] |
+
+- Same-pair fine-boundary rank stability against the Korean FineWeb2 core was estimable only for M1 (7 shared supported boundaries; Spearman ρ=0.86; sign agreement 0.57). Q1–Q6 and G1 had fewer than three shared supported fine boundaries. This 1,012-prompt study therefore does not establish stable boundary-level generalization across domains. Across the pair grid, N→P estimates are positive for some settings and near zero or too uncertain for others.
+- O3 is an exploratory saved-continuation replay on translated prompts. It does not validate live decoding on FLORES, measure latency, or establish a causal morphology effect. Outputs are under `results/naacl_experiments/flores_optional/`; analysis source is `scripts/analyze_naacl_flores_o3.py`; run logs are `O3-*.log` plus `CPU-RQ2-O3-analysis.log` under `logs/naacl_experiments/20261012/`.
+
+**Queue status after O3 (2026-10-12):** O3 is complete with all eight planned k=4 cells and its domain analysis. O1 is next in the plan; the pinned Qwen3-14B-Base revision is `0b0bd3732e2c374d483664439ea334928b65f304`, and its target checkpoint download is running. O2 Japanese and O4 Gemma-1B are not started. Human annotation remains pending. The O3 replay remains an offline saved-continuation analysis, not a live-decoding result.

@@ -333,6 +333,19 @@ def main() -> int:
                 "PARTIAL_PROJECTION_ERRORS" if proposal_full is not None else "PENDING_PROPOSAL_BLOCK_PROJECTION"
             ),
             "reason": "The 1k common-pool run is exploratory. The full result uses the frozen Q2 all-pool 40k prompts and projects each eligible teacher-forced draft argmax on its saved target-prefix context. Projection errors, if any, are reported explicitly.",
+            "full40k_run_observation": {
+                "command": "/venv/main/bin/python -u scripts/analyze_naacl_rq4_proposal_side_sample.py --split all --max-docs 40000 --output-stem rq4_proposal_side_full40k --seed 20261012",
+                "progress_log": "logs/naacl_experiments/20261012/CPU-RQ4-proposal-full40k.log",
+                "stdout_banner_labels_precede_split_generalization": True,
+                "banner_labels": [
+                    "PROPOSAL_SAMPLE_DOCS",
+                    "LOAD_Q2_COMMON_EVENTS_ALIGNMENT_AND_CONTROLS",
+                    "PROPOSAL_SAMPLE_EVENTS",
+                ],
+                "resolved_split": proposal_full.get("split") if proposal_full is not None else None,
+                "resolved_selected_documents": proposal_full.get("selected_documents") if proposal_full is not None else None,
+                "note": "The process was launched with --split all; its command arguments and saved summary govern split interpretation. The printed LOAD_Q2_COMMON banner is a stale label from the pre-generalized source loaded by the already-running process.",
+            },
         },
         "join": join_meta,
         "outputs": [

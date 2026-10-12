@@ -1,0 +1,122 @@
+{
+  "experiment": "NAACL optional O3 FLORES-200 English-to-Korean domain extension",
+  "status": "COMPLETE",
+  "pair_order": [
+    "Q1",
+    "Q2",
+    "Q3",
+    "Q4",
+    "Q5",
+    "Q6",
+    "G1",
+    "M1"
+  ],
+  "estimands": [
+    "global CROSS-vs-WITHIN",
+    "NOMINAL_TO_PARTICLE CROSS-vs-nearest-WITHIN"
+  ],
+  "population": "Target greedy continuations on all 1,012 official FLORES-200 devtest English prompts; the Korean reference is not used in generation, alignment, or inference.",
+  "outcome": "k=4 offline greedy speculative-decoding replay rejection; fitted with the primary global controls and document-clustered uncertainty.",
+  "scope": "Saved-continuation observational domain analysis. It does not measure live decoding latency, validate diverged contexts, or establish causality.",
+  "join_metadata": [
+    {
+      "pair_id": "Q1",
+      "target": "qwen17",
+      "draft": "qwen06",
+      "split": "common",
+      "documents": 1012,
+      "target_positions": 49642,
+      "eligible_k4_proposals": 45586,
+      "event_positions_with_alignment": 45586,
+      "event_positions_without_alignment": 0
+    },
+    {
+      "pair_id": "Q2",
+      "target": "qwen4",
+      "draft": "qwen06",
+      "split": "common",
+      "documents": 1012,
+      "target_positions": 46829,
+      "eligible_k4_proposals": 43086,
+      "event_positions_with_alignment": 43086,
+      "event_positions_without_alignment": 0
+    },
+    {
+      "pair_id": "Q3",
+      "target": "qwen8",
+      "draft": "qwen4",
+      "split": "common",
+      "documents": 1012,
+      "target_positions": 46577,
+      "eligible_k4_proposals": 40317,
+      "event_positions_with_alignment": 40317,
+      "event_positions_without_alignment": 0
+    },
+    {
+      "pair_id": "Q4",
+      "target": "qwen4",
+      "draft": "qwen17",
+      "split": "common",
+      "documents": 1012,
+      "target_positions": 46829,
+      "eligible_k4_proposals": 41647,
+      "event_positions_with_alignment": 41647,
+      "event_positions_without_alignment": 0
+    },
+    {
+      "pair_id": "Q5",
+      "target": "qwen8",
+      "draft": "qwen06",
+      "split": "common",
+      "documents": 1012,
+      "target_positions": 46577,
+      "eligible_k4_proposals": 43041,
+      "event_positions_with_alignment": 43041,
+      "event_positions_without_alignment": 0
+    },
+    {
+      "pair_id": "Q6",
+      "target": "qwen8",
+      "draft": "qwen17",
+      "split": "common",
+      "documents": 1012,
+      "target_positions": 46577,
+      "eligible_k4_proposals": 41461,
+      "event_positions_with_alignment": 41461,
+      "event_positions_without_alignment": 0
+    },
+    {
+      "pair_id": "G1",
+      "target": "gemma12",
+      "draft": "gemma4",
+      "split": "common",
+      "documents": 1012,
+      "target_positions": 129536,
+      "eligible_k4_proposals": 104419,
+      "event_positions_with_alignment": 104419,
+      "event_positions_without_alignment": 0
+    },
+    {
+      "pair_id": "M1",
+      "target": "ministral8",
+      "draft": "ministral3",
+      "split": "common",
+      "documents": 1012,
+      "target_positions": 129497,
+      "eligible_k4_proposals": 110163,
+      "event_positions_with_alignment": 110163,
+      "event_positions_without_alignment": 0
+    }
+  ],
+  "stability": {
+    "status": "COMPLETE",
+    "core_settings": 8,
+    "flores_settings": 8,
+    "comparison_rows": 120
+  },
+  "files": {
+    "cross_within": "results/naacl_experiments/flores_optional/analysis/rq2_flores_o3_cross_within.csv",
+    "boundary_effects": "results/naacl_experiments/flores_optional/analysis/rq2_flores_o3_boundary_effects.csv",
+    "setting_stability": "results/naacl_experiments/flores_optional/analysis/rq2_flores_o3_setting_stability.csv"
+  }
+}

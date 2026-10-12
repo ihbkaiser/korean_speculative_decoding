@@ -1,0 +1,47 @@
+FLORES_O3_LOAD pair=Q1
+MODEL_START FLORES-O3-Q1-global rows=20,762 docs=966
+MODEL_DONE FLORES-O3-Q1-global status=COMPLETE converged=True AME=-0.02012418 raw_AME=-0.02012418 SE=0.009418049 warnings=
+MODEL_START FLORES-O3-Q1-nominal_to_particle rows=8,703 docs=931
+MODEL_DONE FLORES-O3-Q1-nominal_to_particle status=COMPLETE converged=True AME=0.06662954 raw_AME=0.06662954 SE=0.0253028 warnings=
+FLORES_O3_READY pair=Q1 docs=1,012 eligible=45,586 aligned=45,586
+FLORES_O3_LOAD pair=Q2
+MODEL_START FLORES-O3-Q2-global rows=19,450 docs=994
+MODEL_DONE FLORES-O3-Q2-global status=COMPLETE converged=True AME=0.001713525 raw_AME=0.001713525 SE=0.00872033 warnings=
+MODEL_START FLORES-O3-Q2-nominal_to_particle rows=7,555 docs=852
+MODEL_DONE FLORES-O3-Q2-nominal_to_particle status=COMPLETE converged=True AME=0.067235 raw_AME=0.067235 SE=0.0325195 warnings=
+FLORES_O3_READY pair=Q2 docs=1,012 eligible=43,086 aligned=43,086
+FLORES_O3_LOAD pair=Q3
+MODEL_START FLORES-O3-Q3-global rows=18,713 docs=995
+MODEL_DONE FLORES-O3-Q3-global status=COMPLETE converged=True AME=-0.01202455 raw_AME=-0.01202455 SE=0.00668896 warnings=
+MODEL_START FLORES-O3-Q3-nominal_to_particle rows=7,441 docs=915
+MODEL_DONE FLORES-O3-Q3-nominal_to_particle status=COMPLETE converged=True AME=0.01068735 raw_AME=0.01068735 SE=0.01740629 warnings=
+FLORES_O3_READY pair=Q3 docs=1,012 eligible=40,317 aligned=40,317
+FLORES_O3_LOAD pair=Q4
+MODEL_START FLORES-O3-Q4-global rows=18,787 docs=994
+MODEL_DONE FLORES-O3-Q4-global status=COMPLETE converged=True AME=-0.0049663 raw_AME=-0.0049663 SE=0.007986865 warnings=
+MODEL_START FLORES-O3-Q4-nominal_to_particle rows=7,299 docs=852
+MODEL_DONE FLORES-O3-Q4-nominal_to_particle status=COMPLETE converged=True AME=0.02937235 raw_AME=0.02937235 SE=0.02606143 warnings=
+FLORES_O3_READY pair=Q4 docs=1,012 eligible=41,647 aligned=41,647
+FLORES_O3_LOAD pair=Q5
+MODEL_START FLORES-O3-Q5-global rows=20,014 docs=995
+MODEL_DONE FLORES-O3-Q5-global status=COMPLETE converged=True AME=-0.009268956 raw_AME=-0.009268956 SE=0.009389783 warnings=
+MODEL_START FLORES-O3-Q5-nominal_to_particle rows=7,970 docs=915
+MODEL_DONE FLORES-O3-Q5-nominal_to_particle status=COMPLETE converged=True AME=0.1390116 raw_AME=0.1390116 SE=0.02704097 warnings=
+FLORES_O3_READY pair=Q5 docs=1,012 eligible=43,041 aligned=43,041
+FLORES_O3_LOAD pair=Q6
+MODEL_START FLORES-O3-Q6-global rows=19,225 docs=995
+MODEL_DONE FLORES-O3-Q6-global status=COMPLETE converged=True AME=-0.01737341 raw_AME=-0.01737341 SE=0.00744608 warnings=
+MODEL_START FLORES-O3-Q6-nominal_to_particle rows=7,617 docs=914
+MODEL_DONE FLORES-O3-Q6-nominal_to_particle status=COMPLETE converged=True AME=0.01936107 raw_AME=0.01936107 SE=0.0207032 warnings=
+FLORES_O3_READY pair=Q6 docs=1,012 eligible=41,461 aligned=41,461
+FLORES_O3_LOAD pair=G1
+MODEL_START FLORES-O3-G1-global rows=13,589 docs=899
+MODEL_DONE FLORES-O3-G1-global status=COMPLETE converged=True AME=-0.001750343 raw_AME=-0.001750343 SE=0.002378998 warnings=
+FLORES_O3_READY pair=G1 docs=1,012 eligible=104,419 aligned=104,419
+FLORES_O3_LOAD pair=M1
+MODEL_START FLORES-O3-M1-global rows=24,289 docs=945
+MODEL_DONE FLORES-O3-M1-global status=COMPLETE converged=True AME=0.001764067 raw_AME=0.001764067 SE=0.004723934 warnings=
+MODEL_START FLORES-O3-M1-nominal_to_particle rows=4,949 docs=818
+MODEL_DONE FLORES-O3-M1-nominal_to_particle status=COMPLETE converged=True AME=0.04438824 raw_AME=0.04438824 SE=0.01435935 warnings=
+FLORES_O3_READY pair=M1 docs=1,012 eligible=110,163 aligned=110,163
+FLORES_O3_ANALYSIS_COMPLETE pairs=8 fits=16

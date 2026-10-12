@@ -1,0 +1,2 @@
+Pair,Split,Block size,Prompts,Target tokens,Target calls,Eligible proposals,Accepted proposals,Rejections,Rejection rate,Invalidated suffix work,Bonus tokens,Target TF label disagreement
+Q2,common,4,1012,46829,18277,43086,29409,13677,0.31743489764656735,28716,3743,638

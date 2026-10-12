@@ -1,0 +1,6 @@
+MODEL_STORAGE root=/dev/shm/naacl_models free_gib=30.82 requested_weight_gib=7.17
+MODEL ministral3 repo=mistralai/Ministral-3-3B-Base-2512 revision=6f9c4b12a95b139af68670a6713616b757923735 gated=False weight_gib=7.17 shards=2
+DOWNLOAD_START ministral3 files=13 gated=False
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 13 files:  92%|█████████▏| 12/13 [01:02<00:05,  5.18s/it]Fetching 13 files: 100%|██████████| 13/13 [01:07<00:00,  5.15s/it]Fetching 13 files: 100%|██████████| 13/13 [01:07<00:00,  5.16s/it]
+DOWNLOAD_COMPLETE ministral3 local_path=/dev/shm/naacl_models/mistralai--Ministral-3-3B-Base-2512/6f9c4b12a95b139af68670a6713616b757923735

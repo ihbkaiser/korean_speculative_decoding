@@ -37,6 +37,7 @@ START_BATCH = {
     "qwen17": 192,
     "qwen4": 128,
     "qwen8": 96,
+    "qwen14": 48,
     "gemma4": 64,
     "gemma12": 48,
     "ministral3": 64,

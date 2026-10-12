@@ -1,0 +1,4 @@
+GEN_START target=qwen4 split=common prompts=1012 requested_batch=128 max_new_tokens=128
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights:  96%|█████████▌| 382/398 [00:00<00:00, 3812.16it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 3844.69it/s]
+GEN_SHARD_COMPLETE target=qwen4 shard=00000 prompts=1012
+GEN_COMPLETE target=qwen4 output=/workspace/korean_speculative_decoding/results/naacl_experiments/flores_optional/continuations/qwen4/common wall_seconds=191.7

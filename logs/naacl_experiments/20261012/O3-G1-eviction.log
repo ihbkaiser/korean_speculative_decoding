@@ -1,0 +1,2 @@
+EVICT gemma4: removed 2 weight shards; kept tokenizer/config
+EVICT gemma12: removed 5 weight shards; kept tokenizer/config

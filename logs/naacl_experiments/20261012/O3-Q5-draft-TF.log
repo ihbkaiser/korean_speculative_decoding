@@ -1,0 +1,6 @@
+TF_LOAD model=qwen06 target=qwen8 role=draft
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 3553.86it/s]
+TF qwen06 on qwen8 shard 0:   0%|          | 0/68 [00:00<?, ?batch/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+TF qwen06 on qwen8 shard 0:  15%|█▍        | 10/68 [00:01<00:05,  9.92batch/s]TF qwen06 on qwen8 shard 0:  34%|███▍      | 23/68 [00:02<00:03, 11.64batch/s]TF qwen06 on qwen8 shard 0:  51%|█████▏    | 35/68 [00:04<00:04,  6.80batch/s]TF qwen06 on qwen8 shard 0:  65%|██████▍   | 44/68 [00:06<00:03,  6.53batch/s]TF qwen06 on qwen8 shard 0:  76%|███████▋  | 52/68 [00:07<00:02,  6.49batch/s]TF qwen06 on qwen8 shard 0:  88%|████████▊ | 60/68 [00:08<00:01,  6.70batch/s]TF qwen06 on qwen8 shard 0: 100%|██████████| 68/68 [00:09<00:00,  7.55batch/s]
+TF_SHARD_COMPLETE model=qwen06 shard=00000 prompts=1012 tokens=46577
+TF_COMPLETE model=qwen06 target=qwen8 files=1

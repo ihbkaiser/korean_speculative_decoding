@@ -1,0 +1,20 @@
+{
+  "stage": "target_path_morphology_alignment",
+  "continuation": "generated",
+  "target_key": "ministral8",
+  "revision": "d4883f9b36aa2e5d775730d3fdba3d30de51a8ef",
+  "split": "common",
+  "analyzer": "kiwi",
+  "prompt_count": 1012,
+  "requested_prompt_count": 1012,
+  "skipped_short_document_count": 0,
+  "completed_shards": [
+    {
+      "shard": 0,
+      "prompts": 1012,
+      "aligned_rows": 129497,
+      "resumed": false
+    }
+  ],
+  "status": "COMPLETE"
+}

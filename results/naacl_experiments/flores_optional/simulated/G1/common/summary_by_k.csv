@@ -1,0 +1,2 @@
+Pair,Split,Block size,Prompts,Target tokens,Target calls,Eligible proposals,Accepted proposals,Rejections,Rejection rate,Invalidated suffix work,Bonus tokens,Target TF label disagreement
+G1,common,4,1012,129536,27124,104419,103326,1093,0.010467443664467195,2643,25117,150

@@ -1,0 +1,20 @@
+{
+  "stage": "target_path_morphology_alignment",
+  "continuation": "generated",
+  "target_key": "qwen4",
+  "revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+  "split": "common",
+  "analyzer": "kiwi",
+  "prompt_count": 1012,
+  "requested_prompt_count": 1012,
+  "skipped_short_document_count": 0,
+  "completed_shards": [
+    {
+      "shard": 0,
+      "prompts": 1012,
+      "aligned_rows": 46829,
+      "resumed": false
+    }
+  ],
+  "status": "COMPLETE"
+}

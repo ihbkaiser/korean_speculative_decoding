@@ -1,0 +1,39 @@
+{
+  "experiment": "NAACL optional O3: FLORES-200 English-to-Korean target and draft grid",
+  "source_release": "FLORES-200 original 2022 release, devtest",
+  "source_languages": {
+    "source": "eng_Latn",
+    "target_reference": "kor_Hang"
+  },
+  "row_count": 1012,
+  "prompt_template": "Translate the following sentence into Korean.\\nEnglish: <English sentence>\\nKorean:",
+  "reference_use": "Korean translations are checksum-verified provenance only; no reference text is present in the frozen prompt pool or inference inputs.",
+  "source_files_sha256": {
+    "runs/flores200_en_ko_replication/data/flores200_dataset.tar.gz": "b8b0b76783024b85797e5cc75064eb83fc5288b41e9654dabc7be6ae944011f6",
+    "runs/flores200_en_ko_replication/data/flores200_dataset/devtest/eng_Latn.devtest": "612e9fbe87997617c0fa8fa8929654a4f49b728d96738112c2b86ef6a1d78d88",
+    "runs/flores200_en_ko_replication/data/flores200_dataset/devtest/kor_Hang.devtest": "540972696230a56e888f1fbd04b7000135c436351f5e467f99ce67fdccd8df0f",
+    "runs/flores200_en_ko_replication/data/flores200_dataset/metadata_devtest.tsv": "8edac47f861fcf6b54dad2068c10ba8f741da8b8676861c6bc27fcd9f5483b36"
+  },
+  "prompt_pool": "data/naacl_flores_1012.parquet",
+  "prompt_pool_sha256": "0bcb2edf2bc98c2cd1cda0224395cbefe5a729a859b5a7614ddaa1ef0165ed1c",
+  "prompt_ids_sha256": "8e8c6739c37e2f2a76ce2ae4a0fbe53eba4b7846fb2fd2b06cc914e37f7e20bc",
+  "prompt_template_hashes_sha256": "314140940f4a8aa7b3a00c105e063714e82bcad657f6e96cb18e9c5d4870318c",
+  "config": "configs/naacl_flores_o3.yaml",
+  "target_keys": [
+    "qwen17",
+    "qwen4",
+    "qwen8",
+    "gemma12",
+    "ministral8"
+  ],
+  "pair_keys": [
+    "Q1",
+    "Q2",
+    "Q3",
+    "Q4",
+    "Q5",
+    "Q6",
+    "G1",
+    "M1"
+  ]
+}

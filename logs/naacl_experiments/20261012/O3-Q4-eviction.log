@@ -1,0 +1,2 @@
+EVICT qwen17: removed 1 weight shards; kept tokenizer/config
+EVICT qwen4: removed 3 weight shards; kept tokenizer/config

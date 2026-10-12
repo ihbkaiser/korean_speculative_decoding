@@ -1,0 +1,5 @@
+MODEL_STORAGE root=/dev/shm/naacl_models free_gib=30.86 requested_weight_gib=8.01
+MODEL gemma4 repo=google/gemma-3-4b-pt revision=cc012e0a6d0787b4adcc0fa2c4da74402494554d gated=manual weight_gib=8.01 shards=2
+DOWNLOAD_START gemma4 files=14 gated=manual
+Fetching 14 files:   0%|          | 0/14 [00:00<?, ?it/s]Fetching 14 files:   7%|▋         | 1/14 [00:00<00:08,  1.59it/s]Fetching 14 files:  43%|████▎     | 6/14 [00:00<00:00, 10.35it/s]Fetching 14 files:  64%|██████▍   | 9/14 [00:01<00:00,  8.00it/s]Fetching 14 files:  79%|███████▊  | 11/14 [00:08<00:03,  1.20s/it]Fetching 14 files:  86%|████████▌ | 12/14 [00:19<00:02,  1.20s/it]Fetching 14 files:  93%|█████████▎| 13/14 [01:22<00:11, 11.62s/it]Fetching 14 files: 100%|██████████| 14/14 [01:23<00:00,  9.81s/it]Fetching 14 files: 100%|██████████| 14/14 [01:23<00:00,  5.97s/it]
+DOWNLOAD_COMPLETE gemma4 local_path=/dev/shm/naacl_models/google--gemma-3-4b-pt/cc012e0a6d0787b4adcc0fa2c4da74402494554d

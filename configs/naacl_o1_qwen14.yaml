@@ -1,0 +1,155 @@
+schema: naacl-teacher-forced-sd-v1
+plan: NAACL_experiments.md
+data:
+  prompts: data/prompts_40k.parquet
+  common_ids: data/common_20k_ids.txt
+  extra_ids: data/extra_20k_ids.txt
+  max_prompt_tokens: 128
+  max_new_tokens: 128
+  shard_prompts: 2000
+inference:
+  dtype: bfloat16
+  attention_backend: sdpa
+  generation_batch_size: 128
+  teacher_forcing_batch_size: 32
+  logits_positions_per_chunk: 32
+  block_sizes:
+  - 1
+  - 2
+  - 4
+  - 8
+  - 16
+models:
+  qwen06:
+    id: Qwen/Qwen3-0.6B-Base
+    revision: da87bfb608c14b7cf20ba1ce41287e8de496c0cd
+    family: Qwen3
+    size: 0.6B
+    storage_gib: 1.12
+  qwen17:
+    id: Qwen/Qwen3-1.7B-Base
+    revision: ea980cb0a6c2ae4b936e82123acc929f1cec04c1
+    family: Qwen3
+    size: 1.7B
+    storage_gib: 3.22
+  qwen4:
+    id: Qwen/Qwen3-4B-Base
+    revision: 906bfd4b4dc7f14ee4320094d8b41684abff8539
+    family: Qwen3
+    size: 4B
+    storage_gib: 7.5
+  qwen8:
+    id: Qwen/Qwen3-8B-Base
+    revision: 49e3418fbbbca6ecbdf9608b4d22e5a407081db4
+    family: Qwen3
+    size: 8B
+    storage_gib: 15.27
+  gemma4:
+    id: google/gemma-3-4b-pt
+    revision: cc012e0a6d0787b4adcc0fa2c4da74402494554d
+    family: Gemma 3
+    size: 4B
+    storage_gib: 8.05
+    gated: true
+  gemma12:
+    id: google/gemma-3-12b-pt
+    revision: 295efb63d01a7017928f273a94ebb86105c9526f
+    family: Gemma 3
+    size: 12B
+    storage_gib: 22.74
+    gated: true
+  ministral3:
+    id: mistralai/Ministral-3-3B-Base-2512
+    revision: 6f9c4b12a95b139af68670a6713616b757923735
+    family: Ministral 3
+    size: 3B
+    storage_gib: 7.17
+    repository_includes_unused_consolidated_export: true
+    tokenizer_backend: tokenizers
+    fix_mistral_regex: true
+  ministral8:
+    id: mistralai/Ministral-3-8B-Base-2512
+    revision: d4883f9b36aa2e5d775730d3fdba3d30de51a8ef
+    family: Ministral 3
+    size: 8B
+    storage_gib: 16.61
+    repository_includes_unused_consolidated_export: true
+    tokenizer_backend: tokenizers
+    fix_mistral_regex: true
+  qwen14:
+    id: Qwen/Qwen3-14B-Base
+    revision: 0b0bd3732e2c374d483664439ea334928b65f304
+    family: Qwen3
+    size: 14B
+    storage_gib: 27.5
+pairs:
+  Q1:
+    family: Qwen3
+    draft: qwen06
+    target: qwen17
+    split: common
+    legacy_name: 0.6B→1.7B
+  Q2:
+    family: Qwen3
+    draft: qwen06
+    target: qwen4
+    split: all
+    legacy_name: 0.6B→4B
+  Q3:
+    family: Qwen3
+    draft: qwen4
+    target: qwen8
+    split: common
+    legacy_name: 4B→8B
+  Q4:
+    family: Qwen3
+    draft: qwen17
+    target: qwen4
+    split: common
+    legacy_name: 1.7B→4B
+  Q5:
+    family: Qwen3
+    draft: qwen06
+    target: qwen8
+    split: common
+    legacy_name: 0.6B→8B
+  Q6:
+    family: Qwen3
+    draft: qwen17
+    target: qwen8
+    split: common
+    legacy_name: 1.7B→8B
+  G1:
+    family: Gemma 3
+    draft: gemma4
+    target: gemma12
+    split: common
+    legacy_name: 4B→12B
+  M1:
+    family: Ministral 3
+    draft: ministral3
+    target: ministral8
+    split: common
+    legacy_name: 3B→8B
+  O1_Q06:
+    family: Qwen3
+    draft: qwen06
+    target: qwen14
+    split: common
+    legacy_name: 0.6B→14B
+  O1_Q17:
+    family: Qwen3
+    draft: qwen17
+    target: qwen14
+    split: common
+    legacy_name: 1.7B→14B
+  O1_Q4:
+    family: Qwen3
+    draft: qwen4
+    target: qwen14
+    split: common
+    legacy_name: 4B→14B
+paths:
+  model_root: /dev/shm/naacl_models
+  tokenizer_root: models/naacl_tokenizers
+  outputs: results/naacl_experiments/o1_qwen14

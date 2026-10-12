@@ -1,0 +1,20 @@
+{
+  "stage": "target_path_morphology_alignment",
+  "continuation": "generated",
+  "target_key": "gemma12",
+  "revision": "295efb63d01a7017928f273a94ebb86105c9526f",
+  "split": "common",
+  "analyzer": "kiwi",
+  "prompt_count": 1012,
+  "requested_prompt_count": 1012,
+  "skipped_short_document_count": 0,
+  "completed_shards": [
+    {
+      "shard": 0,
+      "prompts": 1012,
+      "aligned_rows": 129536,
+      "resumed": false
+    }
+  ],
+  "status": "COMPLETE"
+}

@@ -1,0 +1,5 @@
+MODEL_STORAGE root=/dev/shm/naacl_models free_gib=30.86 requested_weight_gib=22.70
+MODEL gemma12 repo=google/gemma-3-12b-pt revision=295efb63d01a7017928f273a94ebb86105c9526f gated=manual weight_gib=22.70 shards=5
+DOWNLOAD_START gemma12 files=17 gated=manual
+Fetching 17 files:   0%|          | 0/17 [00:00<?, ?it/s]Fetching 17 files:  76%|███████▋  | 13/17 [04:46<01:28, 22.04s/it]Fetching 17 files:  82%|████████▏ | 14/17 [04:52<01:01, 20.43s/it]Fetching 17 files:  88%|████████▊ | 15/17 [04:52<00:35, 17.98s/it]Fetching 17 files:  94%|█████████▍| 16/17 [04:54<00:15, 15.55s/it]Fetching 17 files: 100%|██████████| 17/17 [05:05<00:00, 14.70s/it]Fetching 17 files: 100%|██████████| 17/17 [05:05<00:00, 17.97s/it]
+DOWNLOAD_COMPLETE gemma12 local_path=/dev/shm/naacl_models/google--gemma-3-12b-pt/295efb63d01a7017928f273a94ebb86105c9526f
