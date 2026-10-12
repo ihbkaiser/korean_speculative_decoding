@@ -1,0 +1,7 @@
+MODEL_STORAGE root=/workspace/naacl_gemma_models free_gib=13.07 requested_weight_gib=8.01
+MODEL gemma4 repo=google/gemma-3-4b-pt revision=cc012e0a6d0787b4adcc0fa2c4da74402494554d gated=manual weight_gib=8.01 shards=2
+DOWNLOAD_START gemma4 files=14 gated=manual
+Fetching 14 files:   0%|          | 0/14 [00:00<?, ?it/s]Fetching 14 files: 100%|██████████| 14/14 [00:00<00:00, 267.47it/s]
+DOWNLOAD_COMPLETE gemma4 local_path=/workspace/naacl_gemma_models/google--gemma-3-4b-pt/cc012e0a6d0787b4adcc0fa2c4da74402494554d
+Loading weights:   0%|          | 0/883 [00:00<?, ?it/s]Loading weights:  42%|████▏     | 375/883 [00:00<00:00, 3746.90it/s]Loading weights:  85%|████████▍ | 750/883 [00:00<00:00, 3403.76it/s]Loading weights: 100%|██████████| 883/883 [00:00<00:00, 3422.96it/s]
+SMOKE_LOAD_OK gemma4 google/gemma-3-4b-pt@cc012e0a6d0787b4adcc0fa2c4da74402494554d on NVIDIA RTX A6000

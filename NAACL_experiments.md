@@ -385,3 +385,28 @@ Q6 outputs are under `results/naacl_experiments/teacher_forced/generated/qwen8/q
 Q3 outputs are under `results/naacl_experiments/teacher_forced/generated/qwen8/qwen4/common/` and `results/naacl_experiments/simulated/Q3/common/`. These rates are offline replay estimates; Q2's failed strict full-V0 gate remains a caveat for live-decoder generalization.
 
 **Queue status at 09:07 UTC:** the full six-pair Qwen draft×target grid is now teacher-forced scored and simulated, including the Q1 baseline. Next: Gemma and Ministral cross-model scoring, full G1 live validation, then human-written text and the permitted 2k Wikipedia core-lite job. Resolve the Q2 V0 unmatched-position gate before treating simulator estimates as fully live-validated.
+
+### G1 Gemma scoring, replay, and full live validation
+
+- Qwen checkpoint eviction (after finishing the grid and Q2 validation) used `scripts/download_models.py --evict-pair Q1` and `--evict-pair Q3`; logs: `Qwen-evict-Q1.log` and `Qwen-evict-Q3.log`. This freed `/dev/shm` for Gemma-12B.
+- Gemma-12B was downloaded to `/dev/shm/naacl_models`; Gemma-4B was downloaded to `/workspace/naacl_gemma_models` because both checkpoints do not fit together in `/dev/shm`. Download logs: `G-G12-download.log` and `G-G4-download.log`. Both snapshots passed an A6000 BF16/SDPA one-token smoke forward. Gemma-4B smoke log: `G-G4-smoke-load.log`. Gemma-12B's first smoke-load retry was rejected by the downloader's 1-GiB free-space preflight even though its completed checkpoint was present; the same repository smoke helper was run directly on that local snapshot and passed. Both attempts are preserved in `G-G12-smoke-load.log`.
+- Tokenizer audit: `/venv/main/bin/python -u scripts/audit_tokenizers.py --pair G1 --output-dir results/naacl_experiments`; `TOKENIZER_AUDIT G1 PASS`. Log: `TF-G1-tokenizer-audit.log`; report: `results/naacl_experiments/provenance/tokenizer_audits/G1.json`.
+- Gemma-4B draft TF command: `NAACL_MODEL_DIR_GEMMA4=/workspace/naacl_gemma_models NAACL_MODEL_DIR_GEMMA12=/dev/shm/naacl_models PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout --foreground --signal=TERM --kill-after=10s 14400s /venv/main/bin/python -u scripts/tf_score.py --model gemma4 --target gemma12 --split common --role draft --batch-size 32 --chunk-positions 32 --output-dir results/naacl_experiments`. Log: `TF-G1-draft.log`.
+- TF completed all 20,000 prompts in 10 shards and 2,549,337 positions. All shards passed the LM-head check (`scale=1`, `max_abs_error=0`); summed shard time was 732.38 seconds. Manifest status: `COMPLETE`.
+- Simulator command: `timeout --foreground --signal=TERM --kill-after=10s 21600s /venv/main/bin/python -u scripts/simulate_sd.py --pair G1 --split common --output-dir results/naacl_experiments`; log: `TF-G1-simulate.log`.
+
+| Block size | Eligible proposals | Rejections | Rejection rate |
+| ---: | ---: | ---: | ---: |
+| 1 | 1,294,085 | 29,408 | 0.022725 |
+| 2 | 1,721,239 | 35,288 | 0.020502 |
+| 4 | 2,059,836 | 38,629 | 0.018753 |
+| 8 | 2,283,008 | 40,155 | 0.017589 |
+| 16 | 2,414,797 | 40,717 | 0.016861 |
+
+- Full G1 live validation command: `NAACL_MODEL_DIR_GEMMA4=/workspace/naacl_gemma_models NAACL_MODEL_DIR_GEMMA12=/dev/shm/naacl_models PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout --foreground --signal=TERM --kill-after=10s 14400s /venv/main/bin/python -u scripts/validate_live_sd.py --pair G1 --prompts 500 --output-dir results/naacl_experiments`. Log: `V0-G1-full.log`; artifacts: `results/naacl_experiments/validation/v0/G1/`.
+- G1 full V0 measured 99.8213% shared-context rejection-label agreement (95% prompt-cluster bootstrap CI 99.7786%–99.8601%) and 99.6120% all-position joined-label agreement. The 95% numerical agreement threshold is exceeded, but runner status is **FAIL** because it additionally requires zero unmatched positions; it found 714 live and 716 simulated unmatched shared-context rows. Target sequences matched exactly on 442/500 prompts; common-prefix token fraction was 90.1743%.
+- Together with Q2 (98.0577% shared-context agreement, 88.6536% all-position agreement, 949/947 unmatched shared-context rows, strict status `FAIL`), V0 shows strong agreement on joined shared-prefix positions, especially for G1, but does not clear the runner's zero-unmatched condition. Keep simulated rates identified as offline estimates and show both agreements and unmatched counts; do not label either full V0 run `PASS`.
+
+G1 TF and replay outputs are under `results/naacl_experiments/teacher_forced/generated/gemma12/gemma4/common/` and `results/naacl_experiments/simulated/G1/common/`. G1 live validation is under `results/naacl_experiments/validation/v0/G1/`.
+
+**Queue status at 09:34 UTC:** Qwen grid and G1 cross-model TF/replay/full V0 are complete and preserved; Q2 and G1 V0 both exceed the 95% shared-context agreement level but fail the additional zero-unmatched check. Remaining core jobs: M1 draft TF/replay, H human-text scoring for all drafts/targets, and the plan-approved 2,000-document Wikipedia-ko job. Resolve/interpret the strict V0 condition before claiming full live validation.

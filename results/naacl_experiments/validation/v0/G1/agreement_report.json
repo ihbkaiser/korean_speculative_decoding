@@ -1,0 +1,201 @@
+{
+  "pair": "G1",
+  "draft": "gemma4",
+  "target": "gemma12",
+  "draft_revision": "cc012e0a6d0787b4adcc0fa2c4da74402494554d",
+  "target_revision": "295efb63d01a7017928f273a94ebb86105c9526f",
+  "sample_prompts": 500,
+  "validation_scope": "full_v0",
+  "prompt_ids_sha256": "d304a74e17fd1103bde966611d17ffc226858ff80eae70663b07bdd7e9bd73c0",
+  "config_sha256": "088c0a269ef79d016f87710fb9179ac536f7d69313e87e2599a502fdb28f7c92",
+  "experiment_plan_sha256": "be32a64785d50cbf08825ca176ac2a8b0b687fcffbe8e97ba2b7c6e32aa43c63",
+  "simulation_events_sha256": "2bf8fb57a0ffda30c62a93fc209dcb7a0fc4993ee77cc0440e21db6eed607a5f",
+  "batch_size": 32,
+  "block_size": 4,
+  "g0_gate_metric": "shared-context eligible rejection-label agreement",
+  "g0_gate_threshold": 0.95,
+  "target_sequence_exact_prompts": 442,
+  "target_sequence_exact_fraction": 0.884,
+  "target_sequence_common_prefix_fraction": 0.9017425203137476,
+  "target_tokens_in_generation_reference": 63822,
+  "live_vs_simulation_eligible_label_agreement_all_positions": {
+    "compared": 49994,
+    "prompt_count": 500,
+    "rejection_label_agreement": 0.9961195343441213,
+    "rejection_label_agreement_ci95_prompt_cluster_bootstrap": {
+      "method": "prompt_cluster_bootstrap_percentile",
+      "confidence_level": 0.95,
+      "replicates": 2000,
+      "lower": 0.9951540135633083,
+      "upper": 0.996989184479843,
+      "prompt_clusters": 500
+    },
+    "draft_id_agreement": 0.9267912149457935,
+    "target_id_agreement": 0.9274912989558747,
+    "rejection_confusion": {
+      "both_reject": 854,
+      "both_accept": 48946,
+      "live_reject_sim_accept": 103,
+      "live_accept_sim_reject": 91
+    }
+  },
+  "live_vs_simulation_cross_label_agreement_all_positions": {
+    "compared": 3459,
+    "prompt_count": 286,
+    "rejection_label_agreement": 0.9962416883492339,
+    "rejection_label_agreement_ci95_prompt_cluster_bootstrap": {
+      "method": "prompt_cluster_bootstrap_percentile",
+      "confidence_level": 0.95,
+      "replicates": 2000,
+      "lower": 0.9941111819747026,
+      "upper": 0.9980422168260232,
+      "prompt_clusters": 286
+    },
+    "draft_id_agreement": 0.9363978028331887,
+    "target_id_agreement": 0.9384215091066782,
+    "rejection_confusion": {
+      "both_reject": 42,
+      "both_accept": 3404,
+      "live_reject_sim_accept": 5,
+      "live_accept_sim_reject": 8
+    }
+  },
+  "live_vs_simulation_eligible_label_agreement_shared_context": {
+    "compared": 45879,
+    "prompt_count": 500,
+    "rejection_label_agreement": 0.998212689901698,
+    "rejection_label_agreement_ci95_prompt_cluster_bootstrap": {
+      "method": "prompt_cluster_bootstrap_percentile",
+      "confidence_level": 0.95,
+      "replicates": 2000,
+      "lower": 0.9977857283561435,
+      "upper": 0.998600758113111,
+      "prompt_clusters": 500
+    },
+    "draft_id_agreement": 0.9981473005078576,
+    "target_id_agreement": 0.9989537696985549,
+    "rejection_confusion": {
+      "both_reject": 830,
+      "both_accept": 44967,
+      "live_reject_sim_accept": 46,
+      "live_accept_sim_reject": 36
+    }
+  },
+  "live_vs_simulation_cross_label_agreement_shared_context": {
+    "compared": 3184,
+    "prompt_count": 267,
+    "rejection_label_agreement": 0.9974874371859297,
+    "rejection_label_agreement_ci95_prompt_cluster_bootstrap": {
+      "method": "prompt_cluster_bootstrap_percentile",
+      "confidence_level": 0.95,
+      "replicates": 2000,
+      "lower": 0.9957148198552604,
+      "upper": 0.9990388387231504,
+      "prompt_clusters": 267
+    },
+    "draft_id_agreement": 0.9974874371859297,
+    "target_id_agreement": 1.0,
+    "rejection_confusion": {
+      "both_reject": 41,
+      "both_accept": 3135,
+      "live_reject_sim_accept": 2,
+      "live_accept_sim_reject": 6
+    }
+  },
+  "live_vs_simulation_joined_proposal_positions_all": 49994,
+  "live_vs_simulation_joined_proposal_positions_shared_context": 45879,
+  "shared_context_unmatched_live_positions": 714,
+  "shared_context_unmatched_simulation_positions": 716,
+  "unmatched_live_positions_all_contexts": 1626,
+  "unmatched_simulation_positions_all_contexts": 1576,
+  "margin_sensitivity_shared_context": {
+    "definition": "Minimum of live and teacher-forced draft and target top-two logit margins.",
+    "positions_with_all_four_margins": 45879,
+    "positions_missing_a_margin": 0,
+    "by_minimum_margin_threshold": [
+      {
+        "minimum_margin_threshold": 0.0,
+        "compared": 45879,
+        "coverage_of_compared_positions": 1.0,
+        "rejection_label_agreement": 0.998212689901698
+      },
+      {
+        "minimum_margin_threshold": 0.001,
+        "compared": 45745,
+        "coverage_of_compared_positions": 0.997079273741799,
+        "rejection_label_agreement": 0.9991255874959012
+      },
+      {
+        "minimum_margin_threshold": 0.01,
+        "compared": 45745,
+        "coverage_of_compared_positions": 0.997079273741799,
+        "rejection_label_agreement": 0.9991255874959012
+      },
+      {
+        "minimum_margin_threshold": 0.1,
+        "compared": 45718,
+        "coverage_of_compared_positions": 0.9964907691972362,
+        "rejection_label_agreement": 0.999190690756376
+      },
+      {
+        "minimum_margin_threshold": 0.5,
+        "compared": 45178,
+        "coverage_of_compared_positions": 0.9847206783059788,
+        "rejection_label_agreement": 0.9999114613307362
+      }
+    ]
+  },
+  "margin_sensitivity_cross_shared_context": {
+    "definition": "Minimum of live and teacher-forced draft and target top-two logit margins.",
+    "positions_with_all_four_margins": 3184,
+    "positions_missing_a_margin": 0,
+    "by_minimum_margin_threshold": [
+      {
+        "minimum_margin_threshold": 0.0,
+        "compared": 3184,
+        "coverage_of_compared_positions": 1.0,
+        "rejection_label_agreement": 0.9974874371859297
+      },
+      {
+        "minimum_margin_threshold": 0.001,
+        "compared": 3176,
+        "coverage_of_compared_positions": 0.9974874371859297,
+        "rejection_label_agreement": 0.9993702770780857
+      },
+      {
+        "minimum_margin_threshold": 0.01,
+        "compared": 3176,
+        "coverage_of_compared_positions": 0.9974874371859297,
+        "rejection_label_agreement": 0.9993702770780857
+      },
+      {
+        "minimum_margin_threshold": 0.1,
+        "compared": 3175,
+        "coverage_of_compared_positions": 0.9971733668341709,
+        "rejection_label_agreement": 0.9993700787401575
+      },
+      {
+        "minimum_margin_threshold": 0.5,
+        "compared": 3140,
+        "coverage_of_compared_positions": 0.9861809045226131,
+        "rejection_label_agreement": 1.0
+      }
+    ]
+  },
+  "g0_gate_status": "FAIL",
+  "g0_gate_reason": "One or more shared-context positions are missing from one side of the comparison.",
+  "g0_eta_status": "NOT_ASSESSED_BY_VALIDATION_SCRIPT",
+  "position_comparison_artifact": "results/naacl_experiments/validation/v0/G1/position_comparison.parquet",
+  "position_comparison_rows": 53196,
+  "confidence_interval_method": "2,000-replicate percentile bootstrap sampling prompts as clusters; seed 20261011",
+  "runtime": {
+    "python": "3.12.14",
+    "torch": "2.11.0+cu128",
+    "cuda_runtime": "12.8",
+    "gpu": "NVIDIA RTX A6000",
+    "pandas": "3.0.6",
+    "numpy": "2.3.5"
+  },
+  "wall_seconds": 193.24134838604368,
+  "status": "COMPLETE"
+}

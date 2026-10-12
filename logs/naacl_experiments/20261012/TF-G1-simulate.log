@@ -1,0 +1,5 @@
+SIM pair=G1 k=1 prompts=20000 eligible=1294085 reject=29408 rate=0.022725
+SIM pair=G1 k=2 prompts=20000 eligible=1721239 reject=35288 rate=0.020502
+SIM pair=G1 k=4 prompts=20000 eligible=2059836 reject=38629 rate=0.018753
+SIM pair=G1 k=8 prompts=20000 eligible=2283008 reject=40155 rate=0.017589
+SIM pair=G1 k=16 prompts=20000 eligible=2414797 reject=40717 rate=0.016861

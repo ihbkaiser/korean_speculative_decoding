@@ -1,0 +1,11 @@
+MODEL_STORAGE root=/dev/shm/naacl_models free_gib=8.22 requested_weight_gib=22.70
+MODEL gemma12 repo=google/gemma-3-12b-pt revision=295efb63d01a7017928f273a94ebb86105c9526f gated=manual weight_gib=22.70 shards=5
+Traceback (most recent call last):
+  File "/workspace/korean_speculative_decoding/scripts/download_models.py", line 231, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/download_models.py", line 179, in main
+    raise RuntimeError(
+RuntimeError: Need 23.70 GiB free for selected checkpoints and metadata; only 8.22 GiB is free at /dev/shm/naacl_models. Select one model or use another model root.
+Loading weights:   0%|          | 0/1065 [00:00<?, ?it/s]Loading weights:  33%|███▎      | 351/1065 [00:00<00:00, 3504.86it/s]Loading weights:  66%|██████▌   | 702/1065 [00:00<00:00, 3217.11it/s]Loading weights:  96%|█████████▋| 1026/1065 [00:00<00:00, 3155.40it/s]Loading weights: 100%|██████████| 1065/1065 [00:00<00:00, 3213.47it/s]
+SMOKE_LOAD_OK gemma12 google/gemma-3-12b-pt@295efb63d01a7017928f273a94ebb86105c9526f on NVIDIA RTX A6000
