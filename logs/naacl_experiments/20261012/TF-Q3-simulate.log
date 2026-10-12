@@ -1,0 +1,5 @@
+SIM pair=Q3 k=1 prompts=20000 eligible=1315672 reject=156545 rate=0.118985
+SIM pair=Q3 k=2 prompts=20000 eligible=1746689 reject=204382 rate=0.117011
+SIM pair=Q3 k=4 prompts=20000 eligible=2085610 reject=242496 rate=0.116271
+SIM pair=Q3 k=8 prompts=20000 eligible=2295967 reject=263792 rate=0.114894
+SIM pair=Q3 k=16 prompts=20000 eligible=2401277 reject=272482 rate=0.113474

@@ -367,3 +367,21 @@ Q4 outputs are under `results/naacl_experiments/teacher_forced/generated/qwen4/q
 Q6 outputs are under `results/naacl_experiments/teacher_forced/generated/qwen8/qwen17/common/` and `results/naacl_experiments/simulated/Q6/common/`. These remain offline estimates pending the V0 gate follow-up.
 
 **Queue status at 08:49 UTC:** Q1, Q2, Q4, Q5, and Q6 TF/simulation are complete. Q3 (Qwen 4B→8B) is the last Qwen grid pair. Q2 full V0 remains flagged `FAIL` because of unmatched shared-context positions.
+
+### Q3 cross-model scoring and simulation
+
+- Draft scoring command: `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout --foreground --signal=TERM --kill-after=10s 14400s /venv/main/bin/python -u scripts/tf_score.py --model qwen4 --target qwen8 --split common --role draft --batch-size 64 --chunk-positions 32 --output-dir results/naacl_experiments`. Log: `logs/naacl_experiments/20261012/TF-Q3-draft.log`.
+- Scoring completed all 20,000 common prompts in 10 shards, totaling 2,465,034 positions. All shards passed the LM-head check (`scale=1`, `max_abs_error=0`); summed shard wall time was 768.12 seconds. Manifest status: `COMPLETE`.
+- Simulation command: `timeout --foreground --signal=TERM --kill-after=10s 21600s /venv/main/bin/python -u scripts/simulate_sd.py --pair Q3 --split common --output-dir results/naacl_experiments`. Log: `logs/naacl_experiments/20261012/TF-Q3-simulate.log`; all five block sizes completed.
+
+| Block size | Eligible proposals | Rejections | Rejection rate |
+| ---: | ---: | ---: | ---: |
+| 1 | 1,315,672 | 156,545 | 0.118985 |
+| 2 | 1,746,689 | 204,382 | 0.117011 |
+| 4 | 2,085,610 | 242,496 | 0.116271 |
+| 8 | 2,295,967 | 263,792 | 0.114894 |
+| 16 | 2,401,277 | 272,482 | 0.113474 |
+
+Q3 outputs are under `results/naacl_experiments/teacher_forced/generated/qwen8/qwen4/common/` and `results/naacl_experiments/simulated/Q3/common/`. These rates are offline replay estimates; Q2's failed strict full-V0 gate remains a caveat for live-decoder generalization.
+
+**Queue status at 09:07 UTC:** the full six-pair Qwen draft×target grid is now teacher-forced scored and simulated, including the Q1 baseline. Next: Gemma and Ministral cross-model scoring, full G1 live validation, then human-written text and the permitted 2k Wikipedia core-lite job. Resolve the Q2 V0 unmatched-position gate before treating simulator estimates as fully live-validated.
