@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Project Q2 draft candidates onto Kiwi morphology for a random 1k prompt sample."""
+"""Project Q2 draft candidates onto Kiwi morphology on a selected prompt pool."""
 
 from __future__ import annotations
 
@@ -41,10 +41,15 @@ def main() -> int:
     parser.add_argument("--config", type=Path, default=ROOT / "configs/naacl_experiments.yaml")
     parser.add_argument("--output-dir", type=Path)
     parser.add_argument("--max-docs", type=int, default=1000)
+    parser.add_argument("--split", choices=("common", "all"), default="common")
+    parser.add_argument("--output-stem", default="rq4_proposal_side_sample")
     parser.add_argument("--seed", type=int, default=SEED)
     args = parser.parse_args()
-    if args.max_docs <= 0 or args.max_docs > 20_000:
-        raise ValueError("--max-docs must be in 1..20,000 common-pool prompts")
+    split_limit = 20_000 if args.split == "common" else 40_000
+    if args.max_docs <= 0 or args.max_docs > split_limit:
+        raise ValueError(f"--max-docs must be in 1..{split_limit:,} {args.split}-pool prompts")
+    if not args.output_stem or Path(args.output_stem).name != args.output_stem:
+        raise ValueError("--output-stem must be a non-empty filename stem")
     config = load_config(args.config)
     root = output_root(config, args.output_dir)
     out = root / "analysis"
@@ -52,11 +57,16 @@ def main() -> int:
 
     rng = np.random.default_rng(args.seed)
     prompt_pool = pd.read_parquet(ROOT / config["data"]["prompts"], columns=["doc_id", "pool_index"])
-    common = prompt_pool.loc[prompt_pool.pool_index.astype(int).lt(20_000)].sort_values("pool_index")
-    selected = common.iloc[np.sort(rng.choice(len(common), size=args.max_docs, replace=False))]
+    split_pool = prompt_pool.loc[
+        prompt_pool.pool_index.astype(int).lt(20_000) if args.split == "common"
+        else prompt_pool.pool_index.astype(int).lt(40_000)
+    ].sort_values("pool_index")
+    if len(split_pool) < args.max_docs:
+        raise AssertionError(f"Prompt file has {len(split_pool)} rows in {args.split}, expected at least {args.max_docs}")
+    selected = split_pool.iloc[np.sort(rng.choice(len(split_pool), size=args.max_docs, replace=False))]
     selected_ids = set(selected.doc_id.astype(str))
     selected_pool_indices = sorted(selected.pool_index.astype(int).tolist())
-    print(f"PROPOSAL_SAMPLE_DOCS n={len(selected_ids)} seed={args.seed}", flush=True)
+    print(f"PROPOSAL_PROJECTION_DOCS split={args.split} n={len(selected_ids):,} seed={args.seed}", flush=True)
 
     model_spec = config["models"]["qwen06"]
     print("LOAD_PINNED_QWEN06_TOKENIZER", flush=True)
@@ -91,14 +101,14 @@ def main() -> int:
         for row in continuation_frame.itertuples(index=False)
     }
 
-    print("LOAD_Q2_COMMON_EVENTS_ALIGNMENT_AND_CONTROLS", flush=True)
-    full, join_meta = load_pair_frame(root, PAIR, config, split_override="common")
+    print(f"LOAD_Q2_{args.split.upper()}_EVENTS_ALIGNMENT_AND_CONTROLS", flush=True)
+    full, join_meta = load_pair_frame(root, PAIR, config, split_override=args.split)
     sample = full.loc[full.doc_id.astype(str).isin(selected_ids)].copy()
     # The shared RQ1 loader omits the simulator's numeric block_id; the
     # contiguous eligible positions and zero-based slots recover its start.
     sample["block_id"] = sample.position.astype("int64") - sample.slot.astype("int64")
     sample = sample.sort_values(["doc_id", "block_id", "slot"], kind="stable")
-    print(f"PROPOSAL_SAMPLE_EVENTS rows={len(sample):,} docs={sample.doc_id.nunique():,}", flush=True)
+    print(f"PROPOSAL_EVENTS split={args.split} rows={len(sample):,} docs={sample.doc_id.nunique():,}", flush=True)
 
     rows: list[dict[str, Any]] = []
     block_count = sample.groupby(["doc_id", "block_id"], sort=False).ngroups
@@ -167,16 +177,35 @@ def main() -> int:
     valid["alignment_class"] = valid.proposal_side_class
     fit: dict[str, Any] | None = None
     if valid.alignment_class.nunique() == 2 and valid.rejected.nunique() == 2:
-        fit = fit_cross_ame(valid, label="RQ4:proposal_side_random_1k_prompts")
+        fit = fit_cross_ame(valid, label=f"RQ4:proposal_side_{args.split}_{args.max_docs}_prompts")
 
     target_comparable = valid.loc[valid.target_side_class.isin(["CROSS", "WITHIN_SPLIT"])]
+    if args.max_docs <= 2_000:
+        selected_pool_provenance: dict[str, Any] = {"pool_indices": selected_pool_indices}
+    else:
+        selected_pool_provenance = {
+            "pool_indices_sha256": hashlib.sha256(
+                ",".join(str(x) for x in selected_pool_indices).encode("ascii")
+            ).hexdigest(),
+            "pool_index_min": min(selected_pool_indices),
+            "pool_index_max": max(selected_pool_indices),
+        }
+    is_full_40k = args.split == "all" and args.max_docs == 40_000
+    sample_label = (
+        "all 40,000 prompts from the frozen all pool" if is_full_40k
+        else f"random {args.max_docs:,} prompts from the {args.split} pool"
+    )
+    rows_path = f"{args.output_stem}_rows.parquet"
+    summary_path = f"{args.output_stem}_summary.json"
     summary = {
         "pair": PAIR,
         "target": "Qwen3-4B-Base",
         "draft": "Qwen3-0.6B-Base",
-        "sample": "random 1,000 prompts from common 20k pool",
+        "sample": sample_label,
+        "split": args.split,
+        "selected_documents": int(len(selected_ids)),
         "seed": int(args.seed),
-        "pool_indices": selected_pool_indices,
+        **selected_pool_provenance,
         "tokenizer_revision": model_spec["revision"],
         "tokenizer_backend_sha256": backend_sha256,
         "eligible_proposal_rows": int(len(data)),
@@ -190,16 +219,20 @@ def main() -> int:
         "class_agreement_with_target_side": float(target_comparable.proposal_class_matches_target.mean()) if len(target_comparable) else None,
         "valid_proposal_roundtrip_exact_fraction": float(valid.roundtrip_exact.mean()) if len(valid) else None,
         "ame_fit": fit,
-        "scope": "Exploratory random 1k common-pool prompt subset. Proposal labels project each eligible teacher-forced draft argmax on its saved target-prefix context; this is not a full 40k proposal-side refit.",
+        "scope": (
+            "Full frozen Q2 all-pool proposal-side projection and refit across 40,000 prompts. Each eligible teacher-forced draft argmax is projected on its saved target-prefix context."
+            if is_full_40k else
+            f"Exploratory random {args.max_docs:,}-prompt subset of the frozen {args.split} pool. Proposal labels project each eligible teacher-forced draft argmax on its saved target-prefix context; this is not a full 40k proposal-side refit."
+        ),
         "outputs": [
-            "rq4_proposal_side_sample_rows.parquet",
-            "rq4_proposal_side_sample_summary.json",
+            rows_path,
+            summary_path,
         ],
     }
-    data.to_parquet(out / "rq4_proposal_side_sample_rows.parquet", index=False)
-    atomic_json(out / "rq4_proposal_side_sample_summary.json", summary)
+    data.to_parquet(out / rows_path, index=False)
+    atomic_json(out / summary_path, summary)
     print(
-        f"PROPOSAL_SAMPLE_COMPLETE rows={len(data):,} valid={len(valid):,} "
+        f"PROPOSAL_PROJECTION_COMPLETE split={args.split} rows={len(data):,} valid={len(valid):,} "
         f"class_agreement={summary['class_agreement_with_target_side']} fit={fit and fit['AME_cross_minus_within']}",
         flush=True,
     )

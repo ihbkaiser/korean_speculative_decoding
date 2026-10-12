@@ -1,0 +1,60 @@
+{
+  "status": "COMPLETE",
+  "dataset_id": "HuggingFaceFW/fineweb-2",
+  "config": "kor_Hang",
+  "split": "train",
+  "revision": "af9c13333eb981300149d5ca60a8e9d659b276b9",
+  "source_scan": {
+    "disjoint_from_frozen_pool": true,
+    "source_start_inclusive": 250000,
+    "source_stop_exclusive": 500000,
+    "source_first_index": 250000,
+    "source_last_index": 298110,
+    "source_records_scanned": 48111,
+    "target_documents": 40000,
+    "documents_collected": 40000,
+    "filters": {
+      "min_chars": 64,
+      "min_hangul_ratio": 0.35,
+      "normalization": "NFC then strip",
+      "deduplicate_normalized_text": true,
+      "deduplicate_against_frozen_40k_pool": true
+    },
+    "rejections": {
+      "empty_or_nontext": 0,
+      "too_short": 0,
+      "below_hangul_threshold": 608,
+      "duplicate_of_pool": 7503,
+      "duplicate_within_slice": 0
+    }
+  },
+  "frozen_pool": {
+    "path": "data/prompts_40k.parquet",
+    "documents": 40000,
+    "raw_text_hashes_sha256": "62ffaf359d8a9a4ceafc283cd71c714fe5310e34d186b90998820bec9d2dede0",
+    "source_revision": "af9c13333eb981300149d5ca60a8e9d659b276b9",
+    "source_scan_limit": 250000
+  },
+  "tokenizer": {
+    "model_id": "Qwen/Qwen3-4B-Base",
+    "revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+    "backend_sha256": "41e00eccf531cffc2e562d38bdd879d41e5044ea279af5b73c6a32aabcc8fe04",
+    "vocab_size": 151669,
+    "fast": true,
+    "add_special_tokens": false
+  },
+  "frequency": {
+    "documents": 40000,
+    "total_tokens": 43497725,
+    "vocabulary_rows": 151669,
+    "observed_token_ids": 64142,
+    "zero_count_token_ids": 87527
+  },
+  "documents_manifest": {
+    "path": "results/naacl_experiments/analysis/fineweb2_disjoint_frequency_documents.parquet",
+    "ordered_doc_ids_sha256": "a8c0b0e8df010cd933d81f1b5864578d85efd66661bdc72287ba504d7e2c4bd3",
+    "ordered_text_hashes_sha256": "8c826a9f4251fb300ff6cc55f261d5345519869a8a40176e257381a6dbf85f18"
+  },
+  "frequency_path": "results/naacl_experiments/analysis/fineweb2_disjoint_qwen4_token_frequency.parquet",
+  "scope": "FineWeb2 token counts on a deterministic source-index slice after the full Q2 source scan; exact normalized-text hashes are checked against all 40k frozen prompts."
+}

@@ -65,7 +65,10 @@ def fit_row(label: str, rows: pd.DataFrame, *, formula: str | None = None) -> tu
         "draft_margin", "target_margin",
     ]
     model_columns.extend(
-        col for col in ["fragmentation_bin", "external_log_token_count", "external_freq_decile"]
+        col for col in [
+            "fragmentation_bin", "external_log_token_count", "external_freq_decile",
+            "fineweb_log_token_count", "fineweb_freq_decile",
+        ]
         if col in rows.columns
     )
     result = fit_cross_ame(rows.loc[:, model_columns], label=label, formula_override=formula)

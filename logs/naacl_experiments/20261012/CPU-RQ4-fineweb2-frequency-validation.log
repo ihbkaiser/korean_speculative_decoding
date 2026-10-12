@@ -1,0 +1,10 @@
+metadata_complete=True
+expected_documents=True
+unique_document_ids=True
+unique_text_hashes=True
+source_indices_after_pool_scan=True
+source_indices_inside_pinned_range=True
+zero_exact_text_overlap=True
+token_sum_matches_metadata=True
+token_count_is_43_497_725=True
+FREQUENCY_OUTPUT_VALIDATION_COMPLETE

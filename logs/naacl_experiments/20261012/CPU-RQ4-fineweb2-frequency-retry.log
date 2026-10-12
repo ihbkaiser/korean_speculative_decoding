@@ -1,0 +1,9 @@
+LOAD_FROZEN_POOL path=/workspace/korean_speculative_decoding/data/prompts_40k.parquet
+LOAD_PINNED_TOKENIZER id=Qwen/Qwen3-4B-Base revision=906bfd4b4dc7f14ee4320094d8b41684abff8539
+LOAD_FINEWEB2 dataset=HuggingFaceFW/fineweb-2 config=kor_Hang split=train revision=af9c13333eb981300149d5ca60a8e9d659b276b9 source_range=[250000,500000)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+COUNT_DISJOINT_TOKENS
+FREQUENCY_PROGRESS source_index=274999 scanned=25,000 documents=20,667/40,000 tokens=21,691,560
+FREQUENCY_PROGRESS source_index=298110 scanned=48,111 documents=40,000/40,000 tokens=43,497,725
+FINEWEB2_FREQUENCY_COMPLETE docs=40,000 tokens=43,497,725 vocab=151,669 overlap=0
+terminate called without an active exception
