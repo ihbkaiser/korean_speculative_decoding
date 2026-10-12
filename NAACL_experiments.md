@@ -293,3 +293,23 @@ W corpus presently has only the 1,000-document cached seed; the plan permits
 shrinking W from 5,000 to 2,000 prompts before dropping it, so prepare the
 additional 1,000 documents from the pinned Wikipedia revision and record the
 resulting scope before running W.
+
+### Q2 cross-model scoring, simulation, and full V0 validation
+
+- Q2 draft TF command: `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout 21600s /venv/main/bin/python -u scripts/tf_score.py --model qwen06 --target qwen4 --split all --role draft --batch-size 64 --chunk-positions 32 --output-dir results/naacl_experiments`. Log: `logs/naacl_experiments/20261012/TF-Q2-draft.log`.
+- Completed 40,000 prompts in 20 shards from 07:43:38 to 07:54:07 UTC. All shards passed the LM-head check (`scale=1`, `max_abs_error=0`); 4,945,226 token positions were scored. Manifest status: `COMPLETE`.
+- Offline simulation was run on both `all` (40,000 prompts) and `common` (20,000 prompts). Logs: `TF-Q2-simulate.log` and `TF-Q2-simulate-common.log` under the same log directory. The V0 runner requires the `common`-split artifact; an initial preflight against the `all`-split output exited before decoding and is preserved in `V0-Q2-full.log` before the successful retry.
+
+| Split | k | Eligible proposals | Rejections | Rejection rate |
+| --- | ---: | ---: | ---: | ---: |
+| common | 1 | 1,361,129 | 237,582 | 0.174548 |
+| common | 2 | 1,798,526 | 307,393 | 0.170914 |
+| common | 4 | 2,132,560 | 359,038 | 0.168360 |
+| common | 8 | 2,326,917 | 383,194 | 0.164679 |
+| common | 16 | 2,417,032 | 390,863 | 0.161712 |
+
+- Full Q2 V0 command: `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout 14400s /venv/main/bin/python -u scripts/validate_live_sd.py --pair Q2 --prompts 1000 --output-dir results/naacl_experiments`. It completed 1,000 prompts by 08:12 UTC; artifacts are under `results/naacl_experiments/validation/v0/Q2/`.
+- The report's selected shared-context rejection-label agreement is **98.0577%** (95% prompt-cluster bootstrap CI 97.9196%–98.1808%) on 58,385 joined proposal positions, above the amended 95% threshold. However, **the full V0 gate is FAIL**: it also requires zero unmatched positions within the common-prefix contexts, while 949 live and 947 simulated positions were unmatched. The outer-joined all-position agreement is 88.6536% across 100,252 rows. The live target sequence exactly matched the cached continuation on 405/1,000 prompts; common-prefix token fraction was 54.5771%.
+- Interpretation: the CPU simulator deterministically replays teacher-forced argmaxes and is exact for the saved greedy continuation under its stated assumptions. This Q2 live comparison supports high agreement on comparable shared-prefix proposals, but does **not** clear the plan's strict full V0 gate or validate unmatched/diverged contexts. Keep simulator-derived rates labeled as offline estimates until the divergence/unmatched-position issue is resolved and Q1/G1 validation is reviewed. Do not describe the full V0 as passing based only on the 98.06% conditional agreement.
+
+**Queue status at 08:12 UTC:** Q1 and Q2 draft TF plus simulator outputs are complete; Q2 full V0 ran but failed its strict gate for unmatched shared-context positions. Continue with the remaining Qwen grid pairs, then validate G1 and investigate whether numerical divergence between cached target generation and the live decoder accounts for the unmatched contexts before treating simulator estimates as live-validated.
