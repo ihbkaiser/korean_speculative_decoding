@@ -1,0 +1,48 @@
+
+START_UTC=2026-10-12T07:26:12Z
+COMMAND=download_models.py --model qwen06 --smoke-load
+MODEL_STORAGE root=/dev/shm/naacl_models free_gib=31.00 requested_weight_gib=1.11
+MODEL qwen06 repo=Qwen/Qwen3-0.6B-Base revision=da87bfb608c14b7cf20ba1ce41287e8de496c0cd gated=False weight_gib=1.11 shards=1
+DOWNLOAD_START qwen06 files=10 gated=False
+Fetching 10 files:   0%|          | 0/10 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 10 files:  10%|█         | 1/10 [00:00<00:03,  2.68it/s]Fetching 10 files:  20%|██        | 2/10 [00:00<00:01,  4.22it/s]Fetching 10 files:  60%|██████    | 6/10 [00:00<00:00, 10.71it/s]Fetching 10 files:  90%|█████████ | 9/10 [00:01<00:00,  9.76it/s]Fetching 10 files: 100%|██████████| 10/10 [00:14<00:00,  1.44s/it]
+DOWNLOAD_COMPLETE qwen06 local_path=/dev/shm/naacl_models/Qwen--Qwen3-0.6B-Base/da87bfb608c14b7cf20ba1ce41287e8de496c0cd
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 3427.62it/s]
+SMOKE_LOAD_OK qwen06 Qwen/Qwen3-0.6B-Base@da87bfb608c14b7cf20ba1ce41287e8de496c0cd on NVIDIA RTX A6000
+COMMAND_EXIT=0 END_UTC=2026-10-12T07:26:34Z
+
+START_UTC=2026-10-12T07:26:34Z
+COMMAND=download_models.py --model qwen17 --smoke-load
+MODEL_STORAGE root=/dev/shm/naacl_models free_gib=29.88 requested_weight_gib=3.20
+MODEL qwen17 repo=Qwen/Qwen3-1.7B-Base revision=ea980cb0a6c2ae4b936e82123acc929f1cec04c1 gated=False weight_gib=3.20 shards=1
+DOWNLOAD_START qwen17 files=10 gated=False
+Fetching 10 files:   0%|          | 0/10 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 10 files:  10%|█         | 1/10 [00:00<00:03,  2.71it/s]Fetching 10 files:  20%|██        | 2/10 [00:00<00:01,  4.31it/s]Fetching 10 files:  60%|██████    | 6/10 [00:00<00:00, 11.47it/s]Fetching 10 files:  90%|█████████ | 9/10 [00:01<00:00,  9.77it/s]Fetching 10 files:  90%|█████████ | 9/10 [00:20<00:00,  9.77it/s]Fetching 10 files: 100%|██████████| 10/10 [00:31<00:00,  5.56s/it]Fetching 10 files: 100%|██████████| 10/10 [00:31<00:00,  3.20s/it]
+DOWNLOAD_COMPLETE qwen17 local_path=/dev/shm/naacl_models/Qwen--Qwen3-1.7B-Base/ea980cb0a6c2ae4b936e82123acc929f1cec04c1
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 3911.74it/s]
+SMOKE_LOAD_OK qwen17 Qwen/Qwen3-1.7B-Base@ea980cb0a6c2ae4b936e82123acc929f1cec04c1 on NVIDIA RTX A6000
+COMMAND_EXIT=0 END_UTC=2026-10-12T07:27:14Z
+
+START_UTC=2026-10-12T07:27:14Z
+COMMAND=download_models.py --model qwen4 --smoke-load
+MODEL_STORAGE root=/dev/shm/naacl_models free_gib=26.66 requested_weight_gib=7.49
+MODEL qwen4 repo=Qwen/Qwen3-4B-Base revision=906bfd4b4dc7f14ee4320094d8b41684abff8539 gated=False weight_gib=7.49 shards=3
+DOWNLOAD_START qwen4 files=13 gated=False
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 13 files:   8%|▊         | 1/13 [00:00<00:04,  2.66it/s]Fetching 13 files:  15%|█▌        | 2/13 [00:00<00:02,  3.83it/s]Fetching 13 files:  46%|████▌     | 6/13 [00:00<00:00, 12.58it/s]Fetching 13 files:  69%|██████▉   | 9/13 [00:01<00:00,  8.71it/s]Fetching 13 files:  77%|███████▋  | 10/13 [00:20<00:00,  8.71it/s]Fetching 13 files:  85%|████████▍ | 11/13 [00:41<00:12,  6.20s/it]Fetching 13 files:  92%|█████████▏| 12/13 [01:06<00:09,  9.43s/it]Fetching 13 files: 100%|██████████| 13/13 [01:07<00:00,  7.69s/it]Fetching 13 files: 100%|██████████| 13/13 [01:07<00:00,  5.16s/it]
+DOWNLOAD_COMPLETE qwen4 local_path=/dev/shm/naacl_models/Qwen--Qwen3-4B-Base/906bfd4b4dc7f14ee4320094d8b41684abff8539
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights:  90%|████████▉ | 357/398 [00:00<00:00, 3561.59it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 3588.77it/s]
+SMOKE_LOAD_OK qwen4 Qwen/Qwen3-4B-Base@906bfd4b4dc7f14ee4320094d8b41684abff8539 on NVIDIA RTX A6000
+COMMAND_EXIT=0 END_UTC=2026-10-12T07:28:31Z
+
+START_UTC=2026-10-12T07:28:31Z
+COMMAND=download_models.py --model qwen8 --smoke-load
+MODEL_STORAGE root=/dev/shm/naacl_models free_gib=19.16 requested_weight_gib=15.26
+MODEL qwen8 repo=Qwen/Qwen3-8B-Base revision=49e3418fbbbca6ecbdf9608b4d22e5a407081db4 gated=False weight_gib=15.26 shards=5
+DOWNLOAD_START qwen8 files=14 gated=False
+Fetching 14 files:   0%|          | 0/14 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 14 files:   7%|▋         | 1/14 [00:00<00:06,  2.10it/s]Fetching 14 files:  21%|██▏       | 3/14 [00:00<00:01,  6.18it/s]Fetching 14 files:  43%|████▎     | 6/14 [00:00<00:01,  7.40it/s]Fetching 14 files:  57%|█████▋    | 8/14 [00:01<00:00,  7.43it/s]Fetching 14 files:  64%|██████▍   | 9/14 [00:01<00:00,  7.08it/s]Fetching 14 files:  71%|███████▏  | 10/14 [01:25<01:18, 19.50s/it]Fetching 14 files:  79%|███████▊  | 11/14 [01:54<01:05, 21.85s/it]Fetching 14 files:  86%|████████▌ | 12/14 [02:10<00:40, 20.20s/it]Fetching 14 files:  93%|█████████▎| 13/14 [02:10<00:14, 14.80s/it]Fetching 14 files: 100%|██████████| 14/14 [02:11<00:00, 10.94s/it]Fetching 14 files: 100%|██████████| 14/14 [02:11<00:00,  9.41s/it]
+DOWNLOAD_COMPLETE qwen8 local_path=/dev/shm/naacl_models/Qwen--Qwen3-8B-Base/49e3418fbbbca6ecbdf9608b4d22e5a407081db4
+Loading weights:   0%|          | 0/399 [00:00<?, ?it/s]Loading weights:  76%|███████▌  | 303/399 [00:00<00:00, 2992.33it/s]Loading weights: 100%|██████████| 399/399 [00:00<00:00, 2982.82it/s]
+SMOKE_LOAD_OK qwen8 Qwen/Qwen3-8B-Base@49e3418fbbbca6ecbdf9608b4d22e5a407081db4 on NVIDIA RTX A6000
+COMMAND_EXIT=0 END_UTC=2026-10-12T07:30:54Z

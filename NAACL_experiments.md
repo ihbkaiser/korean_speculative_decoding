@@ -252,3 +252,44 @@ target-only download completed within the storage limit described below.
 - The corrected TF retry passed `TF_HEAD_CHECK_OK scale=1 max_abs_error=0` and completed at 23:13:28 UTC. All 10 shards scored 20,000 prompts and 2,498,617 token positions; every shard recorded `head_scale=1.0` and `head_check_max_abs_error=0.0`. The manifest reports `status=COMPLETE`; summed shard scoring time was 1,221.75 seconds.
 - Kiwi alignment completed at 22:58:06 UTC. Its manifest reports `status=COMPLETE`, 20,000 prompts, 10 shards, and 2,498,617 aligned rows; the command exited 0.
 - The first M8 pipeline attempt ended after the initial loader failure, with target scoring exit 1 and alignment exit 0 at 22:58:06 UTC. After correcting `_body_and_head`, the scoring retry completed and both manifests were validated. M1 eviction ran from 23:13:45 to 23:13:48 UTC: two Ministral-3-3B and four Ministral-3-8B weight shards were removed; tokenizer/config files were kept. Log: `logs/naacl_experiments/20261011/M1-eviction.log`. `/dev/shm` returned to about 31 GiB free.
+
+## 10. Follow-on execution log (2026-10-12)
+
+The follow-on queue resumes from commit `51e857356477a48d9c8525da5087b928ca982947`.
+The RTX A6000 is available, `/dev/shm` has 31 GiB, and the overlay has 24 GiB
+free. The five target-generation units and their target self-scores/alignment
+are already complete. The next planned work is cross-model TF-Qwen, TF-G, TF-M,
+the full V0 sample, then H and W. The accepted 98.11% G0 pilot remains distinct
+from the still-required full V0 sample (1,000 Q2 and 500 G1 prompts).
+
+### Qwen grid preflight
+
+- Downloaded pinned Qwen3-0.6B, 1.7B, 4B and 8B snapshots to `/dev/shm/naacl_models` and smoke-loaded each on the A6000. The combined checkpoint weights use about 27.1 GiB of the 31 GiB tmpfs. Log: `logs/naacl_experiments/20261012/TF-Qwen-download-smoke.log`.
+- Tokenizer audits passed for Q1–Q6. Logs: `logs/naacl_experiments/20261012/TF-Qwen-tokenizer-audits.log`; reports: `results/naacl_experiments/provenance/tokenizer_audits/`.
+
+### Q1 cross-model scoring and simulation
+
+- Draft scoring command: `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout --foreground --signal=TERM --kill-after=10s 14400s /venv/main/bin/python -u scripts/tf_score.py --model qwen06 --target qwen17 --split common --role draft --batch-size 64 --chunk-positions 32 --output-dir results/naacl_experiments`. Log: `logs/naacl_experiments/20261012/TF-Q1-draft.log`.
+- Completed 20,000 prompts in 10 shards from 07:32:04 to 07:38:31 UTC (6m27s), producing 2,485,747 scored token positions. BF16/SDPA on the RTX A6000; the LM-head calibration check passed with `scale=1` and `max_abs_error=0`; manifest status is `COMPLETE`.
+- Simulator command: `/venv/main/bin/python -u scripts/simulate_sd.py --pair Q1 --split common --output-dir results/naacl_experiments`. Log: `logs/naacl_experiments/20261012/TF-Q1-simulate.log`. Completed all planned block sizes from 07:38:37 to 07:42:20 UTC; the manifest reports 20,000 prompts, 2,485,747 positions and `status=COMPLETE`.
+
+| Block size | Eligible proposals | Rejections | Rejection rate |
+| ---: | ---: | ---: | ---: |
+| 1 | 1,339,733 | 184,068 | 0.137392 |
+| 2 | 1,774,649 | 238,454 | 0.134367 |
+| 4 | 2,111,560 | 279,347 | 0.132294 |
+| 8 | 2,315,386 | 299,674 | 0.129427 |
+| 16 | 2,415,979 | 306,802 | 0.126989 |
+
+The target TF argmax disagreed with the saved target token at 30,497 positions;
+these near-tie-sensitive disagreements are retained in the simulation summary
+and must be interpreted alongside the live-decoder V0 validation. Q1 evidence
+is under `results/naacl_experiments/teacher_forced/generated/qwen17/qwen06/common/`
+and `results/naacl_experiments/simulated/Q1/common/`.
+
+**Queue status at 07:42 UTC:** Q1 complete; Q2, Q5, Q4, Q6 and Q3 cross-model
+TF/simulation remain. Then run full V0 for Q2 and G1, TF-G, TF-M, H and W. The
+W corpus presently has only the 1,000-document cached seed; the plan permits
+shrinking W from 5,000 to 2,000 prompts before dropping it, so prepare the
+additional 1,000 documents from the pinned Wikipedia revision and record the
+resulting scope before running W.

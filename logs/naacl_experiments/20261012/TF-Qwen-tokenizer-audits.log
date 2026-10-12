@@ -1,0 +1,30 @@
+
+START_UTC=2026-10-12T07:31:11Z
+COMMAND=audit_tokenizers.py --pair Q1
+TOKENIZER_AUDIT Q1 PASS report=results/naacl_experiments/provenance/tokenizer_audits/Q1.json
+COMMAND_EXIT=0 END_UTC=2026-10-12T07:31:17Z
+
+START_UTC=2026-10-12T07:31:17Z
+COMMAND=audit_tokenizers.py --pair Q2
+TOKENIZER_AUDIT Q2 PASS report=results/naacl_experiments/provenance/tokenizer_audits/Q2.json
+COMMAND_EXIT=0 END_UTC=2026-10-12T07:31:22Z
+
+START_UTC=2026-10-12T07:31:22Z
+COMMAND=audit_tokenizers.py --pair Q3
+TOKENIZER_AUDIT Q3 PASS report=results/naacl_experiments/provenance/tokenizer_audits/Q3.json
+COMMAND_EXIT=0 END_UTC=2026-10-12T07:31:28Z
+
+START_UTC=2026-10-12T07:31:28Z
+COMMAND=audit_tokenizers.py --pair Q4
+TOKENIZER_AUDIT Q4 PASS report=results/naacl_experiments/provenance/tokenizer_audits/Q4.json
+COMMAND_EXIT=0 END_UTC=2026-10-12T07:31:33Z
+
+START_UTC=2026-10-12T07:31:33Z
+COMMAND=audit_tokenizers.py --pair Q5
+TOKENIZER_AUDIT Q5 PASS report=results/naacl_experiments/provenance/tokenizer_audits/Q5.json
+COMMAND_EXIT=0 END_UTC=2026-10-12T07:31:38Z
+
+START_UTC=2026-10-12T07:31:38Z
+COMMAND=audit_tokenizers.py --pair Q6
+TOKENIZER_AUDIT Q6 PASS report=results/naacl_experiments/provenance/tokenizer_audits/Q6.json
+COMMAND_EXIT=0 END_UTC=2026-10-12T07:31:44Z

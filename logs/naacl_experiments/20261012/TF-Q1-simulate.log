@@ -1,0 +1,8 @@
+START_UTC=2026-10-12T07:38:37Z
+COMMAND=simulate_sd.py --pair Q1 --split common --output-dir results/naacl_experiments
+SIM pair=Q1 k=1 prompts=20000 eligible=1339733 reject=184068 rate=0.137392
+SIM pair=Q1 k=2 prompts=20000 eligible=1774649 reject=238454 rate=0.134367
+SIM pair=Q1 k=4 prompts=20000 eligible=2111560 reject=279347 rate=0.132294
+SIM pair=Q1 k=8 prompts=20000 eligible=2315386 reject=299674 rate=0.129427
+SIM pair=Q1 k=16 prompts=20000 eligible=2415979 reject=306802 rate=0.126989
+COMMAND_EXIT=0 END_UTC=2026-10-12T07:42:20Z
