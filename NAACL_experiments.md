@@ -313,3 +313,21 @@ resulting scope before running W.
 - Interpretation: the CPU simulator deterministically replays teacher-forced argmaxes and is exact for the saved greedy continuation under its stated assumptions. This Q2 live comparison supports high agreement on comparable shared-prefix proposals, but does **not** clear the plan's strict full V0 gate or validate unmatched/diverged contexts. Keep simulator-derived rates labeled as offline estimates until the divergence/unmatched-position issue is resolved and Q1/G1 validation is reviewed. Do not describe the full V0 as passing based only on the 98.06% conditional agreement.
 
 **Queue status at 08:12 UTC:** Q1 and Q2 draft TF plus simulator outputs are complete; Q2 full V0 ran but failed its strict gate for unmatched shared-context positions. Continue with the remaining Qwen grid pairs, then validate G1 and investigate whether numerical divergence between cached target generation and the live decoder accounts for the unmatched contexts before treating simulator estimates as live-validated.
+
+### Q5 cross-model scoring and simulation
+
+- Draft scoring command: `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout --foreground --signal=TERM --kill-after=10s 14400s /venv/main/bin/python -u scripts/tf_score.py --model qwen06 --target qwen8 --split common --role draft --batch-size 64 --chunk-positions 32 --output-dir results/naacl_experiments`. Log: `logs/naacl_experiments/20261012/TF-Q5-draft.log`.
+- Scoring completed 20,000 prompts in 10 shards, 2,465,034 token positions. Every shard passed the LM-head check (`scale=1`, `max_abs_error=0`); summed shard time was 376.93 seconds. Manifest status: `COMPLETE`.
+- Simulation command: `timeout --foreground --signal=TERM --kill-after=10s 21600s /venv/main/bin/python -u scripts/simulate_sd.py --pair Q5 --split common --output-dir results/naacl_experiments`. Log: `logs/naacl_experiments/20261012/TF-Q5-simulate.log`; all five block sizes completed.
+
+| Block size | Eligible proposals | Rejections | Rejection rate |
+| ---: | ---: | ---: | ---: |
+| 1 | 1,373,031 | 271,425 | 0.197683 |
+| 2 | 1,810,852 | 350,190 | 0.193384 |
+| 4 | 2,142,767 | 408,582 | 0.190680 |
+| 8 | 2,330,261 | 434,826 | 0.186600 |
+| 16 | 2,413,811 | 442,668 | 0.183390 |
+
+Q5 outputs are under `results/naacl_experiments/teacher_forced/generated/qwen8/qwen06/common/` and `results/naacl_experiments/simulated/Q5/common/`. As with Q1/Q2, these are offline replay estimates and inherit the Q2 full-V0 caveat until live validation is resolved.
+
+**Queue status at 08:25 UTC:** Q1, Q2, and Q5 TF/simulation are complete. Q2 full V0 remains below the strict gate due to unmatched shared-context positions. Remaining Qwen pairs: Q4, Q6, Q3; then TF-G, TF-M, full G1 V0, H, and W.
