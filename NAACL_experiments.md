@@ -349,3 +349,21 @@ Q5 outputs are under `results/naacl_experiments/teacher_forced/generated/qwen8/q
 Q4 outputs are under `results/naacl_experiments/teacher_forced/generated/qwen4/qwen17/common/` and `results/naacl_experiments/simulated/Q4/common/`. Treat these simulation rates as offline estimates pending resolution of the Q2 V0 unmatched-position gate.
 
 **Queue status at 08:37 UTC:** Q1, Q2, Q4, and Q5 TF/simulation are complete. The next pair is Q6 (Qwen 1.7B→8B), then Q3 (Qwen 4B→8B). Q2 full V0 still has strict-gate status `FAIL` due to unmatched shared-context positions.
+
+### Q6 cross-model scoring and simulation
+
+- Draft scoring command: `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout --foreground --signal=TERM --kill-after=10s 14400s /venv/main/bin/python -u scripts/tf_score.py --model qwen17 --target qwen8 --split common --role draft --batch-size 64 --chunk-positions 32 --output-dir results/naacl_experiments`. Log: `logs/naacl_experiments/20261012/TF-Q6-draft.log`.
+- Scoring completed 20,000 prompts in 10 shards, 2,465,034 positions. Every shard passed the LM-head check (`scale=1`, `max_abs_error=0`); summed shard wall time was 420.01 seconds. Manifest status: `COMPLETE`.
+- Simulation command: `timeout --foreground --signal=TERM --kill-after=10s 21600s /venv/main/bin/python -u scripts/simulate_sd.py --pair Q6 --split common --output-dir results/naacl_experiments`. Log: `logs/naacl_experiments/20261012/TF-Q6-simulate.log`; all five block sizes completed.
+
+| Block size | Eligible proposals | Rejections | Rejection rate |
+| ---: | ---: | ---: | ---: |
+| 1 | 1,339,912 | 205,215 | 0.153156 |
+| 2 | 1,774,572 | 266,839 | 0.150368 |
+| 4 | 2,112,493 | 315,125 | 0.149172 |
+| 8 | 2,313,978 | 339,756 | 0.146828 |
+| 16 | 2,408,471 | 348,325 | 0.144625 |
+
+Q6 outputs are under `results/naacl_experiments/teacher_forced/generated/qwen8/qwen17/common/` and `results/naacl_experiments/simulated/Q6/common/`. These remain offline estimates pending the V0 gate follow-up.
+
+**Queue status at 08:49 UTC:** Q1, Q2, Q4, Q5, and Q6 TF/simulation are complete. Q3 (Qwen 4B→8B) is the last Qwen grid pair. Q2 full V0 remains flagged `FAIL` because of unmatched shared-context positions.

@@ -1,0 +1,5 @@
+SIM pair=Q6 k=1 prompts=20000 eligible=1339912 reject=205215 rate=0.153156
+SIM pair=Q6 k=2 prompts=20000 eligible=1774572 reject=266839 rate=0.150368
+SIM pair=Q6 k=4 prompts=20000 eligible=2112493 reject=315125 rate=0.149172
+SIM pair=Q6 k=8 prompts=20000 eligible=2313978 reject=339756 rate=0.146828
+SIM pair=Q6 k=16 prompts=20000 eligible=2408471 reject=348325 rate=0.144625
