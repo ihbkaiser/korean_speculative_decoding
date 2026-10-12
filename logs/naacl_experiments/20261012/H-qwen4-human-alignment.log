@@ -1,0 +1,9 @@
+qwen4 kiwi 0:   0%|          | 0/2000 [00:00<?, ?prompt/s]qwen4 kiwi 0:   0%|          | 0/2000 [00:00<?, ?prompt/s]
+Traceback (most recent call last):
+  File "/workspace/korean_speculative_decoding/scripts/align_morphology.py", line 235, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/align_morphology.py", line 202, in main
+    "prompt_token_ids": reference["prompt_ids"],
+                        ~~~~~~~~~^^^^^^^^^^^^^^
+KeyError: 'prompt_ids'

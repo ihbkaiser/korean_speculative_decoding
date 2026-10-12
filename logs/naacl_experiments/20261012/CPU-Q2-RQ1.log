@@ -1,0 +1,41 @@
+NAACL CPU analysis: Q2 RQ1 Table 2a
+Completed: 2026-10-12 12:55:41 UTC
+Command: /venv/main/bin/python -u scripts/analyze_naacl_cpu.py --config configs/naacl_experiments.yaml
+Repository base revision: 35c15ad13132d3b8280d8a7b9b5491363279635c
+Analysis script SHA-256: 5fcd1b0aaf5eb8bf133ae141bdd8fe23230a43d65fdb33209889a790d145efa3
+Config SHA-256: 088c0a269ef79d016f87710fb9179ac536f7d69313e87e2599a502fdb28f7c92
+
+Inputs:
+- Q2 k=4 replay: results/naacl_experiments/simulated/Q2/all/events_k4.parquet
+- Qwen4 target-path Kiwi alignment: results/naacl_experiments/aligned/kiwi/qwen4/all/
+- Q2 draft TF: results/naacl_experiments/teacher_forced/generated/qwen4/qwen06/all/
+- Q2 target self-TF: results/naacl_experiments/teacher_forced/generated/qwen4/qwen4/all/
+- Input manifests report COMPLETE.
+
+Join audit:
+- Eligible k=4 replay rows: 4,260,935.
+- Full single-eojeol boundary-score groups: 380,800.
+- Token IDs matched between replay, alignment, and both TF records.
+- Argmax IDs matched between replay and both TF records.
+- Complete-case regression sample: 804,045 eligible proposals, 34,211 documents; no further complete-case row loss after morphology filtering.
+
+Boundary metric:
+- Gold set: internal Kiwi morpheme-span ends in the eojeol.
+- Predicted set: internal ends of all tokenizer pieces except the last in the eojeol.
+- Both sets empty => precision=recall=F1=1; if only one is empty, the corresponding score is 0.
+- Population: visible ALIGNED event rows, exact tokenizer roundtrip, complete eojeol token coverage, one eojeol per token.
+- Controls: eojeol token-count fixed effects; k=4 slot fixed effects; 5-df cubic spline of generation position; log eojeol character length; draft/target entropy and top-two margins.
+- Logistic regression; document-clustered sandwich covariance; delta-method AME confidence intervals.
+
+Results (all fits converged):
+predictor,AME,clustered_SE,95%_CI,p,n_rows,n_docs
+1-boundary_F1,-0.009852926,0.001154927,[-0.012116583,-0.007589269],1.44821e-17,804045,34211
+1-boundary_recall_fusion,-0.001668436,0.001133598,[-0.003890289,0.000553416],0.141073,804045,34211
+1-boundary_precision_splitting,-0.010318271,0.001132004,[-0.012536999,-0.008099543],7.86368e-20,804045,34211
+
+Outputs:
+- results/naacl_experiments/analysis/rq1_table2a_ame.csv
+- results/naacl_experiments/analysis/rq1_table2a_ame.md
+- results/naacl_experiments/analysis/rq1_table2a_metadata.json
+
+Interpretation: 1-F1 and 1-precision have negative adjusted associations with rejection; 1-recall is not statistically distinguishable from zero. This is an observational result and is not a causal estimate.

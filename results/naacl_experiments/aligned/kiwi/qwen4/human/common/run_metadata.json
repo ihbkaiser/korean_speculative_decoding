@@ -1,0 +1,44 @@
+{
+  "stage": "target_path_morphology_alignment",
+  "continuation": "human",
+  "target_key": "qwen4",
+  "revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+  "split": "common",
+  "analyzer": "kiwi",
+  "prompt_count": 9722,
+  "requested_prompt_count": 10000,
+  "skipped_short_document_count": 278,
+  "completed_shards": [
+    {
+      "shard": 0,
+      "prompts": 2000,
+      "aligned_rows": 240987,
+      "resumed": false
+    },
+    {
+      "shard": 1,
+      "prompts": 2000,
+      "aligned_rows": 241901,
+      "resumed": false
+    },
+    {
+      "shard": 2,
+      "prompts": 2000,
+      "aligned_rows": 240506,
+      "resumed": false
+    },
+    {
+      "shard": 3,
+      "prompts": 2000,
+      "aligned_rows": 240314,
+      "resumed": false
+    },
+    {
+      "shard": 4,
+      "prompts": 1722,
+      "aligned_rows": 207742,
+      "resumed": false
+    }
+  ],
+  "status": "COMPLETE"
+}

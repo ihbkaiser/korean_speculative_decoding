@@ -106,6 +106,18 @@ Every artifact in the current draft can be produced from three inputs: the conti
 
 Frequency covariate: count tokens per tokenizer on a FineWeb2 Korean slice disjoint from the 40k pool (CPU, start Sun night). The human validation is the single cheapest credibility gain. If no native Korean annotator can be found by Monday noon, report MeCab-ko agreement as automatic validation instead and state the gap in Limitations.
 
+### CPU result: Q2 RQ1 Table 2a
+
+The first full-sample RQ1 fit is complete from the Q2 40k `all` artifacts. The analysis joined the k=4 eligible replay rows to target-path Kiwi alignment, Q2 draft TF, and target self-TF; token IDs and argmax IDs matched across the saved sources. It retained visible, `ALIGNED` proposals whose eojeol had complete single-eojeol token coverage and exact tokenizer roundtrip, giving **804,045 proposals from 34,211 documents**. The full control set is eojeol token-count fixed effects, k=4 block-slot fixed effects, a 5-df cubic spline of generated position, eojeol character length, draft/target entropy, and draft/target top-two margins. Standard errors are clustered by document; AME intervals use the delta method over the cluster sandwich covariance.
+
+| Predictor (higher = more boundary error) | AME | Clustered SE | 95% CI | p |
+| --- | ---: | ---: | ---: | ---: |
+| 1 − boundary F1 | −0.00985 | 0.00115 | [−0.01212, −0.00759] | 1.45e−17 |
+| 1 − boundary recall (fusion) | −0.00167 | 0.00113 | [−0.00389, 0.00055] | 0.141 |
+| 1 − boundary precision (splitting) | −0.01032 | 0.00113 | [−0.01254, −0.00810] | 7.86e−20 |
+
+All three logistic fits converged. These conditional associations are negative for F1 error and splitting error, while fusion error is not distinguishable from zero; they do not support the plan's anticipated positive scalar-error story. This is an observational association, not a causal effect. The operational boundary-set definition and empty-set convention are recorded in the metadata and should accompany the table. Boundary error is 1−score; both empty boundary sets give precision/recall/F1=1, while an empty predicted or gold set scores 0 on the corresponding precision or recall. Reproduction command: `/venv/main/bin/python -u scripts/analyze_naacl_cpu.py --config configs/naacl_experiments.yaml`. CSV, Markdown, and fit metadata are under `results/naacl_experiments/analysis/rq1_table2a_ame.*`; execution log: `logs/naacl_experiments/20261012/CPU-Q2-RQ1.log`.
+
 ## 6. Engineering checklist
 
 Three new scripts, each built from functions already in the repo (`greedy_generate_batch` in `src/speculative_decoding.py`, `score_teacher_forced_batch` in `src/e2_model_pairs.py`, the Table 1 morphology aligner). Write all outputs as resumable Parquet shards of 2,000 prompts.
@@ -309,8 +321,8 @@ resulting scope before running W.
 | common | 16 | 2,417,032 | 390,863 | 0.161712 |
 
 - Full Q2 V0 command: `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout 14400s /venv/main/bin/python -u scripts/validate_live_sd.py --pair Q2 --prompts 1000 --output-dir results/naacl_experiments`. It completed 1,000 prompts by 08:12 UTC; artifacts are under `results/naacl_experiments/validation/v0/Q2/`.
-- The report's selected shared-context rejection-label agreement is **98.0577%** (95% prompt-cluster bootstrap CI 97.9196%–98.1808%) on 58,385 joined proposal positions, above the amended 95% threshold. However, **the full V0 gate is FAIL**: it also requires zero unmatched positions within the common-prefix contexts, while 949 live and 947 simulated positions were unmatched. The outer-joined all-position agreement is 88.6536% across 100,252 rows. The live target sequence exactly matched the cached continuation on 405/1,000 prompts; common-prefix token fraction was 54.5771%.
-- Interpretation: the CPU simulator deterministically replays teacher-forced argmaxes and is exact for the saved greedy continuation under its stated assumptions. This Q2 live comparison supports high agreement on comparable shared-prefix proposals, but does **not** clear the plan's strict full V0 gate or validate unmatched/diverged contexts. Keep simulator-derived rates labeled as offline estimates until the divergence/unmatched-position issue is resolved and Q1/G1 validation is reviewed. Do not describe the full V0 as passing based only on the 98.06% conditional agreement.
+- The report's selected shared-context rejection-label agreement is **98.0577%** (95% prompt-cluster bootstrap CI 97.9196%–98.1808%) on 58,385 joined proposal positions, above the user-selected 95% operational threshold. The original runner also imposed a zero-unmatched-position condition and therefore records its strict status as `FAIL`: 949 live and 947 simulated positions were unmatched. The outer-joined all-position agreement is 88.6536% across 100,252 rows. The live target sequence exactly matched the cached continuation on 405/1,000 prompts; common-prefix token fraction was 54.5771%.
+- Interpretation: the CPU simulator deterministically replays teacher-forced argmaxes and reproduces the saved greedy continuation's proposal decisions under the stated assumptions. The user accepted V0 under the amended ≥95% shared-prefix agreement gate, so use simulator estimates for the planned token-level analyses. Keep the unmatched counts, 54.58% common-prefix fraction, and 88.65% outer-joined agreement visible as scope diagnostics. These are not live latency measurements, and the validation does not directly cover unmatched or diverged positions.
 
 **Queue status at 08:12 UTC:** Q1 and Q2 draft TF plus simulator outputs are complete; Q2 full V0 ran but failed its strict gate for unmatched shared-context positions. Continue with the remaining Qwen grid pairs, then validate G1 and investigate whether numerical divergence between cached target generation and the live decoder accounts for the unmatched contexts before treating simulator estimates as live-validated.
 
@@ -404,8 +416,8 @@ Q3 outputs are under `results/naacl_experiments/teacher_forced/generated/qwen8/q
 | 16 | 2,414,797 | 40,717 | 0.016861 |
 
 - Full G1 live validation command: `NAACL_MODEL_DIR_GEMMA4=/workspace/naacl_gemma_models NAACL_MODEL_DIR_GEMMA12=/dev/shm/naacl_models PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout --foreground --signal=TERM --kill-after=10s 14400s /venv/main/bin/python -u scripts/validate_live_sd.py --pair G1 --prompts 500 --output-dir results/naacl_experiments`. Log: `V0-G1-full.log`; artifacts: `results/naacl_experiments/validation/v0/G1/`.
-- G1 full V0 measured 99.8213% shared-context rejection-label agreement (95% prompt-cluster bootstrap CI 99.7786%–99.8601%) and 99.6120% all-position joined-label agreement. The 95% numerical agreement threshold is exceeded, but runner status is **FAIL** because it additionally requires zero unmatched positions; it found 714 live and 716 simulated unmatched shared-context rows. Target sequences matched exactly on 442/500 prompts; common-prefix token fraction was 90.1743%.
-- Together with Q2 (98.0577% shared-context agreement, 88.6536% all-position agreement, 949/947 unmatched shared-context rows, strict status `FAIL`), V0 shows strong agreement on joined shared-prefix positions, especially for G1, but does not clear the runner's zero-unmatched condition. Keep simulated rates identified as offline estimates and show both agreements and unmatched counts; do not label either full V0 run `PASS`.
+- G1 full V0 measured 99.8213% shared-context rejection-label agreement (95% prompt-cluster bootstrap CI 99.7786%–99.8601%) and 99.6120% all-position joined-label agreement. This exceeds the user-selected 95% operational threshold. The original runner reports strict status `FAIL` because it additionally requires zero unmatched positions; it found 714 live and 716 simulated unmatched rows. Target sequences matched exactly on 442/500 prompts; common-prefix token fraction was 90.1743%.
+- Together with Q2 (98.0577% shared-context agreement, 88.6536% all-position agreement, 949/947 unmatched rows), V0 meets the user's amended shared-prefix agreement gate for the planned simulator analyses. Preserve the runner's strict status and unmatched counts as diagnostics. Neither V0 run measures latency or directly validates unmatched/diverged positions.
 
 G1 TF and replay outputs are under `results/naacl_experiments/teacher_forced/generated/gemma12/gemma4/common/` and `results/naacl_experiments/simulated/G1/common/`. G1 live validation is under `results/naacl_experiments/validation/v0/G1/`.
 
@@ -428,7 +440,7 @@ M1 outputs are under `results/naacl_experiments/teacher_forced/generated/ministr
 
 ### H human-text scoring: Qwen cells
 
-- Command template: `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout --foreground --signal=TERM --kill-after=10s 14400s /venv/main/bin/python -u scripts/tf_score.py --model MODEL --target TARGET --split common --role ROLE --continuation human --max-prompts 10000 --batch-size 32 --chunk-positions 32 --output-dir results/naacl_experiments`. The six concrete commands are captured by the per-cell logs below; each loaded its exact pinned Qwen revision from `/dev/shm/naacl_models`.
+- Command template: `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout --foreground --signal=TERM --kill-after=10s 14400s /venv/main/bin/python -u scripts/tf_score.py --model MODEL --target TARGET --split common --role ROLE --continuation human --max-prompts 10000 --batch-size 32 --chunk-positions 32 --output-dir results/naacl_experiments`. The complete human-text Qwen matrix has nine cells: three target self-scores and all six planned cross-size draft/target cells. Each scored 9,722 prompts / 1,171,450 positions; all five shards per cell passed (`head_scale=1`, `head_check_max_abs_error=0`).
 - The human branch uses each model's tokenizer to take the document's real next 128 tokens after a 128-token prompt. It considered the first 10,000 common-split documents and skipped the same 278 documents without a full prompt and continuation, leaving 9,722 prompts / 1,171,450 continuation positions per cell.
 
 | Cell | Model / target | Prompts | Positions | Summed shard time | Result |
@@ -437,10 +449,15 @@ M1 outputs are under `results/naacl_experiments/teacher_forced/generated/ministr
 | Target qwen4 | qwen4 / qwen4 | 9,722 | 1,171,450 | 404.28 s | Complete; all five head checks pass |
 | Target qwen8 | qwen8 / qwen8 | 9,722 | 1,171,450 | 573.44 s | Complete; all five head checks pass |
 | Draft qwen06 | qwen06 / qwen4 | 9,722 | 1,171,450 | 178.43 s | Complete; all five head checks pass |
+| Draft qwen06 | qwen06 / qwen17 | 9,722 | 1,171,450 | 148.68 s | Complete; all five head checks pass |
+| Draft qwen17 | qwen17 / qwen4 | 9,722 | 1,171,450 | 204.01 s | Complete; all five head checks pass |
+| Draft qwen06 | qwen06 / qwen8 | 9,722 | 1,171,450 | 148.77 s | Complete; all five head checks pass |
 | Draft qwen17 | qwen17 / qwen8 | 9,722 | 1,171,450 | 235.98 s | Complete; all five head checks pass |
 | Draft qwen4 | qwen4 / qwen8 | 9,722 | 1,171,450 | 342.34 s | Complete; all five head checks pass |
 
-All outputs are under `results/naacl_experiments/teacher_forced/human/{target}/{model}/common/`; run metadata records model revisions, prompt hashes, and each shard's head check and timing. Logs are `logs/naacl_experiments/20261012/H-{qwen17-target,qwen4-target,qwen8-target,qwen06-draft-qwen4,qwen17-draft-qwen8,qwen4-draft-qwen8}.log`; model download/smoke logs are `H-qwen*-download-smoke.log`. The Qwen weight files were evicted after these cells; `H-Qwen-eviction.log` records the four pair-scoped evictions.
+The three missing cells were added after an audit showed the original six-cell H run did not cover all Qwen pairs. Their logs are `H-qwen06-draft-qwen17.log`, `H-qwen17-draft-qwen4.log`, and `H-qwen06-draft-qwen8.log`; download/smoke and pair-scoped eviction logs are `H-Qwen06-missing-download-smoke.log`, `H-Qwen17-missing-download-smoke.log`, `H-Qwen06-Q5-download-smoke.log`, and `H-Q{1,4,5}-draft-eviction.log`. Existing cell logs remain `H-{qwen17-target,qwen4-target,qwen8-target,qwen06-draft-qwen4,qwen17-draft-qwen8,qwen4-draft-qwen8}.log`.
+
+Human-text alignment used the same pinned target tokenizer and validated each reconstructed token sequence against the completed target self-TF rows before applying Kiwi. Command template: `scripts/align_morphology.py --config configs/naacl_experiments.yaml --target TARGET --split common --continuation human --max-prompts 10000`. All five targets completed: Qwen17 9,722 prompts / 1,171,450 rows; Qwen4 9,722 / 1,171,450; Qwen8 9,722 / 1,171,450; Gemma12 9,604 / 1,127,951; Ministral8 9,651 / 1,133,929. Outputs are under `results/naacl_experiments/aligned/kiwi/{target}/human/common/`. Logs: `H-{qwen17,qwen8,gemma12,ministral8}-human-alignment.log`; Qwen4's first adapter attempt failed before writing a shard on a field-name mismatch, and the corrected complete retry is `H-qwen4-human-alignment-retry.log` (the failed attempt is retained as `H-qwen4-human-alignment.log`).
 
 ### H human-text scoring: Gemma cells
 
@@ -466,7 +483,7 @@ Gemma outputs are under `results/naacl_experiments/teacher_forced/human/gemma12/
 
 Ministral outputs are under `results/naacl_experiments/teacher_forced/human/ministral8/{ministral8,ministral3}/common/`. Logs: `H-ministral8-target.log`, `H-ministral3-draft-ministral8.log`, `H-M1-download-smoke.log`, and `H-M1-eviction.log`. The 3B and 8B weight shards were evicted from `/dev/shm` after both cells.
 
-Across the complete H study, tokenizer-specific filtering left 9,722 Qwen, 9,604 Gemma, and 9,651 Ministral documents. All 10 target/draft model-role cells completed with passing per-shard head checks; do not treat the family-specific document counts as identical sample sizes.
+Across the complete H study, tokenizer-specific filtering left 9,722 Qwen, 9,604 Gemma, and 9,651 Ministral documents. All 13 planned target/draft cells completed with passing per-shard head checks, and all five target tokenizers have complete human-text morphology alignment. Do not treat the family-specific document counts as identical sample sizes. Human-text next-token mismatches are teacher-forced observational labels; they are not live speculative-decoding outcomes.
 
 ### W Wikipedia-ko data preparation
 
@@ -514,4 +531,4 @@ Across the complete H study, tokenizer-specific filtering left 9,722 Qwen, 9,604
 - Target TF label disagreement is 204 positions for each block size. As for W-Q2, these are deterministic offline saved-logit replay estimates, not live decoding or latency measurements. G1 live V0 supports agreement on shared-prefix contexts; unmatched/diverged positions remain a limit on claims about full live behavior.
 - Artifacts are under `results/naacl_experiments/wikipedia/continuations/gemma12/`, `teacher_forced/generated/gemma12/`, `aligned/kiwi/gemma12/`, and `simulated/G1/`. Logs under `logs/naacl_experiments/20261012/`: `W-G1-download-smoke.log`, `W-G1-generation.log`, `W-G1-target-TF.log`, `W-G1-alignment.log`, `W-G1-draft-TF.log`, `W-G1-simulate.log`, and `W-G1-eviction.log`. Gemma12 weights were evicted from `/dev/shm` after scoring; Gemma4 remains in `/workspace/naacl_gemma_models`.
 
-**Queue status after W-G1 (2026-10-12 12:03 UTC):** W-Q2 and W-G1 are complete on the frozen 2k Wikipedia sample, and the planned H and W GPU cells are complete. Next, run the CPU analyses in Section 5 (RQ1–RQ5 tables/figures, including the H/W stability comparisons), finish the morphology/frequency falsification and validation artifacts in Section 5, then update the paper draft. Apply the user-selected 95% shared-prefix agreement threshold for V0 while reporting unmatched-position counts as a scope diagnostic; do not present offline replay as a live latency result.
+**Queue status after W-G1 (2026-10-12 12:03 UTC):** W-Q2 and W-G1 are complete on the frozen 2k Wikipedia sample, and the planned H and W GPU cells are complete. Next, run the CPU analyses in Section 5 (RQ1–RQ5 tables/figures, including the H/W stability comparisons), finish the morphology/frequency falsification and validation artifacts in Section 5, then update the paper draft. V0 is accepted under the user's 95% shared-prefix agreement gate; report unmatched-position counts as a scope diagnostic and do not present offline replay as a live latency result.

@@ -1,0 +1,52 @@
+{
+  "analysis": "RQ1 Table 2a; Q2 k=4 eligible replay proposals",
+  "population": "visible, ALIGNED target tokens with complete single-eojeol tokenization and exact tokenizer roundtrip",
+  "outcome": "k=4 replay rejection indicator",
+  "predictors": [
+    "1-boundary F1",
+    "1-boundary recall (fusion)",
+    "1-boundary precision (splitting)"
+  ],
+  "boundary_definition": "Tokenizer boundaries are internal ends of all but the last token in an eojeol; gold boundaries are Kiwi morpheme-span ends inside the eojeol.",
+  "empty_set_convention": "When both sets are empty precision=recall=F1=1; when only one set is empty its precision or recall is 0.",
+  "controls": [
+    "eojeol token-count fixed effects",
+    "block slot fixed effects",
+    "5-df cubic spline of generation position",
+    "log eojeol character length",
+    "draft entropy",
+    "target entropy",
+    "draft top-two margin",
+    "target top-two margin"
+  ],
+  "standard_errors": "Sandwich covariance clustered by document.",
+  "models": {
+    "one_minus_f1": {
+      "formula": "rejected ~ one_minus_f1 + C(eojeol_token_count) + C(slot) + bs(position, df=5, degree=3, include_intercept=False) + log_eojeol_len + draft_entropy + target_entropy + draft_margin + target_margin",
+      "converged": true,
+      "deviance": 411799.2442771676,
+      "aic": 412017.2442771676,
+      "covariance": "document-clustered sandwich; binomial-logit score aggregation",
+      "AME_delta_method": "AME = beta_j * mean(p*(1-p)); delta-method SE with clustered coefficient covariance"
+    },
+    "one_minus_recall": {
+      "formula": "rejected ~ one_minus_recall + C(eojeol_token_count) + C(slot) + bs(position, df=5, degree=3, include_intercept=False) + log_eojeol_len + draft_entropy + target_entropy + draft_margin + target_margin",
+      "converged": true,
+      "deviance": 411888.67040224303,
+      "aic": 412106.67040224303,
+      "covariance": "document-clustered sandwich; binomial-logit score aggregation",
+      "AME_delta_method": "AME = beta_j * mean(p*(1-p)); delta-method SE with clustered coefficient covariance"
+    },
+    "one_minus_precision": {
+      "formula": "rejected ~ one_minus_precision + C(eojeol_token_count) + C(slot) + bs(position, df=5, degree=3, include_intercept=False) + log_eojeol_len + draft_entropy + target_entropy + draft_margin + target_margin",
+      "converged": true,
+      "deviance": 411788.2803577012,
+      "aic": 412006.2803577012,
+      "covariance": "document-clustered sandwich; binomial-logit score aggregation",
+      "AME_delta_method": "AME = beta_j * mean(p*(1-p)); delta-method SE with clustered coefficient covariance"
+    }
+  },
+  "eligible_morphology_rows": 804045,
+  "eligible_documents": 34211,
+  "excluded_rows_before_complete_case": 0
+}

@@ -1,0 +1,44 @@
+{
+  "stage": "target_path_morphology_alignment",
+  "continuation": "human",
+  "target_key": "ministral8",
+  "revision": "d4883f9b36aa2e5d775730d3fdba3d30de51a8ef",
+  "split": "common",
+  "analyzer": "kiwi",
+  "prompt_count": 9651,
+  "requested_prompt_count": 10000,
+  "skipped_short_document_count": 349,
+  "completed_shards": [
+    {
+      "shard": 0,
+      "prompts": 2000,
+      "aligned_rows": 234698,
+      "resumed": false
+    },
+    {
+      "shard": 1,
+      "prompts": 2000,
+      "aligned_rows": 235688,
+      "resumed": false
+    },
+    {
+      "shard": 2,
+      "prompts": 2000,
+      "aligned_rows": 234851,
+      "resumed": false
+    },
+    {
+      "shard": 3,
+      "prompts": 2000,
+      "aligned_rows": 233596,
+      "resumed": false
+    },
+    {
+      "shard": 4,
+      "prompts": 1651,
+      "aligned_rows": 195096,
+      "resumed": false
+    }
+  ],
+  "status": "COMPLETE"
+}

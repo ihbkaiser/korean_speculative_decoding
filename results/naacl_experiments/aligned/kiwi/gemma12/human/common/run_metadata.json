@@ -1,0 +1,44 @@
+{
+  "stage": "target_path_morphology_alignment",
+  "continuation": "human",
+  "target_key": "gemma12",
+  "revision": "295efb63d01a7017928f273a94ebb86105c9526f",
+  "split": "common",
+  "analyzer": "kiwi",
+  "prompt_count": 9604,
+  "requested_prompt_count": 10000,
+  "skipped_short_document_count": 396,
+  "completed_shards": [
+    {
+      "shard": 0,
+      "prompts": 2000,
+      "aligned_rows": 234417,
+      "resumed": false
+    },
+    {
+      "shard": 1,
+      "prompts": 2000,
+      "aligned_rows": 235229,
+      "resumed": false
+    },
+    {
+      "shard": 2,
+      "prompts": 2000,
+      "aligned_rows": 235025,
+      "resumed": false
+    },
+    {
+      "shard": 3,
+      "prompts": 2000,
+      "aligned_rows": 233633,
+      "resumed": false
+    },
+    {
+      "shard": 4,
+      "prompts": 1604,
+      "aligned_rows": 189647,
+      "resumed": false
+    }
+  ],
+  "status": "COMPLETE"
+}

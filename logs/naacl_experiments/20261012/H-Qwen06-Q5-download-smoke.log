@@ -1,0 +1,7 @@
+MODEL_STORAGE root=/dev/shm/naacl_models free_gib=30.86 requested_weight_gib=1.11
+MODEL qwen06 repo=Qwen/Qwen3-0.6B-Base revision=da87bfb608c14b7cf20ba1ce41287e8de496c0cd gated=False weight_gib=1.11 shards=1
+DOWNLOAD_START qwen06 files=10 gated=False
+Fetching 10 files:   0%|          | 0/10 [00:00<?, ?it/s]Fetching 10 files: 100%|██████████| 10/10 [00:13<00:00,  1.36s/it]Fetching 10 files: 100%|██████████| 10/10 [00:13<00:00,  1.36s/it]
+DOWNLOAD_COMPLETE qwen06 local_path=/dev/shm/naacl_models/Qwen--Qwen3-0.6B-Base/da87bfb608c14b7cf20ba1ce41287e8de496c0cd
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 3490.97it/s]
+SMOKE_LOAD_OK qwen06 Qwen/Qwen3-0.6B-Base@da87bfb608c14b7cf20ba1ce41287e8de496c0cd on NVIDIA RTX A6000
