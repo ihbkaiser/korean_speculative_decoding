@@ -1,0 +1,9 @@
+model_key,model_name,model_family,decision_rule,margin_threshold_nats,positions,prevalence,n_documents,n_positions
+qwen4,Qwen/Qwen3-4B-Base,Qwen3,bottom_10_percent,0.125,19190,0.1,9595,191900
+qwen4,Qwen/Qwen3-4B-Base,Qwen3,bottom_20_percent,0.25,38380,0.2,9595,191900
+qwen4,Qwen/Qwen3-4B-Base,Qwen3,bottom_30_percent,0.25,57570,0.3,9595,191900
+qwen4,Qwen/Qwen3-4B-Base,Qwen3,absolute_margin_lt_1_nats_secondary,1.0,138191,0.7201198540906723,9595,191900
+qwen8,Qwen/Qwen3-8B-Base,Qwen3,bottom_10_percent,0.125,19190,0.1,9595,191900
+qwen8,Qwen/Qwen3-8B-Base,Qwen3,bottom_20_percent,0.25,38380,0.2,9595,191900
+qwen8,Qwen/Qwen3-8B-Base,Qwen3,bottom_30_percent,0.3125,57570,0.3,9595,191900
+qwen8,Qwen/Qwen3-8B-Base,Qwen3,absolute_margin_lt_1_nats_secondary,1.0,134927,0.7031109953100573,9595,191900

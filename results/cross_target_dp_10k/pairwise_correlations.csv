@@ -1,0 +1,2 @@
+model_a,model_b,family_a,family_b,same_family,n_documents,n_positions,spearman_margin,normalized_margin_rank_correlation
+qwen4,qwen8,Qwen3,Qwen3,True,9595,191900,0.4926701959741576,0.4926701959741576

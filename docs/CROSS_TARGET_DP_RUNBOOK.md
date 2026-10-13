@@ -36,7 +36,7 @@ For an interim two-model analysis once Qwen3-4B and Qwen3-8B are complete, selec
 /venv/main/bin/python scripts/plot_cross_target_dp.py --config configs/cross_target_dp.yaml
 ```
 
-The five-target run is complete. The current top-level analysis outputs include all five targets; `summary.json` records the model set and `cross_target_findings.md` contains the result tables and interpretation. The original Qwen3-4B/8B interim output is preserved under `results/cross_target_dp/interim_qwen4_qwen8/`.
+The original 2K five-target run is complete. `results/cross_target_dp/` contains that full five-target analysis; `summary.json` records its model set and `cross_target_findings.md` contains the result tables and interpretation. A separate 10K Qwen3-4B/8B interim analysis is under `results/cross_target_dp_10k/`; its results only describe that two-target, within-family comparison. The earlier 2K interim output is preserved under `results/cross_target_dp/interim_qwen4_qwen8/`.
 
 Running the two-model command above writes to the configured analysis output directory. Save or copy the existing five-target output before using it for a subset analysis; after the subset run, run the full command again to restore the five-target outputs.
 
@@ -63,3 +63,24 @@ The primary source of cross-target alignment is `shared_prefix_sha256` plus `(do
 ## Interpretation limits
 
 The absolute `<1`-nat threshold is secondary because the next-token vocabularies and margin scales differ. Bottom-percentile ranks and overlap on the common position set are primary. Eojeol-onset and Kiwi morphology findings are descriptive associations. They do not establish intrinsic linguistic ambiguity or causal effects. Existing RQ4 conclusions about draft failures remain conditional on a fixed target.
+
+
+## 10K Qwen3-4B/8B extension (completed 2026-10-13)
+
+This extension uses `configs/cross_target_dp_10k.yaml` and writes to `results/cross_target_dp_10k/`, so it does not overwrite the five-target 2K analysis. It scores only Qwen3-4B and Qwen3-8B. The 10,000-document candidate sample yields 9,595 eligible documents and 191,900 primary eojeol-onset positions; the morphology extension has 15,998 positions. Each model scores 207,898 positions including the morphology subset.
+
+Reproduction commands for the scoring and subset analysis:
+
+```bash
+for model in qwen4 qwen8; do
+  /venv/main/bin/python -I scripts/download_models.py --config configs/cross_target_dp_10k.yaml --model "$model" --smoke-load
+  /venv/main/bin/python -I -u scripts/run_cross_target_dp.py --config configs/cross_target_dp_10k.yaml --model "$model" --batch-size 16 --evict-after
+done
+
+/venv/main/bin/python -I -u scripts/analyze_cross_target_dp.py --config configs/cross_target_dp_10k.yaml --models qwen4,qwen8
+/venv/main/bin/python -I -u scripts/plot_cross_target_dp.py --config configs/cross_target_dp_10k.yaml
+```
+
+The pair analysis used 1,000 document-bootstrap replicates and 1,000 within-document permutations with seed `20261013`. It verified model revision, all per-shard SHA-256 values, the full frozen position order, and shared-prefix hashes before computing results. Qwen3-4B/8B bottom-20% Jaccard is 0.204 (95% document-bootstrap CI 0.201–0.207); Spearman margin correlation is 0.493 (95% CI 0.489–0.497). The within-document permutation mean Jaccard is 0.123 (95% interval 0.121–0.126), observed-minus-null is +0.080, and the unadjusted empirical upper-tail p-value is 0.001. This remains a within-Qwen comparison and does not support a cross-family conclusion.
+
+The output directory contains the 104-shard runs and manifests for each model, `position_margins.parquet`, the metric CSVs, `summary.json`, `cross_target_findings.md`, `two_model_analysis.log`, and figures A–D in PDF and PNG. Model weights were evicted after scoring. To restore or compare the original five-target outputs, use the separate `results/cross_target_dp/` directory; do not run the subset analysis against that directory unless its five-target analysis outputs have been saved, because the analyzer writes to the configured output directory.

@@ -1,0 +1,3 @@
+outcome,matched_word_pairs,documents,morpheme_boundary_prevalence,morpheme_internal_prevalence,boundary_minus_internal,document_bootstrap_ci_low_95,document_bootstrap_ci_high_95,bootstrap_replicates,interpretation
+exactly_one_target,7999,6330,0.24328041005125642,0.20327540942617828,0.039257503949447076,0.026856240126382307,0.052452606635071085,1000,Matched within the same eojeol and averaged within document; association only.
+shared_by_all_targets,7999,6330,0.10901362670333792,0.06775846980872609,0.04052132701421801,0.032460505529225914,0.050157977883096366,1000,Matched within the same eojeol and averaged within document; association only.
