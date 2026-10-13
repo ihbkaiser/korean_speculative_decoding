@@ -1,0 +1,27 @@
+{
+  "experiment": "NAACL optional O4 Gemma-3-1B draft scale comparison",
+  "status": "COMPLETE",
+  "pair_id": "O4_G1_12",
+  "estimands": [
+    "global CROSS-vs-WITHIN",
+    "NOMINAL_TO_PARTICLE CROSS-vs-nearest-WITHIN"
+  ],
+  "population": "All 20,000 prompts in the frozen Korean FineWeb2 common split.",
+  "outcome": "k=4 offline greedy speculative-decoding replay rejection; fitted with the primary global controls and document-clustered uncertainty.",
+  "scope": "Saved-continuation Gemma draft-size analysis. It does not measure live decoding latency, validate diverged contexts, or establish causality.",
+  "join_metadata": {
+    "pair_id": "O4_G1_12",
+    "target": "gemma12",
+    "draft": "gemma1",
+    "split": "common",
+    "alignment_analyzer": "kiwi",
+    "documents": 20000,
+    "target_positions": 2549337,
+    "eligible_k4_proposals": 2062654,
+    "event_positions_with_alignment": 2062654,
+    "event_positions_without_alignment": 0
+  },
+  "files": {
+    "cross_within": "results/naacl_experiments/analysis/rq2_o4_gemma1_cross_within.csv"
+  }
+}

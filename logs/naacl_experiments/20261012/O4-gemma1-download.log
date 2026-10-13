@@ -1,0 +1,9 @@
+START_UTC=2026-10-13 00:39:14 UTC
+COMMAND=timeout --foreground --signal=TERM --kill-after=10s 3600s /venv/main/bin/python -u scripts/download_models.py --config configs/naacl_o4_gemma1.yaml --model gemma1 
+MODEL_STORAGE root=/dev/shm/naacl_models free_gib=30.81 requested_weight_gib=1.86
+MODEL gemma1 repo=google/gemma-3-1b-pt revision=fcf18a2a879aab110ca39f8bffbccd5d49d8eb29 gated=manual weight_gib=1.86 shards=1
+DOWNLOAD_START gemma1 files=10 gated=manual
+Fetching 10 files:   0%|          | 0/10 [00:00<?, ?it/s]Fetching 10 files:  10%|█         | 1/10 [00:00<00:04,  1.86it/s]Fetching 10 files:  50%|█████     | 5/10 [00:00<00:00,  9.32it/s]Fetching 10 files:  70%|███████   | 7/10 [00:01<00:00,  6.18it/s]Fetching 10 files:  90%|█████████ | 9/10 [00:02<00:00,  2.48it/s]Fetching 10 files: 100%|██████████| 10/10 [00:24<00:00,  4.69s/it]Fetching 10 files: 100%|██████████| 10/10 [00:24<00:00,  2.47s/it]
+DOWNLOAD_COMPLETE gemma1 local_path=/dev/shm/naacl_models/google--gemma-3-1b-pt/fcf18a2a879aab110ca39f8bffbccd5d49d8eb29
+COMMAND_EXIT=0
+END_UTC=2026-10-13 00:39:42 UTC

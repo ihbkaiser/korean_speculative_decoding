@@ -1,0 +1,10 @@
+START_UTC=2026-10-13 00:48:13 UTC
+COMMAND=timeout --foreground --signal=TERM --kill-after=10s 3600s /venv/main/bin/python -u scripts/analyze_naacl_o4_gemma1.py --config configs/naacl_o4_gemma1.yaml 
+O4_LOAD pair=O4_G1_12
+MODEL_START O4-O4_G1_12-global rows=823,729 docs=15,764
+MODEL_DONE O4-O4_G1_12-global status=COMPLETE converged=True AME=-0.003648526 raw_AME=-0.003648526 SE=0.0003925918 warnings=
+MODEL_START O4-O4_G1_12-nominal_to_particle rows=197,575 docs=10,909
+MODEL_DONE O4-O4_G1_12-nominal_to_particle status=COMPLETE converged=True AME=-0.002261581 raw_AME=-0.002261581 SE=0.000765694 warnings=
+O4_ANALYSIS_COMPLETE fits=2
+COMMAND_EXIT=0
+END_UTC=2026-10-13 00:51:20 UTC

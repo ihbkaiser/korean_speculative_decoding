@@ -1,0 +1,3 @@
+| Pair     | Split   |   Block size |   Prompts |   Target tokens |   Target calls |   Eligible proposals |   Accepted proposals |   Rejections |   Rejection rate |   Invalidated suffix work |   Bonus tokens |   Target TF label disagreement |
+|:---------|:--------|-------------:|----------:|----------------:|---------------:|---------------------:|---------------------:|-------------:|-----------------:|--------------------------:|---------------:|-------------------------------:|
+| O4_G1_12 | common  |            4 |     20000 |         2549337 |         548947 |              2062654 |              2016822 |        45832 |        0.0222199 |                    105315 |         486683 |                           2035 |

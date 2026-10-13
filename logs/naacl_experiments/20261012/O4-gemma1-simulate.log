@@ -1,0 +1,5 @@
+START_UTC=2026-10-13 00:47:26 UTC
+COMMAND=timeout --foreground --signal=TERM --kill-after=10s 3600s /venv/main/bin/python -u scripts/simulate_sd.py --config configs/naacl_o4_gemma1.yaml --pair O4_G1_12 --split common --block-sizes 4 
+SIM pair=O4_G1_12 k=4 prompts=20000 eligible=2062654 reject=45832 rate=0.022220
+COMMAND_EXIT=0
+END_UTC=2026-10-13 00:48:12 UTC

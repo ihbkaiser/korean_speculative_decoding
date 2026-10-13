@@ -1,0 +1,190 @@
+{
+  "stage": "teacher_forced_scoring",
+  "continuation": "generated",
+  "target_key": "gemma12",
+  "target_id": "google/gemma-3-12b-pt",
+  "target_revision": "295efb63d01a7017928f273a94ebb86105c9526f",
+  "scored_model_key": "gemma1",
+  "scored_model_id": "google/gemma-3-1b-pt",
+  "scored_model_revision": "fcf18a2a879aab110ca39f8bffbccd5d49d8eb29",
+  "role": "draft",
+  "split": "common",
+  "prompt_count": 20000,
+  "prompt_ids_sha256": "dfadd2f648e94956307b79082ee0a943fe922e1280586cb9126377b329190aaa",
+  "chunk_positions": 32,
+  "requested_batch_size": 32,
+  "dtype": "bfloat16",
+  "attention_backend": "sdpa",
+  "transformers": "5.19.0",
+  "torch": "2.11.0+cu128",
+  "gpu": "NVIDIA RTX A6000",
+  "model_path": "/dev/shm/naacl_models/google--gemma-3-1b-pt/fcf18a2a879aab110ca39f8bffbccd5d49d8eb29",
+  "prompt_pool_sha256": "d0d316155380aac0d6aa3ade8bddd93f96579a7c88c750167c9d012162fa72eb",
+  "completed_shards": [
+    {
+      "shard": 0,
+      "prompt_count": 2000,
+      "scored_token_count": 255235,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        6,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 45.89888121699914
+    },
+    {
+      "shard": 1,
+      "prompt_count": 2000,
+      "scored_token_count": 255184,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 45.16700854303781
+    },
+    {
+      "shard": 2,
+      "prompt_count": 2000,
+      "scored_token_count": 255408,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 45.3529643160291
+    },
+    {
+      "shard": 3,
+      "prompt_count": 2000,
+      "scored_token_count": 254721,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 45.1561781859491
+    },
+    {
+      "shard": 4,
+      "prompt_count": 2000,
+      "scored_token_count": 255136,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        30,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 45.359426853014156
+    },
+    {
+      "shard": 5,
+      "prompt_count": 2000,
+      "scored_token_count": 255465,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        20,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 45.39727150602266
+    },
+    {
+      "shard": 6,
+      "prompt_count": 2000,
+      "scored_token_count": 254347,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        20,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 45.36746109195519
+    },
+    {
+      "shard": 7,
+      "prompt_count": 2000,
+      "scored_token_count": 255115,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        27,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 45.19414140004665
+    },
+    {
+      "shard": 8,
+      "prompt_count": 2000,
+      "scored_token_count": 253897,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        10,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 44.97791907400824
+    },
+    {
+      "shard": 9,
+      "prompt_count": 2000,
+      "scored_token_count": 254829,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        20,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 45.40514160494786
+    }
+  ],
+  "status": "COMPLETE"
+}
