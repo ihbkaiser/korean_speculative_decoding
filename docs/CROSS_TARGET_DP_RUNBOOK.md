@@ -18,22 +18,22 @@
 From the repository root, with `/venv/main` active and the gated Gemma repository approved in Hugging Face:
 
 ```bash
-/venv/main/bin/python scripts/prepare_cross_target_dp.py
+/venv/main/bin/python -I scripts/prepare_cross_target_dp.py
 
 for model in qwen4 qwen8 qwen14 gemma12 ministral8; do
-  /venv/main/bin/python scripts/download_models.py --config configs/cross_target_dp.yaml --model "$model" --smoke-load
-  /venv/main/bin/python scripts/run_cross_target_dp.py --config configs/cross_target_dp.yaml --model "$model" --batch-size 16 --evict-after
+  /venv/main/bin/python -I scripts/download_models.py --config configs/cross_target_dp.yaml --model "$model" --smoke-load
+  /venv/main/bin/python -I scripts/run_cross_target_dp.py --config configs/cross_target_dp.yaml --model "$model" --batch-size 16 --evict-after
 done
 
-/venv/main/bin/python scripts/analyze_cross_target_dp.py --config configs/cross_target_dp.yaml
-/venv/main/bin/python scripts/plot_cross_target_dp.py --config configs/cross_target_dp.yaml
+/venv/main/bin/python -I scripts/analyze_cross_target_dp.py --config configs/cross_target_dp.yaml
+/venv/main/bin/python -I scripts/plot_cross_target_dp.py --config configs/cross_target_dp.yaml
 ```
 
 For an interim two-model analysis once Qwen3-4B and Qwen3-8B are complete, select them explicitly:
 
 ```bash
-/venv/main/bin/python scripts/analyze_cross_target_dp.py --config configs/cross_target_dp.yaml --models qwen4,qwen8
-/venv/main/bin/python scripts/plot_cross_target_dp.py --config configs/cross_target_dp.yaml
+/venv/main/bin/python -I scripts/analyze_cross_target_dp.py --config configs/cross_target_dp.yaml --models qwen4,qwen8
+/venv/main/bin/python -I scripts/plot_cross_target_dp.py --config configs/cross_target_dp.yaml
 ```
 
 The original 2K five-target run is complete. `results/cross_target_dp/` contains that full five-target analysis; `summary.json` records its model set and `cross_target_findings.md` contains the result tables and interpretation. A separate 10K Qwen3-4B/8B interim analysis is under `results/cross_target_dp_10k/`; its results only describe that two-target, within-family comparison. The earlier 2K interim output is preserved under `results/cross_target_dp/interim_qwen4_qwen8/`.
@@ -43,13 +43,13 @@ Running the two-model command above writes to the configured analysis output dir
 If the Hugging Face token is stored locally in the ignored `hf_token` file, prefix the gated-model download command without printing the token:
 
 ```bash
-HF_TOKEN="$(tr -d '\r\n' < hf_token)" /venv/main/bin/python scripts/download_models.py --config configs/cross_target_dp.yaml --model gemma12 --smoke-load
+HF_TOKEN="$(tr -d '\r\n' < hf_token)" /venv/main/bin/python -I scripts/download_models.py --config configs/cross_target_dp.yaml --model gemma12 --smoke-load
 ```
 
 For a small GPU check before full scoring:
 
 ```bash
-/venv/main/bin/python scripts/run_cross_target_dp.py --model qwen4 --position-limit 32 --batch-size 4 --run-root results/cross_target_dp/smoke
+/venv/main/bin/python -I scripts/run_cross_target_dp.py --model qwen4 --position-limit 32 --batch-size 4 --run-root results/cross_target_dp/smoke
 ```
 
 The run is resumable by model-position shard. If a shard already exists, its position IDs and pinned revision must match the frozen manifest. Use `--force` only to recompute that model's stored outputs.
