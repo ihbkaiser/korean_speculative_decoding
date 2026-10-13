@@ -1,0 +1,8 @@
+MODEL_STORAGE root=/dev/shm/naacl_models free_gib=30.77 requested_weight_gib=7.49
+MODEL qwen4 repo=Qwen/Qwen3-4B-Base revision=906bfd4b4dc7f14ee4320094d8b41684abff8539 gated=False weight_gib=7.49 shards=3
+DOWNLOAD_START qwen4 files=13 gated=False
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 13 files:  85%|████████▍ | 11/13 [00:18<00:03,  1.67s/it]Fetching 13 files:  92%|█████████▏| 12/13 [01:01<00:06,  6.42s/it]Fetching 13 files: 100%|██████████| 13/13 [01:06<00:00,  6.20s/it]Fetching 13 files: 100%|██████████| 13/13 [01:06<00:00,  5.10s/it]
+DOWNLOAD_COMPLETE qwen4 local_path=/dev/shm/naacl_models/Qwen--Qwen3-4B-Base/906bfd4b4dc7f14ee4320094d8b41684abff8539
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights:  93%|█████████▎| 372/398 [00:00<00:00, 3716.06it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 3788.24it/s]
+SMOKE_LOAD_OK qwen4 Qwen/Qwen3-4B-Base@906bfd4b4dc7f14ee4320094d8b41684abff8539 on NVIDIA RTX A6000
