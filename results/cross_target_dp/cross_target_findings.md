@@ -8,20 +8,20 @@ Prefixes contain 128–490 characters after snapping the nominal 256-character w
 
 ## Pairwise results
 
-| Target pair | Family relation | Spearman rho (95% doc-bootstrap CI) | Bottom-20% Jaccard (95% CI) | Overlap (% positions) | Null Jaccard mean | Observed − null | Upper-tail p |
-|---|---|---:|---:|---:|---:|---:|---:|
-| qwen4 vs qwen8 | within Qwen3 | 0.488 [0.479, 0.497] | 0.207 [0.201, 0.214] | 6.85 | 0.122 | +0.084 | 0.001 |
-| qwen4 vs qwen14 | within Qwen3 | 0.424 [0.414, 0.434] | 0.187 [0.180, 0.193] | 6.30 | 0.121 | +0.065 | 0.001 |
-| qwen4 vs gemma12 | cross-family | 0.029 [0.019, 0.040] | 0.116 [0.110, 0.120] | 4.15 | 0.112 | +0.004 | 0.081 |
-| qwen4 vs ministral8 | cross-family | 0.373 [0.362, 0.383] | 0.175 [0.168, 0.181] | 5.96 | 0.119 | +0.056 | 0.001 |
-| qwen8 vs qwen14 | within Qwen3 | 0.462 [0.452, 0.472] | 0.200 [0.193, 0.207] | 6.66 | 0.121 | +0.078 | 0.001 |
-| qwen8 vs gemma12 | cross-family | 0.027 [0.017, 0.037] | 0.111 [0.107, 0.117] | 4.00 | 0.110 | +0.001 | 0.385 |
-| qwen8 vs ministral8 | cross-family | 0.375 [0.364, 0.385] | 0.178 [0.171, 0.183] | 6.04 | 0.119 | +0.058 | 0.001 |
-| qwen14 vs gemma12 | cross-family | 0.022 [0.012, 0.032] | 0.116 [0.111, 0.121] | 4.16 | 0.112 | +0.004 | 0.045 |
-| qwen14 vs ministral8 | cross-family | 0.380 [0.369, 0.391] | 0.175 [0.170, 0.183] | 5.97 | 0.120 | +0.055 | 0.001 |
-| gemma12 vs ministral8 | cross-family | 0.027 [0.016, 0.037] | 0.113 [0.109, 0.119] | 4.07 | 0.112 | +0.001 | 0.312 |
+| Target pair | Family relation | Spearman rho (95% doc-bootstrap CI) | Bottom-20% Jaccard (95% CI) | Observed / independence overlap (%) | P(DP_B &#124; DP_A) | Overlap enrichment vs independence | Null Jaccard mean | Observed − null | Upper-tail p |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| qwen4 vs qwen8 | within Qwen3 | 0.488 [0.479, 0.497] | 0.207 [0.201, 0.214] | 6.85 / 4.00 | 0.342 | 1.712 | 0.122 | +0.084 | 0.001 |
+| qwen4 vs qwen14 | within Qwen3 | 0.424 [0.414, 0.434] | 0.187 [0.180, 0.193] | 6.30 / 4.00 | 0.315 | 1.574 | 0.121 | +0.065 | 0.001 |
+| qwen4 vs gemma12 | cross-family | 0.029 [0.019, 0.040] | 0.116 [0.110, 0.120] | 4.15 / 4.00 | 0.208 | 1.039 | 0.112 | +0.004 | 0.081 |
+| qwen4 vs ministral8 | cross-family | 0.373 [0.362, 0.383] | 0.175 [0.168, 0.181] | 5.96 / 4.00 | 0.298 | 1.489 | 0.119 | +0.056 | 0.001 |
+| qwen8 vs qwen14 | within Qwen3 | 0.462 [0.452, 0.472] | 0.200 [0.193, 0.207] | 6.66 / 4.00 | 0.333 | 1.664 | 0.121 | +0.078 | 0.001 |
+| qwen8 vs gemma12 | cross-family | 0.027 [0.017, 0.037] | 0.111 [0.107, 0.117] | 4.00 / 4.00 | 0.200 | 1.000 | 0.110 | +0.001 | 0.385 |
+| qwen8 vs ministral8 | cross-family | 0.375 [0.364, 0.385] | 0.178 [0.171, 0.183] | 6.04 / 4.00 | 0.302 | 1.509 | 0.119 | +0.058 | 0.001 |
+| qwen14 vs gemma12 | cross-family | 0.022 [0.012, 0.032] | 0.116 [0.111, 0.121] | 4.16 / 4.00 | 0.208 | 1.040 | 0.112 | +0.004 | 0.045 |
+| qwen14 vs ministral8 | cross-family | 0.380 [0.369, 0.391] | 0.175 [0.170, 0.183] | 5.97 / 4.00 | 0.298 | 1.492 | 0.120 | +0.055 | 0.001 |
+| gemma12 vs ministral8 | cross-family | 0.027 [0.016, 0.037] | 0.113 [0.109, 0.119] | 4.07 / 4.00 | 0.203 | 1.017 | 0.112 | +0.001 | 0.312 |
 
-Empirical permutation p-values are upper-tail, unadjusted across pairs. `overlap_pct` is reported in percentage points; Jaccard is the primary normalized-set metric.
+Empirical permutation p-values are upper-tail, unadjusted across pairs. The overlap column gives observed and independence-reference percentages; P(DP_B | DP_A) is directional in the displayed pair order, and enrichment is observed overlap divided by the independence expectation. The within-document permutation is the main null reference; independence is only a descriptive baseline.
 
 ### Threshold sensitivity
 

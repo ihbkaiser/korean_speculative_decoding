@@ -82,6 +82,9 @@ class CrossTargetPositionTests(unittest.TestCase):
         self.assertAlmostEqual(metrics["jaccard"], 2 / 4)
         self.assertAlmostEqual(metrics["overlap_fraction"], 2 / 5)
         self.assertAlmostEqual(metrics["overlap_pct"], 40.0)
+        self.assertAlmostEqual(metrics["conditional_b_given_a"], 2 / 3)
+        self.assertAlmostEqual(metrics["independence_expected_overlap_fraction"], 0.36)
+        self.assertAlmostEqual(metrics["overlap_enrichment"], (2 / 5) / 0.36)
 
     def test_rank_correlation_is_spearman_and_document_permutation_preserves_counts(self):
         self.assertAlmostEqual(rank_correlation([1, 2, 3], [4, 5, 6]), 1.0)

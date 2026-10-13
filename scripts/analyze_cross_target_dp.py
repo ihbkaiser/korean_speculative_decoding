@@ -618,8 +618,8 @@ def _write_findings(output_dir: Path, summary: dict, outputs: dict[str, pd.DataF
         "",
         "## Pairwise results",
         "",
-        "| Target pair | Family relation | Spearman rho (95% doc-bootstrap CI) | Bottom-20% Jaccard (95% CI) | Overlap (% positions) | Null Jaccard mean | Observed − null | Upper-tail p |",
-        "|---|---|---:|---:|---:|---:|---:|---:|",
+        "| Target pair | Family relation | Spearman rho (95% doc-bootstrap CI) | Bottom-20% Jaccard (95% CI) | Observed / independence overlap (%) | P(DP_B &#124; DP_A) | Overlap enrichment vs independence | Null Jaccard mean | Observed − null | Upper-tail p |",
+        "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for row in p20.itertuples():
         null = null_map[(row.model_a, row.model_b)]
@@ -628,12 +628,12 @@ def _write_findings(output_dir: Path, summary: dict, outputs: dict[str, pd.DataF
         jaccard_ci = bootstrap_map[(row.pair_id, "jaccard")]
         relation = "within Qwen3" if row.same_family else "cross-family"
         lines.append(
-            f"| {row.model_a} vs {row.model_b} | {relation} | {rho:.3f} [{rho_ci.ci_low_95:.3f}, {rho_ci.ci_high_95:.3f}] | {row.jaccard:.3f} [{jaccard_ci.ci_low_95:.3f}, {jaccard_ci.ci_high_95:.3f}] | {row.overlap_pct:.2f} | {null.null_mean:.3f} | {null.observed_minus_null_mean:+.3f} | {null.empirical_upper_tail_p:.3f} |"
+            f"| {row.model_a} vs {row.model_b} | {relation} | {rho:.3f} [{rho_ci.ci_low_95:.3f}, {rho_ci.ci_high_95:.3f}] | {row.jaccard:.3f} [{jaccard_ci.ci_low_95:.3f}, {jaccard_ci.ci_high_95:.3f}] | {row.overlap_pct:.2f} / {row.independence_expected_overlap_pct:.2f} | {row.conditional_b_given_a:.3f} | {row.overlap_enrichment:.3f} | {null.null_mean:.3f} | {null.observed_minus_null_mean:+.3f} | {null.empirical_upper_tail_p:.3f} |"
         )
 
     lines.extend([
         "",
-        "Empirical permutation p-values are upper-tail, unadjusted across pairs. `overlap_pct` is reported in percentage points; Jaccard is the primary normalized-set metric.",
+        "Empirical permutation p-values are upper-tail, unadjusted across pairs. The overlap column gives observed and independence-reference percentages; P(DP_B | DP_A) is directional in the displayed pair order, and enrichment is observed overlap divided by the independence expectation. The within-document permutation is the main null reference; independence is only a descriptive baseline.",
         "",
         "### Threshold sensitivity",
         "",
