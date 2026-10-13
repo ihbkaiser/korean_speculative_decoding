@@ -1,0 +1,2 @@
+metric,status,reason
+within_vs_cross_family,NOT_ESTIMABLE,The selected targets contain no cross-family pair; use the pairwise bootstrap interval instead.

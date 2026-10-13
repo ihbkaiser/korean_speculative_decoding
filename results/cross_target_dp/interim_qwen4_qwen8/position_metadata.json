@@ -1,0 +1,43 @@
+{
+  "schema": "cross-target-decision-points-v1",
+  "status": "POSITIONS_FROZEN",
+  "data_path": "data/prompts_40k.parquet",
+  "data_sha256": "d0d316155380aac0d6aa3ade8bddd93f96579a7c88c750167c9d012162fa72eb",
+  "common_document_count_requested": 2000,
+  "position_count": 41512,
+  "position_ids_sha256": "e8072b7160ca6e1490d3be7354a9b5fa2156d3e8aba67f3b7a5ad16a03381748",
+  "positions_path": "results/cross_target_dp/evaluation_positions.parquet",
+  "positions_sha256": "103ca1662eff7b051d8266084f2ba52d2f53e4c55fa726d6b95c510a917a43fa",
+  "primary": {
+    "documents_considered": 2000,
+    "documents_included": 1917,
+    "documents_excluded_insufficient_positions": 83,
+    "eligible_eojeol_onsets_before_sampling": 707876,
+    "positions_per_document": 20,
+    "primary_position_count": 38340,
+    "context_window_chars": 256,
+    "min_context_chars": 128,
+    "position_rule": "Evenly spaced eojeol starts at offsets >= min_context_chars; one identical Unicode prefix is reconstructed for all targets.",
+    "normalization": "Frozen FineWeb2 text is NFC-normalized and stripped; this script verifies and does not modify it."
+  },
+  "morphology": {
+    "anchor_words_requested": 3834,
+    "anchor_words_checked": 3834,
+    "matched_word_pairs": 1586,
+    "morph_position_count": 3172,
+    "morph_position_rule": "For two evenly spaced sampled eojeols per document, select the middle internal Kiwi boundary and the nearest character gap strictly inside one Kiwi morpheme; retain only exact-cover analyses with a matched pair.",
+    "exclusions": {
+      "kiwi_span_not_exact_cover": 909,
+      "no_internal_morpheme_boundary": 1025,
+      "no_within_morpheme_character_offset": 314
+    },
+    "kiwipiepy_version": "0.24.0"
+  },
+  "configuration": {
+    "positions_per_document": 20,
+    "context_window_chars": 256,
+    "min_context_chars": 128,
+    "morphology_anchor_words_per_document": 2
+  },
+  "prefix_reconstruction": "text[context_start:char_offset]; identical document text and Unicode offsets for every target, independently tokenized by each pinned tokenizer."
+}
