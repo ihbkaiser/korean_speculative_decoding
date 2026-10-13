@@ -29,6 +29,15 @@ done
 /venv/main/bin/python scripts/plot_cross_target_dp.py --config configs/cross_target_dp.yaml
 ```
 
+For an interim two-model analysis once Qwen3-4B and Qwen3-8B are complete, select them explicitly:
+
+```bash
+/venv/main/bin/python scripts/analyze_cross_target_dp.py --config configs/cross_target_dp.yaml --models qwen4,qwen8
+/venv/main/bin/python scripts/plot_cross_target_dp.py --config configs/cross_target_dp.yaml
+```
+
+The interim summary and findings label their scope and do not report a cross-family contrast. Re-run analysis without `--models` after all five model runs complete to produce the planned family-level comparison.
+
 If the Hugging Face token is stored locally in the ignored `hf_token` file, prefix the gated-model download command without printing the token:
 
 ```bash
@@ -45,7 +54,7 @@ The run is resumable by model-position shard. If a shard already exists, its pos
 
 ## Outputs
 
-`results/cross_target_dp/` contains `evaluation_positions.parquet`, `position_metadata.json`, per-target reduced-score shards and run manifests, `position_margins.parquet`, `pairwise_overlap.csv`, `pairwise_correlations.csv`, `bootstrap_ci.csv`, `permutation_results.csv`, `decision_point_prevalence.csv`, `shared_target_counts.csv`, `shared_target_buckets.csv` (including the required 3+ group), `family_consistency_bootstrap.csv`, `morphological_enrichment.csv`, `summary.json`, `cross_target_findings.md` with a populated result paragraph, and publication PDF/PNG figures A–D.
+`results/cross_target_dp/` contains `evaluation_positions.parquet`, `position_metadata.json`, per-target reduced-score shards and run manifests, `position_margins.parquet`, `pairwise_overlap.csv`, `pairwise_correlations.csv`, `bootstrap_ci.csv`, `permutation_results.csv`, `decision_point_prevalence.csv`, `shared_target_counts.csv`, `shared_target_buckets.csv` (with a 3+ group when at least three targets are selected), `family_consistency_bootstrap.csv`, `morphological_enrichment.csv`, `summary.json`, `cross_target_findings.md` with a populated result paragraph, and publication PDF/PNG figures A–D. The model subset used for an analysis is recorded in `summary.json`; a subset analysis cannot support omitted pair or family comparisons.
 
 The primary source of cross-target alignment is `shared_prefix_sha256` plus `(doc_id, char_offset)`. The full prefix text is reconstructed from the frozen document and is not duplicated in the margins table.
 

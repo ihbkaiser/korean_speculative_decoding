@@ -1,0 +1,5 @@
+analysis_set,model_a,model_b,pair_id,metric,threshold_fraction,bootstrap_replicates,ci_low_95,ci_high_95,bootstrap_mean
+eojeol_boundary,qwen4,qwen8,qwen4__qwen8,jaccard,0.2,1000,0.2007492940462786,0.21444649695175572,0.20747342727163837
+eojeol_boundary,qwen4,qwen8,qwen4__qwen8,overlap_pct,0.2,1000,6.687467396974439,7.063184663536775,6.872696922274386
+eojeol_boundary,qwen4,qwen8,qwen4__qwen8,conditional_b_given_a,0.2,1000,0.33437336984872196,0.35315923317683884,0.34363484611371936
+eojeol_boundary,qwen4,qwen8,qwen4__qwen8,spearman_margin,,1000,0.4786213694022062,0.49698814069399955,0.4880328765596563

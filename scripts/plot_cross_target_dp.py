@@ -33,12 +33,16 @@ def _save(fig, output_dir: Path, stem: str):
     plt.close(fig)
 
 
-def figure_a(long: pd.DataFrame, output_dir: Path):
+def figure_a(long: pd.DataFrame, output_dir: Path, model_keys: tuple[str, ...]):
     primary = long.loc[long.analysis_set.eq("eojeol_boundary")]
-    wide = primary.pivot(index="position_id", columns="model_key", values="target_top2_margin_nats").reindex(columns=MODEL_ORDER)
+    wide = primary.pivot(index="position_id", columns="model_key", values="target_top2_margin_nats").reindex(columns=model_keys)
     ranks = wide.rank(method="average", pct=True)
     pairs = [("qwen4", "qwen8"), ("qwen8", "gemma12"), ("qwen8", "ministral8")]
-    fig, axes = plt.subplots(1, 3, figsize=(14.2, 4.5), constrained_layout=True)
+    pairs = [pair for pair in pairs if set(pair).issubset(model_keys)]
+    if not pairs:
+        pairs = [(model_keys[a], model_keys[b]) for a in range(len(model_keys)) for b in range(a + 1, len(model_keys))]
+    fig, axes = plt.subplots(1, len(pairs), figsize=(4.8 * len(pairs), 4.5), constrained_layout=True, squeeze=False)
+    axes = axes[0]
     hexes = []
     for ax, (model_a, model_b) in zip(axes, pairs):
         points = ranks[[model_a, model_b]].dropna()
@@ -59,18 +63,18 @@ def figure_a(long: pd.DataFrame, output_dir: Path):
     _save(fig, output_dir, "figure_A_margin_agreement")
 
 
-def figure_b(overlap: pd.DataFrame, output_dir: Path):
+def figure_b(overlap: pd.DataFrame, output_dir: Path, model_keys: tuple[str, ...]):
     selected = overlap.loc[overlap.threshold_fraction.eq(0.20)]
-    matrix = pd.DataFrame(np.eye(len(MODEL_ORDER)), index=MODEL_ORDER, columns=MODEL_ORDER)
+    matrix = pd.DataFrame(np.eye(len(model_keys)), index=model_keys, columns=model_keys)
     for row in selected.itertuples():
         matrix.loc[row.model_a, row.model_b] = row.jaccard
         matrix.loc[row.model_b, row.model_a] = row.jaccard
     fig, ax = plt.subplots(figsize=(7.0, 6.0), constrained_layout=True)
     image = ax.imshow(matrix.to_numpy(dtype=float), cmap="viridis", vmin=0, vmax=1, aspect="equal")
-    ax.set_xticks(range(len(MODEL_ORDER)), [LABELS[key] for key in MODEL_ORDER], rotation=40, ha="right")
-    ax.set_yticks(range(len(MODEL_ORDER)), [LABELS[key] for key in MODEL_ORDER])
-    for i in range(len(MODEL_ORDER)):
-        for j in range(len(MODEL_ORDER)):
+    ax.set_xticks(range(len(model_keys)), [LABELS[key] for key in model_keys], rotation=40, ha="right")
+    ax.set_yticks(range(len(model_keys)), [LABELS[key] for key in model_keys])
+    for i in range(len(model_keys)):
+        for j in range(len(model_keys)):
             value = matrix.iloc[i, j]
             ax.text(j, i, f"{value:.2f}", ha="center", va="center",
                     color="white" if value < 0.58 else "black", fontsize=9)
@@ -80,7 +84,8 @@ def figure_b(overlap: pd.DataFrame, output_dir: Path):
 
 
 def figure_c(shared: pd.DataFrame, output_dir: Path):
-    table = shared.set_index("target_count_bucket").reindex(["0", "exactly_1", "exactly_2", "3+"]).reset_index()
+    order = ["0", "exactly_1", "exactly_2", "3+"]
+    table = shared.set_index("target_count_bucket").reindex([key for key in order if key in set(shared.target_count_bucket)]).reset_index()
     x = np.arange(len(table))
     observed = table.observed_fraction.to_numpy(dtype=float)
     null = table.permutation_mean_fraction.to_numpy(dtype=float)
@@ -91,7 +96,8 @@ def figure_c(shared: pd.DataFrame, output_dir: Path):
     ax.bar(x - width / 2, observed, width, color="#2563eb", label="Observed")
     ax.bar(x + width / 2, null, width, color="#9ca3af", label="Within-document permutation mean")
     ax.errorbar(x + width / 2, null, yerr=[null - low, high - null], fmt="none", ecolor="#374151", capsize=3)
-    ax.set_xticks(x, ["0", "Exactly 1", "Exactly 2", "3+"])
+    bucket_labels = {"0": "0", "exactly_1": "Exactly 1", "exactly_2": "Exactly 2", "3+": "3+"}
+    ax.set_xticks(x, [bucket_labels[key] for key in table.target_count_bucket])
     ax.set_xlabel("Targets marking a position as a decision point")
     ax.set_ylabel("Fraction of positions")
     ax.set_title("Figure C. Shared decision points vs permutation reference")
@@ -111,8 +117,9 @@ def figure_d(morph: pd.DataFrame, output_dir: Path):
         "exactly_one_target": "Exactly one target",
         "shared_by_three_or_more": "3+ targets",
         "cross_family_shared": "All 3 families",
+        "shared_by_all_targets": "Both Qwen3 targets",
     }
-    table = morph.set_index("outcome").reindex(labels.keys())
+    table = morph.set_index("outcome").loc[lambda frame: [key for key in labels if key in frame.index]]
     fig, ax = plt.subplots(figsize=(8.2, 4.8), constrained_layout=True)
     x = np.arange(len(table))
     differences = table.boundary_minus_internal.to_numpy(dtype=float)
@@ -137,9 +144,12 @@ def main() -> int:
     args = parser.parse_args()
     config = load_config(args.config)
     output_dir = ROOT / config["paths"]["outputs"]
+    import json
+    summary = json.loads((output_dir / "summary.json").read_text(encoding="utf-8"))
+    model_keys = tuple(summary["analysis_scope"]["models_compared"])
     long = pd.read_parquet(output_dir / "position_margins.parquet")
-    figure_a(long, output_dir)
-    figure_b(pd.read_csv(output_dir / "pairwise_overlap.csv"), output_dir)
+    figure_a(long, output_dir, model_keys)
+    figure_b(pd.read_csv(output_dir / "pairwise_overlap.csv"), output_dir, model_keys)
     figure_c(pd.read_csv(output_dir / "shared_target_buckets.csv"), output_dir)
     figure_d(pd.read_csv(output_dir / "morphological_enrichment.csv"), output_dir)
     print(f"FIGURES_READY directory={output_dir.relative_to(ROOT)}", flush=True)

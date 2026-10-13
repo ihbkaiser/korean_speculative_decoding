@@ -29,12 +29,13 @@ THRESHOLDS = (0.10, 0.20, 0.30)
 MODEL_ORDER = ("qwen4", "qwen8", "qwen14", "gemma12", "ministral8")
 
 
-def _load_complete_runs(config: dict, output_dir: Path, positions: pd.DataFrame):
+def _load_complete_runs(config: dict, output_dir: Path, positions: pd.DataFrame,
+                        model_keys: tuple[str, ...] = MODEL_ORDER):
     frames = []
     run_meta = {}
     expected_ids = positions.position_id.astype(str).tolist()
     expected_hashes = positions.set_index("position_id").shared_prefix_sha256.to_dict()
-    for key in MODEL_ORDER:
+    for key in model_keys:
         metadata_path = output_dir / "model_runs" / key / "run_metadata.json"
         if not metadata_path.is_file():
             raise FileNotFoundError(f"Missing target run manifest: {metadata_path}")
@@ -54,9 +55,9 @@ def _load_complete_runs(config: dict, output_dir: Path, positions: pd.DataFrame)
         run_meta[key] = metadata
     long = pd.concat(frames, ignore_index=True)
     counts = long.groupby("position_id").model_key.nunique()
-    if not counts.eq(len(MODEL_ORDER)).all():
-        raise RuntimeError("Position rows are not complete across all five targets")
-    family_order = {key: index for index, key in enumerate(MODEL_ORDER)}
+    if not counts.eq(len(model_keys)).all():
+        raise RuntimeError(f"Position rows are not complete across selected targets: {model_keys}")
+    family_order = {key: index for index, key in enumerate(model_keys)}
     long["_model_order"] = long.model_key.map(family_order)
     position_order = {value: index for index, value in enumerate(expected_ids)}
     long["_position_order"] = long.position_id.map(position_order)
@@ -66,10 +67,11 @@ def _load_complete_runs(config: dict, output_dir: Path, positions: pd.DataFrame)
     return long, run_meta
 
 
-def _wide(long: pd.DataFrame, positions: pd.DataFrame, analysis_set: str):
+def _wide(long: pd.DataFrame, positions: pd.DataFrame, analysis_set: str,
+          model_keys: tuple[str, ...] = MODEL_ORDER):
     subset = long.loc[long.analysis_set.eq(analysis_set)].copy()
     wide = subset.pivot(index="position_id", columns="model_key", values="target_top2_margin_nats")
-    wide = wide.reindex(columns=MODEL_ORDER)
+    wide = wide.reindex(columns=model_keys)
     if wide.isna().any().any():
         raise RuntimeError(f"Incomplete model margins in analysis set {analysis_set}")
     meta_columns = [
@@ -161,11 +163,12 @@ def _bootstrap_main(margins: np.ndarray, doc_ids: np.ndarray, keys: tuple[str, .
                 collected.setdefault((pair_id, metric), []).append(float(values[metric]))
             corr = rank_correlation(sample_margins[:, a_index], sample_margins[:, b_index])
             collected.setdefault((pair_id, "spearman_margin"), []).append(corr)
-        within_mean = float(np.mean(within))
-        cross_mean = float(np.mean(cross))
-        family_values["within_qwen_jaccard"].append(within_mean)
-        family_values["cross_family_jaccard"].append(cross_mean)
-        family_values["within_minus_cross_jaccard"].append(within_mean - cross_mean)
+        if within and cross:
+            within_mean = float(np.mean(within))
+            cross_mean = float(np.mean(cross))
+            family_values["within_qwen_jaccard"].append(within_mean)
+            family_values["cross_family_jaccard"].append(cross_mean)
+            family_values["within_minus_cross_jaccard"].append(within_mean - cross_mean)
 
     rows_out = []
     for (pair_id, metric), values in collected.items():
@@ -185,6 +188,8 @@ def _bootstrap_main(margins: np.ndarray, doc_ids: np.ndarray, keys: tuple[str, .
         })
     family_rows = []
     for metric, values in family_values.items():
+        if not values:
+            continue
         values = np.asarray(values, dtype=np.float64)
         family_rows.append({
             "metric": metric,
@@ -192,8 +197,14 @@ def _bootstrap_main(margins: np.ndarray, doc_ids: np.ndarray, keys: tuple[str, .
             "ci_low_95": float(np.quantile(values, 0.025)),
             "ci_high_95": float(np.quantile(values, 0.975)),
             "bootstrap_mean": float(values.mean()),
-            "within_family_definition": "mean Jaccard among the three Qwen3 target pairs",
-            "cross_family_definition": "mean Jaccard among the seven target pairs from different model families",
+            "within_family_definition": "mean Jaccard among selected Qwen3 target pairs",
+            "cross_family_definition": "mean Jaccard among selected target pairs from different model families",
+        })
+    if not family_rows:
+        family_rows.append({
+            "metric": "within_vs_cross_family",
+            "status": "NOT_ESTIMABLE",
+            "reason": "The selected targets contain no cross-family pair; use the pairwise bootstrap interval instead.",
         })
     return rows_out, family_rows
 
@@ -251,7 +262,11 @@ def _permutation_main(labels: np.ndarray, doc_ids: np.ndarray, keys: tuple[str, 
             "permutation_replicates": replicates,
         })
     bucket_rows = []
-    buckets = (("0", (0,)), ("exactly_1", (1,)), ("exactly_2", (2,)), ("3+", tuple(range(3, len(keys) + 1))))
+    buckets = [("0", (0,)), ("exactly_1", (1,))]
+    if len(keys) >= 2:
+        buckets.append(("exactly_2", (2,)))
+    if len(keys) >= 3:
+        buckets.append(("3+", tuple(range(3, len(keys) + 1))))
     observed_counts = labels.sum(axis=1)
     for label, counts in buckets:
         null_values = shared_hist[:, list(counts)].sum(axis=1)
@@ -284,21 +299,33 @@ def _doc_bootstrap_difference(values: pd.DataFrame, outcome: str, replicates: in
     return paired, observed, samples
 
 
-def _morphology_analysis(long: pd.DataFrame, positions: pd.DataFrame, *, replicates: int, seed: int):
-    wide, meta = _wide(long, positions, "morph_extended")
+def _morphology_analysis(long: pd.DataFrame, positions: pd.DataFrame, *, replicates: int, seed: int,
+                         model_keys: tuple[str, ...] = MODEL_ORDER):
+    wide, meta = _wide(long, positions, "morph_extended", model_keys)
     if wide.empty:
         return [], {"status": "UNSUPPORTED_NO_RELIABLE_KIWI_POSITIONS"}
     margins = wide.to_numpy(dtype=np.float64)
     labels = np.column_stack([exact_bottom_labels(margins[:, i], 0.20) for i in range(margins.shape[1])])
     counts = labels.sum(axis=1)
-    families = np.column_stack([labels[:, :3].any(axis=1), labels[:, 3], labels[:, 4]])
     enriched = meta.copy()
     enriched["n_targets_dp"] = counts
     enriched["exactly_one_target"] = counts == 1
-    enriched["shared_by_three_or_more"] = counts >= 3
-    enriched["cross_family_shared"] = families.all(axis=1)
+    if len(model_keys) == 2:
+        enriched["shared_by_all_targets"] = counts == 2
+        outcomes = ("exactly_one_target", "shared_by_all_targets")
+    else:
+        enriched["shared_by_three_or_more"] = counts >= 3
+        outcomes = ["exactly_one_target", "shared_by_three_or_more"]
+        families_present = {"Qwen3" if key.startswith("qwen") else ("Gemma 3" if key == "gemma12" else "Ministral 3") for key in model_keys}
+        if {"Qwen3", "Gemma 3", "Ministral 3"}.issubset(families_present):
+            family_columns = []
+            for family in ("Qwen3", "Gemma 3", "Ministral 3"):
+                family_keys = [index for index, key in enumerate(model_keys)
+                               if ("Qwen3" if key.startswith("qwen") else ("Gemma 3" if key == "gemma12" else "Ministral 3")) == family]
+                family_columns.append(labels[:, family_keys].any(axis=1))
+            enriched["cross_family_shared"] = np.column_stack(family_columns).all(axis=1)
+            outcomes.append("cross_family_shared")
     enriched = enriched.reset_index()
-    outcomes = ("exactly_one_target", "shared_by_three_or_more", "cross_family_shared")
     rows = []
     total_matched = int(enriched.matched_word_id.nunique())
     total_docs = int(enriched.doc_id.nunique())
@@ -326,7 +353,8 @@ def _morphology_analysis(long: pd.DataFrame, positions: pd.DataFrame, *, replica
         "matched_word_pairs": total_matched,
         "documents": total_docs,
         "decision_definition": "Bottom 20% of margins among the common morph_extended positions for each target.",
-        "family_shared_definition": "At least one Qwen3 target, Gemma-3-12B, and Ministral-3-8B all mark the position.",
+        "models_compared": list(model_keys),
+        "shared_definition": "All selected targets mark the position as a decision point.",
     }
     return rows, metadata
 
@@ -337,37 +365,47 @@ def main() -> int:
     parser.add_argument("--bootstrap-replicates", type=int)
     parser.add_argument("--permutation-replicates", type=int)
     parser.add_argument("--seed", type=int)
+    parser.add_argument(
+        "--models", default=",".join(MODEL_ORDER),
+        help="Comma-separated completed model keys (default: all configured targets).",
+    )
     args = parser.parse_args()
+    model_keys = tuple(key.strip() for key in args.models.split(",") if key.strip())
+    if len(model_keys) < 2 or len(set(model_keys)) != len(model_keys):
+        parser.error("--models must contain at least two distinct model keys")
 
     config = load_config(args.config)
+    unknown = [key for key in model_keys if key not in config["models"]]
+    if unknown:
+        parser.error(f"unknown model keys: {', '.join(unknown)}")
     output_dir = ROOT / config["paths"]["outputs"]
     position_path = output_dir / "evaluation_positions.parquet"
     positions = pd.read_parquet(position_path)
-    long, run_meta = _load_complete_runs(config, output_dir, positions)
+    long, run_meta = _load_complete_runs(config, output_dir, positions, model_keys)
     long_path = output_dir / "position_margins.parquet"
     atomic_parquet(long.to_dict(orient="records"), long_path)
 
-    wide, meta = _wide(long, positions, "eojeol_boundary")
+    wide, meta = _wide(long, positions, "eojeol_boundary", model_keys)
     margins = wide.to_numpy(dtype=np.float64)
     doc_ids = meta.doc_id.astype(str).to_numpy()
     if len(set(np.bincount(pd.factorize(doc_ids, sort=True)[0]))) != 1:
         raise RuntimeError("Primary position design must have equal positions per document")
     overlap_rows, correlation_rows, labels_by_fraction, pair_values = _pair_records(
-        margins, doc_ids, MODEL_ORDER
+        margins, doc_ids, model_keys
     )
 
     bootstrap_reps = args.bootstrap_replicates or int(config["inference"]["bootstrap_replicates"])
     permutation_reps = args.permutation_replicates or int(config["inference"]["permutation_replicates"])
     seed = args.seed or int(config["inference"]["seed"])
     bootstrap_rows, family_bootstrap_rows = _bootstrap_main(
-        margins, doc_ids, MODEL_ORDER, bootstrap_reps, seed
+        margins, doc_ids, model_keys, bootstrap_reps, seed
     )
     permutation_rows, shared_bucket_rows, shared_count_rows = _permutation_main(
-        labels_by_fraction[0.20], doc_ids, MODEL_ORDER, permutation_reps, seed + 1
+        labels_by_fraction[0.20], doc_ids, model_keys, permutation_reps, seed + 1
     )
 
     prevalence_rows = []
-    for index, key in enumerate(MODEL_ORDER):
+    for index, key in enumerate(model_keys):
         for fraction in THRESHOLDS:
             labels = labels_by_fraction[fraction][:, index]
             prevalence_rows.append({
@@ -395,7 +433,7 @@ def main() -> int:
         })
 
     morph_rows, morph_meta = _morphology_analysis(
-        long, positions, replicates=bootstrap_reps, seed=seed + 2
+        long, positions, replicates=bootstrap_reps, seed=seed + 2, model_keys=model_keys
     )
     outputs = {
         "pairwise_overlap.csv": pd.DataFrame(overlap_rows),
@@ -415,12 +453,20 @@ def main() -> int:
     p20 = pair_frame.loc[pair_frame.threshold_fraction.eq(0.20)]
     within_p20 = p20.loc[p20.same_family, "jaccard"].astype(float).tolist()
     cross_p20 = p20.loc[~p20.same_family, "jaccard"].astype(float).tolist()
-    families = labels_by_fraction[0.20][:, :3].any(axis=1) & labels_by_fraction[0.20][:, 3] & labels_by_fraction[0.20][:, 4]
+    family_order = {key: ("Qwen3" if key.startswith("qwen") else ("Gemma 3" if key == "gemma12" else "Ministral 3")) for key in model_keys}
+    family_shared_supported = {"Qwen3", "Gemma 3", "Ministral 3"}.issubset(set(family_order.values()))
+    family_shared = None
+    if family_shared_supported:
+        family_masks = []
+        for family in ("Qwen3", "Gemma 3", "Ministral 3"):
+            family_indices = [i for i, key in enumerate(model_keys) if family_order[key] == family]
+            family_masks.append(labels_by_fraction[0.20][:, family_indices].any(axis=1))
+        family_shared = np.column_stack(family_masks).all(axis=1)
     target_count = labels_by_fraction[0.20].sum(axis=1)
     # Absolute margins are secondary and are not used for cross-tokenizer ranking.
     position_metadata = json.loads((output_dir / "position_metadata.json").read_text())
     model_summaries = {}
-    for key in MODEL_ORDER:
+    for key in model_keys:
         model_rows = long.loc[long.model_key.eq(key) & long.analysis_set.eq("eojeol_boundary")]
         token_lengths = model_rows.context_model_tokens.to_numpy(dtype=np.float64)
         model_summaries[key] = {
@@ -435,26 +481,33 @@ def main() -> int:
             "context_tokens_max": int(token_lengths.max()),
             "full_forward_check_max_abs_error": run_meta[key]["full_forward_check_max_abs_error"],
         }
-    exact_distribution = {
-        str(count): int(np.sum(target_count == count)) for count in range(len(MODEL_ORDER) + 1)
-    }
+    exact_distribution = {str(count): int(np.sum(target_count == count)) for count in range(len(model_keys) + 1)}
     grouped_distribution = {
         "zero": exact_distribution["0"],
         "exactly_one": exact_distribution["1"],
-        "exactly_two": exact_distribution["2"],
-        "three_or_more": int(sum(exact_distribution[str(count)] for count in range(3, len(MODEL_ORDER) + 1))),
+        "exactly_two": exact_distribution.get("2", 0),
+        "three_or_more": int(sum(exact_distribution[str(count)] for count in range(3, len(model_keys) + 1))),
     }
     pair_null = pd.DataFrame(permutation_rows)
     jaccard_null = pair_null.loc[pair_null.metric.eq("jaccard")]
     pair_meta = p20[["model_a", "model_b", "same_family"]].drop_duplicates()
     null_with_family = jaccard_null.merge(pair_meta, on=["model_a", "model_b"], validate="one_to_one")
+    within_null_values = null_with_family.loc[null_with_family.same_family, "null_mean"].astype(float).tolist()
+    cross_null_values = null_with_family.loc[~null_with_family.same_family, "null_mean"].astype(float).tolist()
+    family_ci_by_metric = {row["metric"]: row for row in family_bootstrap_rows}
     summary = {
         "schema": config["schema"],
         "status": "COMPLETE",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "question": "Are low-margin next-token decision points shared across target models on identical Korean text prefixes?",
+        "analysis_scope": {
+            "models_compared": list(model_keys),
+            "scope_note": ("Two-model interim analysis; supports conclusions only about the Qwen3-4B/Qwen3-8B pair. "
+                           "No cross-family comparison is available." if model_keys == ("qwen4", "qwen8") else
+                           "Selected-target analysis; conclusions are limited to the configured models in this run."),
+        },
         "primary_definition": "For each target, mark exactly the bottom 20% of margins on the same common eojeol-onset positions. Stable ordering resolves exact ties.",
-        "primary_metric": "Pairwise bottom-20% Jaccard, compared to within-document permutation null; family contrast is Qwen3 within-family mean minus cross-family mean.",
+        "primary_metric": "Pairwise bottom-20% Jaccard, compared to within-document permutation null.",
         "data": {
             "source": "Frozen FineWeb2 Korean kor_Hang common split; raw NFC/stripped document text.",
             "documents_considered": int(position_metadata["primary"]["documents_considered"]),
@@ -479,12 +532,16 @@ def main() -> int:
             "random_seed": seed,
         },
         "primary_results": {
-            "within_qwen_mean_jaccard": float(np.mean(within_p20)),
-            "cross_family_mean_jaccard": float(np.mean(cross_p20)),
-            "within_minus_cross_mean_jaccard": float(np.mean(within_p20) - np.mean(cross_p20)),
-            "within_qwen_permutation_mean_jaccard": float(null_with_family.loc[null_with_family.same_family, "null_mean"].mean()),
-            "cross_family_permutation_mean_jaccard": float(null_with_family.loc[~null_with_family.same_family, "null_mean"].mean()),
-            "cross_family_shared_position_fraction": float(np.mean(families)),
+            "within_qwen_mean_jaccard": float(np.mean(within_p20)) if within_p20 else None,
+            "cross_family_mean_jaccard": float(np.mean(cross_p20)) if cross_p20 else None,
+            "within_minus_cross_mean_jaccard": (float(np.mean(within_p20) - np.mean(cross_p20)) if within_p20 and cross_p20 else None),
+            "within_qwen_permutation_mean_jaccard": float(np.mean(within_null_values)) if within_null_values else None,
+            "cross_family_permutation_mean_jaccard": float(np.mean(cross_null_values)) if cross_null_values else None,
+            "within_minus_cross_bootstrap_ci_95": family_ci_by_metric.get("within_minus_cross_jaccard"),
+            "cross_family_shared_position_fraction": float(np.mean(family_shared)) if family_shared is not None else None,
+            "pairwise_bottom20_jaccard": {row.pair_id: float(row.jaccard) for row in p20.itertuples()},
+            "pairwise_spearman_margin": {f"{row.model_a}__{row.model_b}": float(row.spearman_margin)
+                                         for row in pd.DataFrame(correlation_rows).itertuples()},
             "target_count_distribution": exact_distribution,
             "target_count_distribution_grouped": grouped_distribution,
         },
@@ -495,12 +552,8 @@ def main() -> int:
     }
     atomic_json(output_dir / "summary.json", summary)
     _write_findings(output_dir, summary, outputs)
-    print(
-        f"ANALYSIS_COMPLETE positions={len(doc_ids)} within_qwen_jaccard={summary['primary_results']['within_qwen_mean_jaccard']:.4f} "
-        f"cross_family_jaccard={summary['primary_results']['cross_family_mean_jaccard']:.4f} "
-        f"cross_family_shared={summary['primary_results']['cross_family_shared_position_fraction']:.4f}",
-        flush=True,
-    )
+    pair_text = ",".join(f"{key}={value:.4f}" for key, value in summary["primary_results"]["pairwise_bottom20_jaccard"].items())
+    print(f"ANALYSIS_COMPLETE models={','.join(model_keys)} positions={len(doc_ids)} pairwise_jaccard={pair_text}", flush=True)
     return 0
 
 
@@ -513,6 +566,9 @@ def _write_findings(output_dir: Path, summary: dict, outputs: dict[str, pd.DataF
     bootstrap = outputs["bootstrap_ci.csv"]
     bootstrap_map = {(row.pair_id, row.metric): row for row in bootstrap.itertuples()}
     corr_map = {(row.model_a, row.model_b): row.spearman_margin for row in correlations.itertuples()}
+    if len(summary["models"]) == 2:
+        _write_two_model_findings(output_dir, summary, outputs, bootstrap_map, corr_map)
+        return
     null_map = {(row.model_a, row.model_b): row for row in jaccard_null.itertuples()}
     family_ci = outputs["family_consistency_bootstrap.csv"].set_index("metric")
     within = summary["primary_results"]["within_qwen_mean_jaccard"]
@@ -646,6 +702,83 @@ def _write_findings(output_dir: Path, summary: dict, outputs: dict[str, pd.DataF
         "intrinsic linguistic ambiguity, and the paper's RQ4 remains conditional on a fixed target."
     )
     lines.extend([paragraph, ""])
+    (output_dir / "cross_target_findings.md").write_text("\n".join(lines), encoding="utf-8")
+
+
+def _write_two_model_findings(output_dir: Path, summary: dict, outputs: dict[str, pd.DataFrame],
+                              bootstrap_map: dict, corr_map: dict):
+    overlap = outputs["pairwise_overlap.csv"]
+    p20 = overlap.loc[overlap.threshold_fraction.eq(0.20)]
+    row = p20.iloc[0]
+    pair_id = row.pair_id
+    permutation = outputs["permutation_results.csv"]
+    null = permutation.loc[(permutation.metric == "jaccard") & (permutation.pair_id == pair_id)].iloc[0]
+    rho_ci = bootstrap_map[(pair_id, "spearman_margin")]
+    jaccard_ci = bootstrap_map[(pair_id, "jaccard")]
+    grouped = summary["primary_results"]["target_count_distribution_grouped"]
+    models = list(summary["models"])
+    names = [summary["models"][key]["id"] for key in models]
+    lines = [
+        "# RQ6 interim result: Qwen3-4B vs Qwen3-8B",
+        "",
+        "## Scope",
+        "",
+        summary["analysis_scope"]["scope_note"],
+        "This is a two-target, within-family result. It cannot determine whether low-margin decision points are shared across model families or generalize to other target architectures.",
+        "",
+        f"The analysis uses {summary['data']['positions_evaluated']:,} identical Korean text prefixes at eojeol onsets from {summary['data']['documents_evaluated']:,} FineWeb2 documents. Each model tokenized the same NFC character prefix independently. For each model, a decision point is one of the exact bottom 20% of next-token top-2 margins across the common positions.",
+        f"Prefixes span {summary['data']['context_chars_min']}–{summary['data']['context_chars_max']} characters (median {summary['data']['context_chars_median']:.0f}); per-model token counts and pinned revisions are recorded in `summary.json`.",
+        "",
+        "## Main result",
+        "",
+        "| Pair | Margin Spearman rho (95% document-bootstrap CI) | Bottom-20% Jaccard (95% document-bootstrap CI) | Shared positions | Fraction of all positions | Qwen4 DP positions shared with Qwen8 | Within-document null Jaccard mean [95% permutation interval] | Observed − null | Upper-tail permutation p |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|---:|",
+        f"| {names[0]} vs {names[1]} | {corr_map[(row.model_a, row.model_b)]:.3f} [{rho_ci.ci_low_95:.3f}, {rho_ci.ci_high_95:.3f}] | {row.jaccard:.3f} [{jaccard_ci.ci_low_95:.3f}, {jaccard_ci.ci_high_95:.3f}] | {int(row.intersection_size):,} | {row.overlap_pct:.2f}% | {row.conditional_b_given_a:.1%} | {null.null_mean:.3f} [{null.null_ci_low_95:.3f}, {null.null_ci_high_95:.3f}] | {null.observed_minus_null_mean:+.3f} | {null.empirical_upper_tail_p:.3f} |",
+        "",
+        "The permutation null independently relocates each target’s selected positions within each document while preserving that document’s decision-point count. The reported p-value is an unadjusted upper-tail empirical value. The document bootstrap resamples documents, retaining each selected document’s positions.",
+        "",
+        "## Threshold sensitivity",
+        "",
+        "| Bottom fraction per model | Pairwise Jaccard | Positions shared | Shared fraction |",
+        "|---:|---:|---:|---:|",
+    ]
+    for fraction, values in overlap.groupby("threshold_fraction"):
+        metric = values.iloc[0]
+        lines.append(f"| {fraction:.0%} | {metric.jaccard:.3f} | {int(metric.intersection_size):,} | {metric.overlap_pct:.2f}% |")
+    lines.extend([
+        "",
+        "## Positions selected by both models",
+        "",
+        f"Among all common prefixes, {grouped['zero']:,} are selected by neither model, {grouped['exactly_one']:,} by exactly one, and {grouped['exactly_two']:,} by both. The permutation comparison for each count bucket is in `shared_target_buckets.csv`.",
+        "",
+        "## Morphological comparison",
+        "",
+    ])
+    morph = outputs["morphological_enrichment.csv"]
+    if len(morph):
+        exclusions = summary["morphology"].get("exclusions", {})
+        excluded_text = ", ".join(f"{key}: {value}" for key, value in exclusions.items()) or "none"
+        lines.extend([
+            f"Kiwi-derived boundary and within-morpheme offsets are matched within the same sampled eojeol ({summary['morphology']['matched_word_pairs']:,} word pairs across {summary['morphology']['documents']:,} documents). Alignment exclusions: {excluded_text}. Differences are descriptive associations.",
+            "",
+            "| Outcome | Matched words | Boundary prevalence | Internal prevalence | Boundary − internal (95% document-bootstrap CI) |",
+            "|---|---:|---:|---:|---:|",
+        ])
+        for item in morph.itertuples():
+            lines.append(f"| {item.outcome} | {item.matched_word_pairs:,} | {item.morpheme_boundary_prevalence:.3f} | {item.morpheme_internal_prevalence:.3f} | {item.boundary_minus_internal:+.3f} [{item.document_bootstrap_ci_low_95:+.3f}, {item.document_bootstrap_ci_high_95:+.3f}] |")
+    else:
+        lines.append("The Kiwi positions did not provide a supported matched morphology comparison; no morphology claim is made.")
+    lines.extend([
+        "",
+        "## Interpretation and limitation",
+        "",
+        "This interim result estimates consistency between two sizes in the Qwen3 family only. It does not support the planned cross-family comparison or the original multi-target outcome classification. Low-margin overlap is descriptive and does not establish intrinsic linguistic ambiguity or causality. The complete five-target RQ6 remains pending the other model runs.",
+        "",
+        "### Proposed interim paragraph",
+        "",
+        f"On identical Korean text prefixes from {summary['data']['documents_evaluated']:,} FineWeb2 documents ({summary['data']['positions_evaluated']:,} eojeol onsets), the bottom-20% decision-point sets for Qwen3-4B and Qwen3-8B had a Jaccard similarity of {row.jaccard:.3f} (document-bootstrap 95% CI [{jaccard_ci.ci_low_95:.3f}, {jaccard_ci.ci_high_95:.3f}]) and shared {int(row.intersection_size):,} positions ({row.overlap_pct:.2f}% of all tested positions). Their margin ranks correlated at Spearman ρ = {corr_map[(row.model_a, row.model_b)]:.3f} (95% CI [{rho_ci.ci_low_95:.3f}, {rho_ci.ci_high_95:.3f}]). The observed overlap was {row.jaccard:.3f}, compared with a within-document relocation null mean of {null.null_mean:.3f} (95% permutation interval [{null.null_ci_low_95:.3f}, {null.null_ci_high_95:.3f}], upper-tail p = {null.empirical_upper_tail_p:.3f}). This interim comparison is limited to two Qwen3 targets and cannot establish cross-family generality.",
+        "",
+    ])
     (output_dir / "cross_target_findings.md").write_text("\n".join(lines), encoding="utf-8")
 
 
