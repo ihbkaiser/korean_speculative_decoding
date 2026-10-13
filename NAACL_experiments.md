@@ -145,12 +145,12 @@ Reproduction: `/venv/main/bin/python -u scripts/analyze_naacl_cpu.py --config co
 
 Three new scripts, each built from functions already in the repo (`greedy_generate_batch` in `src/speculative_decoding.py`, `score_teacher_forced_batch` in `src/e2_model_pairs.py`, the Table 1 morphology aligner). Write all outputs as resumable Parquet shards of 2,000 prompts.
 
-- [ ] **`gen_target.py`**: left-padded batched greedy `generate`, `max_new_tokens=128`, `do_sample=False`, BF16, SDPA, stop at EOS. Save `doc_id, prompt_ids, continuation_ids, eos_hit`. Reuse the repo's prompt truncation so prompts match the frozen splits.
-- [ ] **`tf_score.py`**: one forward over prompt + continuation with an attention mask. Per continuation position, from the draft: `argmax_id, logp_argmax, logp_target_token, entropy, top2_margin`; from the target on its own continuation: `entropy, top20_ids, top20_logp`. A `--continuation human` flag scores the document's real next 128 tokens instead (job H).
-- [ ] **`simulate_sd.py`** (CPU): for block size k, accept while `draft_argmax == target_token`, mark the first mismatch rejected, drop the rest of the block, no proposal at bonus positions. One row per eligible proposal with `slot, block_id, rejected, invalidated_after`. Also computes the RQ5 counterfactual accepted length.
-- [ ] **Alignment adapter:** feed `continuation_ids` to the existing Kiwi alignment as the target path, so all class and boundary columns match the current schema. Add a MeCab-ko variant behind a flag.
-- [ ] **Validation join:** V0 live-SD labels vs simulated labels on (`doc_id`, position); agreement overall and at CROSS positions.
-- [ ] **Annotation sheet:** 300 stratified items with eojeol, token span, Kiwi segmentation and class; columns for the annotator's judgement.
+- [x] **`gen_target.py`**: left-padded batched greedy `generate`, `max_new_tokens=128`, `do_sample=False`, BF16, SDPA, stop at EOS. Save `doc_id, prompt_ids, continuation_ids, eos_hit`. Reuse the repo's prompt truncation so prompts match the frozen splits.
+- [x] **`tf_score.py`**: one forward over prompt + continuation with an attention mask. Per continuation position, from the draft: `argmax_id, logp_argmax, logp_target_token, entropy, top2_margin`; from the target on its own continuation: `entropy, top20_ids, top20_logp`. A `--continuation human` flag scores the document's real next 128 tokens instead (job H).
+- [x] **`simulate_sd.py`** (CPU): for block size k, accept while `draft_argmax == target_token`, mark the first mismatch rejected, drop the rest of the block, no proposal at bonus positions. One row per eligible proposal with `slot, block_id, rejected, invalidated_after`. Also computes the RQ5 counterfactual accepted length.
+- [x] **Alignment adapter:** `align_morphology.py` feeds target continuations to Kiwi; the RQ4 robustness analysis also includes the MeCab-ko comparison.
+- [x] **Validation join:** `validate_live_sd.py` compares V0 live-SD labels with simulated labels by prompt and position, overall and on CROSS positions. The 95% shared-context gate passes; the zero-unmatched diagnostic does not.
+- [x] **Annotation sheet generated:** 300 stratified items with eojeol, token span, Kiwi segmentation and class, and annotator judgement columns. Responses remain blank; this marks sheet preparation only, not completed human validation.
 
 **Memory settings on 48 GB.**
 
@@ -191,10 +191,10 @@ These changes keep the paper's argument and make its methods match what will act
 - **Section 4, Decoding:** greedy SD outcomes are computed from the target's greedy continuation and the draft's teacher-forced predictions, and agree with live SD on V0's prompts at the measured rate. Remove the unqualified "100% of prompts" parity claim. Hardware: one RTX A6000 48GB.
 - **Section 5 (RQ1–RQ2):** add the Qwen draft x target grid as Fig. 3b, and Wikipedia-ko and human-written text as extra columns of the stability table.
 - **Section 6 (RQ3):** add the particle confusion matrix and the draft-size trend.
-- **Section 7 (RQ4):** add the MeCab-ko row to Table 4 and the human-validation summary (details in the appendix).
+- **Section 7 (RQ4):** add the MeCab-ko row to Table 4. No human annotation was available by the plan's Monday-noon fallback deadline, so describe MeCab-ko only as an automatic second-analyzer comparison and explicitly report the missing human check in Limitations and the appendix.
 - **New Section 8 (RQ5), cost for SD:** cost decomposition figure and block-size panel. No runtime table.
 - **Section 9, Implications and future directions:** tokenizer design, boundary-aware adaptive drafting, draft distillation on particle decisions, other agglutinative languages (Japanese if O2 ran). Keep claims hedged: these are directions, not results.
-- **Limitations:** observational design; automatic morphology with a 300-item human check; greedy decoding only; base models; no wall-clock measurements.
+- **Limitations:** observational design; automatic morphology and MeCab-ko second-analyzer comparison, with the planned 300-item human validation not obtained; greedy decoding only; base models; no wall-clock measurements.
 - **Appendix:** completed, cut and skipped jobs with reasons, plus provenance (Section 6).
 
 ## 9. Execution log (2026-10-11)
@@ -651,7 +651,7 @@ Across the complete H study, tokenizer-specific filtering left 9,722 Qwen, 9,604
 
 - These estimates show a scale-dependent global contrast and a positive N→P contrast only for the smallest draft. They are observational saved-continuation replay estimates, not live decoding or causal effects. CSV and metadata are `results/naacl_experiments/o1_qwen14/analysis/rq2_o1_qwen14_cross_within.csv` and `rq2_o1_qwen14_metadata.json`; analysis log: `logs/naacl_experiments/20261012/O1-qwen14-analysis.log`; reproduction command: `/venv/main/bin/python -u scripts/analyze_naacl_o1_qwen14.py --config configs/naacl_o1_qwen14.yaml`.
 
-**Queue status after O4 (2026-10-13, 00:51 UTC):** O1, O2, O3, and O4 model runs and analyses are complete and pushed. The planned machine-run work is finished; the 300-row RQ4 human validation remains unannotated. All optional extensions here use saved-continuation replay and do not measure live decoding latency.
+**Queue status after O4 (2026-10-13, 00:51 UTC):** O1, O2, O3, and O4 model runs and analyses are complete and pushed. The planned machine-run work is finished; the 300-row RQ4 human validation remains unannotated. Because no annotator was available by the plan's Monday-noon deadline, use the stated fallback: report MeCab-ko as an automatic second-analyzer comparison (CROSS−WITHIN AME −0.037 pp, 95% CI [−0.192, +0.118], p=.639) and state that this does not replace human validation. No further machine experiment is queued. These optional extensions use saved-continuation replay and do not measure live decoding latency.
 
 ### Optional O2: Japanese control preparation
 
