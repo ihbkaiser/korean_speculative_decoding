@@ -1,0 +1,48 @@
+schema: cross-target-decision-points-v1
+data:
+  prompts: data/prompts_40k.parquet
+  common_ids: data/common_20k_ids.txt
+  max_documents: 10000
+  positions_per_document: 20
+  context_window_chars: 256
+  min_context_chars: 128
+  morphology_anchor_words_per_document: 2
+inference:
+  dtype: bfloat16
+  attention_backend: sdpa
+  batch_size: 16
+  permutation_replicates: 1000
+  bootstrap_replicates: 1000
+  seed: 20261013
+models:
+  qwen4:
+    id: Qwen/Qwen3-4B-Base
+    revision: 906bfd4b4dc7f14ee4320094d8b41684abff8539
+    family: Qwen3
+    size: 4B
+  qwen8:
+    id: Qwen/Qwen3-8B-Base
+    revision: 49e3418fbbbca6ecbdf9608b4d22e5a407081db4
+    family: Qwen3
+    size: 8B
+  qwen14:
+    id: Qwen/Qwen3-14B-Base
+    revision: 0b0bd3732e2c374d483664439ea334928b65f304
+    family: Qwen3
+    size: 14B
+  gemma12:
+    id: google/gemma-3-12b-pt
+    revision: 295efb63d01a7017928f273a94ebb86105c9526f
+    family: Gemma 3
+    size: 12B
+    gated: true
+  ministral8:
+    id: mistralai/Ministral-3-8B-Base-2512
+    revision: d4883f9b36aa2e5d775730d3fdba3d30de51a8ef
+    family: Ministral 3
+    size: 8B
+    tokenizer_backend: tokenizers
+    fix_mistral_regex: true
+paths:
+  model_root: /dev/shm/naacl_models
+  outputs: results/cross_target_dp_10k
