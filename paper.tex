@@ -1,5 +1,5 @@
-% NAACL/*ACL review draft. Compile with pdfLaTeX and BibTeX.
-% For camera-ready, switch [review] to [final] and add the authors.
+% NAACL 2027 review draft. Compile with the ACL style and BibTeX.
+% This draft reflects the completed analysis plan. Human RQ4 annotation was not obtained.
 \documentclass[11pt]{article}
 \usepackage[review]{acl}
 \usepackage{times}
@@ -13,181 +13,624 @@
 \usepackage{amssymb}
 \usepackage{url}
 
-\title{When Tokens Cross Morphemes: Understanding Speculative Decoding Failures in Korean}
-
-% The review option anonymizes the author block.
+\title{Where Korean Token Boundaries Meet Morphology in Speculative Decoding}
 \author{Anonymous NAACL 2027 submission}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-Speculative decoding accelerates autoregressive generation only when a small draft model predicts tokens that a larger target model will accept. We examine whether Korean morphology helps explain these token-level disagreements. Korean subword tokens may either split a morpheme or combine material on both sides of a morpheme boundary. A scalar measure of token--morpheme boundary agreement does not predict rejection once fragmentation is held comparable. The distinction between these two forms of mismatch, however, is consequential. Across three Qwen3 draft--target configurations, tokens crossing a morpheme boundary are more likely to be rejected than tokens that split within a morpheme, after adjustment for token structure, position, model uncertainty, and frequency. This association is not uniform across Korean morphology. It is concentrated at nominal--particle attachments: crossing this boundary increases adjusted rejection probability by 20.9, 18.7, and 24.7 percentage points in the three configurations. The pattern is stable in a common-prompt analysis and is not driven by multi-boundary tokens. These findings show that the linguistic location of a subword boundary, rather than fragmentation alone, is informative about draft--target compatibility in Korean.
+Speculative decoding (SD) uses a small draft model to propose tokens that a
+larger target model verifies in parallel. We study whether the location of
+Korean subword boundaries is associated with draft--target rejection. Our
+analysis replays greedy verification decisions from saved target continuations
+and teacher-forced scores; a live-decoder validation agrees on 98.06\% of
+eligible shared-context Q2 positions, above a preselected 95\% gate, while
+unmatched and diverged contexts remain outside that claim. Across eight core
+model configurations, adjusted CROSS--WITHIN rejection contrasts vary in sign
+and size. A scalar boundary-F1 error does not show the hypothesized positive
+association, and the six-pair Qwen grid does not support a uniform
+nominal-to-particle effect. Token-level diagnostics locate many fused
+nominal--particle boundaries within the token, but particle swaps are uncommon
+in decoded draft candidates. RQ4 stress tests show sensitivity to label source,
+frequency specification, and support; arbitrary pseudo-boundaries reproduce
+most of the raw CROSS--WITHIN gap. These are observational replay results, not
+causal effects or latency measurements. No human annotation was obtained; an
+automatic MeCab-ko comparison is reported separately and is not treated as
+human validation. At block size four, visible single-boundary CROSS positions
+account for 35.08\% of replay rejections and 35.29\% of wasted draft work,
+while the model-based counterfactual changes expected accepted length by only
+0.025 target tokens per call.
 \end{abstract}
 
 \section{Introduction}
 \label{sec:intro}
 
-Speculative decoding (SD) reduces the serial cost of autoregressive generation by allowing a smaller draft model to propose several future tokens and a larger target model to verify them in parallel \citep{leviathan2023,chen2023speculative}. Its efficiency depends on how often the draft proposes tokens that the target accepts. Existing work has improved drafts, proposal policies, and uncertainty-based controls; for example, draft entropy can identify positions at which long speculative blocks are risky \citep{zhang2025draft}. Yet we still know relatively little about which linguistic properties of a proposed token make two models disagree.
+Speculative decoding accelerates autoregressive generation by having a smaller
+draft model propose a block that a larger target model verifies in parallel
+\citep{leviathan2023,chen2023speculative}. Its practical value depends on the
+draft's agreement with the target, and prior work has examined confidence-based
+draft lengths and language-specific drafters \citep{zhang2025draft,yi2024multilingual}.
+We ask whether the local linguistic structure of a token provides a useful
+description of this agreement in Korean.
 
-This question is particularly natural in Korean. A whitespace-delimited unit, or \emph{eojeol}, commonly contains a lexical item together with particles, tense markers, or endings. A frequency-based subword tokenizer therefore need not preserve the boundaries identified by Korean morphological analysis. It may split a single morpheme into several tokens, or it may create one token that contains the end of a nominal and an attached particle. Prior work has shown that morphology-sensitive tokenization can improve Korean NLP \citep{park2020korean,lee2026morpheme} and that constraining subword merges by morphological boundaries can improve morphological coherence \citep{asgari2026morphbpe}. Whether such structure predicts speculative-decoding acceptance has not been established.
+Korean eojeol commonly combine a lexical stem with particles or endings.
+Frequency-trained subword tokenizers can split inside a morpheme or merge
+characters that fall on both sides of a morpheme boundary. Research on Korean
+tokenization has studied morphology-aware segmentation as a way to improve
+language modeling and downstream tasks \citep{park2020korean,lee2026morpheme}.
+Whether these boundary relationships are associated with greedy SD rejection
+is a separate empirical question. We use a Korean morphological analyzer to
+describe token spans, without changing the models or proposing a new decoding
+method \citep{lee2024kiwi}.
 
-We study this issue at the level of individual draft proposals. Our first analysis asks whether overall disagreement between tokenizer boundaries and morpheme boundaries predicts rejection. It does not. This negative result matters because a single boundary-agreement score treats two linguistically different tokenization events as interchangeable: splitting inside a morpheme and crossing from one morpheme into the next. When we separate them, cross-morpheme tokens are consistently associated with higher rejection than within-morpheme splits, even after accounting for structural features, entropy, and token frequency.
+The initial hypothesis was that a single scalar measure of token--morpheme
+boundary mismatch would identify risky proposals. The completed full-sample
+analysis does not support that simple account: the adjusted association for
+boundary-F1 error is negative, and the fusion component is not distinguishable
+from zero. Across model configurations, the adjusted global CROSS--WITHIN
+contrast also changes sign. These results make it necessary to report both the
+direction of the mismatch and the support available at each boundary.
 
-The central finding is more specific still. The penalty for crossing a morpheme boundary is not distributed evenly across Korean constructions. In three independently analyzed draft--target configurations, it is large and reproducible at nominal--particle attachments, while predicate--ending transitions show estimates near zero. The result therefore does not support the broad claim that all Korean grammatical boundaries are equally difficult. Rather, it identifies one recurring attachment environment in which the draft and target are especially likely to diverge.
+We organize the analysis around five questions:
 
-Our contributions are threefold:
-\begin{itemize}
-    \item We provide a token-level analysis of the relationship between Korean morphological structure and speculative-decoding rejection.
-    \item We show that aggregate token--morpheme misalignment obscures a consequential distinction: tokens that cross a morpheme boundary behave differently from tokens that merely split a morpheme.
-    \item We localize the association to nominal--particle attachments and replicate it across three model-size configurations, reporting effects on the rejection-probability scale rather than only as odds ratios.
-\end{itemize}
+\begin{enumerate}
+    \item \textbf{Where?} Does scalar token--morpheme alignment predict
+    rejection, and which mismatch directions and boundaries are associated
+    with it?
+    \item \textbf{How general?} How do the observed patterns vary with draft
+    and target scale, model family, domain, and generated versus human-written
+    text?
+    \item \textbf{Why?} Do token geometry, draft confidence, or particle
+    choices describe the observed differences?
+    \item \textbf{Is it morphology?} Do token identities, arbitrary cuts,
+    frequency, proposal-side labeling, or a second analyzer change the result?
+    \item \textbf{What is the replay cost?} What share of rejections and
+    invalidated draft work is assigned to visible CROSS positions, and how
+    large is a specified accepted-length counterfactual?
+\end{enumerate}
 
-\section{Background and Related Work}
+This is an analysis paper. We make no causal claim about morphology and no
+claim of measured acceleration. Our contributions are a directional analysis
+of token-boundary associations across model settings, a set of mechanism and
+robustness diagnostics, and a conditional accounting of replay rejections and
+wasted draft work. The full configurations, artifacts, and execution logs are
+available in the accompanying repository.
+
+\section{Related Work}
 \label{sec:related}
 
 \paragraph{Speculative decoding.}
-In SD, a draft model proposes a block of tokens and a target model verifies the proposal in parallel, accepting a prefix under a verification rule \citep{leviathan2023,chen2023speculative}. The method is most effective when long prefixes are accepted. Recent work consequently estimates when drafting is likely to fail. \citet{zhang2025draft}, for instance, use draft uncertainty to adapt speculative length. Our work is complementary: we ask whether the linguistic structure of the proposed token remains informative after uncertainty is taken into account.
-
-\paragraph{Multilingual speculative decoding.}
-Language is an important source of variation in SD. Language-specialized drafts can improve multilingual inference \citep{yi2024multilingual}, and recent evidence suggests that small drafts may be disproportionately weak outside English \citep{paudel2026languages}. Rather than comparing languages as whole units, we examine variation within Korean, where individual subword tokens occupy different morphological environments.
+Speculative decoding uses a draft model to propose continuations and a target
+model to verify them while preserving the target decoding rule
+\citep{leviathan2023,chen2023speculative}. Adaptive draft-length work uses
+model confidence or entropy to decide when to stop drafting
+\citep{zhang2025draft}. Our study is complementary: we characterize
+token-level rejection associations by the relationship between subword spans
+and an automatic Korean morphological analysis. We do not evaluate an adaptive
+policy or compare wall-clock decoding systems.
 
 \paragraph{Korean morphology and tokenization.}
-Korean is commonly analyzed as sequences of morphemes within eojeol. The relationship between whitespace and morphology is therefore non-trivial: a single eojeol may contain a noun and a case particle, or a predicate and several endings. Earlier work found benefits from combining morphological segmentation with subword tokenization \citep{park2020korean}; more recently, \citet{lee2026morpheme} proposed morpheme-based Korean subword tokenization, and \citet{asgari2026morphbpe} constrained BPE merges to respect morpheme boundaries. We use Kiwi \citep{lee2024kiwi} to obtain surface morpheme spans. We do not modify the tokenizer or retrain either model.
+Korean tokenization studies compare subword and morphology-aware segmentation
+strategies \citep{park2020korean,lee2026morpheme}. We use Kiwi to obtain
+surface morpheme spans \citep{lee2024kiwi}. The analyzer supplies automatic
+labels and is not treated as gold annotation. Our question concerns how these
+labels align with target tokens and saved draft proposals during greedy replay,
+not whether a morphology-aware tokenizer improves model quality.
 
 \section{Experimental Setting}
 \label{sec:setup}
 
-\subsection{Models, data, and outcome}
+\subsection{Models and text}
 
-We evaluate greedy SD on the first 1,000 Korean Wikipedia examples in local dataset order. Prompts are truncated to at most 128 tokens and the target generates at most 128 continuation tokens. We use three Qwen3-Base draft--target configurations with a shared tokenizer: 0.6B$\rightarrow$1.7B, 1.7B$\rightarrow$4B, and 0.6B$\rightarrow$4B. The speculative block size is four. For each configuration, speculative output exactly matches the target's greedy output by token ID on all prompts.
+The core study uses eight draft--target configurations: six Qwen3 pairs
+(Q1--Q6), Gemma-3 4B$\rightarrow$12B (G1), and Ministral-3 3B$\rightarrow$8B
+(M1). Q2 (Qwen3 0.6B$\rightarrow$4B) uses 40,000 frozen FineWeb2 Korean
+prompts; the other core generated-text pairs use the common 20,000-prompt
+split. We additionally score human-written Korean continuations for the eight
+core pairs and run the Q2 and G1 pairs on a frozen 2,000-document Korean
+Wikipedia sample.
 
-Our outcome is \textbf{SD rejection}: an eligible proposal on the realized speculative path is coded as rejected when the target does not accept it. Proposals made invalid by an earlier rejection in the same block are not counted as rejections. We also computed teacher-forced next-token disagreement as a diagnostic. In the initial 0.6B$\rightarrow$4B analysis, the two labels agreed at 99.88\% of eligible positions; we therefore use SD rejection as the main outcome and treat teacher forcing only as a consistency check.
+Four optional extensions were completed: a Qwen3-14B target scale extension
+(O1), a 5,000-document Japanese control with Qwen and Gemma pairs (O2), a
+1,012-item FLORES-200 English-to-Korean prompt set (O3), and a Gemma-3-1B
+draft paired with the existing Gemma-3-12B target (O4). These are exploratory
+extensions and use saved-continuation replay.
 
-\subsection{Morphological alignment and analysis population}
+\subsection{Saved-continuation replay and live validation}
 
-Kiwi supplies morpheme surface spans within each eojeol. We align the visible character span of every generated token to these morphemes, after removing whitespace from the token core. The main comparison uses two token classes:
-\begin{itemize}
-    \item \textbf{within-morpheme splits}, which lie inside one morpheme but cover only part of it; and
-    \item \textbf{cross-morpheme tokens}, which overlap material from two or more morphemes.
-\end{itemize}
-Tokens that span multiple eojeol or have ambiguous surface alignment are excluded. In the initial 0.6B$\rightarrow$4B analysis, 9,660 of 127,245 generated tokens (7.59\%) were excluded because Kiwi or span alignment was ambiguous; a further 135 visible tokens could not be mapped by exact retokenization and were documented separately. The corresponding primary comparison contains 73,143 eligible tokens from 997 prompts. Pair-specific replication analyses apply the same eligibility and alignment rules.
+For each target, we generate a greedy continuation of at most 128 tokens. We
+then score that continuation under the target and each draft with teacher
+forcing. For a block size $k$, CPU replay accepts draft argmaxes while they
+match the saved target token, marks the first mismatch as a rejection, and
+invalidates the remaining proposals in that block. No proposal is counted at a
+bonus position. This reproduces greedy verification decisions conditional on
+the saved continuation and matching runtime decisions; it does not measure
+parallel verification latency.
 
-For every regression, we compare observations within exact fragmentation levels (2, 3, 4, 5, 6, 7, and 8 or more tokens per eojeol). We adjust for relative position within the eojeol, whether the token is first or last in the eojeol, proposal slot, generation position, token and eojeol character lengths, draft entropy, target entropy, and a flexible function of log token frequency. Standard errors are clustered by prompt. We report adjusted probabilities and their differences whenever possible, because they are more directly interpretable than odds ratios.
+We validate the replay with live SD for 1,000 Q2 prompts and 500 G1 prompts.
+The prespecified gate is rejection-label agreement among eligible positions
+where live decoding and the saved target continuation share the same context.
+Q2 agreement is 98.0577\% over 58,385 positions, exceeding the user's 95\%
+threshold. G1 agreement is 99.8213\% over 45,879 positions. The stricter
+zero-unmatched diagnostic fails: Q2 has 949 unmatched live positions and 947
+unmatched simulation positions in shared contexts. Across all contexts Q2
+agreement is 88.65\%; only 54.58\% of target tokens belong to the common
+prefix, and 40.5\% of prompts have identical target sequences. We therefore
+scope replay claims to shared-context positions. The gate does not validate
+diverged contexts or establish live latency.
 
-\section{A Coarse Boundary Score Does Not Explain Rejection}
-\label{sec:coarse}
+\subsection{Morphological labels and analysis}
 
-We first ask whether a tokenizer that disagrees more strongly with the morphological analysis is more likely to produce rejected proposals. For each eojeol, let $B_T$ and $B_M$ be the internal tokenizer and morpheme boundaries. We summarize agreement with boundary F1 and define
-\begin{equation}
-    \mathrm{misalignment} = 1 - F_1(B_T,B_M).
-\end{equation}
-A value near zero indicates close agreement and a value near one indicates poor agreement.
+Kiwi aligns target-token spans to morphemes inside each eojeol. We classify a
+visible token as \textsc{Cross} when its span contains an internal morpheme
+boundary, and as \textsc{Within} when it splits within a morpheme without
+crossing one. Exact-boundary, multi-boundary, ambiguous, and incomplete
+alignments are handled as described in each analysis metadata file. Unless
+specified otherwise, the main CROSS--WITHIN analyses use target-side token
+labels along the saved continuation. They are retrospective labels for
+positions in the target path; they are not labels of the rejected draft
+candidate.
 
-This scalar measure does not yield the expected positive pattern. In fragmentation groups of two, three, and four tokens, the estimated association with rejection is small and not statistically distinguishable from zero. In the five-or-more group, the unadjusted estimate is negative rather than positive. After entropy and position controls, the overall adjusted coefficient is also not positive ($\beta=-0.0785$, $p=.084$ for SD rejection; $\beta=-0.0498$, $p=.291$ for teacher-forced disagreement). We therefore do not interpret the negative estimates as beneficial effects of misalignment. They instead show that a scalar boundary score mixes together tokenization events with different consequences.
+The separate proposal-side RQ4 analysis projects each eligible draft argmax
+onto its saved target-prefix context using the pinned Qwen06 tokenizer. These
+labels describe the actual saved-prefix candidate when projection succeeds.
+The target-side and proposal-side estimates are reported separately because
+they answer different measurement questions.
+
+Pair-specific logistic models use the plan's common controls: eojeol-token
+count and block-slot fixed effects, a five-degree cubic spline of generated
+position, log eojeol length, draft and target entropy, and draft and target
+top-two margins. Standard errors are clustered by document. Reported AMEs are
+percentage-point differences in simulated rejection probability. These
+adjusted observational associations are not causal effects. Human-written-text
+analyses measure draft--target argmax disagreement on the document's real next
+tokens; they are not live SD rejection outcomes.
+
+\section{RQ1: Scalar Alignment and Boundary Direction}
+\label{sec:rq1}
+
+\subsection{A scalar boundary score does not have a positive association}
+
+On the Q2 full sample, the RQ1 Table 2a population contains 804,045 proposals
+from 34,211 documents after the planned visible-alignment and complete-eojeol
+filters. Higher values of each predictor indicate more boundary error. The
+adjusted AME for $1-F_1$ is $-0.985$ percentage points over the full
+predictor range (95\% CI $[-1.212,-0.759]$). The fusion component
+($1-\mathrm{Recall}$) is not distinguishable from zero, while the splitting
+component ($1-\mathrm{Precision}$) is negative. The fits converge, but these
+conditional associations do not support the planned positive scalar-error
+story.
 
 \begin{table}[t]
+\centering
+\small
+\begin{tabular}{lrr}
+\toprule
+Predictor & AME (pp) & 95\% CI (pp) \\
+\midrule
+$1-F_1$ & $-0.985$ & $[-1.212,-0.759]$ \\
+$1-\mathrm{Recall}$ (fusion) & $-0.167$ & $[-0.389,+0.055]$ \\
+$1-\mathrm{Precision}$ (splitting) & $-1.032$ & $[-1.254,-0.810]$ \\
+\bottomrule
+\end{tabular}
+\caption{Adjusted association between boundary-score error and Q2 replay
+rejection. Each AME is the probability change over a unit change in the
+predictor.}
+\label{tab:scalar}
+\end{table}
+
+\subsection{The global CROSS--WITHIN contrast varies by setting}
+
+Table~\ref{tab:global} reports adjusted target-side CROSS--WITHIN contrasts
+for the eight core generated-text pairs. The sign and size vary: three
+estimates are positive, four are negative, and one is near zero. Q1, Q2, and
+M1 intervals include zero. Thus a global CROSS label is not a consistent
+risk marker across these settings.
+
+\begin{table*}[t]
 \centering
 \small
 \begin{tabular}{lrrr}
 \toprule
-Fragmentation & Rejection & Misalignment slope & $p$ \\
+Pair & Proposals & Raw CROSS/WITHIN rejection & Adjusted AME (95\% CI), pp \\
 \midrule
-2  & 20.62\% & $+0.015$ & .795 \\
-3  & 20.00\% & $-0.059$ & .473 \\
-4  & 18.55\% & $-0.077$ & .544 \\
-$5+$ & 16.17\% & $-0.676$ & $1.54\times10^{-5}$ \\
+Q1 0.6B$\rightarrow$1.7B & 968,737 & 18.44\% / 11.01\% & $+0.09$ $[-0.11,+0.28]$ \\
+Q2 0.6B$\rightarrow$4B & 1,974,984 & 23.44\% / 14.41\% & $+0.04$ $[-0.11,+0.19]$ \\
+Q3 4B$\rightarrow$8B & 973,884 & 14.43\% / 10.29\% & $-1.42$ $[-1.61,-1.24]$ \\
+Q4 1.7B$\rightarrow$4B & 976,040 & 17.31\% / 11.28\% & $-0.69$ $[-0.89,-0.49]$ \\
+Q5 0.6B$\rightarrow$8B & 999,387 & 26.43\% / 16.69\% & $+0.37$ $[+0.14,+0.59]$ \\
+Q6 1.7B$\rightarrow$8B & 985,750 & 19.41\% / 13.08\% & $-0.79$ $[-0.99,-0.58]$ \\
+G1 4B$\rightarrow$12B & 822,145 & 1.36\% / 1.55\% & $-0.39$ $[-0.46,-0.32]$ \\
+M1 3B$\rightarrow$8B & 1,010,655 & 15.95\% / 10.29\% & $-0.01$ $[-0.18,+0.16]$ \\
 \bottomrule
 \end{tabular}
-\caption{Association between a coarse boundary-misalignment score and SD rejection in the initial 0.6B$\rightarrow$4B analysis. Slopes are changes in log-odds over the full 0--1 score range, with prompt-clustered standard errors.}
-\label{tab:coarse}
-\end{table}
+\caption{Target-side CROSS versus WITHIN_SPLIT results for core generated
+text. Raw rates are unadjusted. The adjusted model uses document-clustered
+uncertainty.}
+\label{tab:global}
+\end{table*}
 
-\section{Crossing a Morpheme Boundary Is Different from Splitting One}
-\label{sec:crossing}
-
-The negative result above motivates a more precise comparison. A within-morpheme split subdivides one linguistic unit, whereas a cross-morpheme token fuses material that belongs to adjacent units. For example, the latter can contain the suffix of a noun together with an attached particle. These operations receive similarly poor scores under aggregate boundary agreement, but they impose different prediction problems on the models.
-
-In the initial 0.6B$\rightarrow$4B analysis, cross-morpheme tokens have higher rejection odds than within-morpheme splits in every adjustment set. With all structural, entropy, and frequency controls, the odds ratio is 1.77 (95\% CI 1.47--2.11; $p=6.34\times10^{-10}$). The association survives both linear and nonlinear frequency controls and a frequency-stratified comparison, indicating that token rarity alone does not account for the result (Table~\ref{tab:frequency}). The same direction is retained in the model-pair replication analyses described below.
-
-\begin{table}[t]
-\centering
-\scriptsize
-\begin{tabular}{@{}lcc@{}}
-\toprule
-Frequency adjustment & Odds ratio (95\% CI) & $p$ \\
-\midrule
-No frequency term & 1.766 (1.475--2.115) & $6.3\mathrm{e}{-10}$ \\
-Linear log frequency & 1.750 (1.457--2.101) & $2.1\mathrm{e}{-9}$ \\
-Flexible log frequency & 1.894 (1.542--2.327) & $1.2\mathrm{e}{-9}$ \\
-Frequency-stratified & 1.961 (1.614--2.381) & $1.1\mathrm{e}{-11}$ \\
-\bottomrule
-\end{tabular}
-\caption{Cross-morpheme tokens versus within-morpheme splits in the initial 0.6B$\rightarrow$4B analysis. All rows include structural and entropy controls. The frequency-stratified comparison uses 44,158 tokens from 992 prompts.}
-\label{tab:frequency}
-\end{table}
-
-\section{The Association Is Concentrated at Nominal--Particle Attachments}
-\label{sec:environment}
-
-The preceding result establishes that crossing a morpheme boundary is not equivalent to splitting within a morpheme. It does not, however, establish that all boundaries behave alike. We therefore classify the single boundary crossed by each eligible cross-morpheme token according to the adjacent morphosyntactic environment: nominal$\rightarrow$particle, predicate$\rightarrow$ending, ending$\rightarrow$ending, lexical$\rightarrow$lexical, or other. For within-morpheme splits, we assign the corresponding local environment from the adjacent morphemes. The primary analysis compares cross-morpheme tokens and within-morpheme splits within each environment, using the same covariates as above.
-
-Of 11,016 eligible cross-morpheme tokens across the three configurations, 9,294 (84.4\%) cross exactly one boundary. The primary analysis is restricted to these single-boundary cases. This restriction makes the linguistic interpretation clear: the result is not driven by unusual tokens that absorb several morphemes at once.
-
-Nominal--particle attachment is the one well-supported environment with a large, reproducible penalty. Table~\ref{tab:nominal-particle} reports adjusted differences in rejection probability between cross-morpheme tokens and within-morpheme splits. Crossing a nominal--particle boundary is associated with increases of 20.9, 18.7, and 24.7 percentage points in the 0.6B$\rightarrow$1.7B, 1.7B$\rightarrow$4B, and 0.6B$\rightarrow$4B configurations, respectively. Each interval excludes zero after correcting the pre-specified particle-environment contrasts within the corresponding model pair.
-
-\begin{table}[t]
-\centering
-\small
-\begin{tabular}{lcc}
-\toprule
-Draft $\rightarrow$ target & Adjusted difference & Holm-adjusted $p$ \\
-\midrule
-0.6B $\rightarrow$ 1.7B & $+20.9$ [15.4, 26.4] pp & $4.9\times10^{-13}$ \\
-1.7B $\rightarrow$ 4B & $+18.7$ [12.4, 25.0] pp & $3.2\times10^{-8}$ \\
-0.6B $\rightarrow$ 4B & $+24.7$ [18.4, 31.0] pp & $5.6\times10^{-14}$ \\
-\bottomrule
-\end{tabular}
-\caption{Adjusted rejection-probability differences for cross-morpheme tokens minus within-morpheme splits at nominal$\rightarrow$particle attachments. Brackets give 95\% confidence intervals in percentage points.}
-\label{tab:nominal-particle}
-\end{table}
-
-The differences among boundary environments are themselves strongly supported: the interaction between token class and environment is significant in all three configurations ($p=2.05\times10^{-26}$, $1.03\times10^{-9}$, and $1.74\times10^{-28}$, respectively). The concentration is substantively important. Predicate$\rightarrow$ending estimates are close to zero, so the findings do not license a general statement that grammatical suffixes make SD fail. Ending$\rightarrow$ending estimates are negative, but those comparisons have only 10--33 within-morpheme-split tokens per pair and are too sparse for a stable interpretation. Cross-morpheme support for lexical$\rightarrow$lexical transitions is likewise sparse. Figure~\ref{fig:environment} presents the full environment-specific estimates and confidence intervals.
+The boundary landscape in Figure~\ref{fig:boundary} localizes heterogeneity.
+Thirty-eight fine boundaries meet the planned 200-proposal support in each
+class; 36 contrasts are estimable and nine have Benjamini--Hochberg
+$q<0.05$. Two supported fits are retained as diagnostics but omitted from
+the plot and correction because \texttt{NP$\rightarrow$JKO} has zero
+clustered variance and \texttt{VA-I$\rightarrow$EC} has a rank-deficient
+design. The largest positive estimates include
+\texttt{NNB$\rightarrow$JKS} (+33.94 pp),
+\texttt{NNG$\rightarrow$JC} (+31.78 pp), and
+\texttt{VCP$\rightarrow$EC} (+15.00 pp). Other boundaries have negative
+estimates. These are boundary-specific conditional associations, not a
+general effect of morphology.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\columnwidth]{figures/h3_environment_ame_forest.pdf}
-\caption{Adjusted rejection-probability difference between cross-morpheme tokens and within-morpheme splits by morphological environment. Points show the three draft--target configurations; bars show 95\% confidence intervals.}
-\label{fig:environment}
+\includegraphics[width=\columnwidth]{results/naacl_experiments/analysis/figure2_boundary_landscape.pdf}
+\caption{Q2 boundary-specific adjusted CROSS--WITHIN associations. Only
+boundaries with planned support and estimable fits are shown.}
+\label{fig:boundary}
 \end{figure}
 
-\subsection{Replication and sensitivity analysis}
+\section{RQ2: Generality Across Models, Domains, and Text Sources}
+\label{sec:rq2}
 
-We analyze the three model pairs separately rather than pooling their token observations and treating the result as a single experiment. The nominal--particle effect has the same positive direction in all three pairs and similar magnitude despite different draft and target capacities. A secondary analysis restricted to the exact 993-prompt intersection shared by all three pairs produces only a minor numerical change: the largest shift in an environment-specific adjusted difference is 0.95 percentage points, and no estimate reverses sign. A broader construction-level sensitivity analysis also retains a positive nominal--particle association. Ending$\rightarrow$ending is not estimable in that sensitivity analysis because no single-boundary cross-morpheme tokens are available for the comparison.
+The core Qwen grid extends across three draft sizes and three target sizes.
+Its adjusted global and nominal-to-particle (N$\rightarrow$P) contrasts
+vary across the six pairs; the Qwen N$\rightarrow$P estimates range from
+$-1.95$ to $+3.00$ pp, and several intervals include zero. The eight
+generated-text core pairs also span Gemma and Ministral. Raw N$\rightarrow$P
+differences in the common-pool family comparison are positive for Qwen and
+Ministral, but not for Gemma. Figure~\ref{fig:heatmap} summarizes supported
+boundary families and Figure~\ref{fig:grid} shows adjusted Qwen estimates.
+Neither exhibit supports a tokenizer-independent, uniform penalty.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.94\textwidth]{results/naacl_experiments/analysis/figure3a_rq2_boundary_pair_heatmap.pdf}
+\caption{Raw rejection-rate differences by supported coarse boundary family
+and core model pair on the common prompt pool. Cells require at least 200
+CROSS and 200 WITHIN proposals.}
+\label{fig:heatmap}
+\end{figure*}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{results/naacl_experiments/analysis/figure3b_rq2_qwen_grid.pdf}
+\caption{Adjusted global and N$\rightarrow$P CROSS contrasts across the
+six-pair Qwen draft--target grid, in percentage points.}
+\label{fig:grid}
+\end{figure}
+
+We compare the ordering of fine-boundary estimates across 18 core settings:
+eight generated-text pairs, eight corresponding human-written-text
+disagreement settings, and two Wikipedia settings. Across 153 setting pairs,
+136 have at least three shared supported boundaries. For core generated
+settings, mean rank correlation is 0.618, sign agreement is 0.796, and
+top-five Jaccard is 0.306. Same-pair generated-versus-human comparisons have
+mean rank correlation 0.367, sign agreement 0.792, and top-five Jaccard
+0.186. Human-text comparisons use disagreement on the same human-written
+prefix and must not be read as replay rejection. Seventeen comparisons are
+not estimable; all involve Wikipedia Q2, which has only one supported fine
+boundary. The stability analysis therefore shows partial ordering agreement,
+not a stable universal boundary ranking.
+
+\paragraph{Optional scale and domain checks.}
+The completed optional studies add scale and domain evidence, but their
+different prompt sources and smaller samples make them exploratory. With a
+Qwen3-14B target, the three Qwen draft sizes have global estimates from
+$-1.258$ to $+0.466$ pp; their N$\rightarrow$P estimates are positive only
+for the 0.6B draft. On 1,012 FLORES English prompts translated into Korean,
+global and N$\rightarrow$P effects vary across eight pairs, and fine-boundary
+rank stability is estimable only for Ministral (seven shared supported
+boundaries; $\rho=0.86$). The 5,000-document Japanese control yields
+different topic-particle and subject-particle patterns across Qwen and Gemma;
+the Gemma subject-particle fit is separation-limited. The Gemma1-to-Gemma12 extension estimates
+$-0.365$ pp globally and $-0.226$ pp for N$\rightarrow$particle, both below
+zero. Full optional estimates and caveats are in Appendix~\ref{app:optional}.
+
+\section{RQ3: Token Geometry and Candidate Diagnostics}
+\label{sec:rq3}
+
+Among 168,861 visible, aligned, single-boundary CROSS target tokens, the
+internal N$\rightarrow$P boundary lies in the 25--50\% position bin for
+85.9\% and in the 50--75\% bin for 14.1\%. This locates where the
+morpheme boundary falls within a fused target token; it does not establish a
+grammatical mechanism.
+
+Among target-consistent CROSS rejection events, the rejected Qwen 0.6B
+argmax ranks 2--5 in the saved Qwen4 target top-20 for 27,994 of 33,653
+positions, ranks 6--10 for 3,467, ranks 11--20 for 1,315, and below rank 20
+for 877 (right-censored). Median draft entropy is 2.565 nats for
+target-consistent aligned CROSS rejections and 3.861 for WITHIN rejections.
+These diagnostics describe score distributions and are not evidence that
+entropy or geometry causes rejection.
+
+The planned particle-confusion hypothesis predicted topic/subject swaps to
+dominate rejected N$\rightarrow$P candidates. Instead, among 5,842
+target-consistent, single-boundary events, Kiwi finds no particle in the
+decoded draft candidate surface for 83.1\%; topic/subject swaps total 372
+events. This surface diagnostic does not support the predicted dominance.
+Descriptive draft-size slopes are negative for global and N$\rightarrow$P
+contrasts under the 4B and 8B targets, but use only two or three draft sizes
+and have no inferential confidence intervals.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{results/naacl_experiments/analysis/figure5_rq3_token_diagnostics.pdf}
+\caption{Q2 token-geometry, target-rank, and entropy diagnostics. Particle
+labels are surface analyses of decoded draft candidates.}
+\label{fig:rq3}
+\end{figure}
+
+\section{RQ4: Falsification and Analyzer Robustness}
+\label{sec:rq4}
+
+The full Q2 target-side adjusted estimate is near zero
+($+0.041$ pp; 95\% CI $[-0.111,+0.192]$). The common-20k estimate and the
+strict-alignment estimate are also near zero. Excluding multi-boundary CROSS
+tokens changes the estimate little. These checks do not support a robust
+positive global target-side contrast.
+
+The pseudo-boundary experiment samples the same number of random internal
+character cuts as Kiwi boundaries within each eligible eojeol. The observed
+raw rejection-rate gap is $+8.64$ pp; the 100-draw pseudo-gap median is
+$+7.39$ pp (95\% draw interval $[+7.30,+7.50]$), and none of the draws
+reaches the observed gap. Thus arbitrary cuts reproduce most of the raw
+difference, while the observed gap exceeds this pseudo distribution. This
+weakens a morphology-specific reading; it is not a randomized causal test.
+
+The estimate is specification-sensitive to frequency controls. Using an
+external Wikipedia frequency cache gives negative adjusted estimates
+($-1.86$ to $-1.91$ pp); a disjoint FineWeb2 frequency sample also gives
+negative estimates ($-1.111$ pp for a spline and $-1.205$ pp for deciles).
+The top-token removal fits rise to $+3.42$--$+4.54$ pp after removing the
+top 25--100 CROSS token IDs per boundary, but CROSS support falls from
+149,457 rows to 1,384--307. These sparse stress tests do not establish a
+population-level effect after token removal.
+
+The proposal-side refit produces a different estimate: projecting saved
+draft argmaxes on their target-prefix context gives a CROSS--WITHIN AME of
+$+4.773$ pp (95\% CI $[+4.657,+4.889]$) on 1,914,148 valid proposal-side
+rows from 39,311 documents. Proposal-side and target-side class labels
+agree on 99.42\% of 1,528,036 comparable rows. This high class agreement
+does not make the estimands interchangeable: the result remains conditional
+on successful saved-prefix projection and the analysis filters.
+
+MeCab-ko parsed 162,137 unique eojeol strings. Its automatic second-analyzer
+CROSS--WITHIN AME is $-0.037$ pp (95\% CI $[-0.192,+0.118]$, $p=.639$)
+on 1,860,584 strict-alignment proposals. This is not human validation. The
+planned 300-item annotation sheet is prepared, but all annotator fields are
+blank because no annotator was available by the plan's deadline. We use the
+planned MeCab fallback as an automatic comparison and retain the missing
+human review as a limitation.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{results/naacl_experiments/analysis/figure6_rq4_falsification.pdf}
+\caption{RQ4 falsification and robustness results. Each panel has its own
+analysis population and estimand; the rows should not be interpreted as a
+single pooled effect.}
+\label{fig:rq4}
+\end{figure}
+
+\section{RQ5: Rejection and Draft-Work Accounting}
+\label{sec:rq5}
+
+At block size four, the Q2 replay contains 717,681 rejection events and
+2,128,451 units of wasted draft work under the planned accounting, which
+charges the rejected proposal and every invalidated suffix proposal to the
+first rejected position. Five coarse single-boundary CROSS families account
+for 251,794 rejections (35.08\%) and 751,148 wasted draft tokens (35.29\%).
+N$\rightarrow$P alone accounts for 90,193 rejections (12.57\%) and 273,076
+wasted draft tokens (12.83\%). The \texttt{OTHER\_OR\_UNALIGNED} bucket
+accounts for 64.77\% of rejections, limiting attribution to the visible
+aligned subset.
+
+The counterfactual replaces each CROSS position's observed mismatch with an
+independent Bernoulli outcome whose probability equals the eligible
+WITHIN rate for that coarse boundary; other positions retain their observed
+mismatch labels. At $k=4$, observed replay yields 3.452 target tokens per
+target call; the counterfactual is 3.477 (document-cluster 95\% CI
+$[3.471,3.483]$), a difference of $+0.025$ tokens per call. Differences
+for $k=1,2,4,8,16$ are $+0.003,+0.009,+0.025,+0.054,+0.084$,
+respectively. This is a model-based counterfactual, not measured latency or
+a causal estimate. Its intervals hold estimated WITHIN rates fixed and do
+not include uncertainty in those rates; positions are treated as independent
+conditional on boundary family.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{results/naacl_experiments/analysis/figure7_rq5_cost_and_accepted_length.pdf}
+\caption{Q2 replay cost decomposition and accepted-length counterfactual
+across block sizes. No wall-clock latency is measured.}
+\label{fig:rq5}
+\end{figure}
 
 \section{Discussion}
 \label{sec:discussion}
 
-The main result is not that morphological alignment is uniformly beneficial. The coarse boundary score shows why that conclusion would be misleading. A token that divides a morpheme and a token that binds material across a boundary are both misaligned with morphology, yet their relationships with draft--target agreement differ sharply. The latter is the informative configuration in our data.
+Across the completed experiments, the evidence does not support a universal
+claim that crossing a Korean morpheme boundary raises greedy SD rejection.
+The full Q2 scalar-alignment model is not positive, core global contrasts
+vary across model settings, the pseudo-boundary experiment reproduces most
+of the raw gap, and frequency adjustments are specification-sensitive.
+Proposal-side labeling yields a positive adjusted contrast, but uses a
+different label source and selected projection population. These results
+support describing local tokenization structure as a measurement axis for
+draft--target disagreement, while keeping the claim conditional on the
+analysis and replay scope.
 
-The boundary-level analysis further narrows the claim. The association is concentrated at nominal--particle attachments, not broadly across every Korean grammatical transition. A plausible interpretation is that these fused subwords create a recurring prediction problem on which a smaller draft and larger target differ. This interpretation remains observational: the analysis does not show that particles, morphology, or any tokenizer decision causes rejection. It shows that, after adjustment for measured structural, uncertainty, and frequency variables, the cross-boundary penalty is larger around this particular attachment environment.
+The particle diagnostics do not establish a grammatical-choice mechanism:
+most decoded candidate surfaces receive no particle label, and topic/subject
+swaps are not dominant. The RQ5 accounting assigns roughly one third of
+rejections and wasted draft work to visible single-boundary CROSS families,
+but the majority of rejections are in the other-or-unaligned bucket. The
+accepted-length counterfactual is modest and model-based. Accordingly, the
+results motivate future tests of tokenization-aware risk prediction and
+drafting policies, but do not demonstrate that such a policy improves
+throughput.
 
-The result is also compatible with several mechanisms that remain to be disentangled. It may reflect the identity of particular particles, the geometry with which a token covers the nominal and particle, residual lexical distributional differences, or recurrent fused token identities. These are testable decompositions, but they should not be inferred from the present regressions alone. The current evidence is sufficient for a narrower conclusion: Korean subword structure contains information about SD compatibility that is not captured by fragmentation, entropy, or unigram token frequency alone.
+\section{Implications and Future Directions}
+\label{sec:implications}
 
-There are practical implications, although we do not propose an inference method here. A risk predictor could in principle use local tokenization structure alongside confidence signals to shorten speculative blocks at positions likely to be rejected. Whether this improves throughput over strong entropy-adaptive baselines is an empirical question requiring a separate method evaluation.
+Future work can test whether a prefix-available boundary signal adds
+predictive value beyond draft confidence on held-out prompts, whether
+boundary-aware draft length changes accepted work under live SD, and whether
+the observations transfer to other agglutinative languages. The Japanese
+control is exploratory and cannot establish cross-language generality.
+Tokenizer designs that preserve frequent grammatical units, distillation on
+particle decisions, and adaptive drafting are hypotheses for future
+experiments, not findings of this study.
 
 \section{Limitations}
 \label{sec:limitations}
 
-This study has several limitations. First, all analyses use Qwen3-Base model pairs that share a tokenizer. Replication across three capacities strengthens the result, but it does not establish that the pattern is architecture-independent or universal across Korean language models. Second, prompts are the first 1,000 examples in dataset order rather than a random sample of Korean Wikipedia, and continuations are model-generated rather than naturally occurring text.
+First, the design is observational. Regression adjustment does not identify
+a causal effect of morphology, token identity, or tokenization. Second, the
+main labels come from Kiwi and remain automatically generated. The planned
+300-item human validation was not completed because no annotator was
+available. MeCab-ko provides an automatic second-analyzer comparison, not a
+substitute for expert judgment.
 
-Third, morphology is produced automatically by Kiwi and surface-span alignment is imperfect. The documented exclusions may not be random. Fourth, estimates for ending$\rightarrow$ending and lexical$\rightarrow$lexical environments are limited by sparse comparison cells; their signs should not be interpreted as evidence for an opposite effect. Fifth, the available frequency estimates come from a local Korean Wikipedia cache. They provide an important robustness check, but they are not a complete account of lexical frequency or constructional familiarity. Finally, the study is observational. Regression adjustment and common-prompt sensitivity reduce several alternative explanations but do not establish a causal mechanism.
+Third, the replay is conditional on saved target continuations. Q2 shared-
+context rejection-label agreement passes the 95\% gate, but the strict
+zero-unmatched check fails; the 54.58\% common-prefix fraction and 88.65\%
+all-context agreement show why claims are limited to shared contexts. Fourth,
+no live latency or throughput is measured, and the cost counterfactual relies
+on fixed estimated WITHIN rates and conditional independence. Fifth, results
+use base models and a finite collection of Korean prompts, human-written text,
+Wikipedia, and translated FLORES prompts. Optional Japanese and FLORES
+extensions are small and exploratory. Finally, the particle confusion
+analysis uses automatic surface labels and does not establish a causal
+linguistic mechanism.
 
 \section{Conclusion}
 \label{sec:conclusion}
 
-We investigated why a Korean draft model and a larger target model disagree on individual speculative proposals. Overall token--morpheme boundary agreement does not predict rejection. The direction of the mismatch does: tokens that cross a morpheme boundary are more likely to be rejected than tokens that split within one. Across three draft--target configurations, this association is strongly concentrated at nominal--particle attachments, where boundary-crossing increases adjusted rejection probability by roughly 19--25 percentage points. These results suggest that the linguistic location of a subword token is a useful descriptor of draft--target compatibility in Korean speculative decoding.
+We completed a five-question analysis of Korean token--morpheme alignment and
+greedy speculative-decoding replay. The principal result is heterogeneity:
+scalar boundary error is not positively associated with rejection, global
+CROSS--WITHIN contrasts change across settings, and robustness estimates
+depend on label source and specification. The replay cost analysis assigns
+35.08\% of observed rejections to visible single-boundary CROSS families at
+$k=4$, while its counterfactual accepted-length difference is only
+$+0.025$ target tokens per call. These results describe saved-continuation
+associations and motivate further live, held-out evaluation; they do not
+show a causal morphology effect or a measured speedup.
+
+\appendix
+\section{Optional O1--O4 Results}
+\label{app:optional}
+
+\subsection{O1: Qwen3-14B target scale extension}
+
+The three-pair adjusted estimates, in percentage points, are:
+
+\begin{table*}[t]
+\centering
+\small
+\begin{tabular}{lrr}
+\toprule
+Pair & Global CROSS--WITHIN (95\% CI) & N$\rightarrow$P (95\% CI) \\
+\midrule
+Qwen0.6B$\rightarrow$14B & $+0.466$ $[+0.234,+0.697]$ & $+3.232$ $[+2.547,+3.917]$ \\
+Qwen1.7B$\rightarrow$14B & $-0.623$ $[-0.838,-0.408]$ & $+0.135$ $[-0.487,+0.757]$ \\
+Qwen4B$\rightarrow$14B & $-1.258$ $[-1.455,-1.060]$ & $-0.985$ $[-1.554,-0.415]$ \\
+\bottomrule
+\end{tabular}
+\caption{O1 scale-extension estimates.}
+\label{tab:o1}
+\end{table*}
+
+\subsection{O2: Japanese control}
+
+The Japanese 5,000-prompt control uses Fugashi/UniDic boundary roles.
+Estimates are percentage points:
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{llr}
+\toprule
+Pair & Contrast & AME (95\% CI) \\
+\midrule
+Qwen0.6B$\rightarrow$4B & Global & $+0.013$ $[-0.267,+0.293]$ \\
+ & Topic particle & $+2.036$ $[+0.463,+3.609]$ \\
+ & Subject particle & $+0.062$ $[-1.853,+1.977]$ \\
+Gemma4B$\rightarrow$12B & Global & $-0.527$ $[-0.644,-0.411]$ \\
+ & Topic particle & $-0.833$ $[-1.857,+0.191]$ \\
+ & Subject particle & $+3.769$ $[+3.757,+3.781]$ \\
+\bottomrule
+\end{tabular}
+\caption{O2 Japanese contrasts. The Gemma subject-particle fit emitted
+perfect-separation and overflow warnings and is separation-limited; its
+narrow interval is not reliable uncertainty.}
+\label{tab:o2}
+\end{table}
+
+\subsection{O3: FLORES-200 English-to-Korean prompt extension}
+
+O3 uses 1,012 English devtest prompts with a frozen translation instruction.
+References were retained for provenance but were not passed to generation,
+scoring, alignment, or analysis. Pair estimates are percentage points:
+
+\begin{table*}[t]
+\centering
+\scriptsize
+\begin{tabular}{lrr}
+\toprule
+Pair & Global CROSS--WITHIN (95\% CI) & N$\rightarrow$P (95\% CI) \\
+\midrule
+Qwen0.6B$\rightarrow$1.7B & $-2.01$ $[-3.86,-0.17]$ & $+6.66$ $[+1.70,+11.62]$ \\
+Qwen0.6B$\rightarrow$4B & $+0.17$ $[-1.54,+1.88]$ & $+6.72$ $[+0.35,+13.10]$ \\
+Qwen4B$\rightarrow$8B & $-1.20$ $[-2.51,+0.11]$ & $+1.07$ $[-2.34,+4.48]$ \\
+Qwen1.7B$\rightarrow$4B & $-0.50$ $[-2.06,+1.07]$ & $+2.94$ $[-2.17,+8.05]$ \\
+Qwen0.6B$\rightarrow$8B & $-0.93$ $[-2.77,+0.91]$ & $+13.90$ $[+8.60,+19.20]$ \\
+Qwen1.7B$\rightarrow$8B & $-1.74$ $[-3.20,-0.28]$ & $+1.94$ $[-2.12,+5.99]$ \\
+Gemma4B$\rightarrow$12B & $-0.18$ $[-0.64,+0.29]$ & Not estimable \\
+Ministral3B$\rightarrow$8B & $+0.18$ $[-0.75,+1.10]$ & $+4.44$ $[+1.62,+7.25]$ \\
+\bottomrule
+\end{tabular}
+\caption{O3 exploratory cross-domain estimates. Gemma N$\rightarrow$P
+lacked both outcome levels.}
+\label{tab:o3}
+\end{table*}
+
+Same-pair fine-boundary stability against Korean FineWeb2 was estimable only
+for Ministral, with seven shared supported boundaries ($\rho=0.86$; sign
+agreement 0.57). O3 therefore does not establish stable boundary-level
+generalization across domains.
+
+\subsection{O4: second Gemma draft scale}
+
+On the 20,000-prompt common pool, Gemma-3-1B against Gemma-3-12B yields a
+global AME of $-0.365$ pp (95\% CI $[-0.442,-0.288]$) and an
+N$\rightarrow$particle AME of $-0.226$ pp (95\% CI $[-0.376,-0.076]$).
+Both fits converged without warnings. These saved-continuation associations
+are exploratory and are not latency results.
+
+\section{Reproducibility and artifacts}
+\label{app:repro}
+
+All planned core and optional model jobs completed: V0, the Qwen grid, Gemma
+and Ministral target units, teacher-forced human-text scoring, the
+plan-approved 2,000-document Wikipedia sample, and optional O1--O4. No model
+generation, scoring, alignment, or replay job was cut. The planned human
+annotation was not completed because no annotator was available; the 300-row
+sheet has blank response fields. The plan's fallback is an automatic MeCab-ko
+comparison, which is not human validation.
+
+Configs pin model revisions, prompt pools, and batch settings. Runs used one
+RTX A6000 48GB, PyTorch 2.11.0+cu128, Transformers 5.19.0, and CUDA 12.8.
+Generation, teacher-forced scoring, alignment, replay, V0 validation, analysis
+outputs, model revisions, command logs, and per-job timing are recorded in the
+repository. The RQ1--RQ5 result tables and figures can be reproduced with the
+commands in \texttt{NAACL\_experiments.md}; analysis artifacts are under
+\texttt{results/naacl\_experiments/analysis/}. The human validation CSV
+contains 300 stratified rows with blank annotator fields. All model-run and
+log artifacts are available at
+\url{https://github.com/ihbkaiser/korean_speculative_decoding/}.
 
 \bibliography{refs}
-
 \end{document}
