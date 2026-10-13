@@ -1,0 +1,6 @@
+START_UTC=2026-10-13 00:32:54 UTC
+COMMAND=timeout --foreground --signal=TERM --kill-after=10s 1800s /venv/main/bin/python -u scripts/download_models.py --config configs/naacl_o2_japanese.yaml --evict-pair O2_G4_12 
+EVICT gemma4: removed 2 weight shards; kept tokenizer/config
+EVICT gemma12: removed 5 weight shards; kept tokenizer/config
+COMMAND_EXIT=0
+END_UTC=2026-10-13 00:32:57 UTC

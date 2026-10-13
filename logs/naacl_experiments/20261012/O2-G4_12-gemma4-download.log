@@ -1,0 +1,9 @@
+START_UTC=2026-10-13 00:32:58 UTC
+COMMAND=timeout --foreground --signal=TERM --kill-after=10s 3600s /venv/main/bin/python -u scripts/download_models.py --config configs/naacl_o2_japanese.yaml --model gemma4 
+MODEL_STORAGE root=/dev/shm/naacl_models free_gib=30.81 requested_weight_gib=8.01
+MODEL gemma4 repo=google/gemma-3-4b-pt revision=cc012e0a6d0787b4adcc0fa2c4da74402494554d gated=manual weight_gib=8.01 shards=2
+DOWNLOAD_START gemma4 files=14 gated=manual
+Fetching 14 files:   0%|          | 0/14 [00:00<?, ?it/s]Fetching 14 files:  93%|█████████▎| 13/14 [01:09<00:05,  5.33s/it]Fetching 14 files: 100%|██████████| 14/14 [01:15<00:00,  5.45s/it]Fetching 14 files: 100%|██████████| 14/14 [01:15<00:00,  5.42s/it]
+DOWNLOAD_COMPLETE gemma4 local_path=/dev/shm/naacl_models/google--gemma-3-4b-pt/cc012e0a6d0787b4adcc0fa2c4da74402494554d
+COMMAND_EXIT=0
+END_UTC=2026-10-13 00:34:17 UTC

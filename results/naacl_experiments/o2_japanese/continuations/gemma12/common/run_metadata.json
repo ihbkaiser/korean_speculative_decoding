@@ -1,0 +1,32 @@
+{
+  "stage": "target_greedy_generation",
+  "model_key": "gemma12",
+  "model_id": "google/gemma-3-12b-pt",
+  "revision": "295efb63d01a7017928f273a94ebb86105c9526f",
+  "split": "common",
+  "prompt_count": 5000,
+  "prompt_ids_sha256": "540d04a066ba303982784186d0908c21a1308e645773bfa6f6f66c1ac8789032",
+  "max_prompt_tokens": 128,
+  "max_new_tokens": 128,
+  "dtype": "bfloat16",
+  "attention_backend": "sdpa",
+  "requested_batch_size": 48,
+  "transformers": "5.19.0",
+  "torch": "2.11.0+cu128",
+  "gpu": "NVIDIA RTX A6000",
+  "prompt_pool_sha256": "379208751a7cfcc3cef32b19f7389b0da0c3d7c303d73c4c7ba9162d88215504",
+  "model_path": "/dev/shm/naacl_models/google--gemma-3-12b-pt/295efb63d01a7017928f273a94ebb86105c9526f",
+  "actual_batch_sizes": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    16,
+    28,
+    38,
+    48
+  ],
+  "wall_seconds": 2359.24280514603,
+  "status": "COMPLETE"
+}

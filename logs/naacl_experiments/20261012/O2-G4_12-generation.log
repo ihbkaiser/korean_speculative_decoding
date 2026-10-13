@@ -1,0 +1,10 @@
+START_UTC=2026-10-12 23:43:14 UTC
+COMMAND=env PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True timeout --foreground --signal=TERM --kill-after=10s 14400s /venv/main/bin/python -u scripts/gen_target.py --config configs/naacl_o2_japanese.yaml --target gemma12 --split common --batch-size 48 
+GEN_START target=gemma12 split=common prompts=5000 requested_batch=48 max_new_tokens=128
+Loading weights:   0%|          | 0/1065 [00:00<?, ?it/s]Loading weights:  33%|███▎      | 352/1065 [00:00<00:00, 3506.62it/s]Loading weights:  66%|██████▌   | 703/1065 [00:00<00:00, 3120.65it/s]Loading weights:  96%|█████████▌| 1024/1065 [00:00<00:00, 3156.57it/s]Loading weights: 100%|██████████| 1065/1065 [00:00<00:00, 3190.19it/s]
+GEN_SHARD_COMPLETE target=gemma12 shard=00000 prompts=2000
+GEN_SHARD_COMPLETE target=gemma12 shard=00001 prompts=2000
+GEN_SHARD_COMPLETE target=gemma12 shard=00002 prompts=1000
+GEN_COMPLETE target=gemma12 output=/workspace/korean_speculative_decoding/results/naacl_experiments/o2_japanese/continuations/gemma12/common wall_seconds=2359.2
+COMMAND_EXIT=0
+END_UTC=2026-10-13 00:22:45 UTC

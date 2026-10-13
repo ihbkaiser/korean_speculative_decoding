@@ -1,0 +1,73 @@
+{
+  "stage": "teacher_forced_scoring",
+  "continuation": "generated",
+  "target_key": "gemma12",
+  "target_id": "google/gemma-3-12b-pt",
+  "target_revision": "295efb63d01a7017928f273a94ebb86105c9526f",
+  "scored_model_key": "gemma12",
+  "scored_model_id": "google/gemma-3-12b-pt",
+  "scored_model_revision": "295efb63d01a7017928f273a94ebb86105c9526f",
+  "role": "target",
+  "split": "common",
+  "prompt_count": 5000,
+  "prompt_ids_sha256": "540d04a066ba303982784186d0908c21a1308e645773bfa6f6f66c1ac8789032",
+  "chunk_positions": 32,
+  "requested_batch_size": 32,
+  "dtype": "bfloat16",
+  "attention_backend": "sdpa",
+  "transformers": "5.19.0",
+  "torch": "2.11.0+cu128",
+  "gpu": "NVIDIA RTX A6000",
+  "model_path": "/dev/shm/naacl_models/google--gemma-3-12b-pt/295efb63d01a7017928f273a94ebb86105c9526f",
+  "prompt_pool_sha256": "379208751a7cfcc3cef32b19f7389b0da0c3d7c303d73c4c7ba9162d88215504",
+  "completed_shards": [
+    {
+      "shard": 0,
+      "prompt_count": 2000,
+      "scored_token_count": 254175,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        12,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 175.88203228497878
+    },
+    {
+      "shard": 1,
+      "prompt_count": 2000,
+      "scored_token_count": 254397,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 184.72803006204776
+    },
+    {
+      "shard": 2,
+      "prompt_count": 1000,
+      "scored_token_count": 127217,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        22,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 92.0052254240727
+    }
+  ],
+  "status": "COMPLETE"
+}

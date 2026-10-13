@@ -1,0 +1,6 @@
+START_UTC=2026-10-12 23:39:21 UTC
+COMMAND=/venv/main/bin/python -u scripts/download_models.py --config configs/naacl_o2_japanese.yaml --plan --model gemma12 
+MODEL_STORAGE root=/dev/shm/naacl_models free_gib=30.81 requested_weight_gib=22.70
+MODEL gemma12 repo=google/gemma-3-12b-pt revision=295efb63d01a7017928f273a94ebb86105c9526f gated=manual weight_gib=22.70 shards=5
+COMMAND_EXIT=0
+END_UTC=2026-10-12 23:39:22 UTC
