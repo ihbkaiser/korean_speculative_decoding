@@ -1,0 +1,23 @@
+START_UTC=2026-10-13 00:38:01 UTC
+COMMAND=timeout --foreground --signal=TERM --kill-after=10s 3600s /venv/main/bin/python -u scripts/analyze_naacl_o2_japanese.py --config configs/naacl_o2_japanese.yaml 
+O2_LOAD pair=O2_Q06
+MODEL_START O2-O2_Q06-global rows=180,292 docs=3,832
+MODEL_DONE O2-O2_Q06-global status=COMPLETE converged=True AME=0.0001320429 raw_AME=0.0001320429 SE=0.001427484 warnings=
+MODEL_START O2-O2_Q06-topic_ha rows=4,824 docs=1,314
+MODEL_DONE O2-O2_Q06-topic_ha status=COMPLETE converged=True AME=0.0203612 raw_AME=0.0203612 SE=0.008026152 warnings=
+MODEL_START O2-O2_Q06-subject_ga rows=2,858 docs=927
+MODEL_DONE O2-O2_Q06-subject_ga status=COMPLETE converged=True AME=0.0006232781 raw_AME=0.0006232781 SE=0.009770067 warnings=
+O2_READY pair=O2_Q06 docs=5,000 eligible=511,270 aligned=511,270
+O2_LOAD pair=O2_G4_12
+MODEL_START O2-O2_G4_12-global rows=113,196 docs=2,532
+MODEL_DONE O2-O2_G4_12-global status=COMPLETE converged=True AME=-0.005273081 raw_AME=-0.005273081 SE=0.0005958408 warnings=
+MODEL_START O2-O2_G4_12-topic_ha rows=1,744 docs=465
+MODEL_DONE O2-O2_G4_12-topic_ha status=COMPLETE converged=True AME=-0.008331152 raw_AME=-0.008331152 SE=0.00522257 warnings=
+MODEL_START O2-O2_G4_12-subject_ga rows=1,569 docs=482
+/venv/main/lib/python3.12/site-packages/statsmodels/genmod/families/links.py:203: RuntimeWarning: overflow encountered in exp
+  t = np.exp(-z)
+MODEL_DONE O2-O2_G4_12-subject_ga status=COMPLETE converged=True AME=0.03769255 raw_AME=0.03769255 SE=5.998882e-05 warnings=PerfectSeparationWarning,RuntimeWarning
+O2_READY pair=O2_G4_12 docs=5,000 eligible=513,969 aligned=513,969
+O2_ANALYSIS_COMPLETE pairs=2 fits=6
+COMMAND_EXIT=0
+END_UTC=2026-10-13 00:39:05 UTC

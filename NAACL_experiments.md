@@ -651,7 +651,7 @@ Across the complete H study, tokenizer-specific filtering left 9,722 Qwen, 9,604
 
 - These estimates show a scale-dependent global contrast and a positive N→P contrast only for the smallest draft. They are observational saved-continuation replay estimates, not live decoding or causal effects. CSV and metadata are `results/naacl_experiments/o1_qwen14/analysis/rq2_o1_qwen14_cross_within.csv` and `rq2_o1_qwen14_metadata.json`; analysis log: `logs/naacl_experiments/20261012/O1-qwen14-analysis.log`; reproduction command: `/venv/main/bin/python -u scripts/analyze_naacl_o1_qwen14.py --config configs/naacl_o1_qwen14.yaml`.
 
-**Queue status after O1 (2026-10-12, 23:19 UTC):** O3 is complete with all eight planned k=4 cells and its domain analysis. O1's Qwen14 target generation, self-TF, and Kiwi alignment are complete; all three Qwen drafts have completed TF scoring and k=4 replay, and the three-pair scale analysis is complete. O2's 5,000 Japanese prompts are frozen and artifact-validated; its Qwen0.6B→4B job began at 23:19 UTC, with the Gemma4B→12B cell queued after it. O4's Gemma tokenizer audit has passed, and its model run is queued behind O2. The full-pool RQ4 proposal-side fit and machine-run RQ4 robustness analyses are complete and pushed; human annotation remains pending. O1 and O3 are saved-continuation replay analyses, not live-decoding results.
+**Queue status after O2 (2026-10-13, 00:39 UTC):** O1, O2, and O3 analyses are complete; O1 and both Japanese O2 pairs have been pushed. O4's Gemma1 draft run has started after its tokenizer audit and O2 prerequisites passed. Machine-run RQ4 analyses remain complete and pushed; the 300-row human validation is still pending. These optional jobs are saved-continuation replay analyses and do not measure live decoding latency.
 
 ### Optional O2: Japanese control preparation
 
@@ -660,7 +660,19 @@ Across the complete H study, tokenizer-specific filtering left 9,722 Qwen, 9,604
 - `fugashi` 1.5.2 and full UniDic 3.1.0 are installed; installation log: `logs/naacl_experiments/20261012/O2-fugashi-unidic-install.log`. The config defines O2_Q06 (Qwen3 0.6B→4B) and O2_G4_12 (Gemma-3 4B→12B), with Fugashi alignment retaining nominal→topic は and nominal→case が roles. `scripts/run_naacl_o2_japanese.sh` waits for the complete O1 analysis, then runs both Japanese pairs and analysis with pairwise weight eviction. For the gated Gemma stages it reads the local `hf_token` into `HF_TOKEN` at runtime without logging the credential. Queue log: `logs/naacl_experiments/20261012/O2-japanese-queue.log`.
 - **Execution correction (2026-10-12, 23:30 UTC):** O2_Q06 Qwen4 generation completed for all 5,000 prompts (three Parquet shards with 2,000/2,000/1,000 rows; manifest status `COMPLETE`). The first queue attempt stopped because its verifier expected a `completed_shards` array that `gen_target.py` does not write. The verifier now checks the actual shard files and row counts; O2 was restarted to resume from the completed generation, and O4 was re-queued behind the restarted O2 process. No generation artifacts were discarded.
 - O2_Q06 completed at 23:39 UTC. Qwen4 generated 5,000 continuations in 505.4 seconds; target and Qwen0.6B draft TF completed all three shards with passing head checks, and Fugashi alignment covered 599,127 continuation positions. The k=4 replay has 511,270 eligible proposals and 75,137 rejections (14.6961%). Outputs are under `results/naacl_experiments/o2_japanese/continuations/qwen4/`, `teacher_forced/generated/qwen4/`, `aligned/fugashi/qwen4/`, and `simulated/O2_Q06/`; dated run logs are `O2-Q06-*.log`.
-- O2_G4_12 Gemma12 target unit completed at 00:32 UTC on Oct 13. Target generation covered 5,000 prompts in 2,359.2 seconds; target self-TF completed all three shards with passing head checks; Fugashi alignment completed all 5,000 prompts and 635,789 positions. The target weights were evicted with 30.81 GiB free. Gemma4 then downloaded using the local gated-repository credential, and draft TF is running as of 00:34 UTC. Logs: `O2-G4_12-{gemma12-download,generation,target-TF,alignment,target-eviction,gemma4-download}.log`.
+- O2_G4_12 Gemma12 target unit completed at 00:32 UTC on Oct 13. Target generation covered 5,000 prompts in 2,359.2 seconds; target self-TF completed all three shards with passing head checks; Fugashi alignment completed all 5,000 prompts and 635,789 positions. Gemma4 draft TF then completed all three shards with passing head checks. The k=4 replay has 513,969 eligible proposals and 10,389 rejections (2.0213%). Outputs are under `results/naacl_experiments/o2_japanese/teacher_forced/generated/gemma12/gemma4/` and `simulated/O2_G4_12/`; dated logs are `O2-G4_12-*.log`.
+- The O2 Japanese analysis completed all six fits. Adjusted AMEs are percentage points for k=4 replay rejection, with 95% document-clustered intervals:
+
+| Pair | Estimand | AME (95% CI) |
+| --- | --- | ---: |
+| O2_Q06, Qwen0.6B→4B | Global CROSS−WITHIN | +0.013 [−0.267, +0.293] |
+| O2_Q06 | Nominal→topic は | +2.036 [+0.463, +3.609] |
+| O2_Q06 | Nominal→subject が | +0.062 [−1.853, +1.977] |
+| O2_G4_12, Gemma4B→12B | Global CROSS−WITHIN | −0.527 [−0.644, −0.411] |
+| O2_G4_12 | Nominal→topic は | −0.833 [−1.857, +0.191] |
+| O2_G4_12 | Nominal→subject が | +3.769 [+3.757, +3.781]† |
+
+† The subject-が fit emitted `PerfectSeparationWarning` and a runtime overflow warning despite convergence; treat its estimate and interval as separation-limited and do not interpret their narrow interval as reliable uncertainty. The other five fits converged without warnings. Metadata reports all eligible proposals aligned: 511,270 for O2_Q06 and 513,969 for O2_G4_12. Analysis CSV/metadata are `results/naacl_experiments/o2_japanese/analysis/rq2_o2_japanese_cross_within.csv` and `rq2_o2_japanese_metadata.json`; logs: `O2-japanese-analysis.log` and the completed `O2-japanese-queue.log`.
 
 ### Optional O4: Gemma-3-1B tokenizer preflight
 

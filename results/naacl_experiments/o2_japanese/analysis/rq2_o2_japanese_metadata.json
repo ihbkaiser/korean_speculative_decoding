@@ -1,0 +1,120 @@
+{
+  "experiment": "NAACL optional O2 FineWeb2 Japanese control",
+  "status": "COMPLETE",
+  "pair_order": [
+    "O2_Q06",
+    "O2_G4_12"
+  ],
+  "estimands": [
+    "global CROSS-vs-WITHIN",
+    "nominal→topic は boundary",
+    "nominal→subject が boundary"
+  ],
+  "population": "All 5,000 documents in the frozen FineWeb2 jpn_Jpan train pool.",
+  "outcome": "k=4 offline greedy speculative-decoding replay rejection; fits use the primary global controls and document-clustered uncertainty.",
+  "role_definition": "TOPIC_HA is a UniDic 係助詞 は immediately following a nominal; SUBJECT_GA is a UniDic 格助詞 が immediately following a nominal. CROSS rows use crossed boundaries and WITHIN_SPLIT rows use the unique nearest boundary.",
+  "scope": "Saved-continuation Japanese control. It does not measure live decoding latency, validate diverged contexts, or establish causality.",
+  "join_metadata": [
+    {
+      "pair_id": "O2_Q06",
+      "target": "qwen4",
+      "draft": "qwen06",
+      "split": "common",
+      "alignment_analyzer": "fugashi",
+      "documents": 5000,
+      "target_positions": 599127,
+      "eligible_k4_proposals": 511270,
+      "event_positions_with_alignment": 511270,
+      "event_positions_without_alignment": 0
+    },
+    {
+      "pair_id": "O2_G4_12",
+      "target": "gemma12",
+      "draft": "gemma4",
+      "split": "common",
+      "alignment_analyzer": "fugashi",
+      "documents": 5000,
+      "target_positions": 635789,
+      "eligible_k4_proposals": 513969,
+      "event_positions_with_alignment": 513969,
+      "event_positions_without_alignment": 0
+    }
+  ],
+  "alignment_metadata": {
+    "qwen4": {
+      "stage": "target_path_morphology_alignment",
+      "continuation": "generated",
+      "target_key": "qwen4",
+      "revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+      "split": "common",
+      "analyzer": "fugashi",
+      "fugashi_version": "1.5.2",
+      "unidic_package_version": "1.1.0",
+      "unidic_dictionary_version": "3.1.0",
+      "pos_mapping": "UniDic 名詞→NNG/NNP; は(係助詞)→JX; が(格助詞)→JKS; other particles map to canonical particle tags.",
+      "prompt_count": 5000,
+      "requested_prompt_count": 5000,
+      "skipped_short_document_count": 0,
+      "completed_shards": [
+        {
+          "shard": 0,
+          "prompts": 2000,
+          "aligned_rows": 239973,
+          "resumed": false
+        },
+        {
+          "shard": 1,
+          "prompts": 2000,
+          "aligned_rows": 239126,
+          "resumed": false
+        },
+        {
+          "shard": 2,
+          "prompts": 1000,
+          "aligned_rows": 120028,
+          "resumed": false
+        }
+      ],
+      "status": "COMPLETE"
+    },
+    "gemma12": {
+      "stage": "target_path_morphology_alignment",
+      "continuation": "generated",
+      "target_key": "gemma12",
+      "revision": "295efb63d01a7017928f273a94ebb86105c9526f",
+      "split": "common",
+      "analyzer": "fugashi",
+      "fugashi_version": "1.5.2",
+      "unidic_package_version": "1.1.0",
+      "unidic_dictionary_version": "3.1.0",
+      "pos_mapping": "UniDic 名詞→NNG/NNP; は(係助詞)→JX; が(格助詞)→JKS; other particles map to canonical particle tags.",
+      "prompt_count": 5000,
+      "requested_prompt_count": 5000,
+      "skipped_short_document_count": 0,
+      "completed_shards": [
+        {
+          "shard": 0,
+          "prompts": 2000,
+          "aligned_rows": 254175,
+          "resumed": false
+        },
+        {
+          "shard": 1,
+          "prompts": 2000,
+          "aligned_rows": 254397,
+          "resumed": false
+        },
+        {
+          "shard": 2,
+          "prompts": 1000,
+          "aligned_rows": 127217,
+          "resumed": false
+        }
+      ],
+      "status": "COMPLETE"
+    }
+  },
+  "files": {
+    "cross_within": "results/naacl_experiments/o2_japanese/analysis/rq2_o2_japanese_cross_within.csv"
+  }
+}

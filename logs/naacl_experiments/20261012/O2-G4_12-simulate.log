@@ -1,0 +1,5 @@
+START_UTC=2026-10-13 00:37:48 UTC
+COMMAND=timeout --foreground --signal=TERM --kill-after=10s 3600s /venv/main/bin/python -u scripts/simulate_sd.py --config configs/naacl_o2_japanese.yaml --pair O2_G4_12 --split common --block-sizes 4 
+SIM pair=O2_G4_12 k=4 prompts=5000 eligible=513969 reject=10389 rate=0.020213
+COMMAND_EXIT=0
+END_UTC=2026-10-13 00:37:59 UTC
