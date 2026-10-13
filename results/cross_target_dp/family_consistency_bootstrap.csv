@@ -1,2 +1,4 @@
-metric,status,reason
-within_vs_cross_family,NOT_ESTIMABLE,The selected targets contain no cross-family pair; use the pairwise bootstrap interval instead.
+metric,bootstrap_replicates,ci_low_95,ci_high_95,bootstrap_mean,within_family_definition,cross_family_definition
+within_qwen_jaccard,1000,0.19328484137371973,0.20257584280450538,0.19797044213127304,mean Jaccard among selected Qwen3 target pairs,mean Jaccard among selected target pairs from different model families
+cross_family_jaccard,1000,0.13821177818574118,0.14328654660613538,0.1408420291845331,mean Jaccard among selected Qwen3 target pairs,mean Jaccard among selected target pairs from different model families
+within_minus_cross_jaccard,1000,0.05217518691861769,0.061717896619884,0.057128412946739995,mean Jaccard among selected Qwen3 target pairs,mean Jaccard among selected target pairs from different model families

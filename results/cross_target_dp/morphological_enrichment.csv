@@ -1,3 +1,4 @@
 outcome,matched_word_pairs,documents,morpheme_boundary_prevalence,morpheme_internal_prevalence,boundary_minus_internal,document_bootstrap_ci_low_95,document_bootstrap_ci_high_95,bootstrap_replicates,interpretation
-exactly_one_target,1586,1265,0.2540983606557377,0.20491803278688525,0.04940711462450593,0.019752964426877472,0.08064229249011858,1000,Matched within the same eojeol and averaged within document; association only.
-shared_by_all_targets,1586,1265,0.1116015132408575,0.05926860025220681,0.05256916996047431,0.03241106719367589,0.07470355731225296,1000,Matched within the same eojeol and averaged within document; association only.
+exactly_one_target,1586,1265,0.26670870113493067,0.2988650693568726,-0.03399209486166008,-0.06562252964426878,-0.0023616600790513924,1000,Matched within the same eojeol and averaged within document; association only.
+shared_by_three_or_more,1586,1265,0.14438839848675913,0.09016393442622951,0.05889328063241107,0.03399209486166008,0.08181818181818182,1000,Matched within the same eojeol and averaged within document; association only.
+cross_family_shared,1586,1265,0.029634300126103404,0.025851197982345524,0.0047430830039525695,-0.006324110671936759,0.01541501976284585,1000,Matched within the same eojeol and averaged within document; association only.

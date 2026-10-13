@@ -36,7 +36,9 @@ For an interim two-model analysis once Qwen3-4B and Qwen3-8B are complete, selec
 /venv/main/bin/python scripts/plot_cross_target_dp.py --config configs/cross_target_dp.yaml
 ```
 
-The interim summary and findings label their scope and do not report a cross-family contrast. Re-run analysis without `--models` after all five model runs complete to produce the planned family-level comparison.
+The five-target run is complete. The current top-level analysis outputs include all five targets; `summary.json` records the model set and `cross_target_findings.md` contains the result tables and interpretation. The original Qwen3-4B/8B interim output is preserved under `results/cross_target_dp/interim_qwen4_qwen8/`.
+
+Running the two-model command above writes to the configured analysis output directory. Save or copy the existing five-target output before using it for a subset analysis; after the subset run, run the full command again to restore the five-target outputs.
 
 If the Hugging Face token is stored locally in the ignored `hf_token` file, prefix the gated-model download command without printing the token:
 
@@ -54,7 +56,7 @@ The run is resumable by model-position shard. If a shard already exists, its pos
 
 ## Outputs
 
-`results/cross_target_dp/` contains `evaluation_positions.parquet`, `position_metadata.json`, per-target reduced-score shards and run manifests, `position_margins.parquet`, `pairwise_overlap.csv`, `pairwise_correlations.csv`, `bootstrap_ci.csv`, `permutation_results.csv`, `decision_point_prevalence.csv`, `shared_target_counts.csv`, `shared_target_buckets.csv` (with a 3+ group when at least three targets are selected), `family_consistency_bootstrap.csv`, `morphological_enrichment.csv`, `summary.json`, `cross_target_findings.md` with a populated result paragraph, and publication PDF/PNG figures A–D. The model subset used for an analysis is recorded in `summary.json`; a subset analysis cannot support omitted pair or family comparisons.
+`results/cross_target_dp/` contains `evaluation_positions.parquet`, `position_metadata.json`, per-target reduced-score shards and run manifests, `position_margins.parquet`, `pairwise_overlap.csv`, `pairwise_correlations.csv`, `bootstrap_ci.csv`, `permutation_results.csv`, `decision_point_prevalence.csv`, `shared_target_counts.csv`, `shared_target_buckets.csv` (with a 3+ group when at least three targets are selected), `family_consistency_bootstrap.csv`, `morphological_enrichment.csv`, `summary.json`, `cross_target_findings.md` with a populated result paragraph, the final analysis log, and publication PDF/PNG figures A–D. The model subset used for an analysis is recorded in `summary.json`; a subset analysis cannot support omitted pair or family comparisons. `NAACL_experiments.md` records the completed run and the pairwise results.
 
 The primary source of cross-target alignment is `shared_prefix_sha256` plus `(doc_id, char_offset)`. The full prefix text is reconstructed from the frozen document and is not duplicated in the margins table.
 

@@ -7,3 +7,15 @@ qwen8,Qwen/Qwen3-8B-Base,Qwen3,bottom_10_percent,0.125,3834,0.1,1917,38340
 qwen8,Qwen/Qwen3-8B-Base,Qwen3,bottom_20_percent,0.25,7668,0.2,1917,38340
 qwen8,Qwen/Qwen3-8B-Base,Qwen3,bottom_30_percent,0.25,11502,0.3,1917,38340
 qwen8,Qwen/Qwen3-8B-Base,Qwen3,absolute_margin_lt_1_nats_secondary,1.0,26980,0.7037037037037037,1917,38340
+qwen14,Qwen/Qwen3-14B-Base,Qwen3,bottom_10_percent,0.125,3834,0.1,1917,38340
+qwen14,Qwen/Qwen3-14B-Base,Qwen3,bottom_20_percent,0.25,7668,0.2,1917,38340
+qwen14,Qwen/Qwen3-14B-Base,Qwen3,bottom_30_percent,0.375,11502,0.3,1917,38340
+qwen14,Qwen/Qwen3-14B-Base,Qwen3,absolute_margin_lt_1_nats_secondary,1.0,25707,0.6705007824726135,1917,38340
+gemma12,google/gemma-3-12b-pt,Gemma 3,bottom_10_percent,0.125,3834,0.1,1917,38340
+gemma12,google/gemma-3-12b-pt,Gemma 3,bottom_20_percent,0.375,7668,0.2,1917,38340
+gemma12,google/gemma-3-12b-pt,Gemma 3,bottom_30_percent,0.5,11502,0.3,1917,38340
+gemma12,google/gemma-3-12b-pt,Gemma 3,absolute_margin_lt_1_nats_secondary,1.0,17721,0.46220657276995303,1917,38340
+ministral8,mistralai/Ministral-3-8B-Base-2512,Ministral 3,bottom_10_percent,0.125,3834,0.1,1917,38340
+ministral8,mistralai/Ministral-3-8B-Base-2512,Ministral 3,bottom_20_percent,0.1875,7668,0.2,1917,38340
+ministral8,mistralai/Ministral-3-8B-Base-2512,Ministral 3,bottom_30_percent,0.3125,11502,0.3,1917,38340
+ministral8,mistralai/Ministral-3-8B-Base-2512,Ministral 3,absolute_margin_lt_1_nats_secondary,1.0,27402,0.7147104851330204,1917,38340

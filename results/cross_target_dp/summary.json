@@ -1,14 +1,17 @@
 {
   "schema": "cross-target-decision-points-v1",
   "status": "COMPLETE",
-  "created_at_utc": "2026-10-13T07:29:01.236376+00:00",
+  "created_at_utc": "2026-10-13T09:28:22.555917+00:00",
   "question": "Are low-margin next-token decision points shared across target models on identical Korean text prefixes?",
   "analysis_scope": {
     "models_compared": [
       "qwen4",
-      "qwen8"
+      "qwen8",
+      "qwen14",
+      "gemma12",
+      "ministral8"
     ],
-    "scope_note": "Two-model interim analysis; supports conclusions only about the Qwen3-4B/Qwen3-8B pair. No cross-family comparison is available."
+    "scope_note": "Selected-target analysis; conclusions are limited to the configured models in this run."
   },
   "primary_definition": "For each target, mark exactly the bottom 20% of margins on the same common eojeol-onset positions. Stable ordering resolves exact ties.",
   "primary_metric": "Pairwise bottom-20% Jaccard, compared to within-document permutation null.",
@@ -62,6 +65,42 @@
       "context_tokens_p95": 206.0,
       "context_tokens_max": 441,
       "full_forward_check_max_abs_error": 0.0625
+    },
+    "qwen14": {
+      "id": "Qwen/Qwen3-14B-Base",
+      "revision": "0b0bd3732e2c374d483664439ea334928b65f304",
+      "family": "Qwen3",
+      "positions": 41512,
+      "tokens_processed": 6836488,
+      "context_tokens_min": 24,
+      "context_tokens_median": 175.0,
+      "context_tokens_p95": 206.0,
+      "context_tokens_max": 441,
+      "full_forward_check_max_abs_error": 0.03125
+    },
+    "gemma12": {
+      "id": "google/gemma-3-12b-pt",
+      "revision": "295efb63d01a7017928f273a94ebb86105c9526f",
+      "family": "Gemma 3",
+      "positions": 41512,
+      "tokens_processed": 5828041,
+      "context_tokens_min": 25,
+      "context_tokens_median": 148.0,
+      "context_tokens_p95": 178.0,
+      "context_tokens_max": 408,
+      "full_forward_check_max_abs_error": 0.03125
+    },
+    "ministral8": {
+      "id": "mistralai/Ministral-3-8B-Base-2512",
+      "revision": "d4883f9b36aa2e5d775730d3fdba3d30de51a8ef",
+      "family": "Ministral 3",
+      "positions": 41512,
+      "tokens_processed": 5838100,
+      "context_tokens_min": 24,
+      "context_tokens_median": 146.0,
+      "context_tokens_p95": 182.0,
+      "context_tokens_max": 440,
+      "full_forward_check_max_abs_error": 0.03125
     }
   },
   "uncertainty": {
@@ -72,29 +111,58 @@
     "random_seed": 20261013
   },
   "primary_results": {
-    "within_qwen_mean_jaccard": 0.20651404295492093,
-    "cross_family_mean_jaccard": null,
-    "within_minus_cross_mean_jaccard": null,
-    "within_qwen_permutation_mean_jaccard": 0.12222529162448087,
-    "cross_family_permutation_mean_jaccard": null,
-    "within_minus_cross_bootstrap_ci_95": null,
-    "cross_family_shared_position_fraction": null,
+    "within_qwen_mean_jaccard": 0.19765058681047898,
+    "cross_family_mean_jaccard": 0.14061951719181762,
+    "within_minus_cross_mean_jaccard": 0.05703106961866136,
+    "within_qwen_permutation_mean_jaccard": 0.12168640250515483,
+    "cross_family_permutation_mean_jaccard": 0.11505520824480096,
+    "within_minus_cross_bootstrap_ci_95": {
+      "metric": "within_minus_cross_jaccard",
+      "bootstrap_replicates": 1000,
+      "ci_low_95": 0.05217518691861769,
+      "ci_high_95": 0.061717896619884,
+      "bootstrap_mean": 0.057128412946739995,
+      "within_family_definition": "mean Jaccard among selected Qwen3 target pairs",
+      "cross_family_definition": "mean Jaccard among selected target pairs from different model families"
+    },
+    "cross_family_shared_position_fraction": 0.02402190923317684,
     "pairwise_bottom20_jaccard": {
-      "qwen4__qwen8": 0.20651404295492093
+      "qwen4__qwen8": 0.20651404295492093,
+      "qwen4__qwen14": 0.18681318681318682,
+      "qwen4__gemma12": 0.11591355599214145,
+      "qwen4__ministral8": 0.1749923383389519,
+      "qwen8__qwen14": 0.19962453066332916,
+      "qwen8__gemma12": 0.11114331256339662,
+      "qwen8__ministral8": 0.17769927814467823,
+      "qwen14__gemma12": 0.11607597700312933,
+      "qwen14__ministral8": 0.1753525444512569,
+      "gemma12__ministral8": 0.11315961384916891
     },
     "pairwise_spearman_margin": {
-      "qwen4__qwen8": 0.48791368275629415
+      "qwen4__qwen8": 0.48791368275629415,
+      "qwen4__qwen14": 0.42384755629199655,
+      "qwen4__gemma12": 0.029418405828399514,
+      "qwen4__ministral8": 0.3725112928151648,
+      "qwen8__qwen14": 0.4620763210786157,
+      "qwen8__gemma12": 0.027252582348193218,
+      "qwen8__ministral8": 0.37464962121225115,
+      "qwen14__gemma12": 0.022200865395381898,
+      "qwen14__ministral8": 0.37989618434126626,
+      "gemma12__ministral8": 0.026868021945567484
     },
     "target_count_distribution": {
-      "0": 25629,
-      "1": 10086,
-      "2": 2625
+      "0": 15194,
+      "1": 12516,
+      "2": 6984,
+      "3": 2810,
+      "4": 754,
+      "5": 82
     },
     "target_count_distribution_grouped": {
-      "zero": 25629,
-      "exactly_one": 10086,
-      "exactly_two": 2625,
-      "three_or_more": 0
+      "zero": 15194,
+      "exactly_one": 12516,
+      "exactly_two": 6984,
+      "three_or_more": 3646
     }
   },
   "morphology": {
@@ -105,7 +173,10 @@
     "decision_definition": "Bottom 20% of margins among the common morph_extended positions for each target.",
     "models_compared": [
       "qwen4",
-      "qwen8"
+      "qwen8",
+      "qwen14",
+      "gemma12",
+      "ministral8"
     ],
     "shared_definition": "All selected targets mark the position as a decision point.",
     "exclusions": {
@@ -115,16 +186,16 @@
     }
   },
   "outputs": {
-    "pairwise_overlap.csv": "17ec35aba98c621da15a39dfd94f5d9b4bd70b0cbccfc87a20bf716efcb57925",
-    "pairwise_correlations.csv": "a070871d57e2adb1955218962ded6191f465cd7a3cbd505aa2b43a5c355e109f",
-    "bootstrap_ci.csv": "c980408251868d251de8398821188a0c885aace94486bdec727529179052f68d",
-    "permutation_results.csv": "c5137954af1086ef84ac6681ad5aef320e8cc6ead6a7ffa18b08b8fb7d17e1ff",
-    "decision_point_prevalence.csv": "32d96434d50d41865a729ed016da4e1a1dff66cfdb8f5c4be7e2c68c0017c933",
-    "shared_target_counts.csv": "f920923f3896632c783fc53014db3a2d1de2cd112f933e4314ae750c941cf05a",
-    "shared_target_buckets.csv": "9bf598775e253214bb408def861e8e8ec89ca10f93476dd82a6e624afb3fa0f3",
-    "family_consistency_bootstrap.csv": "1b222db4b4f0aae9ba014a78a7517d5d990740219d037b69d8d7d60bbf8614e9",
-    "morphological_enrichment.csv": "e779972d6c660c12b59662af49d0b8d6b685a4aa353d07edc9fcb463ddec3092"
+    "pairwise_overlap.csv": "9b77365435a0766c7d49762c35c5ca30f4021df573f8f62922c905543099471e",
+    "pairwise_correlations.csv": "77c2b173acd7bd14ed12fbe0ac25d180c933a55395fe7e2ff78929febde16a14",
+    "bootstrap_ci.csv": "7b43a5ccec2de2e9d79cdaba7cf4375df9f94de193195f37242f9970de29e570",
+    "permutation_results.csv": "ff9cc9a54e11b4820f81ef3334c74960760bc13ccf7231e168e977541b6854f0",
+    "decision_point_prevalence.csv": "6fd75e8d663ee53b983f6a4d2234de4a6bd450933e57165b443a8a71edb8320d",
+    "shared_target_counts.csv": "f8383eb8bc889629df6134c5743234776347c289ed7380acd2b5297953481733",
+    "shared_target_buckets.csv": "ecfbe22fe024f806e10b05edd9b1c3d9d19b2189309452297619945cc9f6a4dd",
+    "family_consistency_bootstrap.csv": "33b6400c59c69cadad1c9d4455d265383b6a76bcabc53e1e5f167d18d963ab1b",
+    "morphological_enrichment.csv": "67c763f0e23ee818fb251abd966f890d11c910dfe4426ac1a437c54bcb6e0581"
   },
-  "position_margins_sha256": "dc410bf668eddf9a0f56fe9ad0c496b61cde30cf51d69c6d47e4349eb983a14f",
+  "position_margins_sha256": "2911d12c0daab7c95d158b12785b53f19114fe7ef365991f35d7ee246b1a8550",
   "interpretation_note": "Raw margins and the absolute <1-nat rule are not calibrated across different tokenizers/families. Cross-target consistency is assessed primarily by within-model ranks and overlap on identical textual prefixes. Associations are descriptive, not causal."
 }
