@@ -80,8 +80,8 @@ def figure_b(overlap: pd.DataFrame, output_dir: Path):
 
 
 def figure_c(shared: pd.DataFrame, output_dir: Path):
-    table = shared.sort_values("n_targets_identifying_position")
-    x = table.n_targets_identifying_position.to_numpy(dtype=int)
+    table = shared.set_index("target_count_bucket").reindex(["0", "exactly_1", "exactly_2", "3+"]).reset_index()
+    x = np.arange(len(table))
     observed = table.observed_fraction.to_numpy(dtype=float)
     null = table.permutation_mean_fraction.to_numpy(dtype=float)
     low = table.permutation_ci_low_95.to_numpy(dtype=float)
@@ -91,8 +91,8 @@ def figure_c(shared: pd.DataFrame, output_dir: Path):
     ax.bar(x - width / 2, observed, width, color="#2563eb", label="Observed")
     ax.bar(x + width / 2, null, width, color="#9ca3af", label="Within-document permutation mean")
     ax.errorbar(x + width / 2, null, yerr=[null - low, high - null], fmt="none", ecolor="#374151", capsize=3)
-    ax.set_xticks(x, ["0", "1", "2", "3", "4", "5"])
-    ax.set_xlabel("Number of targets marking a position as a decision point")
+    ax.set_xticks(x, ["0", "Exactly 1", "Exactly 2", "3+"])
+    ax.set_xlabel("Targets marking a position as a decision point")
     ax.set_ylabel("Fraction of positions")
     ax.set_title("Figure C. Shared decision points vs permutation reference")
     ax.legend(frameon=False)
@@ -140,7 +140,7 @@ def main() -> int:
     long = pd.read_parquet(output_dir / "position_margins.parquet")
     figure_a(long, output_dir)
     figure_b(pd.read_csv(output_dir / "pairwise_overlap.csv"), output_dir)
-    figure_c(pd.read_csv(output_dir / "shared_target_counts.csv"), output_dir)
+    figure_c(pd.read_csv(output_dir / "shared_target_buckets.csv"), output_dir)
     figure_d(pd.read_csv(output_dir / "morphological_enrichment.csv"), output_dir)
     print(f"FIGURES_READY directory={output_dir.relative_to(ROOT)}", flush=True)
     return 0

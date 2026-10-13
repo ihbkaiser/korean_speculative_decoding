@@ -45,7 +45,7 @@ The run is resumable by model-position shard. If a shard already exists, its pos
 
 ## Outputs
 
-`results/cross_target_dp/` contains `evaluation_positions.parquet`, `position_metadata.json`, per-target reduced-score shards and run manifests, `position_margins.parquet`, `pairwise_overlap.csv`, `pairwise_correlations.csv`, `bootstrap_ci.csv`, `permutation_results.csv`, `decision_point_prevalence.csv`, `shared_target_counts.csv`, `family_consistency_bootstrap.csv`, `morphological_enrichment.csv`, `summary.json`, `cross_target_findings.md`, and publication PDF/PNG figures A–D.
+`results/cross_target_dp/` contains `evaluation_positions.parquet`, `position_metadata.json`, per-target reduced-score shards and run manifests, `position_margins.parquet`, `pairwise_overlap.csv`, `pairwise_correlations.csv`, `bootstrap_ci.csv`, `permutation_results.csv`, `decision_point_prevalence.csv`, `shared_target_counts.csv`, `shared_target_buckets.csv` (including the required 3+ group), `family_consistency_bootstrap.csv`, `morphological_enrichment.csv`, `summary.json`, `cross_target_findings.md` with a populated result paragraph, and publication PDF/PNG figures A–D.
 
 The primary source of cross-target alignment is `shared_prefix_sha256` plus `(doc_id, char_offset)`. The full prefix text is reconstructed from the frozen document and is not duplicated in the margins table.
 

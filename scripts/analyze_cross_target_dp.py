@@ -250,7 +250,22 @@ def _permutation_main(labels: np.ndarray, doc_ids: np.ndarray, keys: tuple[str, 
             "permutation_ci_high_95": float(np.quantile(null_values, 0.975)),
             "permutation_replicates": replicates,
         })
-    return rows, shared_rows
+    bucket_rows = []
+    buckets = (("0", (0,)), ("exactly_1", (1,)), ("exactly_2", (2,)), ("3+", tuple(range(3, len(keys) + 1))))
+    observed_counts = labels.sum(axis=1)
+    for label, counts in buckets:
+        null_values = shared_hist[:, list(counts)].sum(axis=1)
+        observed_mask = np.isin(observed_counts, counts)
+        bucket_rows.append({
+            "target_count_bucket": label,
+            "observed_position_count": int(observed_mask.sum()),
+            "observed_fraction": float(observed_mask.mean()),
+            "permutation_mean_fraction": float(null_values.mean()),
+            "permutation_ci_low_95": float(np.quantile(null_values, 0.025)),
+            "permutation_ci_high_95": float(np.quantile(null_values, 0.975)),
+            "permutation_replicates": replicates,
+        })
+    return rows, bucket_rows, shared_rows
 
 
 def _doc_bootstrap_difference(values: pd.DataFrame, outcome: str, replicates: int, seed: int):
@@ -347,7 +362,7 @@ def main() -> int:
     bootstrap_rows, family_bootstrap_rows = _bootstrap_main(
         margins, doc_ids, MODEL_ORDER, bootstrap_reps, seed
     )
-    permutation_rows, shared_count_rows = _permutation_main(
+    permutation_rows, shared_bucket_rows, shared_count_rows = _permutation_main(
         labels_by_fraction[0.20], doc_ids, MODEL_ORDER, permutation_reps, seed + 1
     )
 
@@ -389,13 +404,13 @@ def main() -> int:
         "permutation_results.csv": pd.DataFrame(permutation_rows),
         "decision_point_prevalence.csv": pd.DataFrame(prevalence_rows),
         "shared_target_counts.csv": pd.DataFrame(shared_count_rows),
+        "shared_target_buckets.csv": pd.DataFrame(shared_bucket_rows),
         "family_consistency_bootstrap.csv": pd.DataFrame(family_bootstrap_rows),
         "morphological_enrichment.csv": pd.DataFrame(morph_rows),
     }
     for name, frame in outputs.items():
         frame.to_csv(output_dir / name, index=False)
 
-    within = [row["jaccard"] for row in pair_values.values() if row]
     pair_frame = pd.DataFrame(overlap_rows)
     p20 = pair_frame.loc[pair_frame.threshold_fraction.eq(0.20)]
     within_p20 = p20.loc[p20.same_family, "jaccard"].astype(float).tolist()
@@ -403,6 +418,36 @@ def main() -> int:
     families = labels_by_fraction[0.20][:, :3].any(axis=1) & labels_by_fraction[0.20][:, 3] & labels_by_fraction[0.20][:, 4]
     target_count = labels_by_fraction[0.20].sum(axis=1)
     # Absolute margins are secondary and are not used for cross-tokenizer ranking.
+    position_metadata = json.loads((output_dir / "position_metadata.json").read_text())
+    model_summaries = {}
+    for key in MODEL_ORDER:
+        model_rows = long.loc[long.model_key.eq(key) & long.analysis_set.eq("eojeol_boundary")]
+        token_lengths = model_rows.context_model_tokens.to_numpy(dtype=np.float64)
+        model_summaries[key] = {
+            "id": config["models"][key]["id"],
+            "revision": config["models"][key]["revision"],
+            "family": config["models"][key]["family"],
+            "positions": run_meta[key]["positions_written"],
+            "tokens_processed": run_meta[key]["input_tokens_processed"],
+            "context_tokens_min": int(token_lengths.min()),
+            "context_tokens_median": float(np.median(token_lengths)),
+            "context_tokens_p95": float(np.quantile(token_lengths, 0.95)),
+            "context_tokens_max": int(token_lengths.max()),
+            "full_forward_check_max_abs_error": run_meta[key]["full_forward_check_max_abs_error"],
+        }
+    exact_distribution = {
+        str(count): int(np.sum(target_count == count)) for count in range(len(MODEL_ORDER) + 1)
+    }
+    grouped_distribution = {
+        "zero": exact_distribution["0"],
+        "exactly_one": exact_distribution["1"],
+        "exactly_two": exact_distribution["2"],
+        "three_or_more": int(sum(exact_distribution[str(count)] for count in range(3, len(MODEL_ORDER) + 1))),
+    }
+    pair_null = pd.DataFrame(permutation_rows)
+    jaccard_null = pair_null.loc[pair_null.metric.eq("jaccard")]
+    pair_meta = p20[["model_a", "model_b", "same_family"]].drop_duplicates()
+    null_with_family = jaccard_null.merge(pair_meta, on=["model_a", "model_b"], validate="one_to_one")
     summary = {
         "schema": config["schema"],
         "status": "COMPLETE",
@@ -412,26 +457,20 @@ def main() -> int:
         "primary_metric": "Pairwise bottom-20% Jaccard, compared to within-document permutation null; family contrast is Qwen3 within-family mean minus cross-family mean.",
         "data": {
             "source": "Frozen FineWeb2 Korean kor_Hang common split; raw NFC/stripped document text.",
-            "documents_considered": int(json.loads((output_dir / "position_metadata.json").read_text())["primary"]["documents_considered"]),
+            "documents_considered": int(position_metadata["primary"]["documents_considered"]),
             "documents_evaluated": int(len(np.unique(doc_ids))),
             "positions_evaluated": int(len(doc_ids)),
             "unique_shared_prefixes": int(meta.shared_prefix_sha256.nunique()),
-            "positions_excluded_reasons": json.loads((output_dir / "position_metadata.json").read_text())["primary"],
+            "positions_excluded_reasons": position_metadata["primary"],
             "context_window_chars": int(config["data"]["context_window_chars"]),
             "minimum_context_chars": int(config["data"]["min_context_chars"]),
+            "context_chars_min": int(meta.context_chars.min()),
+            "context_chars_median": float(meta.context_chars.median()),
+            "context_chars_p95": float(meta.context_chars.quantile(0.95)),
+            "context_chars_max": int(meta.context_chars.max()),
             "position_sampling": "20 evenly spaced eojeol starts per eligible document; the prefix is text[context_start:char_offset].",
         },
-        "models": {
-            key: {
-                "id": config["models"][key]["id"],
-                "revision": config["models"][key]["revision"],
-                "family": config["models"][key]["family"],
-                "positions": run_meta[key]["positions_written"],
-                "tokens_processed": run_meta[key]["input_tokens_processed"],
-                "full_forward_check_max_abs_error": run_meta[key]["full_forward_check_max_abs_error"],
-            }
-            for key in MODEL_ORDER
-        },
+        "models": model_summaries,
         "uncertainty": {
             "bootstrap_replicates": bootstrap_reps,
             "bootstrap_unit": "document",
@@ -443,12 +482,13 @@ def main() -> int:
             "within_qwen_mean_jaccard": float(np.mean(within_p20)),
             "cross_family_mean_jaccard": float(np.mean(cross_p20)),
             "within_minus_cross_mean_jaccard": float(np.mean(within_p20) - np.mean(cross_p20)),
+            "within_qwen_permutation_mean_jaccard": float(null_with_family.loc[null_with_family.same_family, "null_mean"].mean()),
+            "cross_family_permutation_mean_jaccard": float(null_with_family.loc[~null_with_family.same_family, "null_mean"].mean()),
             "cross_family_shared_position_fraction": float(np.mean(families)),
-            "target_count_distribution": {
-                str(count): int(np.sum(target_count == count)) for count in range(len(MODEL_ORDER) + 1)
-            },
+            "target_count_distribution": exact_distribution,
+            "target_count_distribution_grouped": grouped_distribution,
         },
-        "morphology": morph_meta,
+        "morphology": {**morph_meta, "exclusions": position_metadata["morphology"]["exclusions"]},
         "outputs": {name: sha256_file(output_dir / name) for name in outputs},
         "position_margins_sha256": sha256_file(long_path),
         "interpretation_note": "Raw margins and the absolute <1-nat rule are not calibrated across different tokenizers/families. Cross-target consistency is assessed primarily by within-model ranks and overlap on identical textual prefixes. Associations are descriptive, not causal.",
@@ -470,49 +510,103 @@ def _write_findings(output_dir: Path, summary: dict, outputs: dict[str, pd.DataF
     correlations = outputs["pairwise_correlations.csv"]
     permutation = outputs["permutation_results.csv"]
     jaccard_null = permutation.loc[permutation.metric.eq("jaccard")]
+    bootstrap = outputs["bootstrap_ci.csv"]
+    bootstrap_map = {(row.pair_id, row.metric): row for row in bootstrap.itertuples()}
+    corr_map = {(row.model_a, row.model_b): row.spearman_margin for row in correlations.itertuples()}
+    null_map = {(row.model_a, row.model_b): row for row in jaccard_null.itertuples()}
+    family_ci = outputs["family_consistency_bootstrap.csv"].set_index("metric")
+    within = summary["primary_results"]["within_qwen_mean_jaccard"]
+    cross = summary["primary_results"]["cross_family_mean_jaccard"]
+    within_null = summary["primary_results"]["within_qwen_permutation_mean_jaccard"]
+    cross_null = summary["primary_results"]["cross_family_permutation_mean_jaccard"]
+    difference = family_ci.loc["within_minus_cross_jaccard"]
+    grouped = summary["primary_results"]["target_count_distribution_grouped"]
+
+    if within > within_null and difference.ci_low_95 > 0:
+        outcome = "B"
+        outcome_sentence = (
+            "The pattern is closest to Outcome B: Qwen3 within-family overlap is above its permutation mean, "
+            "and the document-bootstrap interval places it above cross-family overlap. This supports family- or "
+            "target-dependent decision-point locations in this model set."
+        )
+    elif cross > cross_null and difference.ci_low_95 <= 0:
+        outcome = "A"
+        outcome_sentence = (
+            "The pattern is closest to Outcome A: cross-family overlap is above its within-document permutation "
+            "mean, and the bootstrap interval does not establish a lower cross-family mean than within-Qwen overlap. "
+            "This is evidence for shared hotspots in the evaluated sample, not proof of intrinsic ambiguity."
+        )
+    elif within <= within_null and cross <= cross_null:
+        outcome = "C"
+        outcome_sentence = (
+            "The pattern is closest to Outcome C: mean within-Qwen and cross-family overlaps do not exceed their "
+            "within-document permutation means. The existing RQ4 should therefore remain interpreted as shared "
+            "failure locations conditional on a fixed target."
+        )
+    else:
+        outcome = "Mixed"
+        outcome_sentence = (
+            "The estimates do not cleanly match one of Outcomes A–C: observed family means and their permutation "
+            "references give a mixed pattern. The pairwise intervals and permutation results below should guide "
+            "interpretation without a categorical claim."
+        )
+
     lines = [
         "# RQ6: Cross-target decision-point consistency",
         "",
         "## Design and scope",
         "",
-        f"The analysis evaluated {summary['data']['positions_evaluated']:,} shared eojeol-onset prefixes from {summary['data']['documents_evaluated']:,} FineWeb2 Korean documents. Every target received the identical NFC text prefix at each document/character offset; each model tokenized that text independently. The primary decision-point definition is the exact bottom 20% of margins within each target on the common position set. This is a diagnostic comparison, not a causal test.",
+        f"The analysis evaluated {summary['data']['positions_evaluated']:,} shared eojeol-onset prefixes from {summary['data']['documents_evaluated']:,} of {summary['data']['documents_considered']:,} considered FineWeb2 Korean documents. {summary['data']['positions_excluded_reasons']['documents_excluded_insufficient_positions']} documents were excluded because they had too few eligible eojeol onsets. Each target received the identical NFC text prefix at each document/character offset, then tokenized it independently. The primary decision-point definition is the exact bottom 20% of margins within each target on the common position set.",
         "",
-        "Raw margins and the absolute margin <1 rule are secondary because tokenizers and model families do not calibrate probabilities identically. The primary comparison uses normalized ranks and bottom-20% overlap. Permutations shuffle labels within each document while preserving each target's per-document decision-point count. Confidence intervals use document bootstrap resampling.",
+        f"Prefixes contain {summary['data']['context_chars_min']}–{summary['data']['context_chars_max']} characters after snapping the nominal {summary['data']['context_window_chars']}-character window back to an eojeol boundary (median {summary['data']['context_chars_median']:.0f}). Per-model token-length summaries are in `summary.json`. Raw margins and the absolute margin <1 rule are secondary because next-token vocabularies and margin scales differ. This is a diagnostic comparison, not a causal test.",
         "",
         "## Pairwise results",
         "",
-        "| Target pair | Family relation | Spearman margin rho | Bottom-20% Jaccard | Overlap (% positions) | Permutation-null Jaccard | Observed − null | Upper-tail p |",
+        "| Target pair | Family relation | Spearman rho (95% doc-bootstrap CI) | Bottom-20% Jaccard (95% CI) | Overlap (% positions) | Null Jaccard mean | Observed − null | Upper-tail p |",
         "|---|---|---:|---:|---:|---:|---:|---:|",
     ]
-    corr_map = {(row.model_a, row.model_b): row.spearman_margin for row in correlations.itertuples()}
-    null_map = {(row.model_a, row.model_b): row for row in jaccard_null.itertuples()}
     for row in p20.itertuples():
         null = null_map[(row.model_a, row.model_b)]
         rho = corr_map[(row.model_a, row.model_b)]
+        rho_ci = bootstrap_map[(row.pair_id, "spearman_margin")]
+        jaccard_ci = bootstrap_map[(row.pair_id, "jaccard")]
         relation = "within Qwen3" if row.same_family else "cross-family"
         lines.append(
-            f"| {row.model_a} vs {row.model_b} | {relation} | {rho:.3f} | {row.jaccard:.3f} | {100*row.overlap_pct:.2f} | {null.null_mean:.3f} | {null.observed_minus_null_mean:+.3f} | {null.empirical_upper_tail_p:.3f} |"
+            f"| {row.model_a} vs {row.model_b} | {relation} | {rho:.3f} [{rho_ci.ci_low_95:.3f}, {rho_ci.ci_high_95:.3f}] | {row.jaccard:.3f} [{jaccard_ci.ci_low_95:.3f}, {jaccard_ci.ci_high_95:.3f}] | {row.overlap_pct:.2f} | {null.null_mean:.3f} | {null.observed_minus_null_mean:+.3f} | {null.empirical_upper_tail_p:.3f} |"
         )
-    family_ci = pd.read_csv(output_dir / "family_consistency_bootstrap.csv").set_index("metric")
-    within = summary["primary_results"]["within_qwen_mean_jaccard"]
-    cross = summary["primary_results"]["cross_family_mean_jaccard"]
-    difference = family_ci.loc["within_minus_cross_jaccard"]
+
+    lines.extend([
+        "",
+        "Empirical permutation p-values are upper-tail, unadjusted across pairs. `overlap_pct` is reported in percentage points; Jaccard is the primary normalized-set metric.",
+        "",
+        "### Threshold sensitivity",
+        "",
+        "| Bottom fraction | Mean pairwise Jaccard | Mean within-Qwen3 Jaccard | Mean cross-family Jaccard |",
+        "|---:|---:|---:|---:|",
+    ])
+    for fraction, group in overlap.groupby("threshold_fraction"):
+        within_values = group.loc[group.same_family, "jaccard"]
+        cross_values = group.loc[~group.same_family, "jaccard"]
+        lines.append(f"| {fraction:.0%} | {group.jaccard.mean():.3f} | {within_values.mean():.3f} | {cross_values.mean():.3f} |")
+
     lines.extend([
         "",
         "## Family and shared-position summaries",
         "",
-        f"Mean Qwen3 within-family Jaccard is {within:.3f}; mean cross-family Jaccard is {cross:.3f}. The within-minus-cross document-bootstrap 95% CI is [{difference.ci_low_95:.3f}, {difference.ci_high_95:.3f}]. Only Qwen3 has multiple targets in this set, so there is no within-Gemma or within-Ministral estimate.",
+        f"Mean Qwen3 within-family Jaccard is {within:.3f} (within-document permutation mean {within_null:.3f}); mean cross-family Jaccard is {cross:.3f} (permutation mean {cross_null:.3f}). The within-minus-cross document-bootstrap 95% CI is [{difference.ci_low_95:.3f}, {difference.ci_high_95:.3f}]. Only Qwen3 has multiple targets in this set, so there is no within-Gemma or within-Ministral estimate.",
         "",
-        f"The fraction marked as a decision point by at least one target from each of the three families (Qwen3, Gemma 3, Ministral 3) is {summary['primary_results']['cross_family_shared_position_fraction']:.3f}.",
-        "",
-        "The distribution by number of targets and a within-document permutation reference are in `shared_target_counts.csv`; pairwise overlap and permutation details are in `pairwise_overlap.csv` and `permutation_results.csv`. Margin-correlation bootstrap intervals are in `bootstrap_ci.csv`.",
+        f"The fraction marked by at least one target from each of the three families (Qwen3, Gemma 3, Ministral 3) is {summary['primary_results']['cross_family_shared_position_fraction']:.3f}. Across positions, {grouped['zero']:,} are selected by zero targets, {grouped['exactly_one']:,} by exactly one, {grouped['exactly_two']:,} by exactly two, and {grouped['three_or_more']:,} by three or more. `shared_target_buckets.csv` compares these groups with the permutation distribution; `shared_target_counts.csv` gives exact counts zero through five.",
         "",
         "## Morphological comparison",
         "",
     ])
     morph = outputs["morphological_enrichment.csv"]
     if len(morph):
-        lines.append("Kiwi-derived morpheme-boundary and within-morpheme character offsets were matched within the same sampled eojeol. The comparison is associational and relies on automatic Kiwi segmentation.")
+        exclusions = summary["morphology"].get("exclusions", {})
+        excluded_text = ", ".join(f"{key}: {value}" for key, value in exclusions.items()) or "none"
+        lines.append(
+            f"Kiwi-derived morpheme-boundary and within-morpheme character offsets were matched within the same sampled eojeol ({summary['morphology']['matched_word_pairs']:,} word pairs from {summary['morphology']['documents']:,} documents). Automatic alignment exclusions: {excluded_text}. The comparison is associational."
+        )
         lines.extend([
             "",
             "| Outcome | Matched words | Boundary prevalence | Within-morpheme prevalence | Difference (boundary − internal) | Document-bootstrap 95% CI |",
@@ -522,30 +616,36 @@ def _write_findings(output_dir: Path, summary: dict, outputs: dict[str, pd.DataF
             lines.append(f"| {row.outcome} | {row.matched_word_pairs} | {row.morpheme_boundary_prevalence:.3f} | {row.morpheme_internal_prevalence:.3f} | {row.boundary_minus_internal:+.3f} | [{row.document_bootstrap_ci_low_95:+.3f}, {row.document_bootstrap_ci_high_95:+.3f}] |")
     else:
         lines.append("The Kiwi positions did not provide a supported matched morphology comparison; no morphology claim is made.")
+
     lines.extend([
-        "",
-        "## Figures and artifacts",
-        "",
-        "Figures A–D visualize margin ranks, pairwise overlap, shared-target counts against the permutation baseline, and the matched morphological comparison. `summary.json` records model revisions, input token counts, exclusion counts, and output hashes.",
         "",
         "## Interpretation for KORSpec",
         "",
-    ])
-    null_mean = float(jaccard_null.null_mean.mean()) if len(jaccard_null) else float("nan")
-    if cross > null_mean and difference.ci_low_95 > 0:
-        outcome = "The observed pattern is closest to Outcome B: Qwen3 decision-point locations are more consistent within-family than across families, while cross-family overlap must be judged against its permutation baseline."
-    elif cross > null_mean:
-        outcome = "Cross-family overlap is above its within-document permutation reference on average, but the family contrast is uncertain; the evidence does not establish model-independent ambiguity locations."
-    else:
-        outcome = "The observed pattern is closest to Outcome C if most pairwise overlaps remain near their within-document permutation references; this supports interpreting the paper's existing RQ4 as conditional on a fixed target."
-    lines.append(outcome)
-    lines.extend([
+        f"**Observed pattern: Outcome {outcome}.** {outcome_sentence}",
+        "",
+        "Outcome A would support model-robust textual hotspots without establishing causal or intrinsic linguistic ambiguity. Outcome B indicates family dependence. Outcome C limits the existing RQ4 interpretation to draft failures conditional on a fixed target. If estimates do not meet a clean pattern, the report labels them mixed rather than forcing an outcome.",
+        "",
+        "Figures A–D show normalized margin ranks, pairwise overlap, shared-target counts against the within-document permutation baseline, and the matched morphological comparison. Full CSVs, model revisions, per-model token lengths, exclusions, and output hashes are saved under this directory.",
         "",
         "### Proposed RQ6 paragraph",
         "",
-        "On identical Korean text prefixes, target models identified low-margin decision points using within-model normalized margin ranks. Pairwise overlap and document-bootstrap intervals showed [insert measured within-Qwen and cross-family estimates], while a within-document permutation preserved each model's decision-point count. The comparison indicates [insert outcome from the results], so decision-point locations should be interpreted as [model-robust textual hotspots / partly family-dependent / target-specific] within the evaluated sample. This diagnostic does not establish intrinsic linguistic ambiguity, and the existing draft-disagreement results remain conditional on a fixed target model.",
-        "",
     ])
+    q48 = p20.loc[p20.model_a.eq("qwen4") & p20.model_b.eq("qwen8")].iloc[0]
+    q8g = p20.loc[p20.model_a.eq("qwen8") & p20.model_b.eq("gemma12")].iloc[0]
+    q8m = p20.loc[p20.model_a.eq("qwen8") & p20.model_b.eq("ministral8")].iloc[0]
+    paragraph = (
+        f"On identical Korean text prefixes from {summary['data']['documents_evaluated']:,} FineWeb2 documents "
+        f"({summary['data']['positions_evaluated']:,} eojeol onsets), bottom-20% decision-point Jaccard averaged "
+        f"{within:.3f} within Qwen3 and {cross:.3f} across families, against corresponding within-document "
+        f"permutation means of {within_null:.3f} and {cross_null:.3f}. The within-Qwen minus cross-family mean "
+        f"difference was {difference.bootstrap_mean:+.3f} (document-bootstrap 95% CI "
+        f"[{difference.ci_low_95:+.3f}, {difference.ci_high_95:+.3f}]); selected pairwise overlaps included "
+        f"Qwen3-4B/8B {q48.jaccard:.3f}, Qwen3-8B/Gemma3-12B {q8g.jaccard:.3f}, and "
+        f"Qwen3-8B/Ministral3-8B {q8m.jaccard:.3f}. The observed pattern is closest to Outcome {outcome}. "
+        "These results describe normalized low-margin locations in the evaluated prefixes; they do not establish "
+        "intrinsic linguistic ambiguity, and the paper's RQ4 remains conditional on a fixed target."
+    )
+    lines.extend([paragraph, ""])
     (output_dir / "cross_target_findings.md").write_text("\n".join(lines), encoding="utf-8")
 
 

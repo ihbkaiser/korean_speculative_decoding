@@ -305,7 +305,8 @@ def pairwise_overlap(labels_a: Sequence[bool], labels_b: Sequence[bool]) -> dict
     union = int(np.sum(a | b))
     prevalence_a = float(np.mean(a))
     prevalence_b = float(np.mean(b))
-    overlap = intersection / len(a)
+    overlap_fraction = intersection / len(a)
+    overlap_pct = 100.0 * overlap_fraction
     expected = prevalence_a * prevalence_b
     return {
         "n_positions": int(len(a)),
@@ -313,11 +314,13 @@ def pairwise_overlap(labels_a: Sequence[bool], labels_b: Sequence[bool]) -> dict
         "n_b": int(np.sum(b)),
         "intersection_size": intersection,
         "union_size": union,
-        "overlap_pct": float(overlap),
+        "overlap_fraction": float(overlap_fraction),
+        "overlap_pct": float(overlap_pct),
         "jaccard": float(intersection / union) if union else 0.0,
         "conditional_b_given_a": float(intersection / np.sum(a)) if np.sum(a) else float("nan"),
-        "independence_expected_overlap_pct": float(expected),
-        "overlap_enrichment": float(overlap / expected) if expected else float("nan"),
+        "independence_expected_overlap_fraction": float(expected),
+        "independence_expected_overlap_pct": float(100.0 * expected),
+        "overlap_enrichment": float(overlap_fraction / expected) if expected else float("nan"),
     }
 
 

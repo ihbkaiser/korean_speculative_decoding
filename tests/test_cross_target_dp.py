@@ -14,6 +14,7 @@ from src.cross_target_dp import (
     sample_eojeol_positions,
     within_document_permutation,
 )
+from scripts.analyze_cross_target_dp import _permutation_main
 
 
 class _Token:
@@ -79,7 +80,8 @@ class CrossTargetPositionTests(unittest.TestCase):
         metrics = pairwise_overlap(labels, [False, True, True, False, True])
         self.assertEqual(metrics["intersection_size"], 2)
         self.assertAlmostEqual(metrics["jaccard"], 2 / 4)
-        self.assertAlmostEqual(metrics["overlap_pct"], 2 / 5)
+        self.assertAlmostEqual(metrics["overlap_fraction"], 2 / 5)
+        self.assertAlmostEqual(metrics["overlap_pct"], 40.0)
 
     def test_rank_correlation_is_spearman_and_document_permutation_preserves_counts(self):
         self.assertAlmostEqual(rank_correlation([1, 2, 3], [4, 5, 6]), 1.0)
@@ -93,6 +95,27 @@ class CrossTargetPositionTests(unittest.TestCase):
             for doc in ("a", "b"):
                 mask = docs == doc
                 self.assertEqual(int(permuted[mask, model].sum()), int(labels[mask, model].sum()))
+
+    def test_analysis_permutation_reports_percent_and_three_plus_bucket(self):
+        documents = 20
+        positions_per_document = 10
+        doc_ids = np.repeat([f"doc-{index}" for index in range(documents)], positions_per_document)
+        labels = np.zeros((len(doc_ids), 5), dtype=bool)
+        for doc_index in range(documents):
+            start = doc_index * positions_per_document
+            for model_index in range(labels.shape[1]):
+                labels[start + model_index % positions_per_document, model_index] = True
+                labels[start + (model_index + 1) % positions_per_document, model_index] = True
+        pair_rows, bucket_rows, exact_rows = _permutation_main(
+            labels, doc_ids, ("qwen4", "qwen8", "qwen14", "gemma12", "ministral8"),
+            replicates=20, seed=11,
+        )
+        self.assertEqual(len(pair_rows), 20)
+        self.assertAlmostEqual(pair_rows[1]["observed"], 10.0)
+        self.assertEqual([row["target_count_bucket"] for row in bucket_rows], ["0", "exactly_1", "exactly_2", "3+"])
+        self.assertAlmostEqual(sum(row["observed_fraction"] for row in bucket_rows), 1.0)
+        self.assertAlmostEqual(sum(row["permutation_mean_fraction"] for row in bucket_rows), 1.0)
+        self.assertEqual(len(exact_rows), 6)
 
 
 if __name__ == "__main__":
