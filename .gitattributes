@@ -5,3 +5,4 @@ data/common_20k_ids.txt text eol=lf
 data/extra_20k_ids.txt text eol=lf
 metadata/dataset_revision.json text eol=lf
 data/table1_frozen.sha256 text eol=lf
+results/naacl_experiments/analysis/rq4_proposal_side_full40k_rows.parquet filter=lfs diff=lfs merge=lfs -text
