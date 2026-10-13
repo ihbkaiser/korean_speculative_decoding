@@ -44,6 +44,14 @@ def _load_complete_runs(config: dict, output_dir: Path, positions: pd.DataFrame,
             raise RuntimeError(f"Target run is not complete: {key} status={metadata.get('status')}")
         if metadata.get("model_revision") != config["models"][key]["revision"]:
             raise RuntimeError(f"Target run revision mismatch for {key}")
+        expected_output_hashes = metadata.get("output_sha256", {})
+        if len(expected_output_hashes) != len(metadata.get("outputs", [])):
+            raise RuntimeError(f"Target run has incomplete shard hashes for {key}")
+        for relative_path in metadata["outputs"]:
+            path = ROOT / relative_path
+            expected_hash = expected_output_hashes.get(path.name)
+            if expected_hash is None or sha256_file(path) != expected_hash:
+                raise RuntimeError(f"Target output shard hash mismatch for {key}: {path}")
         parts = [pd.read_parquet(ROOT / path) for path in metadata["outputs"]]
         frame = pd.concat(parts, ignore_index=True)
         if frame.position_id.astype(str).tolist() != expected_ids:
