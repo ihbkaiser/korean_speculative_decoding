@@ -1,0 +1,18 @@
+{
+  "schema": "cross-target-decision-points-v1",
+  "status": "RUNNING",
+  "model_key": "qwen8",
+  "model_name": "Qwen/Qwen3-8B-Base",
+  "model_revision": "49e3418fbbbca6ecbdf9608b4d22e5a407081db4",
+  "model_family": "Qwen3",
+  "position_file_sha256": "f085c391377d8d22e23f4224d3678d7561af0031d566bc17ab56cca6fd9ef53c",
+  "position_metadata_sha256": "78f4611e365f49c657f131d15568e750d9b8456c66d68524620ce49bdfb14757",
+  "positions_expected": 207898,
+  "batch_size": 16,
+  "dtype": "bfloat16",
+  "attention_backend": "sdpa",
+  "started_at_utc": "2026-10-13T10:48:44.309400+00:00",
+  "torch_version": "2.11.0+cu128",
+  "transformers_version": "5.19.0",
+  "gpu": "NVIDIA RTX A6000"
+}

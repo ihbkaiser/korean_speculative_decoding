@@ -1,0 +1,8 @@
+MODEL_STORAGE root=/dev/shm/naacl_models free_gib=30.77 requested_weight_gib=15.26
+MODEL qwen8 repo=Qwen/Qwen3-8B-Base revision=49e3418fbbbca6ecbdf9608b4d22e5a407081db4 gated=False weight_gib=15.26 shards=5
+DOWNLOAD_START qwen8 files=14 gated=False
+Fetching 14 files:   0%|          | 0/14 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 14 files:  71%|███████▏  | 10/14 [01:17<00:30,  7.74s/it]Fetching 14 files:  79%|███████▊  | 11/14 [01:45<00:30, 10.32s/it]Fetching 14 files:  86%|████████▌ | 12/14 [02:10<00:25, 12.50s/it]Fetching 14 files:  93%|█████████▎| 13/14 [02:12<00:10, 10.55s/it]Fetching 14 files: 100%|██████████| 14/14 [02:12<00:00,  8.53s/it]Fetching 14 files: 100%|██████████| 14/14 [02:12<00:00,  9.47s/it]
+DOWNLOAD_COMPLETE qwen8 local_path=/dev/shm/naacl_models/Qwen--Qwen3-8B-Base/49e3418fbbbca6ecbdf9608b4d22e5a407081db4
+Loading weights:   0%|          | 0/399 [00:00<?, ?it/s]Loading weights:  86%|████████▌ | 344/399 [00:00<00:00, 3436.10it/s]Loading weights: 100%|██████████| 399/399 [00:00<00:00, 3408.63it/s]
+SMOKE_LOAD_OK qwen8 Qwen/Qwen3-8B-Base@49e3418fbbbca6ecbdf9608b4d22e5a407081db4 on NVIDIA RTX A6000
