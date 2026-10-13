@@ -75,4 +75,33 @@
 qwen8 shard 00073:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00073 positions=2000 token_sum=327605 max_tokens=232
 qwen8 shard 00074:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00074 positions=2000 token_sum=328193 max_tokens=230
 qwen8 shard 00075:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00075 positions=2000 token_sum=332038 max_tokens=282
-qwen8 shard 00076:   0%|          | 0/125 [00:00<?, ?it/s]
+qwen8 shard 00076:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00076 positions=2000 token_sum=330953 max_tokens=260
+qwen8 shard 00077:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00077 positions=2000 token_sum=332473 max_tokens=242
+qwen8 shard 00078:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00078 positions=2000 token_sum=320365 max_tokens=223
+qwen8 shard 00079:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00079 positions=2000 token_sum=328487 max_tokens=315
+qwen8 shard 00080:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00080 positions=2000 token_sum=332984 max_tokens=253
+qwen8 shard 00081:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00081 positions=2000 token_sum=336834 max_tokens=741
+qwen8 shard 00082:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00082 positions=2000 token_sum=325827 max_tokens=275
+qwen8 shard 00083:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00083 positions=2000 token_sum=330077 max_tokens=257
+qwen8 shard 00084:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00084 positions=2000 token_sum=333195 max_tokens=241
+qwen8 shard 00085:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00085 positions=2000 token_sum=334630 max_tokens=343
+qwen8 shard 00086:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00086 positions=2000 token_sum=332726 max_tokens=232
+qwen8 shard 00087:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00087 positions=2000 token_sum=331437 max_tokens=251
+qwen8 shard 00088:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00088 positions=2000 token_sum=332548 max_tokens=236
+qwen8 shard 00089:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00089 positions=2000 token_sum=330276 max_tokens=236
+qwen8 shard 00090:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00090 positions=2000 token_sum=327926 max_tokens=229
+qwen8 shard 00091:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00091 positions=2000 token_sum=334178 max_tokens=439
+qwen8 shard 00092:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00092 positions=2000 token_sum=328598 max_tokens=238
+qwen8 shard 00093:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00093 positions=2000 token_sum=328626 max_tokens=249
+qwen8 shard 00094:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00094 positions=2000 token_sum=317660 max_tokens=230
+qwen8 shard 00095:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00095 positions=2000 token_sum=337513 max_tokens=777
+qwen8 shard 00096:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00096 positions=2000 token_sum=329030 max_tokens=231
+qwen8 shard 00097:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00097 positions=2000 token_sum=326319 max_tokens=227
+qwen8 shard 00098:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00098 positions=2000 token_sum=327718 max_tokens=229
+qwen8 shard 00099:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00099 positions=2000 token_sum=329049 max_tokens=230
+qwen8 shard 00100:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00100 positions=2000 token_sum=334201 max_tokens=231
+qwen8 shard 00101:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00101 positions=2000 token_sum=333393 max_tokens=233
+qwen8 shard 00102:   0%|          | 0/125 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00102 positions=2000 token_sum=328710 max_tokens=273
+qwen8 shard 00103:   0%|          | 0/119 [00:00<?, ?it/s]                                                          MODEL_SHARD_COMPLETE model=qwen8 shard=00103 positions=1898 token_sum=310732 max_tokens=224
+MODEL_RUN_COMPLETE model=qwen8 positions=207898 tokens=34205818 wall_seconds=5963.1 full_forward_max_abs_error=0.0625
+WEIGHTS_EVICTED qwen8
