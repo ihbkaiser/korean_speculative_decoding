@@ -1,0 +1,30 @@
+{
+  "job": "latency_probe",
+  "started_utc": "2026-11-26T05:48:15.038775+00:00",
+  "torch": "2.11.0+cu128",
+  "transformers": "5.19.0",
+  "torch_cuda_runtime": "12.8",
+  "cuda_available": true,
+  "gpu_name": "NVIDIA RTX A6000",
+  "nvidia_smi": "Thu Nov 26 05:48:14 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 570.195.03             Driver Version: 570.195.03     CUDA Version: 12.8     |\n|-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  NVIDIA RTX A6000               On  |   00000000:3B:00.0 Off |                    0 |\n| 38%   58C    P8             31W /  300W |       1MiB /  46068MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n                                                                                         \n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|  No running processes found                                                             |\n+-----------------------------------------------------------------------------------------+\n",
+  "nvidia_smi_compute_apps": "",
+  "details": {
+    "models": [
+      "gemma1",
+      "gemma12"
+    ],
+    "prompt_target": "gemma12",
+    "split": "common",
+    "pool_index": 1,
+    "prompt_length": 128,
+    "repetitions": {
+      "single_token": 200,
+      "verify_and_crop": 100
+    },
+    "warmup": 20,
+    "model_revisions": {
+      "gemma1": "fcf18a2a879aab110ca39f8bffbccd5d49d8eb29",
+      "gemma12": "295efb63d01a7017928f273a94ebb86105c9526f"
+    }
+  }
+}

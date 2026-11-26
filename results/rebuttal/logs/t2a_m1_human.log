@@ -1,0 +1,58 @@
+Loading weights:   0%|          | 0/458 [00:00<?, ?it/s]Loading weights: 100%|██████████| 458/458 [00:00<00:00, 5676.99it/s]
+Loading weights:   0%|          | 0/531 [00:00<?, ?it/s]Loading weights:  75%|███████▍  | 397/531 [00:00<00:00, 3959.79it/s]Loading weights: 100%|██████████| 531/531 [00:00<00:00, 4144.09it/s]
+[transformers] The tied weights mapping and config for this model specifies to tie model.language_model.embed_tokens.weight to lm_head.weight, but both are present in the checkpoints with different values, so we will NOT tie them. You should update the config with `tie_word_embeddings=False` to silence this warning.
+overlap M1/human reference batches:   0%|          | 0/10 [00:00<?, ?it/s]OVERLAP_REFERENCE_SHARD_COMPLETE pair=M1 continuation=human shard=00000 docs=1663 positions=212864
+overlap M1/human reference batches:  10%|█         | 1/10 [03:08<28:14, 188.25s/it]OVERLAP_REFERENCE_SHARD_COMPLETE pair=M1 continuation=human shard=00001 docs=1668 positions=213504
+overlap M1/human reference batches:  20%|██        | 2/10 [06:08<24:27, 183.49s/it]OVERLAP_REFERENCE_SHARD_COMPLETE pair=M1 continuation=human shard=00002 docs=1669 positions=213632
+overlap M1/human reference batches:  30%|███       | 3/10 [09:12<21:25, 183.60s/it]overlap M1/human reference batches: 100%|██████████| 10/10 [09:12<00:00, 55.21s/it]
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00000 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00001 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00002 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00003 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00004 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00005 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00006 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00007 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00008 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00009 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00010 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00011 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00012 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00013 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00014 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00015 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00016 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00017 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00018 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00019 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00020 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00021 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00022 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00023 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00024 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00025 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00026 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00027 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00028 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00029 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00030 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00031 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00032 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00033 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00034 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00035 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00036 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00037 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00038 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00039 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00040 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00041 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00042 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00043 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00044 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00045 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00046 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00047 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00048 positions=12800
+OVERLAP_SHARD_COMPLETE pair=M1 continuation=human shard=00049 positions=12800
+OVERLAP_COMPLETE pair=M1 continuation=human docs=5000 positions=640000

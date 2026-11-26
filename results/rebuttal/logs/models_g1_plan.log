@@ -1,0 +1,3 @@
+MODEL_STORAGE root=/dev/shm/naacl_models free_gib=34.89 requested_weight_gib=30.71
+MODEL gemma4 repo=google/gemma-3-4b-pt revision=cc012e0a6d0787b4adcc0fa2c4da74402494554d gated=manual weight_gib=8.01 shards=2
+MODEL gemma12 repo=google/gemma-3-12b-pt revision=295efb63d01a7017928f273a94ebb86105c9526f gated=manual weight_gib=22.70 shards=5

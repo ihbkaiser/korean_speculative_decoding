@@ -1,0 +1,22 @@
+/workspace/korean_speculative_decoding/scripts/rebuttal/analyze_copy_context.py:160: Pandas4Warning: The 'lsuffix' and 'rsuffix' keywords in DataFrame.join are deprecated and will be removed in a future version. Use the 'suffixes' keyword instead.
+  joined = base_curve[["positions", "disagreement_rate"]].join(
+/workspace/korean_speculative_decoding/scripts/rebuttal/analyze_copy_context.py:160: Pandas4Warning: The 'lsuffix' and 'rsuffix' keywords in DataFrame.join are deprecated and will be removed in a future version. Use the 'suffixes' keyword instead.
+  joined = base_curve[["positions", "disagreement_rate"]].join(
+/workspace/korean_speculative_decoding/scripts/rebuttal/analyze_copy_context.py:160: Pandas4Warning: The 'lsuffix' and 'rsuffix' keywords in DataFrame.join are deprecated and will be removed in a future version. Use the 'suffixes' keyword instead.
+  joined = base_curve[["positions", "disagreement_rate"]].join(
+/venv/main/lib/python3.12/site-packages/statsmodels/genmod/generalized_linear_model.py:1488: SpecificationWarning: cov_type not fully supported with freq_weights
+  glm_results = GLMResults(
+/venv/main/lib/python3.12/site-packages/statsmodels/genmod/generalized_linear_model.py:1488: SpecificationWarning: cov_type not fully supported with freq_weights
+  glm_results = GLMResults(
+ANALYZED_COPY_CONTEXT pair=Q2
+/workspace/korean_speculative_decoding/scripts/rebuttal/analyze_copy_context.py:160: Pandas4Warning: The 'lsuffix' and 'rsuffix' keywords in DataFrame.join are deprecated and will be removed in a future version. Use the 'suffixes' keyword instead.
+  joined = base_curve[["positions", "disagreement_rate"]].join(
+/workspace/korean_speculative_decoding/scripts/rebuttal/analyze_copy_context.py:160: Pandas4Warning: The 'lsuffix' and 'rsuffix' keywords in DataFrame.join are deprecated and will be removed in a future version. Use the 'suffixes' keyword instead.
+  joined = base_curve[["positions", "disagreement_rate"]].join(
+/workspace/korean_speculative_decoding/scripts/rebuttal/analyze_copy_context.py:160: Pandas4Warning: The 'lsuffix' and 'rsuffix' keywords in DataFrame.join are deprecated and will be removed in a future version. Use the 'suffixes' keyword instead.
+  joined = base_curve[["positions", "disagreement_rate"]].join(
+/venv/main/lib/python3.12/site-packages/statsmodels/genmod/generalized_linear_model.py:1488: SpecificationWarning: cov_type not fully supported with freq_weights
+  glm_results = GLMResults(
+/venv/main/lib/python3.12/site-packages/statsmodels/genmod/generalized_linear_model.py:1488: SpecificationWarning: cov_type not fully supported with freq_weights
+  glm_results = GLMResults(
+ANALYZED_COPY_CONTEXT pair=M1

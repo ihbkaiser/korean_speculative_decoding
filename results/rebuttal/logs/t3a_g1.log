@@ -1,0 +1,57 @@
+Loading weights:   0%|          | 0/883 [00:00<?, ?it/s]Loading weights:  58%|█████▊    | 510/883 [00:00<00:00, 5074.13it/s]Loading weights: 100%|██████████| 883/883 [00:00<00:00, 4547.08it/s]
+draft-topk G1 reference batches:   0%|          | 0/3 [00:00<?, ?it/s]DRAFT_TOPK_HEAD_CHECK_OK scale=1 max_abs_error=0
+DRAFT_TOPK_REFERENCE_SHARD_COMPLETE pair=G1 shard=00000 docs=2000 positions=255235
+draft-topk G1 reference batches:  33%|███▎      | 1/3 [01:59<03:59, 119.95s/it]DRAFT_TOPK_REFERENCE_SHARD_COMPLETE pair=G1 shard=00001 docs=2000 positions=255184
+draft-topk G1 reference batches:  67%|██████▋   | 2/3 [03:59<01:59, 119.66s/it]DRAFT_TOPK_REFERENCE_SHARD_COMPLETE pair=G1 shard=00002 docs=1000 positions=127744
+draft-topk G1 reference batches: 100%|██████████| 3/3 [05:58<00:00, 119.31s/it]draft-topk G1 reference batches: 100%|██████████| 3/3 [05:58<00:00, 119.43s/it]
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00000 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00001 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00002 positions=12749
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00003 positions=12673
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00004 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00005 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00006 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00007 positions=12677
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00008 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00009 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00010 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00011 positions=12697
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00012 positions=12674
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00013 positions=12565
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00014 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00015 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00016 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00017 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00018 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00019 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00020 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00021 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00022 positions=12673
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00023 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00024 positions=12568
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00025 positions=12673
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00026 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00027 positions=12726
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00028 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00029 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00030 positions=12678
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00031 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00032 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00033 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00034 positions=12767
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00035 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00036 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00037 positions=12699
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00038 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00039 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00040 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00041 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00042 positions=12698
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00043 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00044 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00045 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00046 positions=12673
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00047 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00048 positions=12773
+DRAFT_TOPK_SHARD_COMPLETE pair=G1 shard=00049 positions=12800
+DRAFT_TOPK_COMPLETE pair=G1 docs=5000 positions=638163

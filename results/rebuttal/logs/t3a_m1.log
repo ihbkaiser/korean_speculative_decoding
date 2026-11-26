@@ -1,0 +1,57 @@
+Loading weights:   0%|          | 0/458 [00:00<?, ?it/s]Loading weights: 100%|██████████| 458/458 [00:00<00:00, 5095.20it/s]
+draft-topk M1 reference batches:   0%|          | 0/3 [00:00<?, ?it/s]DRAFT_TOPK_HEAD_CHECK_OK scale=1 max_abs_error=0
+DRAFT_TOPK_REFERENCE_SHARD_COMPLETE pair=M1 shard=00000 docs=2000 positions=250504
+draft-topk M1 reference batches:  33%|███▎      | 1/3 [01:41<03:22, 101.24s/it]DRAFT_TOPK_REFERENCE_SHARD_COMPLETE pair=M1 shard=00001 docs=2000 positions=249654
+draft-topk M1 reference batches:  67%|██████▋   | 2/3 [03:38<01:50, 110.59s/it]DRAFT_TOPK_REFERENCE_SHARD_COMPLETE pair=M1 shard=00002 docs=1000 positions=125216
+draft-topk M1 reference batches: 100%|██████████| 3/3 [05:33<00:00, 112.88s/it]draft-topk M1 reference batches: 100%|██████████| 3/3 [05:33<00:00, 111.33s/it]
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00000 positions=12602
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00001 positions=12442
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00002 positions=12555
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00003 positions=12395
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00004 positions=12593
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00005 positions=12440
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00006 positions=12576
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00007 positions=12571
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00008 positions=12577
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00009 positions=12494
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00010 positions=12564
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00011 positions=12546
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00012 positions=12673
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00013 positions=12601
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00014 positions=12255
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00015 positions=12166
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00016 positions=12325
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00017 positions=12765
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00018 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00019 positions=12564
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00020 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00021 positions=12292
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00022 positions=12673
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00023 positions=12441
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00024 positions=12233
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00025 positions=12546
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00026 positions=12563
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00027 positions=12419
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00028 positions=12188
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00029 positions=12345
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00030 positions=12614
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00031 positions=12546
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00032 positions=12349
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00033 positions=12612
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00034 positions=12591
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00035 positions=12299
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00036 positions=12450
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00037 positions=12474
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00038 positions=12546
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00039 positions=12673
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00040 positions=12324
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00041 positions=12488
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00042 positions=12375
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00043 positions=12467
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00044 positions=12309
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00045 positions=12515
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00046 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00047 positions=12800
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00048 positions=12463
+DRAFT_TOPK_SHARD_COMPLETE pair=M1 shard=00049 positions=12675
+DRAFT_TOPK_COMPLETE pair=M1 docs=5000 positions=625374

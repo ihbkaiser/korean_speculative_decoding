@@ -1,0 +1,2 @@
+pair,draft_model,target_model,t_draft_step_ms,t_target_verify5_ms,c_measured,c_param
+M1,ministral3,ministral8,23.943013045936823,34.77486385963857,0.6885149325839998,0.375

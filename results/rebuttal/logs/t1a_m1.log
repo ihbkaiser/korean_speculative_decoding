@@ -1,0 +1,4 @@
+Loading weights:   0%|          | 0/458 [00:00<?, ?it/s]Loading weights: 100%|██████████| 458/458 [00:00<00:00, 7262.29it/s]
+Loading weights:   0%|          | 0/531 [00:00<?, ?it/s]Loading weights: 100%|██████████| 531/531 [00:00<00:00, 8282.14it/s]
+[transformers] The tied weights mapping and config for this model specifies to tie model.language_model.embed_tokens.weight to lm_head.weight, but both are present in the checkpoints with different values, so we will NOT tie them. You should update the config with `tie_word_embeddings=False` to silence this warning.
+LATENCY_COMPLETE output=/workspace/korean_speculative_decoding/results/rebuttal/latency/ministral/latency.csv rows=22

@@ -1,0 +1,184 @@
+Loading weights:   0%|          | 0/458 [00:00<?, ?it/s]Loading weights: 100%|██████████| 458/458 [00:00<00:00, 4871.38it/s]
+Loading weights:   0%|          | 0/531 [00:00<?, ?it/s]Loading weights:  94%|█████████▍| 498/531 [00:00<00:00, 4965.34it/s]Loading weights: 100%|██████████| 531/531 [00:00<00:00, 4946.14it/s]
+[transformers] The tied weights mapping and config for this model specifies to tie model.language_model.embed_tokens.weight to lm_head.weight, but both are present in the checkpoints with different values, so we will NOT tie them. You should update the config with `tie_word_embeddings=False` to silence this warning.
+copy M1/A/ministral8 reference batches:   0%|          | 0/10 [00:00<?, ?it/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+COPY_CONTEXT_REFERENCE_SHARD_COMPLETE pair=M1 model=ministral8 shard=00000 docs=1663 positions=212864
+copy M1/A/ministral8 reference batches:  10%|█         | 1/10 [01:59<17:58, 119.87s/it]COPY_CONTEXT_REFERENCE_SHARD_COMPLETE pair=M1 model=ministral8 shard=00001 docs=337 positions=43136
+copy M1/A/ministral8 reference batches:  20%|██        | 2/10 [03:58<15:55, 119.38s/it]copy M1/A/ministral8 reference batches: 100%|██████████| 10/10 [03:58<00:00, 23.89s/it]
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral8 shard=00000 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral8 shard=00001 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral8 shard=00002 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral8 shard=00003 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral8 shard=00004 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral8 shard=00005 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral8 shard=00006 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral8 shard=00007 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral8 shard=00008 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral8 shard=00009 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral8 shard=00010 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral8 shard=00011 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral8 shard=00012 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral8 shard=00013 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral8 shard=00014 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral8 shard=00015 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral8 shard=00016 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral8 shard=00017 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral8 shard=00018 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral8 shard=00019 positions=12800
+copy M1/A/ministral3 reference batches:   0%|          | 0/10 [00:00<?, ?it/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+COPY_CONTEXT_REFERENCE_SHARD_COMPLETE pair=M1 model=ministral3 shard=00000 docs=1663 positions=212864
+copy M1/A/ministral3 reference batches:  10%|█         | 1/10 [01:00<09:08, 60.90s/it]COPY_CONTEXT_REFERENCE_SHARD_COMPLETE pair=M1 model=ministral3 shard=00001 docs=337 positions=43136
+copy M1/A/ministral3 reference batches:  20%|██        | 2/10 [02:02<08:09, 61.13s/it]copy M1/A/ministral3 reference batches: 100%|██████████| 10/10 [02:02<00:00, 12.22s/it]
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral3 shard=00000 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral3 shard=00001 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral3 shard=00002 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral3 shard=00003 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral3 shard=00004 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral3 shard=00005 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral3 shard=00006 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral3 shard=00007 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral3 shard=00008 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral3 shard=00009 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral3 shard=00010 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral3 shard=00011 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral3 shard=00012 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral3 shard=00013 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral3 shard=00014 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral3 shard=00015 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral3 shard=00016 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral3 shard=00017 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral3 shard=00018 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=A model=ministral3 shard=00019 positions=12800
+copy M1/B/ministral8:   0%|          | 0/20 [00:00<?, ?it/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral8 shard=00000 positions=12800
+copy M1/B/ministral8:   5%|▌         | 1/20 [00:10<03:19, 10.49s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral8 shard=00001 positions=12800
+copy M1/B/ministral8:  10%|█         | 2/20 [00:20<03:05, 10.30s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral8 shard=00002 positions=12800
+copy M1/B/ministral8:  15%|█▌        | 3/20 [00:30<02:53, 10.23s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral8 shard=00003 positions=12800
+copy M1/B/ministral8:  20%|██        | 4/20 [00:40<02:43, 10.19s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral8 shard=00004 positions=12800
+copy M1/B/ministral8:  25%|██▌       | 5/20 [00:51<02:32, 10.16s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral8 shard=00005 positions=12800
+copy M1/B/ministral8:  30%|███       | 6/20 [01:01<02:24, 10.30s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral8 shard=00006 positions=12800
+copy M1/B/ministral8:  35%|███▌      | 7/20 [01:11<02:13, 10.24s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral8 shard=00007 positions=12800
+copy M1/B/ministral8:  40%|████      | 8/20 [01:21<02:02, 10.21s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral8 shard=00008 positions=12800
+copy M1/B/ministral8:  45%|████▌     | 9/20 [01:32<01:52, 10.19s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral8 shard=00009 positions=12800
+copy M1/B/ministral8:  50%|█████     | 10/20 [01:42<01:42, 10.30s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral8 shard=00010 positions=12800
+copy M1/B/ministral8:  55%|█████▌    | 11/20 [01:52<01:32, 10.24s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral8 shard=00011 positions=12800
+copy M1/B/ministral8:  60%|██████    | 12/20 [02:02<01:21, 10.19s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral8 shard=00012 positions=12800
+copy M1/B/ministral8:  65%|██████▌   | 13/20 [02:12<01:11, 10.16s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral8 shard=00013 positions=12800
+copy M1/B/ministral8:  70%|███████   | 14/20 [02:23<01:01, 10.25s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral8 shard=00014 positions=12800
+copy M1/B/ministral8:  75%|███████▌  | 15/20 [02:33<00:51, 10.21s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral8 shard=00015 positions=12800
+copy M1/B/ministral8:  80%|████████  | 16/20 [02:43<00:40, 10.18s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral8 shard=00016 positions=12800
+copy M1/B/ministral8:  85%|████████▌ | 17/20 [02:53<00:30, 10.15s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral8 shard=00017 positions=12800
+copy M1/B/ministral8:  90%|█████████ | 18/20 [03:04<00:20, 10.25s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral8 shard=00018 positions=12800
+copy M1/B/ministral8:  95%|█████████▌| 19/20 [03:14<00:10, 10.21s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral8 shard=00019 positions=12800
+copy M1/B/ministral8: 100%|██████████| 20/20 [03:24<00:00, 10.18s/it]copy M1/B/ministral8: 100%|██████████| 20/20 [03:24<00:00, 10.22s/it]
+copy M1/B/ministral3:   0%|          | 0/20 [00:00<?, ?it/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral3 shard=00000 positions=12800
+copy M1/B/ministral3:   5%|▌         | 1/20 [00:05<01:36,  5.07s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral3 shard=00001 positions=12800
+copy M1/B/ministral3:  10%|█         | 2/20 [00:10<01:30,  5.01s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral3 shard=00002 positions=12800
+copy M1/B/ministral3:  15%|█▌        | 3/20 [00:14<01:24,  4.98s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral3 shard=00003 positions=12800
+copy M1/B/ministral3:  20%|██        | 4/20 [00:19<01:19,  4.98s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral3 shard=00004 positions=12800
+copy M1/B/ministral3:  25%|██▌       | 5/20 [00:24<01:14,  4.97s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral3 shard=00005 positions=12800
+copy M1/B/ministral3:  30%|███       | 6/20 [00:29<01:09,  4.97s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral3 shard=00006 positions=12800
+copy M1/B/ministral3:  35%|███▌      | 7/20 [00:34<01:04,  4.97s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral3 shard=00007 positions=12800
+copy M1/B/ministral3:  40%|████      | 8/20 [00:39<00:59,  4.97s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral3 shard=00008 positions=12800
+copy M1/B/ministral3:  45%|████▌     | 9/20 [00:44<00:54,  4.98s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral3 shard=00009 positions=12800
+copy M1/B/ministral3:  50%|█████     | 10/20 [00:49<00:49,  4.98s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral3 shard=00010 positions=12800
+copy M1/B/ministral3:  55%|█████▌    | 11/20 [00:54<00:44,  4.98s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral3 shard=00011 positions=12800
+copy M1/B/ministral3:  60%|██████    | 12/20 [00:59<00:39,  4.99s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral3 shard=00012 positions=12800
+copy M1/B/ministral3:  65%|██████▌   | 13/20 [01:04<00:34,  4.99s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral3 shard=00013 positions=12800
+copy M1/B/ministral3:  70%|███████   | 14/20 [01:09<00:29,  4.99s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral3 shard=00014 positions=12800
+copy M1/B/ministral3:  75%|███████▌  | 15/20 [01:14<00:24,  4.99s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral3 shard=00015 positions=12800
+copy M1/B/ministral3:  80%|████████  | 16/20 [01:19<00:19,  5.00s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral3 shard=00016 positions=12800
+copy M1/B/ministral3:  85%|████████▌ | 17/20 [01:24<00:14,  5.00s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral3 shard=00017 positions=12800
+copy M1/B/ministral3:  90%|█████████ | 18/20 [01:29<00:09,  5.00s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral3 shard=00018 positions=12800
+copy M1/B/ministral3:  95%|█████████▌| 19/20 [01:34<00:04,  5.00s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=B model=ministral3 shard=00019 positions=12800
+copy M1/B/ministral3: 100%|██████████| 20/20 [01:39<00:00,  5.00s/it]copy M1/B/ministral3: 100%|██████████| 20/20 [01:39<00:00,  4.99s/it]
+copy M1/C/ministral8:   0%|          | 0/20 [00:00<?, ?it/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral8 shard=00000 positions=12800
+copy M1/C/ministral8:   5%|▌         | 1/20 [00:10<03:21, 10.63s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral8 shard=00001 positions=12800
+copy M1/C/ministral8:  10%|█         | 2/20 [00:21<03:09, 10.54s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral8 shard=00002 positions=12800
+copy M1/C/ministral8:  15%|█▌        | 3/20 [00:32<03:03, 10.79s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral8 shard=00003 positions=12800
+copy M1/C/ministral8:  20%|██        | 4/20 [00:43<02:54, 10.90s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral8 shard=00004 positions=12800
+copy M1/C/ministral8:  25%|██▌       | 5/20 [00:54<02:45, 11.07s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral8 shard=00005 positions=12800
+copy M1/C/ministral8:  30%|███       | 6/20 [01:05<02:34, 11.03s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral8 shard=00006 positions=12800
+copy M1/C/ministral8:  35%|███▌      | 7/20 [01:17<02:25, 11.19s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral8 shard=00007 positions=12800
+copy M1/C/ministral8:  40%|████      | 8/20 [01:27<02:12, 11.00s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral8 shard=00008 positions=12800
+copy M1/C/ministral8:  45%|████▌     | 9/20 [01:38<01:59, 10.82s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral8 shard=00009 positions=12800
+copy M1/C/ministral8:  50%|█████     | 10/20 [01:48<01:46, 10.70s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral8 shard=00010 positions=12800
+copy M1/C/ministral8:  55%|█████▌    | 11/20 [01:59<01:36, 10.73s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral8 shard=00011 positions=12800
+copy M1/C/ministral8:  60%|██████    | 12/20 [02:09<01:25, 10.64s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral8 shard=00012 positions=12800
+copy M1/C/ministral8:  65%|██████▌   | 13/20 [02:20<01:14, 10.58s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral8 shard=00013 positions=12800
+copy M1/C/ministral8:  70%|███████   | 14/20 [02:30<01:03, 10.53s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral8 shard=00014 positions=12800
+copy M1/C/ministral8:  75%|███████▌  | 15/20 [02:40<00:52, 10.47s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral8 shard=00015 positions=12800
+copy M1/C/ministral8:  80%|████████  | 16/20 [02:51<00:42, 10.55s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral8 shard=00016 positions=12800
+copy M1/C/ministral8:  85%|████████▌ | 17/20 [03:02<00:31, 10.48s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral8 shard=00017 positions=12800
+copy M1/C/ministral8:  90%|█████████ | 18/20 [03:12<00:20, 10.44s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral8 shard=00018 positions=12800
+copy M1/C/ministral8:  95%|█████████▌| 19/20 [03:22<00:10, 10.43s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral8 shard=00019 positions=12800
+copy M1/C/ministral8: 100%|██████████| 20/20 [03:33<00:00, 10.52s/it]copy M1/C/ministral8: 100%|██████████| 20/20 [03:33<00:00, 10.68s/it]
+copy M1/C/ministral3:   0%|          | 0/20 [00:00<?, ?it/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral3 shard=00000 positions=12800
+copy M1/C/ministral3:   5%|▌         | 1/20 [00:05<01:39,  5.23s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral3 shard=00001 positions=12800
+copy M1/C/ministral3:  10%|█         | 2/20 [00:10<01:32,  5.13s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral3 shard=00002 positions=12800
+copy M1/C/ministral3:  15%|█▌        | 3/20 [00:15<01:26,  5.10s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral3 shard=00003 positions=12800
+copy M1/C/ministral3:  20%|██        | 4/20 [00:20<01:22,  5.14s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral3 shard=00004 positions=12800
+copy M1/C/ministral3:  25%|██▌       | 5/20 [00:25<01:16,  5.12s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral3 shard=00005 positions=12800
+copy M1/C/ministral3:  30%|███       | 6/20 [00:30<01:11,  5.11s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral3 shard=00006 positions=12800
+copy M1/C/ministral3:  35%|███▌      | 7/20 [00:35<01:06,  5.14s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral3 shard=00007 positions=12800
+copy M1/C/ministral3:  40%|████      | 8/20 [00:41<01:01,  5.14s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral3 shard=00008 positions=12800
+copy M1/C/ministral3:  45%|████▌     | 9/20 [00:46<00:56,  5.16s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral3 shard=00009 positions=12800
+copy M1/C/ministral3:  50%|█████     | 10/20 [00:51<00:51,  5.15s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral3 shard=00010 positions=12800
+copy M1/C/ministral3:  55%|█████▌    | 11/20 [00:56<00:46,  5.14s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral3 shard=00011 positions=12800
+copy M1/C/ministral3:  60%|██████    | 12/20 [01:01<00:41,  5.16s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral3 shard=00012 positions=12800
+copy M1/C/ministral3:  65%|██████▌   | 13/20 [01:06<00:36,  5.16s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral3 shard=00013 positions=12800
+copy M1/C/ministral3:  70%|███████   | 14/20 [01:12<00:30,  5.16s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral3 shard=00014 positions=12800
+copy M1/C/ministral3:  75%|███████▌  | 15/20 [01:17<00:25,  5.16s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral3 shard=00015 positions=12800
+copy M1/C/ministral3:  80%|████████  | 16/20 [01:22<00:20,  5.13s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral3 shard=00016 positions=12800
+copy M1/C/ministral3:  85%|████████▌ | 17/20 [01:27<00:15,  5.13s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral3 shard=00017 positions=12800
+copy M1/C/ministral3:  90%|█████████ | 18/20 [01:32<00:10,  5.13s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral3 shard=00018 positions=12800
+copy M1/C/ministral3:  95%|█████████▌| 19/20 [01:37<00:05,  5.14s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=C model=ministral3 shard=00019 positions=12800
+copy M1/C/ministral3: 100%|██████████| 20/20 [01:42<00:00,  5.14s/it]copy M1/C/ministral3: 100%|██████████| 20/20 [01:42<00:00,  5.14s/it]
+copy M1/D/ministral8:   0%|          | 0/20 [00:00<?, ?it/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral8 shard=00000 positions=12800
+copy M1/D/ministral8:   5%|▌         | 1/20 [00:10<03:21, 10.58s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral8 shard=00001 positions=12800
+copy M1/D/ministral8:  10%|█         | 2/20 [00:21<03:09, 10.52s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral8 shard=00002 positions=12800
+copy M1/D/ministral8:  15%|█▌        | 3/20 [00:31<02:58, 10.51s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral8 shard=00003 positions=12800
+copy M1/D/ministral8:  20%|██        | 4/20 [00:42<02:50, 10.64s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral8 shard=00004 positions=12800
+copy M1/D/ministral8:  25%|██▌       | 5/20 [00:52<02:38, 10.57s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral8 shard=00005 positions=12800
+copy M1/D/ministral8:  30%|███       | 6/20 [01:03<02:27, 10.52s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral8 shard=00006 positions=12800
+copy M1/D/ministral8:  35%|███▌      | 7/20 [01:13<02:16, 10.49s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral8 shard=00007 positions=12800
+copy M1/D/ministral8:  40%|████      | 8/20 [01:24<02:07, 10.59s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral8 shard=00008 positions=12800
+copy M1/D/ministral8:  45%|████▌     | 9/20 [01:34<01:56, 10.56s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral8 shard=00009 positions=12800
+copy M1/D/ministral8:  50%|█████     | 10/20 [01:45<01:44, 10.48s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral8 shard=00010 positions=12800
+copy M1/D/ministral8:  55%|█████▌    | 11/20 [01:55<01:34, 10.45s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral8 shard=00011 positions=12800
+copy M1/D/ministral8:  60%|██████    | 12/20 [02:06<01:23, 10.42s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral8 shard=00012 positions=12800
+copy M1/D/ministral8:  65%|██████▌   | 13/20 [02:16<01:14, 10.59s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral8 shard=00013 positions=12800
+copy M1/D/ministral8:  70%|███████   | 14/20 [02:27<01:03, 10.56s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral8 shard=00014 positions=12800
+copy M1/D/ministral8:  75%|███████▌  | 15/20 [02:37<00:52, 10.49s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral8 shard=00015 positions=12800
+copy M1/D/ministral8:  80%|████████  | 16/20 [02:48<00:41, 10.45s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral8 shard=00016 positions=12800
+copy M1/D/ministral8:  85%|████████▌ | 17/20 [02:59<00:31, 10.58s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral8 shard=00017 positions=12800
+copy M1/D/ministral8:  90%|█████████ | 18/20 [03:09<00:21, 10.53s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral8 shard=00018 positions=12800
+copy M1/D/ministral8:  95%|█████████▌| 19/20 [03:19<00:10, 10.49s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral8 shard=00019 positions=12800
+copy M1/D/ministral8: 100%|██████████| 20/20 [03:30<00:00, 10.47s/it]copy M1/D/ministral8: 100%|██████████| 20/20 [03:30<00:00, 10.51s/it]
+copy M1/D/ministral3:   0%|          | 0/20 [00:00<?, ?it/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral3 shard=00000 positions=12800
+copy M1/D/ministral3:   5%|▌         | 1/20 [00:05<01:39,  5.24s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral3 shard=00001 positions=12800
+copy M1/D/ministral3:  10%|█         | 2/20 [00:10<01:33,  5.20s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral3 shard=00002 positions=12800
+copy M1/D/ministral3:  15%|█▌        | 3/20 [00:15<01:28,  5.19s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral3 shard=00003 positions=12800
+copy M1/D/ministral3:  20%|██        | 4/20 [00:20<01:22,  5.16s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral3 shard=00004 positions=12800
+copy M1/D/ministral3:  25%|██▌       | 5/20 [00:25<01:17,  5.16s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral3 shard=00005 positions=12800
+copy M1/D/ministral3:  30%|███       | 6/20 [00:31<01:12,  5.16s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral3 shard=00006 positions=12800
+copy M1/D/ministral3:  35%|███▌      | 7/20 [00:36<01:07,  5.16s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral3 shard=00007 positions=12800
+copy M1/D/ministral3:  40%|████      | 8/20 [00:41<01:01,  5.16s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral3 shard=00008 positions=12800
+copy M1/D/ministral3:  45%|████▌     | 9/20 [00:46<00:56,  5.17s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral3 shard=00009 positions=12800
+copy M1/D/ministral3:  50%|█████     | 10/20 [00:51<00:51,  5.14s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral3 shard=00010 positions=12800
+copy M1/D/ministral3:  55%|█████▌    | 11/20 [00:56<00:46,  5.14s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral3 shard=00011 positions=12800
+copy M1/D/ministral3:  60%|██████    | 12/20 [01:01<00:41,  5.13s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral3 shard=00012 positions=12800
+copy M1/D/ministral3:  65%|██████▌   | 13/20 [01:07<00:36,  5.16s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral3 shard=00013 positions=12800
+copy M1/D/ministral3:  70%|███████   | 14/20 [01:12<00:31,  5.18s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral3 shard=00014 positions=12800
+copy M1/D/ministral3:  75%|███████▌  | 15/20 [01:17<00:25,  5.16s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral3 shard=00015 positions=12800
+copy M1/D/ministral3:  80%|████████  | 16/20 [01:22<00:20,  5.19s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral3 shard=00016 positions=12800
+copy M1/D/ministral3:  85%|████████▌ | 17/20 [01:28<00:15,  5.32s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral3 shard=00017 positions=12800
+copy M1/D/ministral3:  90%|█████████ | 18/20 [01:33<00:10,  5.32s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral3 shard=00018 positions=12800
+copy M1/D/ministral3:  95%|█████████▌| 19/20 [01:38<00:05,  5.30s/it]COPY_CONTEXT_SHARD_COMPLETE pair=M1 condition=D model=ministral3 shard=00019 positions=12800
+copy M1/D/ministral3: 100%|██████████| 20/20 [01:44<00:00,  5.30s/it]copy M1/D/ministral3: 100%|██████████| 20/20 [01:44<00:00,  5.21s/it]
+COPY_CONTEXT_COMPLETE pair=M1 documents=2000

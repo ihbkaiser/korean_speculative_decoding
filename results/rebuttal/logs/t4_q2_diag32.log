@@ -1,0 +1,33 @@
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 5080.75it/s]
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 5737.62it/s]
+copy Q2/A/qwen4:   0%|          | 0/1 [00:00<?, ?it/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen4 shard=00000 positions=12800
+copy Q2/A/qwen4: 100%|██████████| 1/1 [00:04<00:00,  4.71s/it]copy Q2/A/qwen4: 100%|██████████| 1/1 [00:04<00:00,  4.71s/it]
+copy Q2/A/qwen06:   0%|          | 0/1 [00:00<?, ?it/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen06 shard=00000 positions=12800
+copy Q2/A/qwen06: 100%|██████████| 1/1 [00:01<00:00,  1.73s/it]copy Q2/A/qwen06: 100%|██████████| 1/1 [00:01<00:00,  1.73s/it]
+copy Q2/B/qwen4:   0%|          | 0/1 [00:00<?, ?it/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen4 shard=00000 positions=12800
+copy Q2/B/qwen4: 100%|██████████| 1/1 [00:07<00:00,  7.10s/it]copy Q2/B/qwen4: 100%|██████████| 1/1 [00:07<00:00,  7.10s/it]
+copy Q2/B/qwen06:   0%|          | 0/1 [00:00<?, ?it/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen06 shard=00000 positions=12800
+copy Q2/B/qwen06: 100%|██████████| 1/1 [00:02<00:00,  2.32s/it]copy Q2/B/qwen06: 100%|██████████| 1/1 [00:02<00:00,  2.32s/it]
+copy Q2/C/qwen4:   0%|          | 0/1 [00:00<?, ?it/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen4 shard=00000 positions=12800
+copy Q2/C/qwen4: 100%|██████████| 1/1 [00:07<00:00,  7.11s/it]copy Q2/C/qwen4: 100%|██████████| 1/1 [00:07<00:00,  7.11s/it]
+copy Q2/C/qwen06:   0%|          | 0/1 [00:00<?, ?it/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen06 shard=00000 positions=12800
+copy Q2/C/qwen06: 100%|██████████| 1/1 [00:02<00:00,  2.44s/it]copy Q2/C/qwen06: 100%|██████████| 1/1 [00:02<00:00,  2.44s/it]
+copy Q2/D/qwen4:   0%|          | 0/1 [00:00<?, ?it/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen4 shard=00000 positions=12800
+copy Q2/D/qwen4: 100%|██████████| 1/1 [00:07<00:00,  7.03s/it]copy Q2/D/qwen4: 100%|██████████| 1/1 [00:07<00:00,  7.03s/it]
+copy Q2/D/qwen06:   0%|          | 0/1 [00:00<?, ?it/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen06 shard=00000 positions=12800
+copy Q2/D/qwen06: 100%|██████████| 1/1 [00:02<00:00,  2.57s/it]copy Q2/D/qwen06: 100%|██████████| 1/1 [00:02<00:00,  2.57s/it]
+Traceback (most recent call last):
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_copy_context.py", line 238, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_copy_context.py", line 230, in main
+    raise RuntimeError(f"Condition A consistency gate failed; inspect {output_dir / 'consistency_A.json'}")
+RuntimeError: Condition A consistency gate failed; inspect /workspace/korean_speculative_decoding/results/rebuttal/copy_context_diag32/Q2/consistency_A.json

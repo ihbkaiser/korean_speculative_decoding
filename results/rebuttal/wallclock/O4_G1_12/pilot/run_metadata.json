@@ -1,0 +1,131 @@
+{
+  "job": "wallclock_pilot",
+  "started_utc": "2026-11-26T05:54:36.505365+00:00",
+  "torch": "2.11.0+cu128",
+  "transformers": "5.19.0",
+  "torch_cuda_runtime": "12.8",
+  "cuda_available": true,
+  "gpu_name": "NVIDIA RTX A6000",
+  "nvidia_smi": "Thu Nov 26 05:54:36 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 570.195.03             Driver Version: 570.195.03     CUDA Version: 12.8     |\n|-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  NVIDIA RTX A6000               On  |   00000000:3B:00.0 Off |                    0 |\n| 34%   57C    P8             28W /  300W |       1MiB /  46068MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n                                                                                         \n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|  No running processes found                                                             |\n+-----------------------------------------------------------------------------------------+\n",
+  "nvidia_smi_compute_apps": "",
+  "details": {
+    "run_identity": {
+      "pair": "O4_G1_12",
+      "draft_model": "gemma1",
+      "target_model": "gemma12",
+      "draft_revision": "fcf18a2a879aab110ca39f8bffbccd5d49d8eb29",
+      "target_revision": "295efb63d01a7017928f273a94ebb86105c9526f",
+      "pool_indices": [
+        1,
+        3,
+        5,
+        7,
+        9,
+        11,
+        13,
+        15,
+        17,
+        19,
+        21,
+        23,
+        25,
+        27,
+        29,
+        31,
+        33,
+        35,
+        37,
+        39,
+        41,
+        43,
+        45,
+        47,
+        49,
+        51,
+        53,
+        55,
+        57,
+        59,
+        61,
+        63,
+        65,
+        67,
+        69,
+        71,
+        73,
+        75,
+        77,
+        79,
+        81,
+        83,
+        85,
+        87,
+        89,
+        91,
+        93,
+        95,
+        97,
+        99
+      ],
+      "repeats": 1,
+      "max_new_tokens": 128,
+      "eos_token_id": 1,
+      "seed": 20261125,
+      "measured_cost_ratio": 0.4774087053210111,
+      "thresholds": {
+        "fixed_k_2": [
+          2.0,
+          "fixed_k"
+        ],
+        "fixed_k_4": [
+          4.0,
+          "fixed_k"
+        ],
+        "fixed_k_6": [
+          6.0,
+          "fixed_k"
+        ],
+        "fixed_k_8": [
+          8.0,
+          "fixed_k"
+        ],
+        "fixed_k_7": [
+          7.0,
+          "fixed_k"
+        ],
+        "entropy_tuned": [
+          0.6740324020385748,
+          "entropy"
+        ],
+        "top1_tuned": [
+          0.7394718723760567,
+          "top1"
+        ],
+        "margin_tuned": [
+          2.0,
+          "margin"
+        ],
+        "margin_1nat": [
+          1.0,
+          "margin"
+        ]
+      },
+      "fixed_k_optimal_dev": 7,
+      "skipped_fixed_k": [],
+      "policy_names": [
+        "target_only",
+        "fixed_k_2",
+        "fixed_k_4",
+        "fixed_k_6",
+        "fixed_k_8",
+        "fixed_k_7",
+        "entropy_tuned",
+        "top1_tuned",
+        "margin_tuned",
+        "margin_1nat"
+      ]
+    },
+    "max_hours": 4.0,
+    "bootstrap_reps": 1000
+  }
+}

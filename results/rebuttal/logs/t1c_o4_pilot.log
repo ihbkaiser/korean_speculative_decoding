@@ -1,0 +1,20 @@
+TUNED margin threshold=2 replay_score=1.829544
+TUNED entropy threshold=0.674032402 replay_score=1.800054
+TUNED top1_probability threshold=0.739471872 replay_score=1.831693
+TUNED fixed_k=7 replay_score=1.647104
+Loading weights:   0%|          | 0/340 [00:00<?, ?it/s]Loading weights: 100%|██████████| 340/340 [00:00<00:00, 5668.79it/s]
+Loading weights:   0%|          | 0/1065 [00:00<?, ?it/s]Loading weights:  54%|█████▍    | 579/1065 [00:00<00:00, 5789.37it/s]Loading weights: 100%|██████████| 1065/1065 [00:00<00:00, 5276.45it/s]
+WALLCLOCK_WARMUP_COMPLETE pair=O4_G1_12 policy=target_only docs=10
+WALLCLOCK_WARMUP_COMPLETE pair=O4_G1_12 policy=fixed_k_2 docs=10
+WALLCLOCK_WARMUP_COMPLETE pair=O4_G1_12 policy=fixed_k_4 docs=10
+WALLCLOCK_WARMUP_COMPLETE pair=O4_G1_12 policy=fixed_k_6 docs=10
+WALLCLOCK_WARMUP_COMPLETE pair=O4_G1_12 policy=fixed_k_8 docs=10
+WALLCLOCK_WARMUP_COMPLETE pair=O4_G1_12 policy=fixed_k_7 docs=10
+WALLCLOCK_WARMUP_COMPLETE pair=O4_G1_12 policy=entropy_tuned docs=10
+WALLCLOCK_WARMUP_COMPLETE pair=O4_G1_12 policy=top1_tuned docs=10
+WALLCLOCK_WARMUP_COMPLETE pair=O4_G1_12 policy=margin_tuned docs=10
+WALLCLOCK_WARMUP_COMPLETE pair=O4_G1_12 policy=margin_1nat docs=10
+WALLCLOCK_BLOCK pair=O4_G1_12 repeat=0 block=0 docs=20 seconds=1103.8
+WALLCLOCK_BLOCK pair=O4_G1_12 repeat=0 block=1 docs=20 seconds=2196.4
+WALLCLOCK_BLOCK pair=O4_G1_12 repeat=0 block=2 docs=10 seconds=2743.4
+WALLCLOCK_COMPLETE pair=O4_G1_12 rows=500 output=/workspace/korean_speculative_decoding/results/rebuttal/wallclock/O4_G1_12/pilot

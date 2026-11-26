@@ -1,0 +1,183 @@
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 6023.93it/s]
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 6649.91it/s]
+copy Q2/A/qwen4 reference batches:   0%|          | 0/10 [00:00<?, ?it/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+COPY_CONTEXT_REFERENCE_SHARD_COMPLETE pair=Q2 model=qwen4 shard=00000 docs=1738 positions=222464
+copy Q2/A/qwen4 reference batches:  10%|█         | 1/10 [01:26<13:00, 86.67s/it]COPY_CONTEXT_REFERENCE_SHARD_COMPLETE pair=Q2 model=qwen4 shard=00001 docs=262 positions=33536
+copy Q2/A/qwen4 reference batches:  20%|██        | 2/10 [02:52<11:29, 86.16s/it]copy Q2/A/qwen4 reference batches: 100%|██████████| 10/10 [02:52<00:00, 17.25s/it]
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen4 shard=00000 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen4 shard=00001 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen4 shard=00002 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen4 shard=00003 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen4 shard=00004 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen4 shard=00005 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen4 shard=00006 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen4 shard=00007 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen4 shard=00008 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen4 shard=00009 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen4 shard=00010 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen4 shard=00011 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen4 shard=00012 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen4 shard=00013 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen4 shard=00014 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen4 shard=00015 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen4 shard=00016 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen4 shard=00017 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen4 shard=00018 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen4 shard=00019 positions=12800
+copy Q2/A/qwen06 reference batches:   0%|          | 0/10 [00:00<?, ?it/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+COPY_CONTEXT_REFERENCE_SHARD_COMPLETE pair=Q2 model=qwen06 shard=00000 docs=1738 positions=222464
+copy Q2/A/qwen06 reference batches:  10%|█         | 1/10 [00:33<05:02, 33.62s/it]COPY_CONTEXT_REFERENCE_SHARD_COMPLETE pair=Q2 model=qwen06 shard=00001 docs=262 positions=33536
+copy Q2/A/qwen06 reference batches:  20%|██        | 2/10 [01:06<04:26, 33.27s/it]copy Q2/A/qwen06 reference batches: 100%|██████████| 10/10 [01:06<00:00,  6.66s/it]
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen06 shard=00000 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen06 shard=00001 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen06 shard=00002 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen06 shard=00003 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen06 shard=00004 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen06 shard=00005 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen06 shard=00006 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen06 shard=00007 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen06 shard=00008 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen06 shard=00009 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen06 shard=00010 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen06 shard=00011 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen06 shard=00012 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen06 shard=00013 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen06 shard=00014 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen06 shard=00015 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen06 shard=00016 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen06 shard=00017 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen06 shard=00018 positions=12800
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=A model=qwen06 shard=00019 positions=12800
+copy Q2/B/qwen4:   0%|          | 0/20 [00:00<?, ?it/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen4 shard=00000 positions=12800
+copy Q2/B/qwen4:   5%|▌         | 1/20 [00:07<02:13,  7.03s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen4 shard=00001 positions=12800
+copy Q2/B/qwen4:  10%|█         | 2/20 [00:13<02:05,  6.97s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen4 shard=00002 positions=12800
+copy Q2/B/qwen4:  15%|█▌        | 3/20 [00:20<01:58,  6.95s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen4 shard=00003 positions=12800
+copy Q2/B/qwen4:  20%|██        | 4/20 [00:27<01:50,  6.94s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen4 shard=00004 positions=12800
+copy Q2/B/qwen4:  25%|██▌       | 5/20 [00:35<01:46,  7.08s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen4 shard=00005 positions=12800
+copy Q2/B/qwen4:  30%|███       | 6/20 [00:42<01:38,  7.03s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen4 shard=00006 positions=12800
+copy Q2/B/qwen4:  35%|███▌      | 7/20 [00:48<01:30,  7.00s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen4 shard=00007 positions=12800
+copy Q2/B/qwen4:  40%|████      | 8/20 [00:55<01:23,  6.97s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen4 shard=00008 positions=12800
+copy Q2/B/qwen4:  45%|████▌     | 9/20 [01:02<01:16,  6.96s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen4 shard=00009 positions=12800
+copy Q2/B/qwen4:  50%|█████     | 10/20 [01:10<01:10,  7.06s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen4 shard=00010 positions=12800
+copy Q2/B/qwen4:  55%|█████▌    | 11/20 [01:17<01:03,  7.01s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen4 shard=00011 positions=12800
+copy Q2/B/qwen4:  60%|██████    | 12/20 [01:24<00:56,  7.01s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen4 shard=00012 positions=12800
+copy Q2/B/qwen4:  65%|██████▌   | 13/20 [01:31<00:48,  7.00s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen4 shard=00013 positions=12800
+copy Q2/B/qwen4:  70%|███████   | 14/20 [01:38<00:42,  7.08s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen4 shard=00014 positions=12800
+copy Q2/B/qwen4:  75%|███████▌  | 15/20 [01:45<00:35,  7.02s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen4 shard=00015 positions=12800
+copy Q2/B/qwen4:  80%|████████  | 16/20 [01:52<00:27,  7.00s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen4 shard=00016 positions=12800
+copy Q2/B/qwen4:  85%|████████▌ | 17/20 [01:58<00:20,  6.97s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen4 shard=00017 positions=12800
+copy Q2/B/qwen4:  90%|█████████ | 18/20 [02:06<00:14,  7.05s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen4 shard=00018 positions=12800
+copy Q2/B/qwen4:  95%|█████████▌| 19/20 [02:13<00:07,  7.00s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen4 shard=00019 positions=12800
+copy Q2/B/qwen4: 100%|██████████| 20/20 [02:20<00:00,  6.97s/it]copy Q2/B/qwen4: 100%|██████████| 20/20 [02:20<00:00,  7.00s/it]
+copy Q2/B/qwen06:   0%|          | 0/20 [00:00<?, ?it/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen06 shard=00000 positions=12800
+copy Q2/B/qwen06:   5%|▌         | 1/20 [00:02<00:44,  2.34s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen06 shard=00001 positions=12800
+copy Q2/B/qwen06:  10%|█         | 2/20 [00:04<00:41,  2.30s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen06 shard=00002 positions=12800
+copy Q2/B/qwen06:  15%|█▌        | 3/20 [00:06<00:38,  2.28s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen06 shard=00003 positions=12800
+copy Q2/B/qwen06:  20%|██        | 4/20 [00:09<00:36,  2.28s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen06 shard=00004 positions=12800
+copy Q2/B/qwen06:  25%|██▌       | 5/20 [00:11<00:34,  2.27s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen06 shard=00005 positions=12800
+copy Q2/B/qwen06:  30%|███       | 6/20 [00:13<00:31,  2.27s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen06 shard=00006 positions=12800
+copy Q2/B/qwen06:  35%|███▌      | 7/20 [00:15<00:29,  2.27s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen06 shard=00007 positions=12800
+copy Q2/B/qwen06:  40%|████      | 8/20 [00:18<00:27,  2.27s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen06 shard=00008 positions=12800
+copy Q2/B/qwen06:  45%|████▌     | 9/20 [00:20<00:24,  2.27s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen06 shard=00009 positions=12800
+copy Q2/B/qwen06:  50%|█████     | 10/20 [00:22<00:22,  2.27s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen06 shard=00010 positions=12800
+copy Q2/B/qwen06:  55%|█████▌    | 11/20 [00:25<00:20,  2.27s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen06 shard=00011 positions=12800
+copy Q2/B/qwen06:  60%|██████    | 12/20 [00:27<00:18,  2.27s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen06 shard=00012 positions=12800
+copy Q2/B/qwen06:  65%|██████▌   | 13/20 [00:29<00:15,  2.27s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen06 shard=00013 positions=12800
+copy Q2/B/qwen06:  70%|███████   | 14/20 [00:31<00:13,  2.27s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen06 shard=00014 positions=12800
+copy Q2/B/qwen06:  75%|███████▌  | 15/20 [00:34<00:11,  2.27s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen06 shard=00015 positions=12800
+copy Q2/B/qwen06:  80%|████████  | 16/20 [00:36<00:09,  2.27s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen06 shard=00016 positions=12800
+copy Q2/B/qwen06:  85%|████████▌ | 17/20 [00:38<00:06,  2.27s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen06 shard=00017 positions=12800
+copy Q2/B/qwen06:  90%|█████████ | 18/20 [00:40<00:04,  2.27s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen06 shard=00018 positions=12800
+copy Q2/B/qwen06:  95%|█████████▌| 19/20 [00:43<00:02,  2.27s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=B model=qwen06 shard=00019 positions=12800
+copy Q2/B/qwen06: 100%|██████████| 20/20 [00:45<00:00,  2.27s/it]copy Q2/B/qwen06: 100%|██████████| 20/20 [00:45<00:00,  2.27s/it]
+copy Q2/C/qwen4:   0%|          | 0/20 [00:00<?, ?it/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen4 shard=00000 positions=12800
+copy Q2/C/qwen4:   5%|▌         | 1/20 [00:07<02:16,  7.16s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen4 shard=00001 positions=12800
+copy Q2/C/qwen4:  10%|█         | 2/20 [00:14<02:07,  7.11s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen4 shard=00002 positions=12800
+copy Q2/C/qwen4:  15%|█▌        | 3/20 [00:21<02:03,  7.25s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen4 shard=00003 positions=12800
+copy Q2/C/qwen4:  20%|██        | 4/20 [00:28<01:55,  7.19s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen4 shard=00004 positions=12800
+copy Q2/C/qwen4:  25%|██▌       | 5/20 [00:35<01:47,  7.16s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen4 shard=00005 positions=12800
+copy Q2/C/qwen4:  30%|███       | 6/20 [00:42<01:40,  7.15s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen4 shard=00006 positions=12800
+copy Q2/C/qwen4:  35%|███▌      | 7/20 [00:50<01:34,  7.25s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen4 shard=00007 positions=12800
+copy Q2/C/qwen4:  40%|████      | 8/20 [00:57<01:26,  7.22s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen4 shard=00008 positions=12800
+copy Q2/C/qwen4:  45%|████▌     | 9/20 [01:04<01:19,  7.19s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen4 shard=00009 positions=12800
+copy Q2/C/qwen4:  50%|█████     | 10/20 [01:11<01:11,  7.16s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen4 shard=00010 positions=12800
+copy Q2/C/qwen4:  55%|█████▌    | 11/20 [01:19<01:05,  7.25s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen4 shard=00011 positions=12800
+copy Q2/C/qwen4:  60%|██████    | 12/20 [01:26<00:57,  7.19s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen4 shard=00012 positions=12800
+copy Q2/C/qwen4:  65%|██████▌   | 13/20 [01:33<00:50,  7.18s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen4 shard=00013 positions=12800
+copy Q2/C/qwen4:  70%|███████   | 14/20 [01:40<00:42,  7.14s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen4 shard=00014 positions=12800
+copy Q2/C/qwen4:  75%|███████▌  | 15/20 [01:47<00:36,  7.22s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen4 shard=00015 positions=12800
+copy Q2/C/qwen4:  80%|████████  | 16/20 [01:54<00:28,  7.17s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen4 shard=00016 positions=12800
+copy Q2/C/qwen4:  85%|████████▌ | 17/20 [02:02<00:21,  7.15s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen4 shard=00017 positions=12800
+copy Q2/C/qwen4:  90%|█████████ | 18/20 [02:09<00:14,  7.12s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen4 shard=00018 positions=12800
+copy Q2/C/qwen4:  95%|█████████▌| 19/20 [02:16<00:07,  7.09s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen4 shard=00019 positions=12800
+copy Q2/C/qwen4: 100%|██████████| 20/20 [02:23<00:00,  7.18s/it]copy Q2/C/qwen4: 100%|██████████| 20/20 [02:23<00:00,  7.18s/it]
+copy Q2/C/qwen06:   0%|          | 0/20 [00:00<?, ?it/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen06 shard=00000 positions=12800
+copy Q2/C/qwen06:   5%|▌         | 1/20 [00:02<00:46,  2.44s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen06 shard=00001 positions=12800
+copy Q2/C/qwen06:  10%|█         | 2/20 [00:04<00:43,  2.41s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen06 shard=00002 positions=12800
+copy Q2/C/qwen06:  15%|█▌        | 3/20 [00:07<00:40,  2.36s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen06 shard=00003 positions=12800
+copy Q2/C/qwen06:  20%|██        | 4/20 [00:09<00:38,  2.38s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen06 shard=00004 positions=12800
+copy Q2/C/qwen06:  25%|██▌       | 5/20 [00:11<00:35,  2.38s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen06 shard=00005 positions=12800
+copy Q2/C/qwen06:  30%|███       | 6/20 [00:14<00:33,  2.38s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen06 shard=00006 positions=12800
+copy Q2/C/qwen06:  35%|███▌      | 7/20 [00:16<00:31,  2.40s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen06 shard=00007 positions=12800
+copy Q2/C/qwen06:  40%|████      | 8/20 [00:19<00:28,  2.39s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen06 shard=00008 positions=12800
+copy Q2/C/qwen06:  45%|████▌     | 9/20 [00:21<00:26,  2.39s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen06 shard=00009 positions=12800
+copy Q2/C/qwen06:  50%|█████     | 10/20 [00:23<00:23,  2.39s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen06 shard=00010 positions=12800
+copy Q2/C/qwen06:  55%|█████▌    | 11/20 [00:26<00:21,  2.39s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen06 shard=00011 positions=12800
+copy Q2/C/qwen06:  60%|██████    | 12/20 [00:28<00:19,  2.39s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen06 shard=00012 positions=12800
+copy Q2/C/qwen06:  65%|██████▌   | 13/20 [00:31<00:16,  2.39s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen06 shard=00013 positions=12800
+copy Q2/C/qwen06:  70%|███████   | 14/20 [00:33<00:14,  2.40s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen06 shard=00014 positions=12800
+copy Q2/C/qwen06:  75%|███████▌  | 15/20 [00:35<00:12,  2.40s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen06 shard=00015 positions=12800
+copy Q2/C/qwen06:  80%|████████  | 16/20 [00:38<00:09,  2.40s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen06 shard=00016 positions=12800
+copy Q2/C/qwen06:  85%|████████▌ | 17/20 [00:40<00:07,  2.40s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen06 shard=00017 positions=12800
+copy Q2/C/qwen06:  90%|█████████ | 18/20 [00:43<00:04,  2.39s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen06 shard=00018 positions=12800
+copy Q2/C/qwen06:  95%|█████████▌| 19/20 [00:45<00:02,  2.38s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=C model=qwen06 shard=00019 positions=12800
+copy Q2/C/qwen06: 100%|██████████| 20/20 [00:47<00:00,  2.39s/it]copy Q2/C/qwen06: 100%|██████████| 20/20 [00:47<00:00,  2.39s/it]
+copy Q2/D/qwen4:   0%|          | 0/20 [00:00<?, ?it/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen4 shard=00000 positions=12800
+copy Q2/D/qwen4:   5%|▌         | 1/20 [00:07<02:14,  7.10s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen4 shard=00001 positions=12800
+copy Q2/D/qwen4:  10%|█         | 2/20 [00:14<02:07,  7.06s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen4 shard=00002 positions=12800
+copy Q2/D/qwen4:  15%|█▌        | 3/20 [00:21<02:00,  7.06s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen4 shard=00003 positions=12800
+copy Q2/D/qwen4:  20%|██        | 4/20 [00:28<01:55,  7.21s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen4 shard=00004 positions=12800
+copy Q2/D/qwen4:  25%|██▌       | 5/20 [00:35<01:46,  7.13s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen4 shard=00005 positions=12800
+copy Q2/D/qwen4:  30%|███       | 6/20 [00:42<01:39,  7.08s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen4 shard=00006 positions=12800
+copy Q2/D/qwen4:  35%|███▌      | 7/20 [00:49<01:31,  7.06s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen4 shard=00007 positions=12800
+copy Q2/D/qwen4:  40%|████      | 8/20 [00:56<01:25,  7.16s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen4 shard=00008 positions=12800
+copy Q2/D/qwen4:  45%|████▌     | 9/20 [01:03<01:18,  7.11s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen4 shard=00009 positions=12800
+copy Q2/D/qwen4:  50%|█████     | 10/20 [01:11<01:10,  7.09s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen4 shard=00010 positions=12800
+copy Q2/D/qwen4:  55%|█████▌    | 11/20 [01:18<01:03,  7.06s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen4 shard=00011 positions=12800
+copy Q2/D/qwen4:  60%|██████    | 12/20 [01:25<00:57,  7.15s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen4 shard=00012 positions=12800
+copy Q2/D/qwen4:  65%|██████▌   | 13/20 [01:32<00:49,  7.11s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen4 shard=00013 positions=12800
+copy Q2/D/qwen4:  70%|███████   | 14/20 [01:39<00:42,  7.09s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen4 shard=00014 positions=12800
+copy Q2/D/qwen4:  75%|███████▌  | 15/20 [01:46<00:35,  7.08s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen4 shard=00015 positions=12800
+copy Q2/D/qwen4:  80%|████████  | 16/20 [01:53<00:28,  7.05s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen4 shard=00016 positions=12800
+copy Q2/D/qwen4:  85%|████████▌ | 17/20 [02:00<00:21,  7.15s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen4 shard=00017 positions=12800
+copy Q2/D/qwen4:  90%|█████████ | 18/20 [02:07<00:14,  7.10s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen4 shard=00018 positions=12800
+copy Q2/D/qwen4:  95%|█████████▌| 19/20 [02:14<00:07,  7.07s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen4 shard=00019 positions=12800
+copy Q2/D/qwen4: 100%|██████████| 20/20 [02:21<00:00,  7.05s/it]copy Q2/D/qwen4: 100%|██████████| 20/20 [02:21<00:00,  7.09s/it]
+copy Q2/D/qwen06:   0%|          | 0/20 [00:00<?, ?it/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen06 shard=00000 positions=12800
+copy Q2/D/qwen06:   5%|▌         | 1/20 [00:02<00:48,  2.55s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen06 shard=00001 positions=12800
+copy Q2/D/qwen06:  10%|█         | 2/20 [00:05<00:46,  2.56s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen06 shard=00002 positions=12800
+copy Q2/D/qwen06:  15%|█▌        | 3/20 [00:07<00:43,  2.56s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen06 shard=00003 positions=12800
+copy Q2/D/qwen06:  20%|██        | 4/20 [00:10<00:40,  2.53s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen06 shard=00004 positions=12800
+copy Q2/D/qwen06:  25%|██▌       | 5/20 [00:12<00:37,  2.49s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen06 shard=00005 positions=12800
+copy Q2/D/qwen06:  30%|███       | 6/20 [00:14<00:34,  2.46s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen06 shard=00006 positions=12800
+copy Q2/D/qwen06:  35%|███▌      | 7/20 [00:17<00:32,  2.48s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen06 shard=00007 positions=12800
+copy Q2/D/qwen06:  40%|████      | 8/20 [00:19<00:29,  2.46s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen06 shard=00008 positions=12800
+copy Q2/D/qwen06:  45%|████▌     | 9/20 [00:22<00:27,  2.46s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen06 shard=00009 positions=12800
+copy Q2/D/qwen06:  50%|█████     | 10/20 [00:24<00:24,  2.47s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen06 shard=00010 positions=12800
+copy Q2/D/qwen06:  55%|█████▌    | 11/20 [00:27<00:22,  2.47s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen06 shard=00011 positions=12800
+copy Q2/D/qwen06:  60%|██████    | 12/20 [00:29<00:19,  2.47s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen06 shard=00012 positions=12800
+copy Q2/D/qwen06:  65%|██████▌   | 13/20 [00:32<00:17,  2.46s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen06 shard=00013 positions=12800
+copy Q2/D/qwen06:  70%|███████   | 14/20 [00:34<00:14,  2.47s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen06 shard=00014 positions=12800
+copy Q2/D/qwen06:  75%|███████▌  | 15/20 [00:37<00:12,  2.47s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen06 shard=00015 positions=12800
+copy Q2/D/qwen06:  80%|████████  | 16/20 [00:39<00:09,  2.44s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen06 shard=00016 positions=12800
+copy Q2/D/qwen06:  85%|████████▌ | 17/20 [00:42<00:07,  2.44s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen06 shard=00017 positions=12800
+copy Q2/D/qwen06:  90%|█████████ | 18/20 [00:44<00:04,  2.44s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen06 shard=00018 positions=12800
+copy Q2/D/qwen06:  95%|█████████▌| 19/20 [00:47<00:02,  2.58s/it]COPY_CONTEXT_SHARD_COMPLETE pair=Q2 condition=D model=qwen06 shard=00019 positions=12800
+copy Q2/D/qwen06: 100%|██████████| 20/20 [00:49<00:00,  2.54s/it]copy Q2/D/qwen06: 100%|██████████| 20/20 [00:49<00:00,  2.49s/it]
+COPY_CONTEXT_COMPLETE pair=Q2 documents=2000

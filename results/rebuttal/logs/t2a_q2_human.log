@@ -1,0 +1,60 @@
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 6233.74it/s]
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 7058.28it/s]
+overlap Q2/human:   0%|          | 0/50 [00:00<?, ?it/s]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00000 positions=12800
+overlap Q2/human:   2%|▏         | 1/50 [00:07<06:18,  7.73s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00001 positions=12800
+overlap Q2/human:   4%|▍         | 2/50 [00:13<05:28,  6.85s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00002 positions=12800
+overlap Q2/human:   6%|▌         | 3/50 [00:20<05:09,  6.59s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00003 positions=12800
+overlap Q2/human:   8%|▊         | 4/50 [00:26<04:57,  6.47s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00004 positions=12800
+overlap Q2/human:  10%|█         | 5/50 [00:32<04:48,  6.41s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00005 positions=12800
+overlap Q2/human:  12%|█▏        | 6/50 [00:39<04:53,  6.67s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00006 positions=12800
+overlap Q2/human:  14%|█▍        | 7/50 [00:47<04:53,  6.83s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00007 positions=12800
+overlap Q2/human:  16%|█▌        | 8/50 [00:54<04:51,  6.94s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00008 positions=12800
+overlap Q2/human:  18%|█▊        | 9/50 [01:01<04:47,  7.01s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00009 positions=12800
+overlap Q2/human:  20%|██        | 10/50 [01:08<04:42,  7.07s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00010 positions=12800
+overlap Q2/human:  22%|██▏       | 11/50 [01:15<04:37,  7.11s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00011 positions=12800
+overlap Q2/human:  24%|██▍       | 12/50 [01:23<04:30,  7.13s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00012 positions=12800
+overlap Q2/human:  26%|██▌       | 13/50 [01:30<04:24,  7.15s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00013 positions=12800
+overlap Q2/human:  28%|██▊       | 14/50 [01:37<04:17,  7.16s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00014 positions=12800
+overlap Q2/human:  30%|███       | 15/50 [01:44<04:10,  7.17s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00015 positions=12800
+overlap Q2/human:  32%|███▏      | 16/50 [01:51<04:04,  7.18s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00016 positions=12800
+overlap Q2/human:  34%|███▍      | 17/50 [01:59<03:57,  7.19s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00017 positions=12800
+overlap Q2/human:  36%|███▌      | 18/50 [02:06<03:50,  7.19s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00018 positions=12800
+overlap Q2/human:  38%|███▊      | 19/50 [02:13<03:42,  7.19s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00019 positions=12800
+overlap Q2/human:  40%|████      | 20/50 [02:19<03:28,  6.94s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00020 positions=12800
+overlap Q2/human:  42%|████▏     | 21/50 [02:26<03:16,  6.77s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00021 positions=12800
+overlap Q2/human:  44%|████▍     | 22/50 [02:32<03:06,  6.65s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00022 positions=12800
+overlap Q2/human:  46%|████▌     | 23/50 [02:38<02:57,  6.56s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00023 positions=12800
+overlap Q2/human:  48%|████▊     | 24/50 [02:45<02:49,  6.51s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00024 positions=12800
+overlap Q2/human:  50%|█████     | 25/50 [02:51<02:41,  6.47s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00025 positions=12800
+overlap Q2/human:  52%|█████▏    | 26/50 [02:58<02:34,  6.44s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00026 positions=12800
+overlap Q2/human:  54%|█████▍    | 27/50 [03:04<02:27,  6.41s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00027 positions=12800
+overlap Q2/human:  56%|█████▌    | 28/50 [03:10<02:20,  6.40s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00028 positions=12800
+overlap Q2/human:  58%|█████▊    | 29/50 [03:17<02:14,  6.39s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00029 positions=12800
+overlap Q2/human:  60%|██████    | 30/50 [03:23<02:07,  6.38s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00030 positions=12800
+overlap Q2/human:  62%|██████▏   | 31/50 [03:29<02:01,  6.38s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00031 positions=12800
+overlap Q2/human:  64%|██████▍   | 32/50 [03:36<01:54,  6.38s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00032 positions=12800
+overlap Q2/human:  66%|██████▌   | 33/50 [03:42<01:48,  6.38s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00033 positions=12800
+overlap Q2/human:  68%|██████▊   | 34/50 [03:49<01:42,  6.39s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00034 positions=12800
+overlap Q2/human:  70%|███████   | 35/50 [03:55<01:35,  6.39s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00035 positions=12800
+overlap Q2/human:  72%|███████▏  | 36/50 [04:01<01:29,  6.38s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00036 positions=12800
+overlap Q2/human:  74%|███████▍  | 37/50 [04:08<01:22,  6.38s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00037 positions=12800
+overlap Q2/human:  76%|███████▌  | 38/50 [04:14<01:16,  6.38s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00038 positions=12800
+overlap Q2/human:  78%|███████▊  | 39/50 [04:20<01:10,  6.37s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00039 positions=12800
+overlap Q2/human:  80%|████████  | 40/50 [04:27<01:03,  6.36s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00040 positions=12800
+overlap Q2/human:  82%|████████▏ | 41/50 [04:33<00:57,  6.36s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00041 positions=12800
+overlap Q2/human:  84%|████████▍ | 42/50 [04:39<00:50,  6.36s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00042 positions=12800
+overlap Q2/human:  86%|████████▌ | 43/50 [04:46<00:44,  6.36s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00043 positions=12800
+overlap Q2/human:  88%|████████▊ | 44/50 [04:52<00:38,  6.36s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00044 positions=12800
+overlap Q2/human:  90%|█████████ | 45/50 [04:59<00:32,  6.45s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00045 positions=12800
+overlap Q2/human:  92%|█████████▏| 46/50 [05:06<00:26,  6.67s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00046 positions=12800
+overlap Q2/human:  94%|█████████▍| 47/50 [05:13<00:20,  6.83s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00047 positions=12800
+overlap Q2/human:  96%|█████████▌| 48/50 [05:20<00:13,  6.94s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00048 positions=12800
+overlap Q2/human:  98%|█████████▊| 49/50 [05:28<00:07,  7.01s/it]OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00049 positions=12800
+overlap Q2/human: 100%|██████████| 50/50 [05:35<00:00,  7.07s/it]overlap Q2/human: 100%|██████████| 50/50 [05:35<00:00,  6.71s/it]
+Traceback (most recent call last):
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_overlap.py", line 317, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_overlap.py", line 309, in main
+    raise RuntimeError(f"T2a consistency gate failed; inspect {output_dir / 'consistency.json'} before analysis")
+RuntimeError: T2a consistency gate failed; inspect /workspace/korean_speculative_decoding/results/rebuttal/overlap/Q2/human/consistency.json before analysis

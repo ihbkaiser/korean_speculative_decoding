@@ -1,0 +1,30 @@
+{
+  "job": "latency_probe",
+  "started_utc": "2026-11-26T04:39:43.533098+00:00",
+  "torch": "2.11.0+cu128",
+  "transformers": "5.19.0",
+  "torch_cuda_runtime": "12.8",
+  "cuda_available": true,
+  "gpu_name": "NVIDIA RTX A6000",
+  "nvidia_smi": "Thu Nov 26 04:39:43 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 570.195.03             Driver Version: 570.195.03     CUDA Version: 12.8     |\n|-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  NVIDIA RTX A6000               On  |   00000000:3B:00.0 Off |                    0 |\n| 30%   46C    P8             28W /  300W |       1MiB /  46068MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n                                                                                         \n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|  No running processes found                                                             |\n+-----------------------------------------------------------------------------------------+\n",
+  "nvidia_smi_compute_apps": "",
+  "details": {
+    "models": [
+      "ministral3",
+      "ministral8"
+    ],
+    "prompt_target": "ministral8",
+    "split": "common",
+    "pool_index": 1,
+    "prompt_length": 128,
+    "repetitions": {
+      "single_token": 200,
+      "verify_and_crop": 100
+    },
+    "warmup": 20,
+    "model_revisions": {
+      "ministral3": "6f9c4b12a95b139af68670a6713616b757923735",
+      "ministral8": "d4883f9b36aa2e5d775730d3fdba3d30de51a8ef"
+    }
+  }
+}

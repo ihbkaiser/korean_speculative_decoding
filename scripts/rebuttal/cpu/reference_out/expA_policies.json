@@ -1,0 +1,1034 @@
+[
+ {
+  "pair": "Q1",
+  "c": 0.353,
+  "docs_test": 10000,
+  "L_k4": 3.7148,
+  "D_k4": 3.9599,
+  "S_fixed": 1.5589,
+  "L@k4 margin (ours)": 4.3458,
+  "S margin (ours)": 1.8126,
+  "L@k4 entropy (AdaEDL/SVIP-type)": 4.2132,
+  "S entropy (AdaEDL/SVIP-type)": 1.7639,
+  "L@k4 max-prob (confidence thr.)": 4.3111,
+  "S max-prob (confidence thr.)": 1.799,
+  "L@k4 learned stopper (GBDT)": 4.3528,
+  "S learned stopper (GBDT)": 1.8156,
+  "L@k4 cumulative log-prob": 4.3074,
+  "S cumulative log-prob": 1.7966,
+  "L oracle": 6.2967,
+  "D oracle": 5.3425,
+  "S oracle": 2.1821,
+  "gain% margin (ours)": 16.99,
+  "gain_ci margin (ours)": [
+   16.86,
+   17.11
+  ],
+  "heldout_S margin (ours)": 1.8126,
+  "gain% entropy (AdaEDL/SVIP-type)": 13.42,
+  "gain_ci entropy (AdaEDL/SVIP-type)": [
+   13.24,
+   13.58
+  ],
+  "heldout_S entropy (AdaEDL/SVIP-type)": 1.7639,
+  "gain% max-prob (confidence thr.)": 16.05,
+  "gain_ci max-prob (confidence thr.)": [
+   15.92,
+   16.19
+  ],
+  "heldout_S max-prob (confidence thr.)": 1.799,
+  "gain% learned stopper (GBDT)": 17.17,
+  "gain_ci learned stopper (GBDT)": [
+   17.05,
+   17.3
+  ],
+  "heldout_S learned stopper (GBDT)": 1.8156,
+  "gain% cumulative log-prob": 15.95,
+  "gain_ci cumulative log-prob": [
+   15.84,
+   16.07
+  ],
+  "heldout_S cumulative log-prob": 1.7966,
+  "margin_vs entropy (AdaEDL/SVIP-type)": [
+   3.15,
+   3.01,
+   3.27
+  ],
+  "margin_vs max-prob (confidence thr.)": [
+   0.81,
+   0.73,
+   0.88
+  ],
+  "margin_vs cumulative log-prob": [
+   0.89,
+   0.82,
+   0.96
+  ],
+  "margin_vs learned stopper (GBDT)": [
+   -0.16,
+   -0.21,
+   -0.11
+  ],
+  "heldout_S fixed": 1.5589,
+  "S_margin_vs_fixed_ci": [
+   16.13,
+   16.41
+  ],
+  "oracle_gain%": 69.5,
+  "perdoc_thr": 1.25,
+  "perdoc_cost_ratio": 1.005,
+  "perdoc_gain_median": 19.2,
+  "perdoc_gain_iqr": [
+   0.0,
+   52.4
+  ],
+  "perdoc_share_positive": 0.728,
+  "perdoc_share_nonneg": 0.769
+ },
+ {
+  "pair": "Q2",
+  "c": 0.15,
+  "docs_test": 10000,
+  "L_k4": 3.4508,
+  "D_k4": 3.9599,
+  "S_fixed": 2.1835,
+  "L@k4 margin (ours)": 4.0387,
+  "S margin (ours)": 2.5401,
+  "L@k4 entropy (AdaEDL/SVIP-type)": 3.905,
+  "S entropy (AdaEDL/SVIP-type)": 2.4532,
+  "L@k4 max-prob (confidence thr.)": 4.0159,
+  "S max-prob (confidence thr.)": 2.525,
+  "L@k4 learned stopper (GBDT)": 4.0576,
+  "S learned stopper (GBDT)": 2.5555,
+  "L@k4 cumulative log-prob": 4.0279,
+  "S cumulative log-prob": 2.5496,
+  "L oracle": 5.3001,
+  "D oracle": 4.338,
+  "S oracle": 3.2108,
+  "gain% margin (ours)": 17.04,
+  "gain_ci margin (ours)": [
+   16.86,
+   17.21
+  ],
+  "heldout_S margin (ours)": 2.5401,
+  "gain% entropy (AdaEDL/SVIP-type)": 13.16,
+  "gain_ci entropy (AdaEDL/SVIP-type)": [
+   12.96,
+   13.38
+  ],
+  "heldout_S entropy (AdaEDL/SVIP-type)": 2.4532,
+  "gain% max-prob (confidence thr.)": 16.38,
+  "gain_ci max-prob (confidence thr.)": [
+   16.2,
+   16.57
+  ],
+  "heldout_S max-prob (confidence thr.)": 2.525,
+  "gain% learned stopper (GBDT)": 17.58,
+  "gain_ci learned stopper (GBDT)": [
+   17.41,
+   17.77
+  ],
+  "heldout_S learned stopper (GBDT)": 2.5555,
+  "gain% cumulative log-prob": 16.72,
+  "gain_ci cumulative log-prob": [
+   16.59,
+   16.86
+  ],
+  "heldout_S cumulative log-prob": 2.5496,
+  "margin_vs entropy (AdaEDL/SVIP-type)": [
+   3.42,
+   3.29,
+   3.53
+  ],
+  "margin_vs max-prob (confidence thr.)": [
+   0.57,
+   0.48,
+   0.64
+  ],
+  "margin_vs cumulative log-prob": [
+   0.27,
+   0.18,
+   0.35
+  ],
+  "margin_vs learned stopper (GBDT)": [
+   -0.47,
+   -0.53,
+   -0.41
+  ],
+  "heldout_S fixed": 2.1835,
+  "S_margin_vs_fixed_ci": [
+   16.14,
+   16.51
+  ],
+  "oracle_gain%": 53.6,
+  "perdoc_thr": 1.0,
+  "perdoc_cost_ratio": 1.013,
+  "perdoc_gain_median": 18.2,
+  "perdoc_gain_iqr": [
+   2.1,
+   50.0
+  ],
+  "perdoc_share_positive": 0.753,
+  "perdoc_share_nonneg": 0.796
+ },
+ {
+  "pair": "Q4",
+  "c": 0.425,
+  "docs_test": 10000,
+  "L_k4": 3.7365,
+  "D_k4": 3.9575,
+  "S_fixed": 1.4175,
+  "L@k4 margin (ours)": 4.302,
+  "S margin (ours)": 1.6093,
+  "L@k4 entropy (AdaEDL/SVIP-type)": 4.1542,
+  "S entropy (AdaEDL/SVIP-type)": 1.5693,
+  "L@k4 max-prob (confidence thr.)": 4.2558,
+  "S max-prob (confidence thr.)": 1.5981,
+  "L@k4 learned stopper (GBDT)": 4.3081,
+  "S learned stopper (GBDT)": 1.6107,
+  "L@k4 cumulative log-prob": 4.2667,
+  "S cumulative log-prob": 1.5958,
+  "L oracle": 6.358,
+  "D oracle": 5.404,
+  "S oracle": 1.9286,
+  "gain% margin (ours)": 15.14,
+  "gain_ci margin (ours)": [
+   15.01,
+   15.27
+  ],
+  "heldout_S margin (ours)": 1.6093,
+  "gain% entropy (AdaEDL/SVIP-type)": 11.18,
+  "gain_ci entropy (AdaEDL/SVIP-type)": [
+   10.99,
+   11.36
+  ],
+  "heldout_S entropy (AdaEDL/SVIP-type)": 1.5693,
+  "gain% max-prob (confidence thr.)": 13.9,
+  "gain_ci max-prob (confidence thr.)": [
+   13.75,
+   14.04
+  ],
+  "heldout_S max-prob (confidence thr.)": 1.5976,
+  "gain% learned stopper (GBDT)": 15.3,
+  "gain_ci learned stopper (GBDT)": [
+   15.17,
+   15.43
+  ],
+  "heldout_S learned stopper (GBDT)": 1.6107,
+  "gain% cumulative log-prob": 14.19,
+  "gain_ci cumulative log-prob": [
+   14.07,
+   14.31
+  ],
+  "heldout_S cumulative log-prob": 1.5954,
+  "margin_vs entropy (AdaEDL/SVIP-type)": [
+   3.56,
+   3.44,
+   3.7
+  ],
+  "margin_vs max-prob (confidence thr.)": [
+   1.09,
+   1.0,
+   1.17
+  ],
+  "margin_vs cumulative log-prob": [
+   0.83,
+   0.76,
+   0.9
+  ],
+  "margin_vs learned stopper (GBDT)": [
+   -0.14,
+   -0.19,
+   -0.1
+  ],
+  "heldout_S fixed": 1.4175,
+  "S_margin_vs_fixed_ci": [
+   13.42,
+   13.64
+  ],
+  "oracle_gain%": 70.2,
+  "perdoc_thr": 1.125,
+  "perdoc_cost_ratio": 1.006,
+  "perdoc_gain_median": 16.1,
+  "perdoc_gain_iqr": [
+   -2.4,
+   50.0
+  ],
+  "perdoc_share_positive": 0.695,
+  "perdoc_share_nonneg": 0.738
+ },
+ {
+  "pair": "Q5",
+  "c": 0.075,
+  "docs_test": 10000,
+  "L_k4": 3.3034,
+  "D_k4": 3.9593,
+  "S_fixed": 2.667,
+  "L@k4 margin (ours)": 3.8301,
+  "S margin (ours)": 2.992,
+  "L@k4 entropy (AdaEDL/SVIP-type)": 3.7139,
+  "S entropy (AdaEDL/SVIP-type)": 2.9109,
+  "L@k4 max-prob (confidence thr.)": 3.8191,
+  "S max-prob (confidence thr.)": 2.9906,
+  "L@k4 learned stopper (GBDT)": 3.8569,
+  "S learned stopper (GBDT)": 3.0209,
+  "L@k4 cumulative log-prob": 3.8449,
+  "S cumulative log-prob": 3.0564,
+  "L oracle": 4.8131,
+  "D oracle": 3.8468,
+  "S oracle": 3.7354,
+  "gain% margin (ours)": 15.94,
+  "gain_ci margin (ours)": [
+   15.73,
+   16.19
+  ],
+  "heldout_S margin (ours)": 2.992,
+  "gain% entropy (AdaEDL/SVIP-type)": 12.42,
+  "gain_ci entropy (AdaEDL/SVIP-type)": [
+   12.23,
+   12.65
+  ],
+  "heldout_S entropy (AdaEDL/SVIP-type)": 2.9109,
+  "gain% max-prob (confidence thr.)": 15.61,
+  "gain_ci max-prob (confidence thr.)": [
+   15.4,
+   15.84
+  ],
+  "heldout_S max-prob (confidence thr.)": 2.9906,
+  "gain% learned stopper (GBDT)": 16.75,
+  "gain_ci learned stopper (GBDT)": [
+   16.54,
+   16.99
+  ],
+  "heldout_S learned stopper (GBDT)": 3.0209,
+  "gain% cumulative log-prob": 16.39,
+  "gain_ci cumulative log-prob": [
+   16.22,
+   16.56
+  ],
+  "heldout_S cumulative log-prob": 3.0564,
+  "margin_vs entropy (AdaEDL/SVIP-type)": [
+   3.13,
+   3.01,
+   3.25
+  ],
+  "margin_vs max-prob (confidence thr.)": [
+   0.29,
+   0.2,
+   0.37
+  ],
+  "margin_vs cumulative log-prob": [
+   -0.39,
+   -0.48,
+   -0.28
+  ],
+  "margin_vs learned stopper (GBDT)": [
+   -0.69,
+   -0.76,
+   -0.63
+  ],
+  "heldout_S fixed": 2.667,
+  "S_margin_vs_fixed_ci": [
+   12.0,
+   12.36
+  ],
+  "oracle_gain%": 45.7,
+  "perdoc_thr": 0.875,
+  "perdoc_cost_ratio": 1.029,
+  "perdoc_gain_median": 17.2,
+  "perdoc_gain_iqr": [
+   2.2,
+   46.2
+  ],
+  "perdoc_share_positive": 0.764,
+  "perdoc_share_nonneg": 0.811
+ },
+ {
+  "pair": "Q6",
+  "c": 0.212,
+  "docs_test": 10000,
+  "L_k4": 3.6121,
+  "D_k4": 3.9579,
+  "S_fixed": 1.962,
+  "L@k4 margin (ours)": 4.1507,
+  "S margin (ours)": 2.2566,
+  "L@k4 entropy (AdaEDL/SVIP-type)": 3.9998,
+  "S entropy (AdaEDL/SVIP-type)": 2.1755,
+  "L@k4 max-prob (confidence thr.)": 4.1136,
+  "S max-prob (confidence thr.)": 2.2353,
+  "L@k4 learned stopper (GBDT)": 4.1661,
+  "S learned stopper (GBDT)": 2.2654,
+  "L@k4 cumulative log-prob": 4.1294,
+  "S cumulative log-prob": 2.2514,
+  "L oracle": 5.835,
+  "D oracle": 4.8767,
+  "S oracle": 2.8655,
+  "gain% margin (ours)": 14.91,
+  "gain_ci margin (ours)": [
+   14.75,
+   15.07
+  ],
+  "heldout_S margin (ours)": 2.2566,
+  "gain% entropy (AdaEDL/SVIP-type)": 10.73,
+  "gain_ci entropy (AdaEDL/SVIP-type)": [
+   10.53,
+   10.93
+  ],
+  "heldout_S entropy (AdaEDL/SVIP-type)": 2.1755,
+  "gain% max-prob (confidence thr.)": 13.88,
+  "gain_ci max-prob (confidence thr.)": [
+   13.72,
+   14.05
+  ],
+  "heldout_S max-prob (confidence thr.)": 2.2353,
+  "gain% learned stopper (GBDT)": 15.34,
+  "gain_ci learned stopper (GBDT)": [
+   15.19,
+   15.49
+  ],
+  "heldout_S learned stopper (GBDT)": 2.2654,
+  "gain% cumulative log-prob": 14.32,
+  "gain_ci cumulative log-prob": [
+   14.2,
+   14.45
+  ],
+  "heldout_S cumulative log-prob": 2.2511,
+  "margin_vs entropy (AdaEDL/SVIP-type)": [
+   3.77,
+   3.64,
+   3.9
+  ],
+  "margin_vs max-prob (confidence thr.)": [
+   0.9,
+   0.81,
+   0.99
+  ],
+  "margin_vs cumulative log-prob": [
+   0.51,
+   0.44,
+   0.6
+  ],
+  "margin_vs learned stopper (GBDT)": [
+   -0.37,
+   -0.43,
+   -0.31
+  ],
+  "heldout_S fixed": 1.962,
+  "S_margin_vs_fixed_ci": [
+   14.83,
+   15.2
+  ],
+  "oracle_gain%": 61.5,
+  "perdoc_thr": 1.0,
+  "perdoc_cost_ratio": 1.022,
+  "perdoc_gain_median": 16.1,
+  "perdoc_gain_iqr": [
+   0.0,
+   47.4
+  ],
+  "perdoc_share_positive": 0.722,
+  "perdoc_share_nonneg": 0.769
+ },
+ {
+  "pair": "Q3",
+  "c": 0.5,
+  "docs_test": 10000,
+  "L_k4": 3.8684,
+  "D_k4": 3.9565,
+  "S_fixed": 1.3251,
+  "L@k4 margin (ours)": 4.3885,
+  "S margin (ours)": 1.4771,
+  "L@k4 entropy (AdaEDL/SVIP-type)": 4.2273,
+  "S entropy (AdaEDL/SVIP-type)": 1.4429,
+  "L@k4 max-prob (confidence thr.)": 4.3319,
+  "S max-prob (confidence thr.)": 1.4673,
+  "L@k4 learned stopper (GBDT)": 4.3928,
+  "S learned stopper (GBDT)": 1.4781,
+  "L@k4 cumulative log-prob": 4.3413,
+  "S cumulative log-prob": 1.4644,
+  "L oracle": 6.9573,
+  "D oracle": 6.008,
+  "S oracle": 1.7376,
+  "gain% margin (ours)": 13.45,
+  "gain_ci margin (ours)": [
+   13.31,
+   13.57
+  ],
+  "heldout_S margin (ours)": 1.477,
+  "gain% entropy (AdaEDL/SVIP-type)": 9.28,
+  "gain_ci entropy (AdaEDL/SVIP-type)": [
+   9.12,
+   9.44
+  ],
+  "heldout_S entropy (AdaEDL/SVIP-type)": 1.4429,
+  "gain% max-prob (confidence thr.)": 11.98,
+  "gain_ci max-prob (confidence thr.)": [
+   11.84,
+   12.13
+  ],
+  "heldout_S max-prob (confidence thr.)": 1.4673,
+  "gain% learned stopper (GBDT)": 13.56,
+  "gain_ci learned stopper (GBDT)": [
+   13.43,
+   13.69
+  ],
+  "heldout_S learned stopper (GBDT)": 1.4781,
+  "gain% cumulative log-prob": 12.22,
+  "gain_ci cumulative log-prob": [
+   12.11,
+   12.34
+  ],
+  "heldout_S cumulative log-prob": 1.4644,
+  "margin_vs entropy (AdaEDL/SVIP-type)": [
+   3.81,
+   3.7,
+   3.94
+  ],
+  "margin_vs max-prob (confidence thr.)": [
+   1.31,
+   1.23,
+   1.4
+  ],
+  "margin_vs cumulative log-prob": [
+   1.09,
+   1.02,
+   1.16
+  ],
+  "margin_vs learned stopper (GBDT)": [
+   -0.1,
+   -0.14,
+   -0.06
+  ],
+  "heldout_S fixed": 1.3251,
+  "S_margin_vs_fixed_ci": [
+   11.38,
+   11.58
+  ],
+  "oracle_gain%": 79.8,
+  "perdoc_thr": 1.125,
+  "perdoc_cost_ratio": 0.99,
+  "perdoc_gain_median": 12.9,
+  "perdoc_gain_iqr": [
+   -5.0,
+   45.0
+  ],
+  "perdoc_share_positive": 0.646,
+  "perdoc_share_nonneg": 0.692
+ },
+ {
+  "pair": "G2",
+  "c": 0.083,
+  "docs_test": 10000,
+  "L_k4": 4.6487,
+  "D_k4": 3.9491,
+  "S_fixed": 4.7282,
+  "L@k4 margin (ours)": 4.8403,
+  "S margin (ours)": 5.9837,
+  "L@k4 entropy (AdaEDL/SVIP-type)": 4.8404,
+  "S entropy (AdaEDL/SVIP-type)": 5.924,
+  "L@k4 max-prob (confidence thr.)": 4.8407,
+  "S max-prob (confidence thr.)": 5.9923,
+  "L@k4 learned stopper (GBDT)": 4.8408,
+  "S learned stopper (GBDT)": 5.9997,
+  "L@k4 cumulative log-prob": 4.8384,
+  "S cumulative log-prob": 6.0181,
+  "L oracle": 12.7986,
+  "D oracle": 11.8944,
+  "S oracle": 6.4275,
+  "gain% margin (ours)": 4.12,
+  "gain_ci margin (ours)": [
+   4.04,
+   4.21
+  ],
+  "heldout_S margin (ours)": 5.9837,
+  "gain% entropy (AdaEDL/SVIP-type)": 4.12,
+  "gain_ci entropy (AdaEDL/SVIP-type)": [
+   4.04,
+   4.21
+  ],
+  "heldout_S entropy (AdaEDL/SVIP-type)": 5.924,
+  "gain% max-prob (confidence thr.)": 4.13,
+  "gain_ci max-prob (confidence thr.)": [
+   4.05,
+   4.22
+  ],
+  "heldout_S max-prob (confidence thr.)": 5.9923,
+  "gain% learned stopper (GBDT)": 4.13,
+  "gain_ci learned stopper (GBDT)": [
+   4.05,
+   4.22
+  ],
+  "heldout_S learned stopper (GBDT)": 5.9997,
+  "gain% cumulative log-prob": 4.08,
+  "gain_ci cumulative log-prob": [
+   4.0,
+   4.17
+  ],
+  "heldout_S cumulative log-prob": 6.0177,
+  "margin_vs entropy (AdaEDL/SVIP-type)": [
+   -0.0,
+   -0.01,
+   0.01
+  ],
+  "margin_vs max-prob (confidence thr.)": [
+   -0.01,
+   -0.02,
+   0.0
+  ],
+  "margin_vs cumulative log-prob": [
+   0.04,
+   0.03,
+   0.05
+  ],
+  "margin_vs learned stopper (GBDT)": [
+   -0.01,
+   -0.02,
+   -0.0
+  ],
+  "heldout_S fixed": 4.7282,
+  "S_margin_vs_fixed_ci": [
+   26.41,
+   26.69
+  ],
+  "oracle_gain%": 175.3,
+  "perdoc_thr": 4.75,
+  "perdoc_cost_ratio": 0.985,
+  "perdoc_gain_median": 3.8,
+  "perdoc_gain_iqr": [
+   -12.9,
+   33.3
+  ],
+  "perdoc_share_positive": 0.538,
+  "perdoc_share_nonneg": 0.589
+ },
+ {
+  "pair": "G1",
+  "c": 0.333,
+  "docs_test": 10000,
+  "L_k4": 4.6805,
+  "D_k4": 3.9477,
+  "S_fixed": 2.1952,
+  "L@k4 margin (ours)": 4.8504,
+  "S margin (ours)": 2.4715,
+  "L@k4 entropy (AdaEDL/SVIP-type)": 4.85,
+  "S entropy (AdaEDL/SVIP-type)": 2.45,
+  "L@k4 max-prob (confidence thr.)": 4.8503,
+  "S max-prob (confidence thr.)": 2.4725,
+  "L@k4 learned stopper (GBDT)": 4.8504,
+  "S learned stopper (GBDT)": 2.4741,
+  "L@k4 cumulative log-prob": 5.0885,
+  "S cumulative log-prob": 2.464,
+  "L oracle": 13.1,
+  "D oracle": 12.1993,
+  "S oracle": 2.5856,
+  "gain% margin (ours)": 3.63,
+  "gain_ci margin (ours)": [
+   3.56,
+   3.69
+  ],
+  "heldout_S margin (ours)": 2.4715,
+  "gain% entropy (AdaEDL/SVIP-type)": 3.62,
+  "gain_ci entropy (AdaEDL/SVIP-type)": [
+   3.55,
+   3.68
+  ],
+  "heldout_S entropy (AdaEDL/SVIP-type)": 2.45,
+  "gain% max-prob (confidence thr.)": 3.63,
+  "gain_ci max-prob (confidence thr.)": [
+   3.55,
+   3.69
+  ],
+  "heldout_S max-prob (confidence thr.)": 2.4725,
+  "gain% learned stopper (GBDT)": 3.63,
+  "gain_ci learned stopper (GBDT)": [
+   3.56,
+   3.69
+  ],
+  "heldout_S learned stopper (GBDT)": 2.4741,
+  "gain% cumulative log-prob": 8.72,
+  "gain_ci cumulative log-prob": [
+   7.91,
+   9.57
+  ],
+  "heldout_S cumulative log-prob": 2.464,
+  "margin_vs entropy (AdaEDL/SVIP-type)": [
+   0.01,
+   -0.0,
+   0.02
+  ],
+  "margin_vs max-prob (confidence thr.)": [
+   0.0,
+   -0.0,
+   0.01
+  ],
+  "margin_vs cumulative log-prob": [
+   -4.68,
+   -5.44,
+   -3.96
+  ],
+  "margin_vs learned stopper (GBDT)": [
+   0.0,
+   -0.01,
+   0.01
+  ],
+  "heldout_S fixed": 2.1952,
+  "S_margin_vs_fixed_ci": [
+   12.45,
+   12.7
+  ],
+  "oracle_gain%": 179.9,
+  "perdoc_thr": 5.125,
+  "perdoc_cost_ratio": 1.0,
+  "perdoc_gain_median": 16.7,
+  "perdoc_gain_iqr": [
+   -6.9,
+   42.1
+  ],
+  "perdoc_share_positive": 0.657,
+  "perdoc_share_nonneg": 0.694
+ },
+ {
+  "pair": "M1",
+  "c": 0.375,
+  "docs_test": 10000,
+  "L_k4": 3.8233,
+  "D_k4": 3.959,
+  "S_fixed": 1.5453,
+  "L@k4 margin (ours)": 4.395,
+  "S margin (ours)": 1.7696,
+  "L@k4 entropy (AdaEDL/SVIP-type)": 4.2109,
+  "S entropy (AdaEDL/SVIP-type)": 1.7077,
+  "L@k4 max-prob (confidence thr.)": 4.3469,
+  "S max-prob (confidence thr.)": 1.7504,
+  "L@k4 learned stopper (GBDT)": 4.404,
+  "S learned stopper (GBDT)": 1.7731,
+  "L@k4 cumulative log-prob": 4.3472,
+  "S cumulative log-prob": 1.7497,
+  "L oracle": 6.7497,
+  "D oracle": 5.7989,
+  "S oracle": 2.1262,
+  "gain% margin (ours)": 14.95,
+  "gain_ci margin (ours)": [
+   14.82,
+   15.08
+  ],
+  "heldout_S margin (ours)": 1.7696,
+  "gain% entropy (AdaEDL/SVIP-type)": 10.14,
+  "gain_ci entropy (AdaEDL/SVIP-type)": [
+   9.98,
+   10.33
+  ],
+  "heldout_S entropy (AdaEDL/SVIP-type)": 1.7077,
+  "gain% max-prob (confidence thr.)": 13.69,
+  "gain_ci max-prob (confidence thr.)": [
+   13.56,
+   13.83
+  ],
+  "heldout_S max-prob (confidence thr.)": 1.7504,
+  "gain% learned stopper (GBDT)": 15.19,
+  "gain_ci learned stopper (GBDT)": [
+   15.05,
+   15.32
+  ],
+  "heldout_S learned stopper (GBDT)": 1.7731,
+  "gain% cumulative log-prob": 13.7,
+  "gain_ci cumulative log-prob": [
+   13.57,
+   13.82
+  ],
+  "heldout_S cumulative log-prob": 1.7497,
+  "margin_vs entropy (AdaEDL/SVIP-type)": [
+   4.37,
+   4.24,
+   4.5
+  ],
+  "margin_vs max-prob (confidence thr.)": [
+   1.11,
+   1.02,
+   1.18
+  ],
+  "margin_vs cumulative log-prob": [
+   1.1,
+   1.03,
+   1.17
+  ],
+  "margin_vs learned stopper (GBDT)": [
+   -0.2,
+   -0.25,
+   -0.15
+  ],
+  "heldout_S fixed": 1.5453,
+  "S_margin_vs_fixed_ci": [
+   14.38,
+   14.65
+  ],
+  "oracle_gain%": 76.5,
+  "perdoc_thr": 1.0625,
+  "perdoc_cost_ratio": 1.003,
+  "perdoc_gain_median": 17.2,
+  "perdoc_gain_iqr": [
+   -2.9,
+   52.6
+  ],
+  "perdoc_share_positive": 0.68,
+  "perdoc_share_nonneg": 0.72
+ },
+ {
+  "pair": "Q7",
+  "c": 0.043,
+  "docs_test": 10000,
+  "L_k4": 3.1915,
+  "D_k4": 3.9588,
+  "S_fixed": 2.9824,
+  "L@k4 margin (ours)": 3.6668,
+  "S margin (ours)": 3.2229,
+  "L@k4 entropy (AdaEDL/SVIP-type)": 3.568,
+  "S entropy (AdaEDL/SVIP-type)": 3.154,
+  "L@k4 max-prob (confidence thr.)": 3.665,
+  "S max-prob (confidence thr.)": 3.2335,
+  "L@k4 learned stopper (GBDT)": 3.6981,
+  "S learned stopper (GBDT)": 3.2632,
+  "L@k4 cumulative log-prob": 3.7012,
+  "S cumulative log-prob": 3.3275,
+  "L oracle": 4.4931,
+  "D oracle": 3.5244,
+  "S oracle": 3.9035,
+  "gain% margin (ours)": 14.89,
+  "gain_ci margin (ours)": [
+   14.63,
+   15.16
+  ],
+  "heldout_S margin (ours)": 3.2229,
+  "gain% entropy (AdaEDL/SVIP-type)": 11.8,
+  "gain_ci entropy (AdaEDL/SVIP-type)": [
+   11.56,
+   12.02
+  ],
+  "heldout_S entropy (AdaEDL/SVIP-type)": 3.154,
+  "gain% max-prob (confidence thr.)": 14.84,
+  "gain_ci max-prob (confidence thr.)": [
+   14.6,
+   15.07
+  ],
+  "heldout_S max-prob (confidence thr.)": 3.2335,
+  "gain% learned stopper (GBDT)": 15.87,
+  "gain_ci learned stopper (GBDT)": [
+   15.65,
+   16.1
+  ],
+  "heldout_S learned stopper (GBDT)": 3.2632,
+  "gain% cumulative log-prob": 15.97,
+  "gain_ci cumulative log-prob": [
+   15.78,
+   16.15
+  ],
+  "heldout_S cumulative log-prob": 3.3275,
+  "margin_vs entropy (AdaEDL/SVIP-type)": [
+   2.77,
+   2.65,
+   2.88
+  ],
+  "margin_vs max-prob (confidence thr.)": [
+   0.05,
+   -0.05,
+   0.15
+  ],
+  "margin_vs cumulative log-prob": [
+   -0.93,
+   -1.03,
+   -0.81
+  ],
+  "margin_vs learned stopper (GBDT)": [
+   -0.85,
+   -0.92,
+   -0.77
+  ],
+  "heldout_S fixed": 2.9824,
+  "S_margin_vs_fixed_ci": [
+   7.9,
+   8.23
+  ],
+  "oracle_gain%": 40.8,
+  "perdoc_thr": 0.875,
+  "perdoc_cost_ratio": 0.99,
+  "perdoc_gain_median": 13.8,
+  "perdoc_gain_iqr": [
+   0.0,
+   40.0
+  ],
+  "perdoc_share_positive": 0.732,
+  "perdoc_share_nonneg": 0.784
+ },
+ {
+  "pair": "Q8",
+  "c": 0.121,
+  "docs_test": 10000,
+  "L_k4": 3.5011,
+  "D_k4": 3.9581,
+  "S_fixed": 2.4246,
+  "L@k4 margin (ours)": 4.0111,
+  "S margin (ours)": 2.7361,
+  "L@k4 entropy (AdaEDL/SVIP-type)": 3.8697,
+  "S entropy (AdaEDL/SVIP-type)": 2.6303,
+  "L@k4 max-prob (confidence thr.)": 3.9829,
+  "S max-prob (confidence thr.)": 2.7167,
+  "L@k4 learned stopper (GBDT)": 4.0301,
+  "S learned stopper (GBDT)": 2.7548,
+  "L@k4 cumulative log-prob": 4.007,
+  "S cumulative log-prob": 2.7626,
+  "L oracle": 5.4243,
+  "D oracle": 4.4628,
+  "S oracle": 3.5179,
+  "gain% margin (ours)": 14.57,
+  "gain_ci margin (ours)": [
+   14.37,
+   14.75
+  ],
+  "heldout_S margin (ours)": 2.7361,
+  "gain% entropy (AdaEDL/SVIP-type)": 10.53,
+  "gain_ci entropy (AdaEDL/SVIP-type)": [
+   10.33,
+   10.75
+  ],
+  "heldout_S entropy (AdaEDL/SVIP-type)": 2.6303,
+  "gain% max-prob (confidence thr.)": 13.76,
+  "gain_ci max-prob (confidence thr.)": [
+   13.57,
+   13.94
+  ],
+  "heldout_S max-prob (confidence thr.)": 2.7167,
+  "gain% learned stopper (GBDT)": 15.11,
+  "gain_ci learned stopper (GBDT)": [
+   14.91,
+   15.29
+  ],
+  "heldout_S learned stopper (GBDT)": 2.7548,
+  "gain% cumulative log-prob": 14.45,
+  "gain_ci cumulative log-prob": [
+   14.31,
+   14.61
+  ],
+  "heldout_S cumulative log-prob": 2.7626,
+  "margin_vs entropy (AdaEDL/SVIP-type)": [
+   3.66,
+   3.53,
+   3.78
+  ],
+  "margin_vs max-prob (confidence thr.)": [
+   0.71,
+   0.62,
+   0.81
+  ],
+  "margin_vs cumulative log-prob": [
+   0.1,
+   0.0,
+   0.19
+  ],
+  "margin_vs learned stopper (GBDT)": [
+   -0.47,
+   -0.53,
+   -0.41
+  ],
+  "heldout_S fixed": 2.4246,
+  "S_margin_vs_fixed_ci": [
+   12.65,
+   13.05
+  ],
+  "oracle_gain%": 54.9,
+  "perdoc_thr": 1.0,
+  "perdoc_cost_ratio": 0.987,
+  "perdoc_gain_median": 12.9,
+  "perdoc_gain_iqr": [
+   -2.2,
+   41.7
+  ],
+  "perdoc_share_positive": 0.692,
+  "perdoc_share_nonneg": 0.739
+ },
+ {
+  "pair": "Q9",
+  "c": 0.286,
+  "docs_test": 10000,
+  "L_k4": 3.713,
+  "D_k4": 3.9568,
+  "S_fixed": 1.7428,
+  "L@k4 margin (ours)": 4.227,
+  "S margin (ours)": 1.9845,
+  "L@k4 entropy (AdaEDL/SVIP-type)": 4.075,
+  "S entropy (AdaEDL/SVIP-type)": 1.918,
+  "L@k4 max-prob (confidence thr.)": 4.1817,
+  "S max-prob (confidence thr.)": 1.9638,
+  "L@k4 learned stopper (GBDT)": 4.2366,
+  "S learned stopper (GBDT)": 1.9889,
+  "L@k4 cumulative log-prob": 4.1987,
+  "S cumulative log-prob": 1.9709,
+  "L oracle": 6.2325,
+  "D oracle": 5.2775,
+  "S oracle": 2.4852,
+  "gain% margin (ours)": 13.84,
+  "gain_ci margin (ours)": [
+   13.71,
+   13.98
+  ],
+  "heldout_S margin (ours)": 1.9845,
+  "gain% entropy (AdaEDL/SVIP-type)": 9.75,
+  "gain_ci entropy (AdaEDL/SVIP-type)": [
+   9.58,
+   9.91
+  ],
+  "heldout_S entropy (AdaEDL/SVIP-type)": 1.918,
+  "gain% max-prob (confidence thr.)": 12.62,
+  "gain_ci max-prob (confidence thr.)": [
+   12.49,
+   12.77
+  ],
+  "heldout_S max-prob (confidence thr.)": 1.9638,
+  "gain% learned stopper (GBDT)": 14.1,
+  "gain_ci learned stopper (GBDT)": [
+   13.98,
+   14.23
+  ],
+  "heldout_S learned stopper (GBDT)": 1.9889,
+  "gain% cumulative log-prob": 13.08,
+  "gain_ci cumulative log-prob": [
+   12.97,
+   13.19
+  ],
+  "heldout_S cumulative log-prob": 1.9709,
+  "margin_vs entropy (AdaEDL/SVIP-type)": [
+   3.73,
+   3.61,
+   3.85
+  ],
+  "margin_vs max-prob (confidence thr.)": [
+   1.08,
+   0.99,
+   1.17
+  ],
+  "margin_vs cumulative log-prob": [
+   0.67,
+   0.59,
+   0.75
+  ],
+  "margin_vs learned stopper (GBDT)": [
+   -0.23,
+   -0.28,
+   -0.17
+  ],
+  "heldout_S fixed": 1.7428,
+  "S_margin_vs_fixed_ci": [
+   13.73,
+   14.02
+  ],
+  "oracle_gain%": 67.9,
+  "perdoc_thr": 1.0,
+  "perdoc_cost_ratio": 1.015,
+  "perdoc_gain_median": 13.8,
+  "perdoc_gain_iqr": [
+   -2.5,
+   45.0
+  ],
+  "perdoc_share_positive": 0.685,
+  "perdoc_share_nonneg": 0.736
+ }
+]

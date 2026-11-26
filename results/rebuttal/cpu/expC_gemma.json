@@ -1,0 +1,422 @@
+{
+ "fork2x2": [
+  {
+   "pair": "Q1",
+   "rej%": 13.23,
+   "both": {
+    "pos%": 14.5,
+    "rej_share%": 60.8,
+    "rej_rate%": 55.4
+   },
+   "target only": {
+    "pos%": 5.8,
+    "rej_share%": 14.9,
+    "rej_rate%": 34.0
+   },
+   "draft only": {
+    "pos%": 6.9,
+    "rej_share%": 18.9,
+    "rej_rate%": 36.3
+   },
+   "neither": {
+    "pos%": 72.8,
+    "rej_share%": 5.4,
+    "rej_rate%": 1.0
+   },
+   "either-fork rej_share%": 94.6,
+   "either-fork pos%": 27.2
+  },
+  {
+   "pair": "Q2",
+   "rej%": 16.84,
+   "both": {
+    "pos%": 15.4,
+    "rej_share%": 54.9,
+    "rej_rate%": 60.2
+   },
+   "target only": {
+    "pos%": 6.9,
+    "rej_share%": 16.0,
+    "rej_rate%": 38.9
+   },
+   "draft only": {
+    "pos%": 8.6,
+    "rej_share%": 21.8,
+    "rej_rate%": 42.8
+   },
+   "neither": {
+    "pos%": 69.1,
+    "rej_share%": 7.2,
+    "rej_rate%": 1.8
+   },
+   "either-fork rej_share%": 92.8,
+   "either-fork pos%": 30.9
+  },
+  {
+   "pair": "Q4",
+   "rej%": 13.16,
+   "both": {
+    "pos%": 16.0,
+    "rej_share%": 64.3,
+    "rej_rate%": 52.8
+   },
+   "target only": {
+    "pos%": 6.1,
+    "rej_share%": 14.5,
+    "rej_rate%": 31.3
+   },
+   "draft only": {
+    "pos%": 6.7,
+    "rej_share%": 16.5,
+    "rej_rate%": 32.5
+   },
+   "neither": {
+    "pos%": 71.2,
+    "rej_share%": 4.6,
+    "rej_rate%": 0.9
+   },
+   "either-fork rej_share%": 95.4,
+   "either-fork pos%": 28.8
+  },
+  {
+   "pair": "Q5",
+   "rej%": 19.07,
+   "both": {
+    "pos%": 15.6,
+    "rej_share%": 51.2,
+    "rej_rate%": 62.6
+   },
+   "target only": {
+    "pos%": 7.4,
+    "rej_share%": 16.1,
+    "rej_rate%": 41.5
+   },
+   "draft only": {
+    "pos%": 9.9,
+    "rej_share%": 24.1,
+    "rej_rate%": 46.6
+   },
+   "neither": {
+    "pos%": 67.1,
+    "rej_share%": 8.6,
+    "rej_rate%": 2.4
+   },
+   "either-fork rej_share%": 91.4,
+   "either-fork pos%": 32.9
+  },
+  {
+   "pair": "Q6",
+   "rej%": 14.92,
+   "both": {
+    "pos%": 16.3,
+    "rej_share%": 60.5,
+    "rej_rate%": 55.4
+   },
+   "target only": {
+    "pos%": 6.6,
+    "rej_share%": 15.0,
+    "rej_rate%": 34.1
+   },
+   "draft only": {
+    "pos%": 7.7,
+    "rej_share%": 18.9,
+    "rej_rate%": 36.8
+   },
+   "neither": {
+    "pos%": 69.5,
+    "rej_share%": 5.6,
+    "rej_rate%": 1.2
+   },
+   "either-fork rej_share%": 94.4,
+   "either-fork pos%": 30.5
+  },
+  {
+   "pair": "Q3",
+   "rej%": 11.63,
+   "both": {
+    "pos%": 17.3,
+    "rej_share%": 71.0,
+    "rej_rate%": 47.6
+   },
+   "target only": {
+    "pos%": 5.4,
+    "rej_share%": 11.7,
+    "rej_rate%": 25.3
+   },
+   "draft only": {
+    "pos%": 6.1,
+    "rej_share%": 14.0,
+    "rej_rate%": 26.8
+   },
+   "neither": {
+    "pos%": 71.2,
+    "rej_share%": 3.3,
+    "rej_rate%": 0.5
+   },
+   "either-fork rej_share%": 96.7,
+   "either-fork pos%": 28.8
+  },
+  {
+   "pair": "G2",
+   "rej%": 2.22,
+   "both": {
+    "pos%": 0.4,
+    "rej_share%": 14.1,
+    "rej_rate%": 75.3
+   },
+   "target only": {
+    "pos%": 0.6,
+    "rej_share%": 16.0,
+    "rej_rate%": 57.0
+   },
+   "draft only": {
+    "pos%": 1.9,
+    "rej_share%": 40.6,
+    "rej_rate%": 46.5
+   },
+   "neither": {
+    "pos%": 97.0,
+    "rej_share%": 29.3,
+    "rej_rate%": 0.7
+   },
+   "either-fork rej_share%": 70.7,
+   "either-fork pos%": 3.0
+  },
+  {
+   "pair": "G1",
+   "rej%": 1.88,
+   "both": {
+    "pos%": 0.4,
+    "rej_share%": 15.5,
+    "rej_rate%": 74.8
+   },
+   "target only": {
+    "pos%": 0.7,
+    "rej_share%": 19.1,
+    "rej_rate%": 55.1
+   },
+   "draft only": {
+    "pos%": 1.4,
+    "rej_share%": 35.8,
+    "rej_rate%": 48.8
+   },
+   "neither": {
+    "pos%": 97.6,
+    "rej_share%": 29.6,
+    "rej_rate%": 0.6
+   },
+   "either-fork rej_share%": 70.4,
+   "either-fork pos%": 2.4
+  },
+  {
+   "pair": "M1",
+   "rej%": 12.05,
+   "both": {
+    "pos%": 17.9,
+    "rej_share%": 71.9,
+    "rej_rate%": 48.4
+   },
+   "target only": {
+    "pos%": 5.7,
+    "rej_share%": 11.8,
+    "rej_rate%": 25.0
+   },
+   "draft only": {
+    "pos%": 6.1,
+    "rej_share%": 13.4,
+    "rej_rate%": 26.6
+   },
+   "neither": {
+    "pos%": 70.3,
+    "rej_share%": 2.9,
+    "rej_rate%": 0.5
+   },
+   "either-fork rej_share%": 97.1,
+   "either-fork pos%": 29.7
+  },
+  {
+   "pair": "Q7",
+   "rej%": 20.86,
+   "both": {
+    "pos%": 16.0,
+    "rej_share%": 49.1,
+    "rej_rate%": 64.1
+   },
+   "target only": {
+    "pos%": 7.8,
+    "rej_share%": 16.2,
+    "rej_rate%": 43.1
+   },
+   "draft only": {
+    "pos%": 10.8,
+    "rej_share%": 25.3,
+    "rej_rate%": 49.0
+   },
+   "neither": {
+    "pos%": 65.4,
+    "rej_share%": 9.5,
+    "rej_rate%": 3.0
+   },
+   "either-fork rej_share%": 90.5,
+   "either-fork pos%": 34.6
+  },
+  {
+   "pair": "Q8",
+   "rej%": 16.5,
+   "both": {
+    "pos%": 16.6,
+    "rej_share%": 57.7,
+    "rej_rate%": 57.4
+   },
+   "target only": {
+    "pos%": 7.1,
+    "rej_share%": 15.5,
+    "rej_rate%": 36.1
+   },
+   "draft only": {
+    "pos%": 8.4,
+    "rej_share%": 20.2,
+    "rej_rate%": 39.7
+   },
+   "neither": {
+    "pos%": 67.9,
+    "rej_share%": 6.6,
+    "rej_rate%": 1.6
+   },
+   "either-fork rej_share%": 93.4,
+   "either-fork pos%": 32.1
+  },
+  {
+   "pair": "Q9",
+   "rej%": 13.68,
+   "both": {
+    "pos%": 17.4,
+    "rej_share%": 65.8,
+    "rej_rate%": 51.8
+   },
+   "target only": {
+    "pos%": 6.2,
+    "rej_share%": 13.5,
+    "rej_rate%": 29.8
+   },
+   "draft only": {
+    "pos%": 7.0,
+    "rej_share%": 16.3,
+    "rej_rate%": 31.8
+   },
+   "neither": {
+    "pos%": 69.4,
+    "rej_share%": 4.3,
+    "rej_rate%": 0.9
+   },
+   "either-fork rej_share%": 95.7,
+   "either-fork pos%": 30.6
+  }
+ ],
+ "repetition": [
+  {
+   "target": "qwen17",
+   "repeated 4-gram rate%": 48.4,
+   "median distinct-token ratio": 0.336,
+   "median margin": 4.0,
+   "DP share%": 19.2
+  },
+  {
+   "target": "qwen4",
+   "repeated 4-gram rate%": 42.9,
+   "median distinct-token ratio": 0.383,
+   "median margin": 3.75,
+   "DP share%": 21.2
+  },
+  {
+   "target": "qwen8",
+   "repeated 4-gram rate%": 39.0,
+   "median distinct-token ratio": 0.414,
+   "median margin": 3.5,
+   "DP share%": 22.0
+  },
+  {
+   "target": "gemma12",
+   "repeated 4-gram rate%": 78.8,
+   "median distinct-token ratio": 0.117,
+   "median margin": 6.94,
+   "DP share%": 0.9
+  },
+  {
+   "target": "ministral8",
+   "repeated 4-gram rate%": 48.7,
+   "median distinct-token ratio": 0.32,
+   "median margin": 3.31,
+   "DP share%": 22.5
+  },
+  {
+   "target": "qwen14",
+   "repeated 4-gram rate%": 35.9,
+   "median distinct-token ratio": 0.445,
+   "median margin": 3.38,
+   "DP share%": 22.8
+  }
+ ],
+ "strata": [
+  {
+   "pair": "Q2",
+   "doc decile by mean target margin": 1,
+   "rej%": 29.63,
+   "DP pos%": 39.8,
+   "DP rej_share%": 74.2,
+   "low20 rej_share%": 47.2,
+   "AUC mT": 0.82,
+   "AUC mD": 0.83
+  },
+  {
+   "pair": "Q2",
+   "doc decile by mean target margin": 5,
+   "rej%": 18.03,
+   "DP pos%": 23.8,
+   "DP rej_share%": 70.3,
+   "low20 rej_share%": 64.8,
+   "AUC mT": 0.884,
+   "AUC mD": 0.901
+  },
+  {
+   "pair": "Q2",
+   "doc decile by mean target margin": 10,
+   "rej%": 4.35,
+   "DP pos%": 6.1,
+   "DP rej_share%": 67.4,
+   "low20 rej_share%": 95.5,
+   "AUC mT": 0.959,
+   "AUC mD": 0.974
+  },
+  {
+   "pair": "M1",
+   "doc decile by mean target margin": 1,
+   "rej%": 22.88,
+   "DP pos%": 44.4,
+   "DP rej_share%": 85.5,
+   "low20 rej_share%": 55.7,
+   "AUC mT": 0.836,
+   "AUC mD": 0.841
+  },
+  {
+   "pair": "M1",
+   "doc decile by mean target margin": 5,
+   "rej%": 12.75,
+   "DP pos%": 24.8,
+   "DP rej_share%": 82.6,
+   "low20 rej_share%": 76.4,
+   "AUC mT": 0.906,
+   "AUC mD": 0.914
+  },
+  {
+   "pair": "M1",
+   "doc decile by mean target margin": 10,
+   "rej%": 2.69,
+   "DP pos%": 5.4,
+   "DP rej_share%": 81.0,
+   "low20 rej_share%": 99.3,
+   "AUC mT": 0.978,
+   "AUC mD": 0.98
+  }
+ ]
+}

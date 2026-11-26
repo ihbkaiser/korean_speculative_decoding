@@ -1,0 +1,3 @@
+TREE_THRESHOLD pair=Q2 margin=2.375 dev_docs=2500 test_docs=2500
+TREE_THRESHOLD pair=Q5 margin=2.5 dev_docs=2500 test_docs=2500
+TREE_THRESHOLD pair=M1 margin=1.875 dev_docs=2500 test_docs=2500

@@ -1,0 +1,2 @@
+pair,draft_model,target_model,t_draft_step_ms,t_target_verify5_ms,c_measured,c_param
+O4_G1_12,gemma1,gemma12,32.682541059330106,68.45820089802146,0.4774087053210111,0.08333333333333333

@@ -1,0 +1,33 @@
+TUNED margin threshold=2.375 replay_score=1.174474
+TUNED entropy threshold=0.799784086 replay_score=1.164921
+TUNED top1_probability threshold=0.743079034 replay_score=1.173019
+TUNED fixed_k=1 replay_score=1.093490
+CAP_PLAN drop_fixed_k=['fixed_k_2', 'fixed_k_6'] projected_hours=4.73
+CAP_PLAN max_docs=150 projected_hours=3.55
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 6045.60it/s]
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 7598.03it/s]
+WALLCLOCK_WARMUP_COMPLETE pair=Q2 policy=target_only docs=10
+WALLCLOCK_WARMUP_COMPLETE pair=Q2 policy=fixed_k_4 docs=10
+WALLCLOCK_WARMUP_COMPLETE pair=Q2 policy=fixed_k_8 docs=10
+WALLCLOCK_WARMUP_COMPLETE pair=Q2 policy=fixed_k_1 docs=10
+WALLCLOCK_WARMUP_COMPLETE pair=Q2 policy=entropy_tuned docs=10
+WALLCLOCK_WARMUP_COMPLETE pair=Q2 policy=top1_tuned docs=10
+WALLCLOCK_WARMUP_COMPLETE pair=Q2 policy=margin_tuned docs=10
+WALLCLOCK_WARMUP_COMPLETE pair=Q2 policy=margin_1nat docs=10
+WALLCLOCK_BLOCK pair=Q2 repeat=0 block=0 docs=20 seconds=795.5
+WALLCLOCK_BLOCK pair=Q2 repeat=0 block=1 docs=20 seconds=1635.5
+WALLCLOCK_BLOCK pair=Q2 repeat=0 block=2 docs=20 seconds=2474.4
+WALLCLOCK_BLOCK pair=Q2 repeat=0 block=3 docs=20 seconds=3272.6
+WALLCLOCK_BLOCK pair=Q2 repeat=0 block=4 docs=20 seconds=4099.9
+WALLCLOCK_BLOCK pair=Q2 repeat=0 block=5 docs=20 seconds=4962.9
+WALLCLOCK_BLOCK pair=Q2 repeat=0 block=6 docs=20 seconds=5840.9
+WALLCLOCK_BLOCK pair=Q2 repeat=0 block=7 docs=10 seconds=6262.0
+WALLCLOCK_BLOCK pair=Q2 repeat=1 block=0 docs=20 seconds=7104.0
+WALLCLOCK_BLOCK pair=Q2 repeat=1 block=1 docs=20 seconds=7947.6
+WALLCLOCK_BLOCK pair=Q2 repeat=1 block=2 docs=20 seconds=8788.6
+WALLCLOCK_BLOCK pair=Q2 repeat=1 block=3 docs=20 seconds=9596.1
+WALLCLOCK_BLOCK pair=Q2 repeat=1 block=4 docs=20 seconds=10416.7
+WALLCLOCK_BLOCK pair=Q2 repeat=1 block=5 docs=20 seconds=11280.1
+WALLCLOCK_BLOCK pair=Q2 repeat=1 block=6 docs=20 seconds=12152.8
+WALLCLOCK_BLOCK pair=Q2 repeat=1 block=7 docs=10 seconds=12575.2
+WALLCLOCK_COMPLETE pair=Q2 rows=2400 output=/workspace/korean_speculative_decoding/results/rebuttal/wallclock/Q2

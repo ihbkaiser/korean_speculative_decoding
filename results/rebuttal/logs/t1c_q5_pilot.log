@@ -1,0 +1,10 @@
+TUNED margin threshold=2.5 replay_score=1.154854
+TUNED entropy threshold=0.740240697 replay_score=1.147368
+TUNED top1_probability threshold=0.764791343 replay_score=1.153662
+TUNED fixed_k=1 replay_score=1.083154
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 6022.45it/s]
+Loading weights:   0%|          | 0/399 [00:00<?, ?it/s]Loading weights: 100%|██████████| 399/399 [00:00<00:00, 6780.27it/s]
+WALLCLOCK_BLOCK pair=Q5 repeat=0 block=0 docs=20 seconds=1120.1
+WALLCLOCK_BLOCK pair=Q5 repeat=0 block=1 docs=20 seconds=2181.5
+WALLCLOCK_BLOCK pair=Q5 repeat=0 block=2 docs=10 seconds=2733.4
+WALLCLOCK_COMPLETE pair=Q5 rows=500 output=/workspace/korean_speculative_decoding/results/rebuttal/wallclock/Q5/pilot

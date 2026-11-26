@@ -1,0 +1,5 @@
+MODEL_STORAGE root=/dev/shm/naacl_models free_gib=4.11 requested_weight_gib=1.86
+MODEL gemma1 repo=google/gemma-3-1b-pt revision=fcf18a2a879aab110ca39f8bffbccd5d49d8eb29 gated=manual weight_gib=1.86 shards=1
+DOWNLOAD_START gemma1 files=10 gated=manual
+Fetching 10 files:   0%|          | 0/10 [00:00<?, ?it/s]Fetching 10 files:  20%|██        | 2/10 [00:00<00:00, 16.50it/s]Fetching 10 files:  80%|████████  | 8/10 [00:00<00:00, 13.53it/s]Fetching 10 files: 100%|██████████| 10/10 [00:02<00:00,  2.72it/s]Fetching 10 files: 100%|██████████| 10/10 [00:02<00:00,  3.52it/s]
+DOWNLOAD_COMPLETE gemma1 local_path=/dev/shm/naacl_models/google--gemma-3-1b-pt/fcf18a2a879aab110ca39f8bffbccd5d49d8eb29

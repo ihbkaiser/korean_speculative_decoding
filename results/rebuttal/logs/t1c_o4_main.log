@@ -1,0 +1,33 @@
+TUNED margin threshold=2 replay_score=1.829544
+TUNED entropy threshold=0.674032402 replay_score=1.800054
+TUNED top1_probability threshold=0.739471872 replay_score=1.831693
+TUNED fixed_k=7 replay_score=1.647104
+CAP_PLAN drop_fixed_k=['fixed_k_2', 'fixed_k_6'] projected_hours=4.84
+CAP_PLAN max_docs=150 projected_hours=3.63
+Loading weights:   0%|          | 0/340 [00:00<?, ?it/s]Loading weights: 100%|██████████| 340/340 [00:00<00:00, 5700.54it/s]
+Loading weights:   0%|          | 0/1065 [00:00<?, ?it/s]Loading weights:  47%|████▋     | 499/1065 [00:00<00:00, 4947.31it/s]Loading weights:  93%|█████████▎| 994/1065 [00:00<00:00, 4160.00it/s]Loading weights: 100%|██████████| 1065/1065 [00:00<00:00, 4210.20it/s]
+WALLCLOCK_WARMUP_COMPLETE pair=O4_G1_12 policy=target_only docs=10
+WALLCLOCK_WARMUP_COMPLETE pair=O4_G1_12 policy=fixed_k_4 docs=10
+WALLCLOCK_WARMUP_COMPLETE pair=O4_G1_12 policy=fixed_k_8 docs=10
+WALLCLOCK_WARMUP_COMPLETE pair=O4_G1_12 policy=fixed_k_7 docs=10
+WALLCLOCK_WARMUP_COMPLETE pair=O4_G1_12 policy=entropy_tuned docs=10
+WALLCLOCK_WARMUP_COMPLETE pair=O4_G1_12 policy=top1_tuned docs=10
+WALLCLOCK_WARMUP_COMPLETE pair=O4_G1_12 policy=margin_tuned docs=10
+WALLCLOCK_WARMUP_COMPLETE pair=O4_G1_12 policy=margin_1nat docs=10
+WALLCLOCK_BLOCK pair=O4_G1_12 repeat=0 block=0 docs=20 seconds=869.8
+WALLCLOCK_BLOCK pair=O4_G1_12 repeat=0 block=1 docs=20 seconds=1729.7
+WALLCLOCK_BLOCK pair=O4_G1_12 repeat=0 block=2 docs=20 seconds=2600.8
+WALLCLOCK_BLOCK pair=O4_G1_12 repeat=0 block=3 docs=20 seconds=3477.7
+WALLCLOCK_BLOCK pair=O4_G1_12 repeat=0 block=4 docs=20 seconds=4359.4
+WALLCLOCK_BLOCK pair=O4_G1_12 repeat=0 block=5 docs=20 seconds=5235.6
+WALLCLOCK_BLOCK pair=O4_G1_12 repeat=0 block=6 docs=20 seconds=6112.0
+WALLCLOCK_BLOCK pair=O4_G1_12 repeat=0 block=7 docs=10 seconds=6565.6
+WALLCLOCK_BLOCK pair=O4_G1_12 repeat=1 block=0 docs=20 seconds=7497.6
+WALLCLOCK_BLOCK pair=O4_G1_12 repeat=1 block=1 docs=20 seconds=8422.9
+WALLCLOCK_BLOCK pair=O4_G1_12 repeat=1 block=2 docs=20 seconds=9282.4
+WALLCLOCK_BLOCK pair=O4_G1_12 repeat=1 block=3 docs=20 seconds=10134.3
+WALLCLOCK_BLOCK pair=O4_G1_12 repeat=1 block=4 docs=20 seconds=11006.4
+WALLCLOCK_BLOCK pair=O4_G1_12 repeat=1 block=5 docs=20 seconds=11880.1
+WALLCLOCK_BLOCK pair=O4_G1_12 repeat=1 block=6 docs=20 seconds=12756.5
+WALLCLOCK_BLOCK pair=O4_G1_12 repeat=1 block=7 docs=10 seconds=13187.6
+WALLCLOCK_COMPLETE pair=O4_G1_12 rows=2400 output=/workspace/korean_speculative_decoding/results/rebuttal/wallclock/O4_G1_12

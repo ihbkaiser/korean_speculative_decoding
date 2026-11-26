@@ -1,0 +1,12 @@
+{
+  "target": {
+    "positions": 640000,
+    "argmax_agreement": 0.98010625,
+    "median_abs_top2_margin_delta": 0.0
+  },
+  "draft": {
+    "positions": 640000,
+    "argmax_agreement": 1.0,
+    "median_abs_top2_margin_delta": 0.0
+  }
+}

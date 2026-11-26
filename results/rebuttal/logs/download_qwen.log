@@ -1,0 +1,24 @@
+MODEL_STORAGE root=/dev/shm/naacl_models free_gib=35.00 requested_weight_gib=1.11
+MODEL qwen06 repo=Qwen/Qwen3-0.6B-Base revision=da87bfb608c14b7cf20ba1ce41287e8de496c0cd gated=False weight_gib=1.11 shards=1
+DOWNLOAD_START qwen06 files=10 gated=False
+Fetching 10 files:   0%|          | 0/10 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 10 files:  20%|██        | 2/10 [00:00<00:00, 19.09it/s]Fetching 10 files:  80%|████████  | 8/10 [00:00<00:00, 38.10it/s]Fetching 10 files: 100%|██████████| 10/10 [00:02<00:00,  4.01it/s]
+DOWNLOAD_COMPLETE qwen06 local_path=/dev/shm/naacl_models/Qwen--Qwen3-0.6B-Base/da87bfb608c14b7cf20ba1ce41287e8de496c0cd
+MODEL_STORAGE root=/dev/shm/naacl_models free_gib=33.88 requested_weight_gib=3.20
+MODEL qwen17 repo=Qwen/Qwen3-1.7B-Base revision=ea980cb0a6c2ae4b936e82123acc929f1cec04c1 gated=False weight_gib=3.20 shards=1
+DOWNLOAD_START qwen17 files=10 gated=False
+Fetching 10 files:   0%|          | 0/10 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 10 files:  40%|████      | 4/10 [00:00<00:00, 29.52it/s]Fetching 10 files: 100%|██████████| 10/10 [00:06<00:00,  1.38it/s]Fetching 10 files: 100%|██████████| 10/10 [00:06<00:00,  1.56it/s]
+DOWNLOAD_COMPLETE qwen17 local_path=/dev/shm/naacl_models/Qwen--Qwen3-1.7B-Base/ea980cb0a6c2ae4b936e82123acc929f1cec04c1
+MODEL_STORAGE root=/dev/shm/naacl_models free_gib=30.66 requested_weight_gib=7.49
+MODEL qwen4 repo=Qwen/Qwen3-4B-Base revision=906bfd4b4dc7f14ee4320094d8b41684abff8539 gated=False weight_gib=7.49 shards=3
+DOWNLOAD_START qwen4 files=13 gated=False
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 13 files:  15%|█▌        | 2/13 [00:00<00:00, 16.62it/s]Fetching 13 files:  69%|██████▉   | 9/13 [00:00<00:00, 38.25it/s]Fetching 13 files:  92%|█████████▏| 12/13 [00:20<00:00, 38.25it/s]Fetching 13 files: 100%|██████████| 13/13 [09:34<00:00, 58.14s/it]Fetching 13 files: 100%|██████████| 13/13 [09:34<00:00, 44.20s/it]
+DOWNLOAD_COMPLETE qwen4 local_path=/dev/shm/naacl_models/Qwen--Qwen3-4B-Base/906bfd4b4dc7f14ee4320094d8b41684abff8539
+MODEL_STORAGE root=/dev/shm/naacl_models free_gib=23.16 requested_weight_gib=15.26
+MODEL qwen8 repo=Qwen/Qwen3-8B-Base revision=49e3418fbbbca6ecbdf9608b4d22e5a407081db4 gated=False weight_gib=15.26 shards=5
+DOWNLOAD_START qwen8 files=14 gated=False
+Fetching 14 files:   0%|          | 0/14 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 14 files:  14%|█▍        | 2/14 [00:00<00:00, 16.86it/s]Fetching 14 files:  57%|█████▋    | 8/14 [00:00<00:00, 32.88it/s]Fetching 14 files:  79%|███████▊  | 11/14 [00:20<00:00, 32.88it/s]Fetching 14 files:  86%|████████▌ | 12/14 [01:41<00:22, 11.01s/it]Fetching 14 files:  93%|█████████▎| 13/14 [04:57<00:35, 35.99s/it]Fetching 14 files: 100%|██████████| 14/14 [06:06<00:00, 41.26s/it]Fetching 14 files: 100%|██████████| 14/14 [06:06<00:00, 26.17s/it]
+DOWNLOAD_COMPLETE qwen8 local_path=/dev/shm/naacl_models/Qwen--Qwen3-8B-Base/49e3418fbbbca6ecbdf9608b4d22e5a407081db4

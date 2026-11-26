@@ -1,0 +1,12 @@
+{
+  "qwen4": {
+    "positions": 12800,
+    "argmax_agreement": 0.983046875,
+    "median_abs_top2_margin_delta": 0.0
+  },
+  "qwen06": {
+    "positions": 12800,
+    "argmax_agreement": 0.97703125,
+    "median_abs_top2_margin_delta": 0.0625
+  }
+}

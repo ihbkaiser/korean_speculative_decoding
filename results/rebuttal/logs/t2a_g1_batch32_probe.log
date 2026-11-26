@@ -1,0 +1,6 @@
+Loading weights:   0%|          | 0/883 [00:00<?, ?it/s]Loading weights:  62%|██████▏   | 548/883 [00:00<00:00, 5464.50it/s]Loading weights: 100%|██████████| 883/883 [00:00<00:00, 4797.42it/s]
+Loading weights:   0%|          | 0/1065 [00:00<?, ?it/s]Loading weights:  44%|████▍     | 470/1065 [00:00<00:00, 4696.51it/s]Loading weights:  88%|████████▊ | 940/1065 [00:00<00:00, 4255.08it/s]Loading weights: 100%|██████████| 1065/1065 [00:00<00:00, 4238.57it/s]
+overlap G1/generated reference batches:   0%|          | 0/1 [00:00<?, ?it/s]OVERLAP_REFERENCE_SHARD_COMPLETE pair=G1 continuation=generated shard=00000 docs=100 positions=12800
+overlap G1/generated reference batches: 100%|██████████| 1/1 [04:30<00:00, 270.41s/it]overlap G1/generated reference batches: 100%|██████████| 1/1 [04:30<00:00, 270.42s/it]
+OVERLAP_SHARD_COMPLETE pair=G1 continuation=human shard=00000 positions=12800
+OVERLAP_COMPLETE pair=G1 continuation=generated docs=100 positions=12800

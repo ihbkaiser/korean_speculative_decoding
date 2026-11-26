@@ -1,0 +1,34 @@
+{
+  "job": "latency_probe",
+  "started_utc": "2026-11-25T17:51:02.755243+00:00",
+  "torch": "2.11.0+cu128",
+  "transformers": "5.19.0",
+  "torch_cuda_runtime": "12.8",
+  "cuda_available": true,
+  "gpu_name": "NVIDIA RTX A6000",
+  "nvidia_smi": "Wed Nov 25 17:51:02 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 570.195.03             Driver Version: 570.195.03     CUDA Version: 12.8     |\n|-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  NVIDIA RTX A6000               On  |   00000000:3B:00.0 Off |                    0 |\n| 30%   48C    P8             28W /  300W |       1MiB /  46068MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n                                                                                         \n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|  No running processes found                                                             |\n+-----------------------------------------------------------------------------------------+\n",
+  "nvidia_smi_compute_apps": "",
+  "details": {
+    "models": [
+      "qwen06",
+      "qwen17",
+      "qwen4",
+      "qwen8"
+    ],
+    "prompt_target": "qwen8",
+    "split": "common",
+    "pool_index": 1,
+    "prompt_length": 128,
+    "repetitions": {
+      "single_token": 200,
+      "verify_and_crop": 100
+    },
+    "warmup": 20,
+    "model_revisions": {
+      "qwen06": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+      "qwen17": "ea980cb0a6c2ae4b936e82123acc929f1cec04c1",
+      "qwen4": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+      "qwen8": "49e3418fbbbca6ecbdf9608b4d22e5a407081db4"
+    }
+  }
+}

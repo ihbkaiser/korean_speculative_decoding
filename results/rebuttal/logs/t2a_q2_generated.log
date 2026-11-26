@@ -1,0 +1,57 @@
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 6617.47it/s]
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 5869.03it/s]
+overlap Q2/human reference batches:   0%|          | 0/3 [00:00<?, ?it/s]OVERLAP_REFERENCE_SHARD_COMPLETE pair=Q2 continuation=generated shard=00000 docs=2000 positions=249181
+overlap Q2/human reference batches:  33%|███▎      | 1/3 [02:13<04:26, 133.07s/it]OVERLAP_REFERENCE_SHARD_COMPLETE pair=Q2 continuation=generated shard=00001 docs=2000 positions=247555
+overlap Q2/human reference batches:  67%|██████▋   | 2/3 [04:25<02:12, 132.98s/it]OVERLAP_REFERENCE_SHARD_COMPLETE pair=Q2 continuation=generated shard=00002 docs=1000 positions=123715
+overlap Q2/human reference batches: 100%|██████████| 3/3 [06:38<00:00, 132.76s/it]overlap Q2/human reference batches: 100%|██████████| 3/3 [06:38<00:00, 132.83s/it]
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00000 positions=12591
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00001 positions=12588
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00002 positions=12156
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00003 positions=12426
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00004 positions=12478
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00005 positions=12496
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00006 positions=12485
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00007 positions=12391
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00008 positions=12589
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00009 positions=12449
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00010 positions=12501
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00011 positions=12598
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00012 positions=12568
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00013 positions=12438
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00014 positions=12344
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00015 positions=12462
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00016 positions=12136
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00017 positions=12541
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00018 positions=12467
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00019 positions=12477
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00020 positions=12180
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00021 positions=12375
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00022 positions=12620
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00023 positions=12516
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00024 positions=12307
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00025 positions=12312
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00026 positions=12517
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00027 positions=12239
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00028 positions=12491
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00029 positions=12277
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00030 positions=12550
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00031 positions=11924
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00032 positions=12299
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00033 positions=12498
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00034 positions=12406
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00035 positions=12466
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00036 positions=12359
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00037 positions=12116
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00038 positions=12430
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00039 positions=12673
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00040 positions=12330
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00041 positions=12346
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00042 positions=12190
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00043 positions=12261
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00044 positions=12213
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00045 positions=12362
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00046 positions=12530
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00047 positions=12552
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00048 positions=12314
+OVERLAP_SHARD_COMPLETE pair=Q2 continuation=human shard=00049 positions=12617
+OVERLAP_COMPLETE pair=Q2 continuation=generated docs=5000 positions=620451
