@@ -30,6 +30,7 @@ from src.naacl_experiment import (
     select_prompts,
     sha256_file,
 )
+from src.rebuttal.runtime import write_gpu_metadata
 
 
 START_BATCH = {
@@ -247,6 +248,13 @@ def main() -> int:
         "status": "COMPLETE",
     }
     atomic_json(manifest_path, manifest)
+    if spec.get("family") == "Qwen3-IT":
+        write_gpu_metadata(
+            manifest_path,
+            job="target_greedy_generation",
+            details={"target": args.target, "split": args.split, "output": str(destination)},
+            merge_existing=True,
+        )
     del model
     cleanup_cuda(torch)
     print(f"GEN_COMPLETE target={args.target} output={destination} wall_seconds={manifest['wall_seconds']:.1f}", flush=True)

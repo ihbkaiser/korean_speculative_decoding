@@ -1,0 +1,478 @@
+{
+  "seed": 20261125,
+  "bootstrap_replicates": 500,
+  "max_prompts": 5000,
+  "results": [
+    {
+      "pair": "Q2",
+      "source_target": "qwen4",
+      "draft": "qwen06",
+      "cross_family_judge": "ministral8",
+      "same_family_outside_judge": "qwen17",
+      "documents_requested": 5000,
+      "verified_k4_positions": 535028,
+      "verified_k4_documents": 5000,
+      "joined_positions": 430489,
+      "join_coverage": 0.8046,
+      "join_coverage_by_position_type": {
+        "excluded": 0.793,
+        "fused": 0.8813,
+        "internal": 0.8035,
+        "morph_onset": 0.7801,
+        "word_onset": 0.833
+      },
+      "duplicate_judge_offsets_dropped": 0,
+      "rejection_rate_all_verified_proposals": 0.17048,
+      "rejection_rate_joined_subset": 0.18734,
+      "auc_cross_family_judge_margin": 0.5035,
+      "auc_target_margin_on_joined_subset": 0.8897,
+      "auc_same_family_outside_judge": 0.8919,
+      "auc_boundary_label": 0.6044,
+      "spearman_target_judge_margin": 0.0107,
+      "ratios_on_cross_family_joined_subset": {
+        "morph/int": {
+          "judge_margin": {
+            "raw": 2.119,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              2.05,
+              2.2
+            ],
+            "decile_matched": 2.119,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              2.04,
+              2.2
+            ],
+            "absolute_bin_matched": 2.12,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              2.05,
+              2.19
+            ]
+          },
+          "target_margin": {
+            "raw": 2.119,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              2.05,
+              2.2
+            ],
+            "decile_matched": 0.994,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              0.97,
+              1.02
+            ],
+            "absolute_bin_matched": 1.003,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              0.98,
+              1.03
+            ]
+          }
+        },
+        "word/int": {
+          "judge_margin": {
+            "raw": 3.189,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              3.09,
+              3.29
+            ],
+            "decile_matched": 3.19,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              3.1,
+              3.3
+            ],
+            "absolute_bin_matched": 3.19,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              3.09,
+              3.31
+            ]
+          },
+          "target_margin": {
+            "raw": 3.189,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              3.08,
+              3.29
+            ],
+            "decile_matched": 1.219,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              1.19,
+              1.25
+            ],
+            "absolute_bin_matched": 1.226,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              1.2,
+              1.25
+            ]
+          }
+        },
+        "fused/split": {
+          "judge_margin": {
+            "raw": 1.421,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.37,
+              1.47
+            ],
+            "decile_matched": 1.422,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              1.37,
+              1.47
+            ],
+            "absolute_bin_matched": 1.422,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              1.37,
+              1.47
+            ]
+          },
+          "target_margin": {
+            "raw": 1.421,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.37,
+              1.47
+            ],
+            "decile_matched": 0.947,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              0.92,
+              0.97
+            ],
+            "absolute_bin_matched": 0.952,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              0.93,
+              0.97
+            ]
+          }
+        }
+      },
+      "internal_alignment_rows_in_join": 101372,
+      "excluded_alignment_rows_in_join": 105734
+    },
+    {
+      "pair": "Q5",
+      "source_target": "qwen8",
+      "draft": "qwen06",
+      "cross_family_judge": "ministral8",
+      "same_family_outside_judge": "qwen4",
+      "documents_requested": 5000,
+      "verified_k4_positions": 536089,
+      "verified_k4_documents": 5000,
+      "joined_positions": 429972,
+      "join_coverage": 0.8021,
+      "join_coverage_by_position_type": {
+        "excluded": 0.7819,
+        "fused": 0.9228,
+        "internal": 0.8066,
+        "morph_onset": 0.7807,
+        "word_onset": 0.8312
+      },
+      "duplicate_judge_offsets_dropped": 0,
+      "rejection_rate_all_verified_proposals": 0.19281,
+      "rejection_rate_joined_subset": 0.21213,
+      "auc_cross_family_judge_margin": 0.5019,
+      "auc_target_margin_on_joined_subset": 0.8735,
+      "auc_same_family_outside_judge": 0.879,
+      "auc_boundary_label": 0.6045,
+      "spearman_target_judge_margin": 0.0078,
+      "ratios_on_cross_family_joined_subset": {
+        "morph/int": {
+          "judge_margin": {
+            "raw": 2.017,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.96,
+              2.09
+            ],
+            "decile_matched": 2.017,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              1.96,
+              2.08
+            ],
+            "absolute_bin_matched": 2.017,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              1.95,
+              2.09
+            ]
+          },
+          "target_margin": {
+            "raw": 2.017,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.95,
+              2.08
+            ],
+            "decile_matched": 0.972,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              0.95,
+              0.99
+            ],
+            "absolute_bin_matched": 0.975,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              0.95,
+              1.0
+            ]
+          }
+        },
+        "word/int": {
+          "judge_margin": {
+            "raw": 3.06,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              2.97,
+              3.15
+            ],
+            "decile_matched": 3.06,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              2.97,
+              3.16
+            ],
+            "absolute_bin_matched": 3.06,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              2.96,
+              3.17
+            ]
+          },
+          "target_margin": {
+            "raw": 3.06,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              2.97,
+              3.16
+            ],
+            "decile_matched": 1.205,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              1.18,
+              1.23
+            ],
+            "absolute_bin_matched": 1.206,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              1.18,
+              1.24
+            ]
+          }
+        },
+        "fused/split": {
+          "judge_margin": {
+            "raw": 1.401,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.36,
+              1.45
+            ],
+            "decile_matched": 1.402,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              1.36,
+              1.45
+            ],
+            "absolute_bin_matched": 1.401,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              1.36,
+              1.44
+            ]
+          },
+          "target_margin": {
+            "raw": 1.401,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.36,
+              1.45
+            ],
+            "decile_matched": 0.973,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              0.95,
+              1.0
+            ],
+            "absolute_bin_matched": 0.974,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              0.95,
+              1.0
+            ]
+          }
+        }
+      },
+      "internal_alignment_rows_in_join": 100664,
+      "excluded_alignment_rows_in_join": 108811
+    },
+    {
+      "pair": "M1",
+      "source_target": "ministral8",
+      "draft": "ministral3",
+      "cross_family_judge": "qwen8",
+      "same_family_outside_judge": null,
+      "documents_requested": 5000,
+      "verified_k4_positions": 529609,
+      "verified_k4_documents": 5000,
+      "joined_positions": 512461,
+      "join_coverage": 0.9676,
+      "join_coverage_by_position_type": {
+        "excluded": 0.9676,
+        "fused": 0.8928,
+        "internal": 0.9304,
+        "morph_onset": 0.9878,
+        "word_onset": 0.9876
+      },
+      "duplicate_judge_offsets_dropped": 0,
+      "rejection_rate_all_verified_proposals": 0.12121,
+      "rejection_rate_joined_subset": 0.12389,
+      "auc_cross_family_judge_margin": 0.5257,
+      "auc_target_margin_on_joined_subset": 0.9132,
+      "auc_same_family_outside_judge": null,
+      "auc_boundary_label": 0.589,
+      "spearman_target_judge_margin": 0.0648,
+      "ratios_on_cross_family_joined_subset": {
+        "morph/int": {
+          "judge_margin": {
+            "raw": 1.954,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.88,
+              2.03
+            ],
+            "decile_matched": 1.933,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              1.86,
+              2.0
+            ],
+            "absolute_bin_matched": 1.932,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              1.86,
+              2.0
+            ]
+          },
+          "target_margin": {
+            "raw": 1.954,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.89,
+              2.03
+            ],
+            "decile_matched": 0.967,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              0.94,
+              0.99
+            ],
+            "absolute_bin_matched": 0.96,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              0.94,
+              0.99
+            ]
+          }
+        },
+        "word/int": {
+          "judge_margin": {
+            "raw": 3.029,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              2.93,
+              3.15
+            ],
+            "decile_matched": 2.99,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              2.88,
+              3.1
+            ],
+            "absolute_bin_matched": 2.987,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              2.87,
+              3.1
+            ]
+          },
+          "target_margin": {
+            "raw": 3.029,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              2.93,
+              3.14
+            ],
+            "decile_matched": 1.195,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              1.17,
+              1.22
+            ],
+            "absolute_bin_matched": 1.181,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              1.15,
+              1.21
+            ]
+          }
+        },
+        "fused/split": {
+          "judge_margin": {
+            "raw": 1.526,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.48,
+              1.58
+            ],
+            "decile_matched": 1.522,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              1.47,
+              1.57
+            ],
+            "absolute_bin_matched": 1.517,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              1.47,
+              1.57
+            ]
+          },
+          "target_margin": {
+            "raw": 1.526,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.47,
+              1.58
+            ],
+            "decile_matched": 0.947,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              0.93,
+              0.97
+            ],
+            "absolute_bin_matched": 0.958,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              0.94,
+              0.98
+            ]
+          }
+        }
+      },
+      "internal_alignment_rows_in_join": 118440,
+      "excluded_alignment_rows_in_join": 117714
+    }
+  ]
+}

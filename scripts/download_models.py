@@ -126,6 +126,7 @@ def main() -> int:
     parser.add_argument("--all", action="store_true", help="Download all core models if they fit in the selected model root")
     parser.add_argument("--plan", action="store_true", help="Print exact sizes and free-space requirements without downloading")
     parser.add_argument("--evict-pair", help="Remove a pair's weight files after its jobs; tokenizer/config files remain")
+    parser.add_argument("--evict-model", help="Remove one model's weight files; tokenizer/config files remain")
     parser.add_argument("--model-root", type=Path, help="Override configured model root")
     parser.add_argument("--smoke-load", action="store_true", help="Load each requested checkpoint and run one GPU forward")
     args = parser.parse_args()
@@ -136,6 +137,13 @@ def main() -> int:
         parser.error(f"unknown pair {args.pair!r}")
     if args.evict_pair and args.evict_pair not in config["pairs"]:
         parser.error(f"unknown pair {args.evict_pair!r}")
+    if args.evict_model and args.evict_model not in config["models"]:
+        parser.error(f"unknown model {args.evict_model!r}")
+    if args.evict_pair and args.evict_model:
+        parser.error("choose either --evict-pair or --evict-model")
+    if args.evict_model:
+        _evict(config, [args.evict_model], args.model_root)
+        return 0
     if args.evict_pair:
         _evict(config, _resolve_keys(args, config), args.model_root)
         return 0

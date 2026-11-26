@@ -1,0 +1,10 @@
+{
+  "source_target": "qwen4",
+  "judge": "qwen4",
+  "documents": 200,
+  "continuation_positions": 25179,
+  "canonical_prefix_positions": 23142,
+  "canonical_prefix_share": 0.9190992493744787,
+  "argmax_compared_positions": 23142,
+  "argmax_agreement": 0.9901477832512315
+}

@@ -1,0 +1,625 @@
+SOURCE_BOUNDARY_AUDIT target=qwen4 {"audit_documents": 100, "positions_total": 12588, "special_token_positions_skipped": 3, "positions_with_valid_prefix": 11723, "valid_prefix_share": 0.9312837623133142, "positions_compared_to_alignment": 11723, "exact_offset_agreements": 11626, "agreement": 0.9917256674912565}
+SOURCE_BOUNDARY_AUDIT target=qwen8 {"audit_documents": 100, "positions_total": 12560, "special_token_positions_skipped": 3, "positions_with_valid_prefix": 11690, "valid_prefix_share": 0.9307324840764332, "positions_compared_to_alignment": 11690, "exact_offset_agreements": 11667, "agreement": 0.9980325064157399}
+STREAM_WEIGHT_START model=ministral8 shard=1/4 name=model-00001-of-00004.safetensors
+STREAM_WEIGHT_COMPLETE model=ministral8 shard=1/4
+STREAM_WEIGHT_START model=ministral8 shard=2/4 name=model-00002-of-00004.safetensors
+STREAM_WEIGHT_COMPLETE model=ministral8 shard=2/4
+STREAM_WEIGHT_START model=ministral8 shard=3/4 name=model-00003-of-00004.safetensors
+STREAM_WEIGHT_COMPLETE model=ministral8 shard=3/4
+STREAM_WEIGHT_START model=ministral8 shard=4/4 name=model-00004-of-00004.safetensors
+STREAM_WEIGHT_COMPLETE model=ministral8 shard=4/4
+qwen4 judged by ministral8 shard 0:   0%|          | 0/32 [00:00<?, ?batch/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+qwen4 judged by ministral8 shard 0:   3%|▎         | 1/32 [00:01<00:47,  1.55s/batch]qwen4 judged by ministral8 shard 0:   9%|▉         | 3/32 [00:02<00:26,  1.10batch/s]qwen4 judged by ministral8 shard 0:  16%|█▌        | 5/32 [00:04<00:21,  1.24batch/s]qwen4 judged by ministral8 shard 0:  22%|██▏       | 7/32 [00:05<00:18,  1.33batch/s]qwen4 judged by ministral8 shard 0:  28%|██▊       | 9/32 [00:07<00:16,  1.38batch/s]qwen4 judged by ministral8 shard 0:  34%|███▍      | 11/32 [00:08<00:14,  1.40batch/s]qwen4 judged by ministral8 shard 0:  41%|████      | 13/32 [00:09<00:13,  1.45batch/s]qwen4 judged by ministral8 shard 0:  47%|████▋     | 15/32 [00:11<00:11,  1.47batch/s]qwen4 judged by ministral8 shard 0:  53%|█████▎    | 17/32 [00:12<00:10,  1.46batch/s]qwen4 judged by ministral8 shard 0:  59%|█████▉    | 19/32 [00:13<00:08,  1.47batch/s]qwen4 judged by ministral8 shard 0:  66%|██████▌   | 21/32 [00:15<00:07,  1.45batch/s]qwen4 judged by ministral8 shard 0:  72%|███████▏  | 23/32 [00:16<00:06,  1.47batch/s]qwen4 judged by ministral8 shard 0:  78%|███████▊  | 25/32 [00:17<00:04,  1.48batch/s]qwen4 judged by ministral8 shard 0:  84%|████████▍ | 27/32 [00:19<00:03,  1.46batch/s]qwen4 judged by ministral8 shard 0:  91%|█████████ | 29/32 [00:20<00:01,  1.50batch/s]qwen4 judged by ministral8 shard 0:  97%|█████████▋| 31/32 [00:21<00:00,  1.51batch/s]qwen4 judged by ministral8 shard 0: 100%|██████████| 32/32 [00:21<00:00,  1.46batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen4 judge=ministral8 shard=00000 rows=53059
+qwen4 judged by ministral8 shard 1:   0%|          | 0/32 [00:00<?, ?batch/s]qwen4 judged by ministral8 shard 1:   6%|▋         | 2/32 [00:01<00:19,  1.51batch/s]qwen4 judged by ministral8 shard 1:  12%|█▎        | 4/32 [00:02<00:18,  1.54batch/s]qwen4 judged by ministral8 shard 1:  19%|█▉        | 6/32 [00:03<00:17,  1.52batch/s]qwen4 judged by ministral8 shard 1:  25%|██▌       | 8/32 [00:05<00:16,  1.49batch/s]qwen4 judged by ministral8 shard 1:  31%|███▏      | 10/32 [00:07<00:16,  1.33batch/s]qwen4 judged by ministral8 shard 1:  38%|███▊      | 12/32 [00:08<00:14,  1.36batch/s]qwen4 judged by ministral8 shard 1:  44%|████▍     | 14/32 [00:10<00:14,  1.20batch/s]qwen4 judged by ministral8 shard 1:  50%|█████     | 16/32 [00:11<00:12,  1.29batch/s]qwen4 judged by ministral8 shard 1:  56%|█████▋    | 18/32 [00:13<00:10,  1.33batch/s]qwen4 judged by ministral8 shard 1:  62%|██████▎   | 20/32 [00:14<00:08,  1.36batch/s]qwen4 judged by ministral8 shard 1:  69%|██████▉   | 22/32 [00:15<00:07,  1.41batch/s]qwen4 judged by ministral8 shard 1:  75%|███████▌  | 24/32 [00:17<00:05,  1.45batch/s]qwen4 judged by ministral8 shard 1:  81%|████████▏ | 26/32 [00:18<00:04,  1.47batch/s]qwen4 judged by ministral8 shard 1:  88%|████████▊ | 28/32 [00:19<00:02,  1.48batch/s]qwen4 judged by ministral8 shard 1:  94%|█████████▍| 30/32 [00:21<00:01,  1.46batch/s]qwen4 judged by ministral8 shard 1: 100%|██████████| 32/32 [00:22<00:00,  1.45batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen4 judge=ministral8 shard=00001 rows=52297
+qwen4 judged by ministral8 shard 2:   0%|          | 0/32 [00:00<?, ?batch/s]qwen4 judged by ministral8 shard 2:   6%|▋         | 2/32 [00:01<00:20,  1.49batch/s]qwen4 judged by ministral8 shard 2:  12%|█▎        | 4/32 [00:02<00:18,  1.51batch/s]qwen4 judged by ministral8 shard 2:  19%|█▉        | 6/32 [00:04<00:17,  1.49batch/s]qwen4 judged by ministral8 shard 2:  25%|██▌       | 8/32 [00:05<00:16,  1.46batch/s]qwen4 judged by ministral8 shard 2:  31%|███▏      | 10/32 [00:06<00:14,  1.48batch/s]qwen4 judged by ministral8 shard 2:  38%|███▊      | 12/32 [00:08<00:13,  1.49batch/s]qwen4 judged by ministral8 shard 2:  44%|████▍     | 14/32 [00:09<00:12,  1.49batch/s]qwen4 judged by ministral8 shard 2:  50%|█████     | 16/32 [00:10<00:10,  1.49batch/s]qwen4 judged by ministral8 shard 2:  56%|█████▋    | 18/32 [00:12<00:09,  1.45batch/s]qwen4 judged by ministral8 shard 2:  62%|██████▎   | 20/32 [00:13<00:08,  1.48batch/s]qwen4 judged by ministral8 shard 2:  69%|██████▉   | 22/32 [00:14<00:06,  1.49batch/s]qwen4 judged by ministral8 shard 2:  75%|███████▌  | 24/32 [00:16<00:05,  1.44batch/s]qwen4 judged by ministral8 shard 2:  81%|████████▏ | 26/32 [00:17<00:04,  1.47batch/s]qwen4 judged by ministral8 shard 2:  88%|████████▊ | 28/32 [00:18<00:02,  1.49batch/s]qwen4 judged by ministral8 shard 2:  94%|█████████▍| 30/32 [00:20<00:01,  1.51batch/s]qwen4 judged by ministral8 shard 2: 100%|██████████| 32/32 [00:21<00:00,  1.52batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen4 judge=ministral8 shard=00002 rows=52113
+qwen4 judged by ministral8 shard 3:   0%|          | 0/32 [00:00<?, ?batch/s]qwen4 judged by ministral8 shard 3:   6%|▋         | 2/32 [00:01<00:22,  1.35batch/s]qwen4 judged by ministral8 shard 3:  12%|█▎        | 4/32 [00:03<00:23,  1.19batch/s]qwen4 judged by ministral8 shard 3:  19%|█▉        | 6/32 [00:04<00:19,  1.30batch/s]qwen4 judged by ministral8 shard 3:  25%|██▌       | 8/32 [00:05<00:17,  1.38batch/s]qwen4 judged by ministral8 shard 3:  31%|███▏      | 10/32 [00:07<00:15,  1.41batch/s]qwen4 judged by ministral8 shard 3:  38%|███▊      | 12/32 [00:08<00:14,  1.41batch/s]qwen4 judged by ministral8 shard 3:  44%|████▍     | 14/32 [00:10<00:12,  1.45batch/s]qwen4 judged by ministral8 shard 3:  50%|█████     | 16/32 [00:11<00:10,  1.47batch/s]qwen4 judged by ministral8 shard 3:  56%|█████▋    | 18/32 [00:12<00:09,  1.48batch/s]qwen4 judged by ministral8 shard 3:  62%|██████▎   | 20/32 [00:14<00:08,  1.48batch/s]qwen4 judged by ministral8 shard 3:  69%|██████▉   | 22/32 [00:15<00:06,  1.50batch/s]qwen4 judged by ministral8 shard 3:  75%|███████▌  | 24/32 [00:16<00:05,  1.48batch/s]qwen4 judged by ministral8 shard 3:  81%|████████▏ | 26/32 [00:18<00:04,  1.48batch/s]qwen4 judged by ministral8 shard 3:  88%|████████▊ | 28/32 [00:19<00:02,  1.50batch/s]qwen4 judged by ministral8 shard 3:  94%|█████████▍| 30/32 [00:20<00:01,  1.50batch/s]qwen4 judged by ministral8 shard 3: 100%|██████████| 32/32 [00:21<00:00,  1.48batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen4 judge=ministral8 shard=00003 rows=52603
+qwen4 judged by ministral8 shard 4:   0%|          | 0/32 [00:00<?, ?batch/s]qwen4 judged by ministral8 shard 4:   6%|▋         | 2/32 [00:01<00:20,  1.47batch/s]qwen4 judged by ministral8 shard 4:  12%|█▎        | 4/32 [00:02<00:18,  1.51batch/s]qwen4 judged by ministral8 shard 4:  19%|█▉        | 6/32 [00:04<00:17,  1.45batch/s]qwen4 judged by ministral8 shard 4:  25%|██▌       | 8/32 [00:05<00:16,  1.47batch/s]qwen4 judged by ministral8 shard 4:  31%|███▏      | 10/32 [00:06<00:14,  1.47batch/s]qwen4 judged by ministral8 shard 4:  38%|███▊      | 12/32 [00:08<00:13,  1.48batch/s]qwen4 judged by ministral8 shard 4:  44%|████▍     | 14/32 [00:09<00:12,  1.48batch/s]qwen4 judged by ministral8 shard 4:  50%|█████     | 16/32 [00:10<00:10,  1.50batch/s]qwen4 judged by ministral8 shard 4:  56%|█████▋    | 18/32 [00:12<00:09,  1.50batch/s]qwen4 judged by ministral8 shard 4:  62%|██████▎   | 20/32 [00:13<00:08,  1.47batch/s]qwen4 judged by ministral8 shard 4:  69%|██████▉   | 22/32 [00:15<00:07,  1.32batch/s]qwen4 judged by ministral8 shard 4:  75%|███████▌  | 24/32 [00:16<00:05,  1.36batch/s]qwen4 judged by ministral8 shard 4:  81%|████████▏ | 26/32 [00:18<00:04,  1.37batch/s]qwen4 judged by ministral8 shard 4:  88%|████████▊ | 28/32 [00:19<00:02,  1.40batch/s]qwen4 judged by ministral8 shard 4:  94%|█████████▍| 30/32 [00:20<00:01,  1.41batch/s]qwen4 judged by ministral8 shard 4: 100%|██████████| 32/32 [00:21<00:00,  1.47batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen4 judge=ministral8 shard=00004 rows=53305
+qwen4 judged by ministral8 shard 5:   0%|          | 0/32 [00:00<?, ?batch/s]qwen4 judged by ministral8 shard 5:   6%|▋         | 2/32 [00:01<00:23,  1.30batch/s]qwen4 judged by ministral8 shard 5:  12%|█▎        | 4/32 [00:02<00:20,  1.40batch/s]qwen4 judged by ministral8 shard 5:  19%|█▉        | 6/32 [00:04<00:17,  1.47batch/s]qwen4 judged by ministral8 shard 5:  25%|██▌       | 8/32 [00:05<00:16,  1.49batch/s]qwen4 judged by ministral8 shard 5:  31%|███▏      | 10/32 [00:06<00:14,  1.51batch/s]qwen4 judged by ministral8 shard 5:  38%|███▊      | 12/32 [00:08<00:13,  1.52batch/s]qwen4 judged by ministral8 shard 5:  44%|████▍     | 14/32 [00:09<00:11,  1.51batch/s]qwen4 judged by ministral8 shard 5:  50%|█████     | 16/32 [00:10<00:10,  1.51batch/s]qwen4 judged by ministral8 shard 5:  56%|█████▋    | 18/32 [00:12<00:09,  1.48batch/s]qwen4 judged by ministral8 shard 5:  62%|██████▎   | 20/32 [00:13<00:08,  1.47batch/s]qwen4 judged by ministral8 shard 5:  69%|██████▉   | 22/32 [00:14<00:06,  1.49batch/s]qwen4 judged by ministral8 shard 5:  75%|███████▌  | 24/32 [00:16<00:05,  1.52batch/s]qwen4 judged by ministral8 shard 5:  81%|████████▏ | 26/32 [00:17<00:03,  1.52batch/s]qwen4 judged by ministral8 shard 5:  88%|████████▊ | 28/32 [00:18<00:02,  1.49batch/s]qwen4 judged by ministral8 shard 5:  94%|█████████▍| 30/32 [00:20<00:01,  1.48batch/s]qwen4 judged by ministral8 shard 5: 100%|██████████| 32/32 [00:21<00:00,  1.52batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen4 judge=ministral8 shard=00005 rows=52318
+qwen4 judged by ministral8 shard 6:   0%|          | 0/32 [00:00<?, ?batch/s]qwen4 judged by ministral8 shard 6:   6%|▋         | 2/32 [00:01<00:21,  1.40batch/s]qwen4 judged by ministral8 shard 6:  12%|█▎        | 4/32 [00:02<00:19,  1.44batch/s]qwen4 judged by ministral8 shard 6:  19%|█▉        | 6/32 [00:04<00:17,  1.48batch/s]qwen4 judged by ministral8 shard 6:  25%|██▌       | 8/32 [00:05<00:16,  1.46batch/s]qwen4 judged by ministral8 shard 6:  31%|███▏      | 10/32 [00:06<00:14,  1.47batch/s]qwen4 judged by ministral8 shard 6:  38%|███▊      | 12/32 [00:08<00:13,  1.43batch/s]qwen4 judged by ministral8 shard 6:  44%|████▍     | 14/32 [00:09<00:12,  1.44batch/s]qwen4 judged by ministral8 shard 6:  50%|█████     | 16/32 [00:11<00:12,  1.32batch/s]qwen4 judged by ministral8 shard 6:  56%|█████▋    | 18/32 [00:12<00:10,  1.38batch/s]qwen4 judged by ministral8 shard 6:  62%|██████▎   | 20/32 [00:14<00:08,  1.39batch/s]qwen4 judged by ministral8 shard 6:  69%|██████▉   | 22/32 [00:15<00:07,  1.40batch/s]qwen4 judged by ministral8 shard 6:  75%|███████▌  | 24/32 [00:16<00:05,  1.43batch/s]qwen4 judged by ministral8 shard 6:  81%|████████▏ | 26/32 [00:18<00:04,  1.44batch/s]qwen4 judged by ministral8 shard 6:  88%|████████▊ | 28/32 [00:19<00:02,  1.47batch/s]qwen4 judged by ministral8 shard 6:  94%|█████████▍| 30/32 [00:20<00:01,  1.48batch/s]qwen4 judged by ministral8 shard 6: 100%|██████████| 32/32 [00:21<00:00,  1.47batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen4 judge=ministral8 shard=00006 rows=52456
+qwen4 judged by ministral8 shard 7:   0%|          | 0/32 [00:00<?, ?batch/s]qwen4 judged by ministral8 shard 7:   6%|▋         | 2/32 [00:01<00:20,  1.47batch/s]qwen4 judged by ministral8 shard 7:  12%|█▎        | 4/32 [00:02<00:19,  1.47batch/s]qwen4 judged by ministral8 shard 7:  19%|█▉        | 6/32 [00:04<00:17,  1.49batch/s]qwen4 judged by ministral8 shard 7:  25%|██▌       | 8/32 [00:05<00:16,  1.49batch/s]qwen4 judged by ministral8 shard 7:  31%|███▏      | 10/32 [00:06<00:14,  1.50batch/s]qwen4 judged by ministral8 shard 7:  38%|███▊      | 12/32 [00:08<00:13,  1.50batch/s]qwen4 judged by ministral8 shard 7:  44%|████▍     | 14/32 [00:09<00:12,  1.50batch/s]qwen4 judged by ministral8 shard 7:  50%|█████     | 16/32 [00:10<00:10,  1.51batch/s]qwen4 judged by ministral8 shard 7:  56%|█████▋    | 18/32 [00:12<00:09,  1.49batch/s]qwen4 judged by ministral8 shard 7:  62%|██████▎   | 20/32 [00:13<00:08,  1.47batch/s]qwen4 judged by ministral8 shard 7:  69%|██████▉   | 22/32 [00:14<00:06,  1.45batch/s]qwen4 judged by ministral8 shard 7:  75%|███████▌  | 24/32 [00:16<00:05,  1.46batch/s]qwen4 judged by ministral8 shard 7:  81%|████████▏ | 26/32 [00:17<00:04,  1.44batch/s]qwen4 judged by ministral8 shard 7:  88%|████████▊ | 28/32 [00:19<00:02,  1.41batch/s]qwen4 judged by ministral8 shard 7:  94%|█████████▍| 30/32 [00:20<00:01,  1.41batch/s]qwen4 judged by ministral8 shard 7: 100%|██████████| 32/32 [00:21<00:00,  1.49batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen4 judge=ministral8 shard=00007 rows=53250
+qwen4 judged by ministral8 shard 8:   0%|          | 0/32 [00:00<?, ?batch/s]qwen4 judged by ministral8 shard 8:   6%|▋         | 2/32 [00:01<00:21,  1.42batch/s]qwen4 judged by ministral8 shard 8:  12%|█▎        | 4/32 [00:02<00:19,  1.46batch/s]qwen4 judged by ministral8 shard 8:  19%|█▉        | 6/32 [00:04<00:17,  1.47batch/s]qwen4 judged by ministral8 shard 8:  25%|██▌       | 8/32 [00:05<00:18,  1.32batch/s]qwen4 judged by ministral8 shard 8:  31%|███▏      | 10/32 [00:07<00:15,  1.40batch/s]qwen4 judged by ministral8 shard 8:  38%|███▊      | 12/32 [00:08<00:13,  1.44batch/s]qwen4 judged by ministral8 shard 8:  44%|████▍     | 14/32 [00:09<00:12,  1.46batch/s]qwen4 judged by ministral8 shard 8:  50%|█████     | 16/32 [00:11<00:10,  1.47batch/s]qwen4 judged by ministral8 shard 8:  56%|█████▋    | 18/32 [00:12<00:09,  1.48batch/s]qwen4 judged by ministral8 shard 8:  62%|██████▎   | 20/32 [00:13<00:08,  1.49batch/s]qwen4 judged by ministral8 shard 8:  69%|██████▉   | 22/32 [00:15<00:06,  1.50batch/s]qwen4 judged by ministral8 shard 8:  75%|███████▌  | 24/32 [00:16<00:05,  1.50batch/s]qwen4 judged by ministral8 shard 8:  81%|████████▏ | 26/32 [00:17<00:03,  1.51batch/s]qwen4 judged by ministral8 shard 8:  88%|████████▊ | 28/32 [00:19<00:02,  1.49batch/s]qwen4 judged by ministral8 shard 8:  94%|█████████▍| 30/32 [00:21<00:01,  1.29batch/s]qwen4 judged by ministral8 shard 8: 100%|██████████| 32/32 [00:21<00:00,  1.46batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen4 judge=ministral8 shard=00008 rows=52127
+qwen4 judged by ministral8 shard 9:   0%|          | 0/32 [00:00<?, ?batch/s]qwen4 judged by ministral8 shard 9:   6%|▋         | 2/32 [00:01<00:20,  1.49batch/s]qwen4 judged by ministral8 shard 9:  12%|█▎        | 4/32 [00:02<00:18,  1.49batch/s]qwen4 judged by ministral8 shard 9:  19%|█▉        | 6/32 [00:04<00:17,  1.48batch/s]qwen4 judged by ministral8 shard 9:  25%|██▌       | 8/32 [00:05<00:16,  1.43batch/s]qwen4 judged by ministral8 shard 9:  31%|███▏      | 10/32 [00:06<00:14,  1.47batch/s]qwen4 judged by ministral8 shard 9:  38%|███▊      | 12/32 [00:08<00:13,  1.49batch/s]qwen4 judged by ministral8 shard 9:  44%|████▍     | 14/32 [00:09<00:12,  1.45batch/s]qwen4 judged by ministral8 shard 9:  50%|█████     | 16/32 [00:10<00:11,  1.44batch/s]qwen4 judged by ministral8 shard 9:  56%|█████▋    | 18/32 [00:12<00:09,  1.43batch/s]qwen4 judged by ministral8 shard 9:  62%|██████▎   | 20/32 [00:13<00:08,  1.45batch/s]qwen4 judged by ministral8 shard 9:  69%|██████▉   | 22/32 [00:15<00:06,  1.46batch/s]qwen4 judged by ministral8 shard 9:  75%|███████▌  | 24/32 [00:16<00:05,  1.46batch/s]qwen4 judged by ministral8 shard 9:  81%|████████▏ | 26/32 [00:17<00:04,  1.48batch/s]qwen4 judged by ministral8 shard 9:  88%|████████▊ | 28/32 [00:19<00:02,  1.34batch/s]qwen4 judged by ministral8 shard 9:  94%|█████████▍| 30/32 [00:20<00:01,  1.39batch/s]qwen4 judged by ministral8 shard 9: 100%|██████████| 32/32 [00:21<00:00,  1.47batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen4 judge=ministral8 shard=00009 rows=52843
+qwen4 judged by ministral8 shard 10:   0%|          | 0/32 [00:00<?, ?batch/s]qwen4 judged by ministral8 shard 10:   6%|▋         | 2/32 [00:01<00:21,  1.41batch/s]qwen4 judged by ministral8 shard 10:  12%|█▎        | 4/32 [00:02<00:20,  1.34batch/s]qwen4 judged by ministral8 shard 10:  19%|█▉        | 6/32 [00:04<00:19,  1.37batch/s]qwen4 judged by ministral8 shard 10:  25%|██▌       | 8/32 [00:05<00:17,  1.38batch/s]qwen4 judged by ministral8 shard 10:  31%|███▏      | 10/32 [00:07<00:15,  1.43batch/s]qwen4 judged by ministral8 shard 10:  38%|███▊      | 12/32 [00:08<00:13,  1.45batch/s]qwen4 judged by ministral8 shard 10:  44%|████▍     | 14/32 [00:10<00:13,  1.35batch/s]qwen4 judged by ministral8 shard 10:  50%|█████     | 16/32 [00:11<00:11,  1.40batch/s]qwen4 judged by ministral8 shard 10:  56%|█████▋    | 18/32 [00:12<00:09,  1.43batch/s]qwen4 judged by ministral8 shard 10:  62%|██████▎   | 20/32 [00:14<00:08,  1.40batch/s]qwen4 judged by ministral8 shard 10:  69%|██████▉   | 22/32 [00:15<00:07,  1.43batch/s]qwen4 judged by ministral8 shard 10:  75%|███████▌  | 24/32 [00:17<00:05,  1.40batch/s]qwen4 judged by ministral8 shard 10:  81%|████████▏ | 26/32 [00:18<00:04,  1.41batch/s]qwen4 judged by ministral8 shard 10:  88%|████████▊ | 28/32 [00:19<00:02,  1.41batch/s]qwen4 judged by ministral8 shard 10:  94%|█████████▍| 30/32 [00:21<00:01,  1.34batch/s]qwen4 judged by ministral8 shard 10: 100%|██████████| 32/32 [00:22<00:00,  1.42batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen4 judge=ministral8 shard=00010 rows=52951
+qwen4 judged by ministral8 shard 11:   0%|          | 0/32 [00:00<?, ?batch/s]qwen4 judged by ministral8 shard 11:   6%|▋         | 2/32 [00:01<00:21,  1.38batch/s]qwen4 judged by ministral8 shard 11:  12%|█▎        | 4/32 [00:02<00:19,  1.40batch/s]qwen4 judged by ministral8 shard 11:  19%|█▉        | 6/32 [00:04<00:17,  1.45batch/s]qwen4 judged by ministral8 shard 11:  25%|██▌       | 8/32 [00:05<00:16,  1.47batch/s]qwen4 judged by ministral8 shard 11:  31%|███▏      | 10/32 [00:06<00:15,  1.43batch/s]qwen4 judged by ministral8 shard 11:  38%|███▊      | 12/32 [00:08<00:13,  1.44batch/s]qwen4 judged by ministral8 shard 11:  44%|████▍     | 14/32 [00:09<00:12,  1.46batch/s]qwen4 judged by ministral8 shard 11:  50%|█████     | 16/32 [00:11<00:11,  1.33batch/s]qwen4 judged by ministral8 shard 11:  56%|█████▋    | 18/32 [00:12<00:10,  1.39batch/s]qwen4 judged by ministral8 shard 11:  62%|██████▎   | 20/32 [00:14<00:08,  1.40batch/s]qwen4 judged by ministral8 shard 11:  69%|██████▉   | 22/32 [00:15<00:07,  1.41batch/s]qwen4 judged by ministral8 shard 11:  75%|███████▌  | 24/32 [00:16<00:05,  1.44batch/s]qwen4 judged by ministral8 shard 11:  81%|████████▏ | 26/32 [00:18<00:04,  1.43batch/s]qwen4 judged by ministral8 shard 11:  88%|████████▊ | 28/32 [00:19<00:02,  1.44batch/s]qwen4 judged by ministral8 shard 11:  94%|█████████▍| 30/32 [00:21<00:01,  1.44batch/s]qwen4 judged by ministral8 shard 11: 100%|██████████| 32/32 [00:21<00:00,  1.46batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen4 judge=ministral8 shard=00011 rows=52284
+qwen4 judged by ministral8 shard 12:   0%|          | 0/32 [00:00<?, ?batch/s]qwen4 judged by ministral8 shard 12:   6%|▋         | 2/32 [00:01<00:20,  1.49batch/s]qwen4 judged by ministral8 shard 12:  12%|█▎        | 4/32 [00:02<00:18,  1.51batch/s]qwen4 judged by ministral8 shard 12:  19%|█▉        | 6/32 [00:04<00:17,  1.49batch/s]qwen4 judged by ministral8 shard 12:  25%|██▌       | 8/32 [00:05<00:16,  1.45batch/s]qwen4 judged by ministral8 shard 12:  31%|███▏      | 10/32 [00:06<00:15,  1.46batch/s]qwen4 judged by ministral8 shard 12:  38%|███▊      | 12/32 [00:08<00:13,  1.46batch/s]qwen4 judged by ministral8 shard 12:  44%|████▍     | 14/32 [00:09<00:12,  1.46batch/s]qwen4 judged by ministral8 shard 12:  50%|█████     | 16/32 [00:10<00:10,  1.46batch/s]qwen4 judged by ministral8 shard 12:  56%|█████▋    | 18/32 [00:12<00:09,  1.47batch/s]qwen4 judged by ministral8 shard 12:  62%|██████▎   | 20/32 [00:13<00:08,  1.48batch/s]qwen4 judged by ministral8 shard 12:  69%|██████▉   | 22/32 [00:14<00:06,  1.50batch/s]qwen4 judged by ministral8 shard 12:  75%|███████▌  | 24/32 [00:16<00:05,  1.50batch/s]qwen4 judged by ministral8 shard 12:  81%|████████▏ | 26/32 [00:17<00:03,  1.50batch/s]qwen4 judged by ministral8 shard 12:  88%|████████▊ | 28/32 [00:19<00:02,  1.40batch/s]qwen4 judged by ministral8 shard 12:  94%|█████████▍| 30/32 [00:20<00:01,  1.42batch/s]qwen4 judged by ministral8 shard 12: 100%|██████████| 32/32 [00:21<00:00,  1.50batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen4 judge=ministral8 shard=00012 rows=52309
+qwen4 judged by ministral8 shard 13:   0%|          | 0/32 [00:00<?, ?batch/s]qwen4 judged by ministral8 shard 13:   6%|▋         | 2/32 [00:01<00:21,  1.39batch/s]qwen4 judged by ministral8 shard 13:  12%|█▎        | 4/32 [00:02<00:18,  1.48batch/s]qwen4 judged by ministral8 shard 13:  19%|█▉        | 6/32 [00:04<00:19,  1.33batch/s]qwen4 judged by ministral8 shard 13:  25%|██▌       | 8/32 [00:05<00:17,  1.38batch/s]qwen4 judged by ministral8 shard 13:  31%|███▏      | 10/32 [00:07<00:17,  1.29batch/s]qwen4 judged by ministral8 shard 13:  38%|███▊      | 12/32 [00:08<00:14,  1.35batch/s]qwen4 judged by ministral8 shard 13:  44%|████▍     | 14/32 [00:10<00:13,  1.37batch/s]qwen4 judged by ministral8 shard 13:  50%|█████     | 16/32 [00:11<00:11,  1.39batch/s]qwen4 judged by ministral8 shard 13:  56%|█████▋    | 18/32 [00:13<00:10,  1.40batch/s]qwen4 judged by ministral8 shard 13:  62%|██████▎   | 20/32 [00:14<00:08,  1.43batch/s]qwen4 judged by ministral8 shard 13:  69%|██████▉   | 22/32 [00:15<00:06,  1.45batch/s]qwen4 judged by ministral8 shard 13:  75%|███████▌  | 24/32 [00:17<00:05,  1.45batch/s]qwen4 judged by ministral8 shard 13:  81%|████████▏ | 26/32 [00:18<00:04,  1.47batch/s]qwen4 judged by ministral8 shard 13:  88%|████████▊ | 28/32 [00:19<00:02,  1.48batch/s]qwen4 judged by ministral8 shard 13:  94%|█████████▍| 30/32 [00:21<00:01,  1.47batch/s]qwen4 judged by ministral8 shard 13: 100%|██████████| 32/32 [00:22<00:00,  1.45batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen4 judge=ministral8 shard=00013 rows=52369
+qwen4 judged by ministral8 shard 14:   0%|          | 0/32 [00:00<?, ?batch/s]qwen4 judged by ministral8 shard 14:   6%|▋         | 2/32 [00:01<00:21,  1.37batch/s]qwen4 judged by ministral8 shard 14:  12%|█▎        | 4/32 [00:02<00:19,  1.43batch/s]qwen4 judged by ministral8 shard 14:  19%|█▉        | 6/32 [00:04<00:18,  1.42batch/s]qwen4 judged by ministral8 shard 14:  25%|██▌       | 8/32 [00:05<00:17,  1.39batch/s]qwen4 judged by ministral8 shard 14:  31%|███▏      | 10/32 [00:07<00:15,  1.40batch/s]qwen4 judged by ministral8 shard 14:  38%|███▊      | 12/32 [00:08<00:13,  1.43batch/s]qwen4 judged by ministral8 shard 14:  44%|████▍     | 14/32 [00:09<00:12,  1.44batch/s]qwen4 judged by ministral8 shard 14:  50%|█████     | 16/32 [00:11<00:10,  1.47batch/s]qwen4 judged by ministral8 shard 14:  56%|█████▋    | 18/32 [00:12<00:09,  1.49batch/s]qwen4 judged by ministral8 shard 14:  62%|██████▎   | 20/32 [00:13<00:07,  1.50batch/s]qwen4 judged by ministral8 shard 14:  69%|██████▉   | 22/32 [00:15<00:06,  1.51batch/s]qwen4 judged by ministral8 shard 14:  75%|███████▌  | 24/32 [00:16<00:05,  1.51batch/s]qwen4 judged by ministral8 shard 14:  81%|████████▏ | 26/32 [00:17<00:03,  1.51batch/s]qwen4 judged by ministral8 shard 14:  88%|████████▊ | 28/32 [00:18<00:02,  1.53batch/s]qwen4 judged by ministral8 shard 14:  94%|█████████▍| 30/32 [00:20<00:01,  1.35batch/s]qwen4 judged by ministral8 shard 14: 100%|██████████| 32/32 [00:21<00:00,  1.47batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen4 judge=ministral8 shard=00014 rows=51694
+qwen4 judged by ministral8 shard 15:   0%|          | 0/32 [00:00<?, ?batch/s]qwen4 judged by ministral8 shard 15:   6%|▋         | 2/32 [00:01<00:19,  1.53batch/s]qwen4 judged by ministral8 shard 15:  12%|█▎        | 4/32 [00:02<00:18,  1.48batch/s]qwen4 judged by ministral8 shard 15:  19%|█▉        | 6/32 [00:04<00:18,  1.43batch/s]qwen4 judged by ministral8 shard 15:  25%|██▌       | 8/32 [00:05<00:16,  1.47batch/s]qwen4 judged by ministral8 shard 15:  31%|███▏      | 10/32 [00:06<00:14,  1.49batch/s]qwen4 judged by ministral8 shard 15:  38%|███▊      | 12/32 [00:08<00:13,  1.48batch/s]qwen4 judged by ministral8 shard 15:  44%|████▍     | 14/32 [00:09<00:12,  1.49batch/s]qwen4 judged by ministral8 shard 15:  50%|█████     | 16/32 [00:10<00:10,  1.47batch/s]qwen4 judged by ministral8 shard 15:  56%|█████▋    | 18/32 [00:12<00:09,  1.46batch/s]qwen4 judged by ministral8 shard 15:  62%|██████▎   | 20/32 [00:13<00:08,  1.43batch/s]qwen4 judged by ministral8 shard 15:  69%|██████▉   | 22/32 [00:15<00:06,  1.45batch/s]qwen4 judged by ministral8 shard 15:  75%|███████▌  | 24/32 [00:16<00:05,  1.43batch/s]qwen4 judged by ministral8 shard 15:  81%|████████▏ | 26/32 [00:17<00:04,  1.43batch/s]qwen4 judged by ministral8 shard 15:  88%|████████▊ | 28/32 [00:19<00:02,  1.44batch/s]qwen4 judged by ministral8 shard 15:  94%|█████████▍| 30/32 [00:20<00:01,  1.47batch/s]qwen4 judged by ministral8 shard 15: 100%|██████████| 32/32 [00:21<00:00,  1.49batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen4 judge=ministral8 shard=00015 rows=52689
+qwen4 judged by ministral8 shard 16:   0%|          | 0/32 [00:00<?, ?batch/s]qwen4 judged by ministral8 shard 16:   6%|▋         | 2/32 [00:01<00:19,  1.53batch/s]qwen4 judged by ministral8 shard 16:  12%|█▎        | 4/32 [00:02<00:18,  1.51batch/s]qwen4 judged by ministral8 shard 16:  19%|█▉        | 6/32 [00:03<00:17,  1.50batch/s]qwen4 judged by ministral8 shard 16:  25%|██▌       | 8/32 [00:05<00:16,  1.49batch/s]qwen4 judged by ministral8 shard 16:  31%|███▏      | 10/32 [00:06<00:14,  1.49batch/s]qwen4 judged by ministral8 shard 16:  38%|███▊      | 12/32 [00:08<00:13,  1.47batch/s]qwen4 judged by ministral8 shard 16:  44%|████▍     | 14/32 [00:09<00:12,  1.42batch/s]qwen4 judged by ministral8 shard 16:  50%|█████     | 16/32 [00:10<00:11,  1.45batch/s]qwen4 judged by ministral8 shard 16:  56%|█████▋    | 18/32 [00:12<00:09,  1.46batch/s]qwen4 judged by ministral8 shard 16:  62%|██████▎   | 20/32 [00:13<00:08,  1.36batch/s]qwen4 judged by ministral8 shard 16:  69%|██████▉   | 22/32 [00:15<00:07,  1.37batch/s]qwen4 judged by ministral8 shard 16:  75%|███████▌  | 24/32 [00:16<00:05,  1.40batch/s]qwen4 judged by ministral8 shard 16:  81%|████████▏ | 26/32 [00:18<00:04,  1.43batch/s]qwen4 judged by ministral8 shard 16:  88%|████████▊ | 28/32 [00:19<00:02,  1.46batch/s]qwen4 judged by ministral8 shard 16:  94%|█████████▍| 30/32 [00:20<00:01,  1.48batch/s]qwen4 judged by ministral8 shard 16: 100%|██████████| 32/32 [00:21<00:00,  1.49batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen4 judge=ministral8 shard=00016 rows=51692
+qwen4 judged by ministral8 shard 17:   0%|          | 0/32 [00:00<?, ?batch/s]qwen4 judged by ministral8 shard 17:   6%|▋         | 2/32 [00:01<00:20,  1.46batch/s]qwen4 judged by ministral8 shard 17:  12%|█▎        | 4/32 [00:02<00:18,  1.50batch/s]qwen4 judged by ministral8 shard 17:  19%|█▉        | 6/32 [00:04<00:18,  1.41batch/s]qwen4 judged by ministral8 shard 17:  25%|██▌       | 8/32 [00:05<00:16,  1.44batch/s]qwen4 judged by ministral8 shard 17:  31%|███▏      | 10/32 [00:06<00:15,  1.45batch/s]qwen4 judged by ministral8 shard 17:  38%|███▊      | 12/32 [00:08<00:14,  1.42batch/s]qwen4 judged by ministral8 shard 17:  44%|████▍     | 14/32 [00:09<00:12,  1.41batch/s]qwen4 judged by ministral8 shard 17:  50%|█████     | 16/32 [00:11<00:11,  1.42batch/s]qwen4 judged by ministral8 shard 17:  56%|█████▋    | 18/32 [00:12<00:09,  1.45batch/s]qwen4 judged by ministral8 shard 17:  62%|██████▎   | 20/32 [00:13<00:08,  1.45batch/s]qwen4 judged by ministral8 shard 17:  69%|██████▉   | 22/32 [00:15<00:06,  1.47batch/s]qwen4 judged by ministral8 shard 17:  75%|███████▌  | 24/32 [00:16<00:05,  1.44batch/s]qwen4 judged by ministral8 shard 17:  81%|████████▏ | 26/32 [00:18<00:04,  1.44batch/s]qwen4 judged by ministral8 shard 17:  88%|████████▊ | 28/32 [00:19<00:02,  1.43batch/s]qwen4 judged by ministral8 shard 17:  94%|█████████▍| 30/32 [00:20<00:01,  1.44batch/s]qwen4 judged by ministral8 shard 17: 100%|██████████| 32/32 [00:21<00:00,  1.47batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen4 judge=ministral8 shard=00017 rows=52700
+qwen4 judged by ministral8 shard 18:   0%|          | 0/32 [00:00<?, ?batch/s]qwen4 judged by ministral8 shard 18:   6%|▋         | 2/32 [00:01<00:19,  1.55batch/s]qwen4 judged by ministral8 shard 18:  12%|█▎        | 4/32 [00:02<00:18,  1.49batch/s]qwen4 judged by ministral8 shard 18:  19%|█▉        | 6/32 [00:03<00:17,  1.51batch/s]qwen4 judged by ministral8 shard 18:  25%|██▌       | 8/32 [00:05<00:16,  1.45batch/s]qwen4 judged by ministral8 shard 18:  31%|███▏      | 10/32 [00:07<00:16,  1.30batch/s]qwen4 judged by ministral8 shard 18:  38%|███▊      | 12/32 [00:08<00:14,  1.34batch/s]qwen4 judged by ministral8 shard 18:  44%|████▍     | 14/32 [00:10<00:12,  1.39batch/s]qwen4 judged by ministral8 shard 18:  50%|█████     | 16/32 [00:11<00:11,  1.42batch/s]qwen4 judged by ministral8 shard 18:  56%|█████▋    | 18/32 [00:12<00:09,  1.45batch/s]qwen4 judged by ministral8 shard 18:  62%|██████▎   | 20/32 [00:14<00:08,  1.44batch/s]qwen4 judged by ministral8 shard 18:  69%|██████▉   | 22/32 [00:15<00:06,  1.44batch/s]qwen4 judged by ministral8 shard 18:  75%|███████▌  | 24/32 [00:16<00:05,  1.43batch/s]qwen4 judged by ministral8 shard 18:  81%|████████▏ | 26/32 [00:18<00:04,  1.46batch/s]qwen4 judged by ministral8 shard 18:  88%|████████▊ | 28/32 [00:19<00:02,  1.46batch/s]qwen4 judged by ministral8 shard 18:  94%|█████████▍| 30/32 [00:20<00:01,  1.44batch/s]qwen4 judged by ministral8 shard 18: 100%|██████████| 32/32 [00:21<00:00,  1.46batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen4 judge=ministral8 shard=00018 rows=52869
+qwen4 judged by ministral8 shard 19:   0%|          | 0/32 [00:00<?, ?batch/s]qwen4 judged by ministral8 shard 19:   6%|▋         | 2/32 [00:01<00:19,  1.53batch/s]qwen4 judged by ministral8 shard 19:  12%|█▎        | 4/32 [00:02<00:19,  1.44batch/s]qwen4 judged by ministral8 shard 19:  19%|█▉        | 6/32 [00:04<00:17,  1.49batch/s]qwen4 judged by ministral8 shard 19:  25%|██▌       | 8/32 [00:05<00:16,  1.45batch/s]qwen4 judged by ministral8 shard 19:  31%|███▏      | 10/32 [00:06<00:15,  1.43batch/s]qwen4 judged by ministral8 shard 19:  38%|███▊      | 12/32 [00:08<00:13,  1.46batch/s]qwen4 judged by ministral8 shard 19:  44%|████▍     | 14/32 [00:09<00:12,  1.46batch/s]qwen4 judged by ministral8 shard 19:  50%|█████     | 16/32 [00:10<00:10,  1.48batch/s]qwen4 judged by ministral8 shard 19:  56%|█████▋    | 18/32 [00:12<00:09,  1.47batch/s]qwen4 judged by ministral8 shard 19:  62%|██████▎   | 20/32 [00:13<00:08,  1.46batch/s]qwen4 judged by ministral8 shard 19:  69%|██████▉   | 22/32 [00:14<00:06,  1.48batch/s]qwen4 judged by ministral8 shard 19:  75%|███████▌  | 24/32 [00:16<00:05,  1.46batch/s]qwen4 judged by ministral8 shard 19:  81%|████████▏ | 26/32 [00:17<00:04,  1.48batch/s]qwen4 judged by ministral8 shard 19:  88%|████████▊ | 28/32 [00:19<00:02,  1.49batch/s]qwen4 judged by ministral8 shard 19:  94%|█████████▍| 30/32 [00:20<00:01,  1.38batch/s]qwen4 judged by ministral8 shard 19: 100%|██████████| 32/32 [00:21<00:00,  1.48batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen4 judge=ministral8 shard=00019 rows=52399
+CROSS_FAMILY_COMPLETE target=qwen4 judge=ministral8 output=/workspace/korean_speculative_decoding/results/rebuttal/cross_family/qwen4/ministral8
+qwen8 judged by ministral8 shard 0:   0%|          | 0/32 [00:00<?, ?batch/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+qwen8 judged by ministral8 shard 0:   6%|▋         | 2/32 [00:01<00:23,  1.27batch/s]qwen8 judged by ministral8 shard 0:  12%|█▎        | 4/32 [00:02<00:19,  1.42batch/s]qwen8 judged by ministral8 shard 0:  19%|█▉        | 6/32 [00:04<00:18,  1.44batch/s]qwen8 judged by ministral8 shard 0:  25%|██▌       | 8/32 [00:05<00:16,  1.47batch/s]qwen8 judged by ministral8 shard 0:  31%|███▏      | 10/32 [00:07<00:15,  1.43batch/s]qwen8 judged by ministral8 shard 0:  38%|███▊      | 12/32 [00:08<00:13,  1.47batch/s]qwen8 judged by ministral8 shard 0:  44%|████▍     | 14/32 [00:09<00:12,  1.44batch/s]qwen8 judged by ministral8 shard 0:  50%|█████     | 16/32 [00:11<00:11,  1.45batch/s]qwen8 judged by ministral8 shard 0:  56%|█████▋    | 18/32 [00:12<00:09,  1.47batch/s]qwen8 judged by ministral8 shard 0:  62%|██████▎   | 20/32 [00:13<00:08,  1.47batch/s]qwen8 judged by ministral8 shard 0:  69%|██████▉   | 22/32 [00:15<00:06,  1.46batch/s]qwen8 judged by ministral8 shard 0:  75%|███████▌  | 24/32 [00:16<00:05,  1.47batch/s]qwen8 judged by ministral8 shard 0:  81%|████████▏ | 26/32 [00:17<00:04,  1.43batch/s]qwen8 judged by ministral8 shard 0:  88%|████████▊ | 28/32 [00:19<00:02,  1.44batch/s]qwen8 judged by ministral8 shard 0:  94%|█████████▍| 30/32 [00:20<00:01,  1.47batch/s]qwen8 judged by ministral8 shard 0: 100%|██████████| 32/32 [00:21<00:00,  1.49batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen8 judge=ministral8 shard=00000 rows=52746
+qwen8 judged by ministral8 shard 1:   0%|          | 0/32 [00:00<?, ?batch/s]qwen8 judged by ministral8 shard 1:   6%|▋         | 2/32 [00:01<00:20,  1.49batch/s]qwen8 judged by ministral8 shard 1:  12%|█▎        | 4/32 [00:02<00:18,  1.53batch/s]qwen8 judged by ministral8 shard 1:  19%|█▉        | 6/32 [00:04<00:17,  1.49batch/s]qwen8 judged by ministral8 shard 1:  25%|██▌       | 8/32 [00:05<00:16,  1.50batch/s]qwen8 judged by ministral8 shard 1:  31%|███▏      | 10/32 [00:06<00:14,  1.49batch/s]qwen8 judged by ministral8 shard 1:  38%|███▊      | 12/32 [00:08<00:13,  1.48batch/s]qwen8 judged by ministral8 shard 1:  44%|████▍     | 14/32 [00:09<00:12,  1.47batch/s]qwen8 judged by ministral8 shard 1:  50%|█████     | 16/32 [00:11<00:12,  1.32batch/s]qwen8 judged by ministral8 shard 1:  56%|█████▋    | 18/32 [00:12<00:10,  1.36batch/s]qwen8 judged by ministral8 shard 1:  62%|██████▎   | 20/32 [00:13<00:08,  1.40batch/s]qwen8 judged by ministral8 shard 1:  69%|██████▉   | 22/32 [00:15<00:06,  1.44batch/s]qwen8 judged by ministral8 shard 1:  75%|███████▌  | 24/32 [00:16<00:05,  1.47batch/s]qwen8 judged by ministral8 shard 1:  81%|████████▏ | 26/32 [00:17<00:04,  1.50batch/s]qwen8 judged by ministral8 shard 1:  88%|████████▊ | 28/32 [00:19<00:02,  1.50batch/s]qwen8 judged by ministral8 shard 1:  94%|█████████▍| 30/32 [00:20<00:01,  1.49batch/s]qwen8 judged by ministral8 shard 1: 100%|██████████| 32/32 [00:21<00:00,  1.50batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen8 judge=ministral8 shard=00001 rows=52358
+qwen8 judged by ministral8 shard 2:   0%|          | 0/32 [00:00<?, ?batch/s]qwen8 judged by ministral8 shard 2:   6%|▋         | 2/32 [00:01<00:20,  1.48batch/s]qwen8 judged by ministral8 shard 2:  12%|█▎        | 4/32 [00:02<00:18,  1.50batch/s]qwen8 judged by ministral8 shard 2:  19%|█▉        | 6/32 [00:04<00:17,  1.49batch/s]qwen8 judged by ministral8 shard 2:  25%|██▌       | 8/32 [00:05<00:16,  1.46batch/s]qwen8 judged by ministral8 shard 2:  31%|███▏      | 10/32 [00:06<00:14,  1.47batch/s]qwen8 judged by ministral8 shard 2:  38%|███▊      | 12/32 [00:08<00:13,  1.49batch/s]qwen8 judged by ministral8 shard 2:  44%|████▍     | 14/32 [00:09<00:11,  1.51batch/s]qwen8 judged by ministral8 shard 2:  50%|█████     | 16/32 [00:10<00:10,  1.51batch/s]qwen8 judged by ministral8 shard 2:  56%|█████▋    | 18/32 [00:12<00:09,  1.43batch/s]qwen8 judged by ministral8 shard 2:  62%|██████▎   | 20/32 [00:13<00:08,  1.47batch/s]qwen8 judged by ministral8 shard 2:  69%|██████▉   | 22/32 [00:14<00:06,  1.48batch/s]qwen8 judged by ministral8 shard 2:  75%|███████▌  | 24/32 [00:16<00:05,  1.46batch/s]qwen8 judged by ministral8 shard 2:  81%|████████▏ | 26/32 [00:17<00:04,  1.48batch/s]qwen8 judged by ministral8 shard 2:  88%|████████▊ | 28/32 [00:18<00:02,  1.50batch/s]qwen8 judged by ministral8 shard 2:  94%|█████████▍| 30/32 [00:20<00:01,  1.51batch/s]qwen8 judged by ministral8 shard 2: 100%|██████████| 32/32 [00:21<00:00,  1.52batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen8 judge=ministral8 shard=00002 rows=51641
+qwen8 judged by ministral8 shard 3:   0%|          | 0/32 [00:00<?, ?batch/s]qwen8 judged by ministral8 shard 3:   6%|▋         | 2/32 [00:01<00:21,  1.40batch/s]qwen8 judged by ministral8 shard 3:  12%|█▎        | 4/32 [00:02<00:19,  1.42batch/s]qwen8 judged by ministral8 shard 3:  19%|█▉        | 6/32 [00:04<00:17,  1.46batch/s]qwen8 judged by ministral8 shard 3:  25%|██▌       | 8/32 [00:05<00:18,  1.30batch/s]qwen8 judged by ministral8 shard 3:  31%|███▏      | 10/32 [00:07<00:16,  1.36batch/s]qwen8 judged by ministral8 shard 3:  38%|███▊      | 12/32 [00:08<00:14,  1.38batch/s]qwen8 judged by ministral8 shard 3:  44%|████▍     | 14/32 [00:10<00:12,  1.43batch/s]qwen8 judged by ministral8 shard 3:  50%|█████     | 16/32 [00:11<00:11,  1.44batch/s]qwen8 judged by ministral8 shard 3:  56%|█████▋    | 18/32 [00:12<00:09,  1.45batch/s]qwen8 judged by ministral8 shard 3:  62%|██████▎   | 20/32 [00:14<00:08,  1.46batch/s]qwen8 judged by ministral8 shard 3:  69%|██████▉   | 22/32 [00:15<00:06,  1.47batch/s]qwen8 judged by ministral8 shard 3:  75%|███████▌  | 24/32 [00:16<00:05,  1.48batch/s]qwen8 judged by ministral8 shard 3:  81%|████████▏ | 26/32 [00:18<00:04,  1.47batch/s]qwen8 judged by ministral8 shard 3:  88%|████████▊ | 28/32 [00:19<00:02,  1.50batch/s]qwen8 judged by ministral8 shard 3:  94%|█████████▍| 30/32 [00:20<00:01,  1.48batch/s]qwen8 judged by ministral8 shard 3: 100%|██████████| 32/32 [00:21<00:00,  1.48batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen8 judge=ministral8 shard=00003 rows=52628
+qwen8 judged by ministral8 shard 4:   0%|          | 0/32 [00:00<?, ?batch/s]qwen8 judged by ministral8 shard 4:   6%|▋         | 2/32 [00:01<00:19,  1.54batch/s]qwen8 judged by ministral8 shard 4:  12%|█▎        | 4/32 [00:02<00:18,  1.50batch/s]qwen8 judged by ministral8 shard 4:  19%|█▉        | 6/32 [00:04<00:18,  1.44batch/s]qwen8 judged by ministral8 shard 4:  25%|██▌       | 8/32 [00:05<00:16,  1.46batch/s]qwen8 judged by ministral8 shard 4:  31%|███▏      | 10/32 [00:06<00:15,  1.46batch/s]qwen8 judged by ministral8 shard 4:  38%|███▊      | 12/32 [00:08<00:13,  1.45batch/s]qwen8 judged by ministral8 shard 4:  44%|████▍     | 14/32 [00:09<00:12,  1.47batch/s]qwen8 judged by ministral8 shard 4:  50%|█████     | 16/32 [00:10<00:10,  1.49batch/s]qwen8 judged by ministral8 shard 4:  56%|█████▋    | 18/32 [00:12<00:09,  1.49batch/s]qwen8 judged by ministral8 shard 4:  62%|██████▎   | 20/32 [00:13<00:08,  1.48batch/s]qwen8 judged by ministral8 shard 4:  69%|██████▉   | 22/32 [00:15<00:06,  1.43batch/s]qwen8 judged by ministral8 shard 4:  75%|███████▌  | 24/32 [00:16<00:05,  1.44batch/s]qwen8 judged by ministral8 shard 4:  81%|████████▏ | 26/32 [00:17<00:04,  1.45batch/s]qwen8 judged by ministral8 shard 4:  88%|████████▊ | 28/32 [00:19<00:02,  1.44batch/s]qwen8 judged by ministral8 shard 4:  94%|█████████▍| 30/32 [00:20<00:01,  1.34batch/s]qwen8 judged by ministral8 shard 4: 100%|██████████| 32/32 [00:21<00:00,  1.47batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen8 judge=ministral8 shard=00004 rows=52941
+qwen8 judged by ministral8 shard 5:   0%|          | 0/32 [00:00<?, ?batch/s]qwen8 judged by ministral8 shard 5:   6%|▋         | 2/32 [00:01<00:20,  1.45batch/s]qwen8 judged by ministral8 shard 5:  12%|█▎        | 4/32 [00:02<00:19,  1.46batch/s]qwen8 judged by ministral8 shard 5:  19%|█▉        | 6/32 [00:04<00:17,  1.50batch/s]qwen8 judged by ministral8 shard 5:  25%|██▌       | 8/32 [00:05<00:15,  1.52batch/s]qwen8 judged by ministral8 shard 5:  31%|███▏      | 10/32 [00:06<00:14,  1.51batch/s]qwen8 judged by ministral8 shard 5:  38%|███▊      | 12/32 [00:07<00:13,  1.52batch/s]qwen8 judged by ministral8 shard 5:  44%|████▍     | 14/32 [00:09<00:12,  1.48batch/s]qwen8 judged by ministral8 shard 5:  50%|█████     | 16/32 [00:10<00:10,  1.46batch/s]qwen8 judged by ministral8 shard 5:  56%|█████▋    | 18/32 [00:12<00:09,  1.44batch/s]qwen8 judged by ministral8 shard 5:  62%|██████▎   | 20/32 [00:13<00:08,  1.45batch/s]qwen8 judged by ministral8 shard 5:  69%|██████▉   | 22/32 [00:14<00:06,  1.46batch/s]qwen8 judged by ministral8 shard 5:  75%|███████▌  | 24/32 [00:16<00:05,  1.49batch/s]qwen8 judged by ministral8 shard 5:  81%|████████▏ | 26/32 [00:17<00:03,  1.51batch/s]qwen8 judged by ministral8 shard 5:  88%|████████▊ | 28/32 [00:18<00:02,  1.48batch/s]qwen8 judged by ministral8 shard 5:  94%|█████████▍| 30/32 [00:20<00:01,  1.47batch/s]qwen8 judged by ministral8 shard 5: 100%|██████████| 32/32 [00:21<00:00,  1.51batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen8 judge=ministral8 shard=00005 rows=52246
+qwen8 judged by ministral8 shard 6:   0%|          | 0/32 [00:00<?, ?batch/s]qwen8 judged by ministral8 shard 6:   6%|▋         | 2/32 [00:01<00:20,  1.47batch/s]qwen8 judged by ministral8 shard 6:  12%|█▎        | 4/32 [00:02<00:18,  1.49batch/s]qwen8 judged by ministral8 shard 6:  19%|█▉        | 6/32 [00:04<00:17,  1.50batch/s]qwen8 judged by ministral8 shard 6:  25%|██▌       | 8/32 [00:05<00:16,  1.48batch/s]qwen8 judged by ministral8 shard 6:  31%|███▏      | 10/32 [00:06<00:14,  1.47batch/s]qwen8 judged by ministral8 shard 6:  38%|███▊      | 12/32 [00:08<00:13,  1.47batch/s]qwen8 judged by ministral8 shard 6:  44%|████▍     | 14/32 [00:09<00:12,  1.45batch/s]qwen8 judged by ministral8 shard 6:  50%|█████     | 16/32 [00:10<00:10,  1.46batch/s]qwen8 judged by ministral8 shard 6:  56%|█████▋    | 18/32 [00:12<00:09,  1.48batch/s]qwen8 judged by ministral8 shard 6:  62%|██████▎   | 20/32 [00:14<00:09,  1.32batch/s]qwen8 judged by ministral8 shard 6:  69%|██████▉   | 22/32 [00:15<00:07,  1.36batch/s]qwen8 judged by ministral8 shard 6:  75%|███████▌  | 24/32 [00:16<00:05,  1.40batch/s]qwen8 judged by ministral8 shard 6:  81%|████████▏ | 26/32 [00:18<00:04,  1.39batch/s]qwen8 judged by ministral8 shard 6:  88%|████████▊ | 28/32 [00:19<00:02,  1.43batch/s]qwen8 judged by ministral8 shard 6:  94%|█████████▍| 30/32 [00:20<00:01,  1.45batch/s]qwen8 judged by ministral8 shard 6: 100%|██████████| 32/32 [00:21<00:00,  1.47batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen8 judge=ministral8 shard=00006 rows=52020
+qwen8 judged by ministral8 shard 7:   0%|          | 0/32 [00:00<?, ?batch/s]qwen8 judged by ministral8 shard 7:   6%|▋         | 2/32 [00:01<00:20,  1.45batch/s]qwen8 judged by ministral8 shard 7:  12%|█▎        | 4/32 [00:02<00:18,  1.49batch/s]qwen8 judged by ministral8 shard 7:  19%|█▉        | 6/32 [00:04<00:17,  1.50batch/s]qwen8 judged by ministral8 shard 7:  25%|██▌       | 8/32 [00:05<00:15,  1.51batch/s]qwen8 judged by ministral8 shard 7:  31%|███▏      | 10/32 [00:06<00:14,  1.51batch/s]qwen8 judged by ministral8 shard 7:  38%|███▊      | 12/32 [00:08<00:13,  1.49batch/s]qwen8 judged by ministral8 shard 7:  44%|████▍     | 14/32 [00:09<00:12,  1.49batch/s]qwen8 judged by ministral8 shard 7:  50%|█████     | 16/32 [00:10<00:10,  1.51batch/s]qwen8 judged by ministral8 shard 7:  56%|█████▋    | 18/32 [00:11<00:09,  1.51batch/s]qwen8 judged by ministral8 shard 7:  62%|██████▎   | 20/32 [00:13<00:08,  1.50batch/s]qwen8 judged by ministral8 shard 7:  69%|██████▉   | 22/32 [00:14<00:06,  1.47batch/s]qwen8 judged by ministral8 shard 7:  75%|███████▌  | 24/32 [00:16<00:05,  1.43batch/s]qwen8 judged by ministral8 shard 7:  81%|████████▏ | 26/32 [00:17<00:04,  1.41batch/s]qwen8 judged by ministral8 shard 7:  88%|████████▊ | 28/32 [00:19<00:02,  1.39batch/s]qwen8 judged by ministral8 shard 7:  94%|█████████▍| 30/32 [00:20<00:01,  1.39batch/s]qwen8 judged by ministral8 shard 7: 100%|██████████| 32/32 [00:21<00:00,  1.49batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen8 judge=ministral8 shard=00007 rows=52894
+qwen8 judged by ministral8 shard 8:   0%|          | 0/32 [00:00<?, ?batch/s]qwen8 judged by ministral8 shard 8:   6%|▋         | 2/32 [00:01<00:20,  1.49batch/s]qwen8 judged by ministral8 shard 8:  12%|█▎        | 4/32 [00:02<00:18,  1.49batch/s]qwen8 judged by ministral8 shard 8:  19%|█▉        | 6/32 [00:03<00:17,  1.51batch/s]qwen8 judged by ministral8 shard 8:  25%|██▌       | 8/32 [00:05<00:15,  1.52batch/s]qwen8 judged by ministral8 shard 8:  31%|███▏      | 10/32 [00:06<00:14,  1.52batch/s]qwen8 judged by ministral8 shard 8:  38%|███▊      | 12/32 [00:08<00:15,  1.33batch/s]qwen8 judged by ministral8 shard 8:  44%|████▍     | 14/32 [00:09<00:12,  1.39batch/s]qwen8 judged by ministral8 shard 8:  50%|█████     | 16/32 [00:11<00:11,  1.42batch/s]qwen8 judged by ministral8 shard 8:  56%|█████▋    | 18/32 [00:12<00:09,  1.44batch/s]qwen8 judged by ministral8 shard 8:  62%|██████▎   | 20/32 [00:13<00:08,  1.47batch/s]qwen8 judged by ministral8 shard 8:  69%|██████▉   | 22/32 [00:15<00:06,  1.49batch/s]qwen8 judged by ministral8 shard 8:  75%|███████▌  | 24/32 [00:16<00:05,  1.48batch/s]qwen8 judged by ministral8 shard 8:  81%|████████▏ | 26/32 [00:18<00:04,  1.32batch/s]qwen8 judged by ministral8 shard 8:  88%|████████▊ | 28/32 [00:19<00:02,  1.35batch/s]qwen8 judged by ministral8 shard 8:  94%|█████████▍| 30/32 [00:21<00:01,  1.22batch/s]qwen8 judged by ministral8 shard 8: 100%|██████████| 32/32 [00:22<00:00,  1.41batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen8 judge=ministral8 shard=00008 rows=51868
+qwen8 judged by ministral8 shard 9:   0%|          | 0/32 [00:00<?, ?batch/s]qwen8 judged by ministral8 shard 9:   6%|▋         | 2/32 [00:01<00:20,  1.45batch/s]qwen8 judged by ministral8 shard 9:  12%|█▎        | 4/32 [00:02<00:19,  1.44batch/s]qwen8 judged by ministral8 shard 9:  19%|█▉        | 6/32 [00:04<00:18,  1.39batch/s]qwen8 judged by ministral8 shard 9:  25%|██▌       | 8/32 [00:05<00:16,  1.43batch/s]qwen8 judged by ministral8 shard 9:  31%|███▏      | 10/32 [00:06<00:14,  1.48batch/s]qwen8 judged by ministral8 shard 9:  38%|███▊      | 12/32 [00:08<00:13,  1.49batch/s]qwen8 judged by ministral8 shard 9:  44%|████▍     | 14/32 [00:09<00:12,  1.44batch/s]qwen8 judged by ministral8 shard 9:  50%|█████     | 16/32 [00:11<00:11,  1.44batch/s]qwen8 judged by ministral8 shard 9:  56%|█████▋    | 18/32 [00:12<00:09,  1.43batch/s]qwen8 judged by ministral8 shard 9:  62%|██████▎   | 20/32 [00:13<00:08,  1.45batch/s]qwen8 judged by ministral8 shard 9:  69%|██████▉   | 22/32 [00:15<00:06,  1.45batch/s]qwen8 judged by ministral8 shard 9:  75%|███████▌  | 24/32 [00:16<00:05,  1.46batch/s]qwen8 judged by ministral8 shard 9:  81%|████████▏ | 26/32 [00:17<00:04,  1.48batch/s]qwen8 judged by ministral8 shard 9:  88%|████████▊ | 28/32 [00:19<00:02,  1.49batch/s]qwen8 judged by ministral8 shard 9:  94%|█████████▍| 30/32 [00:20<00:01,  1.50batch/s]qwen8 judged by ministral8 shard 9: 100%|██████████| 32/32 [00:21<00:00,  1.49batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen8 judge=ministral8 shard=00009 rows=52331
+qwen8 judged by ministral8 shard 10:   0%|          | 0/32 [00:00<?, ?batch/s]qwen8 judged by ministral8 shard 10:   6%|▋         | 2/32 [00:01<00:28,  1.05batch/s]qwen8 judged by ministral8 shard 10:  12%|█▎        | 4/32 [00:03<00:23,  1.20batch/s]qwen8 judged by ministral8 shard 10:  19%|█▉        | 6/32 [00:04<00:20,  1.29batch/s]qwen8 judged by ministral8 shard 10:  25%|██▌       | 8/32 [00:06<00:18,  1.32batch/s]qwen8 judged by ministral8 shard 10:  31%|███▏      | 10/32 [00:07<00:15,  1.39batch/s]qwen8 judged by ministral8 shard 10:  38%|███▊      | 12/32 [00:08<00:13,  1.44batch/s]qwen8 judged by ministral8 shard 10:  44%|████▍     | 14/32 [00:10<00:13,  1.34batch/s]qwen8 judged by ministral8 shard 10:  50%|█████     | 16/32 [00:11<00:11,  1.39batch/s]qwen8 judged by ministral8 shard 10:  56%|█████▋    | 18/32 [00:13<00:09,  1.43batch/s]qwen8 judged by ministral8 shard 10:  62%|██████▎   | 20/32 [00:14<00:08,  1.42batch/s]qwen8 judged by ministral8 shard 10:  69%|██████▉   | 22/32 [00:15<00:06,  1.44batch/s]qwen8 judged by ministral8 shard 10:  75%|███████▌  | 24/32 [00:17<00:05,  1.45batch/s]qwen8 judged by ministral8 shard 10:  81%|████████▏ | 26/32 [00:18<00:04,  1.43batch/s]qwen8 judged by ministral8 shard 10:  88%|████████▊ | 28/32 [00:20<00:02,  1.44batch/s]qwen8 judged by ministral8 shard 10:  94%|█████████▍| 30/32 [00:21<00:01,  1.45batch/s]qwen8 judged by ministral8 shard 10: 100%|██████████| 32/32 [00:22<00:00,  1.43batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen8 judge=ministral8 shard=00010 rows=52806
+qwen8 judged by ministral8 shard 11:   0%|          | 0/32 [00:00<?, ?batch/s]qwen8 judged by ministral8 shard 11:   6%|▋         | 2/32 [00:01<00:22,  1.34batch/s]qwen8 judged by ministral8 shard 11:  12%|█▎        | 4/32 [00:02<00:19,  1.43batch/s]qwen8 judged by ministral8 shard 11:  19%|█▉        | 6/32 [00:04<00:17,  1.47batch/s]qwen8 judged by ministral8 shard 11:  25%|██▌       | 8/32 [00:05<00:16,  1.46batch/s]qwen8 judged by ministral8 shard 11:  31%|███▏      | 10/32 [00:07<00:15,  1.40batch/s]qwen8 judged by ministral8 shard 11:  38%|███▊      | 12/32 [00:08<00:13,  1.44batch/s]qwen8 judged by ministral8 shard 11:  44%|████▍     | 14/32 [00:09<00:12,  1.46batch/s]qwen8 judged by ministral8 shard 11:  50%|█████     | 16/32 [00:11<00:10,  1.48batch/s]qwen8 judged by ministral8 shard 11:  56%|█████▋    | 18/32 [00:12<00:09,  1.49batch/s]qwen8 judged by ministral8 shard 11:  62%|██████▎   | 20/32 [00:13<00:08,  1.48batch/s]qwen8 judged by ministral8 shard 11:  69%|██████▉   | 22/32 [00:15<00:06,  1.46batch/s]qwen8 judged by ministral8 shard 11:  75%|███████▌  | 24/32 [00:17<00:06,  1.31batch/s]qwen8 judged by ministral8 shard 11:  81%|████████▏ | 26/32 [00:18<00:04,  1.23batch/s]qwen8 judged by ministral8 shard 11:  88%|████████▊ | 28/32 [00:20<00:03,  1.27batch/s]qwen8 judged by ministral8 shard 11:  94%|█████████▍| 30/32 [00:21<00:01,  1.31batch/s]qwen8 judged by ministral8 shard 11: 100%|██████████| 32/32 [00:22<00:00,  1.41batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen8 judge=ministral8 shard=00011 rows=52277
+qwen8 judged by ministral8 shard 12:   0%|          | 0/32 [00:00<?, ?batch/s]qwen8 judged by ministral8 shard 12:   6%|▋         | 2/32 [00:01<00:21,  1.42batch/s]qwen8 judged by ministral8 shard 12:  12%|█▎        | 4/32 [00:02<00:18,  1.51batch/s]qwen8 judged by ministral8 shard 12:  19%|█▉        | 6/32 [00:04<00:17,  1.49batch/s]qwen8 judged by ministral8 shard 12:  25%|██▌       | 8/32 [00:05<00:16,  1.46batch/s]qwen8 judged by ministral8 shard 12:  31%|███▏      | 10/32 [00:06<00:15,  1.45batch/s]qwen8 judged by ministral8 shard 12:  38%|███▊      | 12/32 [00:08<00:14,  1.43batch/s]qwen8 judged by ministral8 shard 12:  44%|████▍     | 14/32 [00:09<00:12,  1.44batch/s]qwen8 judged by ministral8 shard 12:  50%|█████     | 16/32 [00:11<00:11,  1.45batch/s]qwen8 judged by ministral8 shard 12:  56%|█████▋    | 18/32 [00:12<00:09,  1.44batch/s]qwen8 judged by ministral8 shard 12:  62%|██████▎   | 20/32 [00:13<00:08,  1.45batch/s]qwen8 judged by ministral8 shard 12:  69%|██████▉   | 22/32 [00:15<00:06,  1.44batch/s]qwen8 judged by ministral8 shard 12:  75%|███████▌  | 24/32 [00:16<00:05,  1.43batch/s]qwen8 judged by ministral8 shard 12:  81%|████████▏ | 26/32 [00:17<00:04,  1.45batch/s]qwen8 judged by ministral8 shard 12:  88%|████████▊ | 28/32 [00:19<00:02,  1.42batch/s]qwen8 judged by ministral8 shard 12:  94%|█████████▍| 30/32 [00:20<00:01,  1.43batch/s]qwen8 judged by ministral8 shard 12: 100%|██████████| 32/32 [00:21<00:00,  1.48batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen8 judge=ministral8 shard=00012 rows=52387
+qwen8 judged by ministral8 shard 13:   0%|          | 0/32 [00:00<?, ?batch/s]qwen8 judged by ministral8 shard 13:   6%|▋         | 2/32 [00:01<00:21,  1.42batch/s]qwen8 judged by ministral8 shard 13:  12%|█▎        | 4/32 [00:02<00:19,  1.45batch/s]qwen8 judged by ministral8 shard 13:  19%|█▉        | 6/32 [00:04<00:17,  1.47batch/s]qwen8 judged by ministral8 shard 13:  25%|██▌       | 8/32 [00:05<00:16,  1.47batch/s]qwen8 judged by ministral8 shard 13:  31%|███▏      | 10/32 [00:06<00:15,  1.46batch/s]qwen8 judged by ministral8 shard 13:  38%|███▊      | 12/32 [00:08<00:13,  1.47batch/s]qwen8 judged by ministral8 shard 13:  44%|████▍     | 14/32 [00:10<00:13,  1.29batch/s]qwen8 judged by ministral8 shard 13:  50%|█████     | 16/32 [00:11<00:11,  1.35batch/s]qwen8 judged by ministral8 shard 13:  56%|█████▋    | 18/32 [00:12<00:10,  1.36batch/s]qwen8 judged by ministral8 shard 13:  62%|██████▎   | 20/32 [00:14<00:08,  1.40batch/s]qwen8 judged by ministral8 shard 13:  69%|██████▉   | 22/32 [00:15<00:07,  1.43batch/s]qwen8 judged by ministral8 shard 13:  75%|███████▌  | 24/32 [00:17<00:05,  1.41batch/s]qwen8 judged by ministral8 shard 13:  81%|████████▏ | 26/32 [00:18<00:04,  1.44batch/s]qwen8 judged by ministral8 shard 13:  88%|████████▊ | 28/32 [00:19<00:02,  1.45batch/s]qwen8 judged by ministral8 shard 13:  94%|█████████▍| 30/32 [00:21<00:01,  1.43batch/s]qwen8 judged by ministral8 shard 13: 100%|██████████| 32/32 [00:22<00:00,  1.45batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen8 judge=ministral8 shard=00013 rows=52505
+qwen8 judged by ministral8 shard 14:   0%|          | 0/32 [00:00<?, ?batch/s]qwen8 judged by ministral8 shard 14:   6%|▋         | 2/32 [00:01<00:20,  1.43batch/s]qwen8 judged by ministral8 shard 14:  12%|█▎        | 4/32 [00:02<00:19,  1.46batch/s]qwen8 judged by ministral8 shard 14:  19%|█▉        | 6/32 [00:04<00:18,  1.44batch/s]qwen8 judged by ministral8 shard 14:  25%|██▌       | 8/32 [00:05<00:17,  1.39batch/s]qwen8 judged by ministral8 shard 14:  31%|███▏      | 10/32 [00:07<00:15,  1.40batch/s]qwen8 judged by ministral8 shard 14:  38%|███▊      | 12/32 [00:08<00:13,  1.43batch/s]qwen8 judged by ministral8 shard 14:  44%|████▍     | 14/32 [00:09<00:12,  1.47batch/s]qwen8 judged by ministral8 shard 14:  50%|█████     | 16/32 [00:11<00:10,  1.49batch/s]qwen8 judged by ministral8 shard 14:  56%|█████▋    | 18/32 [00:12<00:09,  1.53batch/s]qwen8 judged by ministral8 shard 14:  62%|██████▎   | 20/32 [00:13<00:07,  1.53batch/s]qwen8 judged by ministral8 shard 14:  69%|██████▉   | 22/32 [00:14<00:06,  1.53batch/s]qwen8 judged by ministral8 shard 14:  75%|███████▌  | 24/32 [00:16<00:05,  1.53batch/s]qwen8 judged by ministral8 shard 14:  81%|████████▏ | 26/32 [00:17<00:03,  1.52batch/s]qwen8 judged by ministral8 shard 14:  88%|████████▊ | 28/32 [00:18<00:02,  1.53batch/s]qwen8 judged by ministral8 shard 14:  94%|█████████▍| 30/32 [00:20<00:01,  1.47batch/s]qwen8 judged by ministral8 shard 14: 100%|██████████| 32/32 [00:21<00:00,  1.51batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen8 judge=ministral8 shard=00014 rows=51253
+qwen8 judged by ministral8 shard 15:   0%|          | 0/32 [00:00<?, ?batch/s]qwen8 judged by ministral8 shard 15:   6%|▋         | 2/32 [00:01<00:19,  1.51batch/s]qwen8 judged by ministral8 shard 15:  12%|█▎        | 4/32 [00:02<00:21,  1.31batch/s]qwen8 judged by ministral8 shard 15:  19%|█▉        | 6/32 [00:04<00:19,  1.35batch/s]qwen8 judged by ministral8 shard 15:  25%|██▌       | 8/32 [00:05<00:16,  1.43batch/s]qwen8 judged by ministral8 shard 15:  31%|███▏      | 10/32 [00:07<00:15,  1.43batch/s]qwen8 judged by ministral8 shard 15:  38%|███▊      | 12/32 [00:08<00:13,  1.43batch/s]qwen8 judged by ministral8 shard 15:  44%|████▍     | 14/32 [00:09<00:12,  1.45batch/s]qwen8 judged by ministral8 shard 15:  50%|█████     | 16/32 [00:11<00:10,  1.46batch/s]qwen8 judged by ministral8 shard 15:  56%|█████▋    | 18/32 [00:12<00:09,  1.43batch/s]qwen8 judged by ministral8 shard 15:  62%|██████▎   | 20/32 [00:14<00:08,  1.41batch/s]qwen8 judged by ministral8 shard 15:  69%|██████▉   | 22/32 [00:15<00:06,  1.44batch/s]qwen8 judged by ministral8 shard 15:  75%|███████▌  | 24/32 [00:16<00:05,  1.43batch/s]qwen8 judged by ministral8 shard 15:  81%|████████▏ | 26/32 [00:18<00:04,  1.45batch/s]qwen8 judged by ministral8 shard 15:  88%|████████▊ | 28/32 [00:19<00:02,  1.46batch/s]qwen8 judged by ministral8 shard 15:  94%|█████████▍| 30/32 [00:20<00:01,  1.48batch/s]qwen8 judged by ministral8 shard 15: 100%|██████████| 32/32 [00:21<00:00,  1.47batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen8 judge=ministral8 shard=00015 rows=52897
+qwen8 judged by ministral8 shard 16:   0%|          | 0/32 [00:00<?, ?batch/s]qwen8 judged by ministral8 shard 16:   6%|▋         | 2/32 [00:01<00:19,  1.53batch/s]qwen8 judged by ministral8 shard 16:  12%|█▎        | 4/32 [00:02<00:18,  1.51batch/s]qwen8 judged by ministral8 shard 16:  19%|█▉        | 6/32 [00:04<00:17,  1.48batch/s]qwen8 judged by ministral8 shard 16:  25%|██▌       | 8/32 [00:05<00:16,  1.47batch/s]qwen8 judged by ministral8 shard 16:  31%|███▏      | 10/32 [00:06<00:14,  1.47batch/s]qwen8 judged by ministral8 shard 16:  38%|███▊      | 12/32 [00:08<00:13,  1.50batch/s]qwen8 judged by ministral8 shard 16:  44%|████▍     | 14/32 [00:09<00:12,  1.46batch/s]qwen8 judged by ministral8 shard 16:  50%|█████     | 16/32 [00:10<00:10,  1.48batch/s]qwen8 judged by ministral8 shard 16:  56%|█████▋    | 18/32 [00:12<00:09,  1.44batch/s]qwen8 judged by ministral8 shard 16:  62%|██████▎   | 20/32 [00:13<00:08,  1.44batch/s]qwen8 judged by ministral8 shard 16:  69%|██████▉   | 22/32 [00:15<00:06,  1.43batch/s]qwen8 judged by ministral8 shard 16:  75%|███████▌  | 24/32 [00:16<00:05,  1.44batch/s]qwen8 judged by ministral8 shard 16:  81%|████████▏ | 26/32 [00:17<00:04,  1.46batch/s]qwen8 judged by ministral8 shard 16:  88%|████████▊ | 28/32 [00:19<00:02,  1.49batch/s]qwen8 judged by ministral8 shard 16:  94%|█████████▍| 30/32 [00:20<00:01,  1.38batch/s]qwen8 judged by ministral8 shard 16: 100%|██████████| 32/32 [00:21<00:00,  1.48batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen8 judge=ministral8 shard=00016 rows=51533
+qwen8 judged by ministral8 shard 17:   0%|          | 0/32 [00:00<?, ?batch/s]qwen8 judged by ministral8 shard 17:   6%|▋         | 2/32 [00:01<00:20,  1.45batch/s]qwen8 judged by ministral8 shard 17:  12%|█▎        | 4/32 [00:02<00:18,  1.48batch/s]qwen8 judged by ministral8 shard 17:  19%|█▉        | 6/32 [00:04<00:17,  1.45batch/s]qwen8 judged by ministral8 shard 17:  25%|██▌       | 8/32 [00:05<00:16,  1.47batch/s]qwen8 judged by ministral8 shard 17:  31%|███▏      | 10/32 [00:06<00:14,  1.49batch/s]qwen8 judged by ministral8 shard 17:  38%|███▊      | 12/32 [00:08<00:13,  1.46batch/s]qwen8 judged by ministral8 shard 17:  44%|████▍     | 14/32 [00:09<00:12,  1.44batch/s]qwen8 judged by ministral8 shard 17:  50%|█████     | 16/32 [00:10<00:11,  1.45batch/s]qwen8 judged by ministral8 shard 17:  56%|█████▋    | 18/32 [00:12<00:09,  1.47batch/s]qwen8 judged by ministral8 shard 17:  62%|██████▎   | 20/32 [00:13<00:08,  1.43batch/s]qwen8 judged by ministral8 shard 17:  69%|██████▉   | 22/32 [00:15<00:06,  1.44batch/s]qwen8 judged by ministral8 shard 17:  75%|███████▌  | 24/32 [00:16<00:05,  1.44batch/s]qwen8 judged by ministral8 shard 17:  81%|████████▏ | 26/32 [00:18<00:04,  1.41batch/s]qwen8 judged by ministral8 shard 17:  88%|████████▊ | 28/32 [00:19<00:02,  1.41batch/s]qwen8 judged by ministral8 shard 17:  94%|█████████▍| 30/32 [00:20<00:01,  1.42batch/s]qwen8 judged by ministral8 shard 17: 100%|██████████| 32/32 [00:21<00:00,  1.47batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen8 judge=ministral8 shard=00017 rows=52335
+qwen8 judged by ministral8 shard 18:   0%|          | 0/32 [00:00<?, ?batch/s]qwen8 judged by ministral8 shard 18:   6%|▋         | 2/32 [00:01<00:19,  1.52batch/s]qwen8 judged by ministral8 shard 18:  12%|█▎        | 4/32 [00:02<00:19,  1.45batch/s]qwen8 judged by ministral8 shard 18:  19%|█▉        | 6/32 [00:04<00:17,  1.47batch/s]qwen8 judged by ministral8 shard 18:  25%|██▌       | 8/32 [00:05<00:16,  1.46batch/s]qwen8 judged by ministral8 shard 18:  31%|███▏      | 10/32 [00:06<00:15,  1.44batch/s]qwen8 judged by ministral8 shard 18:  38%|███▊      | 12/32 [00:08<00:14,  1.42batch/s]qwen8 judged by ministral8 shard 18:  44%|████▍     | 14/32 [00:09<00:12,  1.45batch/s]qwen8 judged by ministral8 shard 18:  50%|█████     | 16/32 [00:10<00:10,  1.47batch/s]qwen8 judged by ministral8 shard 18:  56%|█████▋    | 18/32 [00:12<00:09,  1.49batch/s]qwen8 judged by ministral8 shard 18:  62%|██████▎   | 20/32 [00:14<00:09,  1.23batch/s]qwen8 judged by ministral8 shard 18:  69%|██████▉   | 22/32 [00:16<00:08,  1.22batch/s]qwen8 judged by ministral8 shard 18:  75%|███████▌  | 24/32 [00:17<00:06,  1.27batch/s]qwen8 judged by ministral8 shard 18:  81%|████████▏ | 26/32 [00:19<00:04,  1.31batch/s]qwen8 judged by ministral8 shard 18:  88%|████████▊ | 28/32 [00:20<00:02,  1.35batch/s]qwen8 judged by ministral8 shard 18:  94%|█████████▍| 30/32 [00:21<00:01,  1.36batch/s]qwen8 judged by ministral8 shard 18: 100%|██████████| 32/32 [00:22<00:00,  1.40batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen8 judge=ministral8 shard=00018 rows=52692
+qwen8 judged by ministral8 shard 19:   0%|          | 0/32 [00:00<?, ?batch/s]qwen8 judged by ministral8 shard 19:   6%|▋         | 2/32 [00:01<00:20,  1.46batch/s]qwen8 judged by ministral8 shard 19:  12%|█▎        | 4/32 [00:02<00:20,  1.38batch/s]qwen8 judged by ministral8 shard 19:  19%|█▉        | 6/32 [00:04<00:18,  1.42batch/s]qwen8 judged by ministral8 shard 19:  25%|██▌       | 8/32 [00:05<00:17,  1.39batch/s]qwen8 judged by ministral8 shard 19:  31%|███▏      | 10/32 [00:07<00:15,  1.40batch/s]qwen8 judged by ministral8 shard 19:  38%|███▊      | 12/32 [00:08<00:14,  1.42batch/s]qwen8 judged by ministral8 shard 19:  44%|████▍     | 14/32 [00:09<00:12,  1.41batch/s]qwen8 judged by ministral8 shard 19:  50%|█████     | 16/32 [00:11<00:11,  1.43batch/s]qwen8 judged by ministral8 shard 19:  56%|█████▋    | 18/32 [00:12<00:09,  1.41batch/s]qwen8 judged by ministral8 shard 19:  62%|██████▎   | 20/32 [00:14<00:08,  1.40batch/s]qwen8 judged by ministral8 shard 19:  69%|██████▉   | 22/32 [00:15<00:07,  1.42batch/s]qwen8 judged by ministral8 shard 19:  75%|███████▌  | 24/32 [00:16<00:05,  1.42batch/s]qwen8 judged by ministral8 shard 19:  81%|████████▏ | 26/32 [00:18<00:04,  1.45batch/s]qwen8 judged by ministral8 shard 19:  88%|████████▊ | 28/32 [00:19<00:02,  1.48batch/s]qwen8 judged by ministral8 shard 19:  94%|█████████▍| 30/32 [00:20<00:01,  1.48batch/s]qwen8 judged by ministral8 shard 19: 100%|██████████| 32/32 [00:21<00:00,  1.47batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen8 judge=ministral8 shard=00019 rows=52391
+CROSS_FAMILY_COMPLETE target=qwen8 judge=ministral8 output=/workspace/korean_speculative_decoding/results/rebuttal/cross_family/qwen8/ministral8
+SOURCE_BOUNDARY_AUDIT target=ministral8 {"audit_documents": 100, "positions_total": 12600, "special_token_positions_skipped": 2, "positions_with_valid_prefix": 12377, "valid_prefix_share": 0.9823015873015873, "positions_compared_to_alignment": 12377, "exact_offset_agreements": 12377, "agreement": 1.0}
+STREAM_WEIGHT_START model=qwen8 shard=1/5 name=model-00001-of-00005.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen8 shard=1/5
+STREAM_WEIGHT_START model=qwen8 shard=2/5 name=model-00002-of-00005.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen8 shard=2/5
+STREAM_WEIGHT_START model=qwen8 shard=3/5 name=model-00003-of-00005.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen8 shard=3/5
+STREAM_WEIGHT_START model=qwen8 shard=4/5 name=model-00004-of-00005.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen8 shard=4/5
+STREAM_WEIGHT_START model=qwen8 shard=5/5 name=model-00005-of-00005.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen8 shard=5/5
+ministral8 judged by qwen8 shard 0:   0%|          | 0/32 [00:00<?, ?batch/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+ministral8 judged by qwen8 shard 0:   3%|▎         | 1/32 [00:01<00:52,  1.70s/batch]ministral8 judged by qwen8 shard 0:   9%|▉         | 3/32 [00:03<00:31,  1.09s/batch]ministral8 judged by qwen8 shard 0:  16%|█▌        | 5/32 [00:05<00:27,  1.00s/batch]ministral8 judged by qwen8 shard 0:  22%|██▏       | 7/32 [00:07<00:24,  1.03batch/s]ministral8 judged by qwen8 shard 0:  28%|██▊       | 9/32 [00:08<00:21,  1.06batch/s]ministral8 judged by qwen8 shard 0:  34%|███▍      | 11/32 [00:10<00:19,  1.09batch/s]ministral8 judged by qwen8 shard 0:  41%|████      | 13/32 [00:12<00:17,  1.10batch/s]ministral8 judged by qwen8 shard 0:  47%|████▋     | 15/32 [00:14<00:15,  1.13batch/s]ministral8 judged by qwen8 shard 0:  53%|█████▎    | 17/32 [00:15<00:13,  1.11batch/s]ministral8 judged by qwen8 shard 0:  59%|█████▉    | 19/32 [00:17<00:11,  1.11batch/s]ministral8 judged by qwen8 shard 0:  66%|██████▌   | 21/32 [00:19<00:09,  1.11batch/s]ministral8 judged by qwen8 shard 0:  72%|███████▏  | 23/32 [00:21<00:08,  1.10batch/s]ministral8 judged by qwen8 shard 0:  78%|███████▊  | 25/32 [00:23<00:06,  1.11batch/s]ministral8 judged by qwen8 shard 0:  84%|████████▍ | 27/32 [00:25<00:04,  1.10batch/s]ministral8 judged by qwen8 shard 0:  91%|█████████ | 29/32 [00:26<00:02,  1.09batch/s]ministral8 judged by qwen8 shard 0:  97%|█████████▋| 31/32 [00:28<00:00,  1.10batch/s]ministral8 judged by qwen8 shard 0: 100%|██████████| 32/32 [00:28<00:00,  1.11batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=ministral8 judge=qwen8 shard=00000 rows=66797
+ministral8 judged by qwen8 shard 1:   0%|          | 0/32 [00:00<?, ?batch/s]ministral8 judged by qwen8 shard 1:   6%|▋         | 2/32 [00:02<00:32,  1.09s/batch]ministral8 judged by qwen8 shard 1:  12%|█▎        | 4/32 [00:03<00:26,  1.05batch/s]ministral8 judged by qwen8 shard 1:  19%|█▉        | 6/32 [00:05<00:23,  1.10batch/s]ministral8 judged by qwen8 shard 1:  25%|██▌       | 8/32 [00:07<00:21,  1.10batch/s]ministral8 judged by qwen8 shard 1:  31%|███▏      | 10/32 [00:09<00:20,  1.10batch/s]ministral8 judged by qwen8 shard 1:  38%|███▊      | 12/32 [00:11<00:18,  1.09batch/s]ministral8 judged by qwen8 shard 1:  44%|████▍     | 14/32 [00:12<00:16,  1.10batch/s]ministral8 judged by qwen8 shard 1:  50%|█████     | 16/32 [00:14<00:14,  1.12batch/s]ministral8 judged by qwen8 shard 1:  56%|█████▋    | 18/32 [00:16<00:12,  1.09batch/s]ministral8 judged by qwen8 shard 1:  62%|██████▎   | 20/32 [00:18<00:11,  1.09batch/s]ministral8 judged by qwen8 shard 1:  69%|██████▉   | 22/32 [00:20<00:08,  1.12batch/s]ministral8 judged by qwen8 shard 1:  75%|███████▌  | 24/32 [00:21<00:07,  1.10batch/s]ministral8 judged by qwen8 shard 1:  81%|████████▏ | 26/32 [00:23<00:05,  1.12batch/s]ministral8 judged by qwen8 shard 1:  88%|████████▊ | 28/32 [00:25<00:03,  1.12batch/s]ministral8 judged by qwen8 shard 1:  94%|█████████▍| 30/32 [00:27<00:01,  1.05batch/s]ministral8 judged by qwen8 shard 1: 100%|██████████| 32/32 [00:28<00:00,  1.19batch/s]ministral8 judged by qwen8 shard 1: 100%|██████████| 32/32 [00:28<00:00,  1.11batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=ministral8 judge=qwen8 shard=00001 rows=66701
+ministral8 judged by qwen8 shard 2:   0%|          | 0/32 [00:00<?, ?batch/s]ministral8 judged by qwen8 shard 2:   6%|▋         | 2/32 [00:01<00:28,  1.06batch/s]ministral8 judged by qwen8 shard 2:  12%|█▎        | 4/32 [00:03<00:26,  1.06batch/s]ministral8 judged by qwen8 shard 2:  19%|█▉        | 6/32 [00:05<00:24,  1.08batch/s]ministral8 judged by qwen8 shard 2:  25%|██▌       | 8/32 [00:07<00:22,  1.09batch/s]ministral8 judged by qwen8 shard 2:  31%|███▏      | 10/32 [00:09<00:19,  1.12batch/s]ministral8 judged by qwen8 shard 2:  38%|███▊      | 12/32 [00:10<00:18,  1.11batch/s]ministral8 judged by qwen8 shard 2:  44%|████▍     | 14/32 [00:12<00:16,  1.09batch/s]ministral8 judged by qwen8 shard 2:  50%|█████     | 16/32 [00:14<00:14,  1.11batch/s]ministral8 judged by qwen8 shard 2:  56%|█████▋    | 18/32 [00:16<00:12,  1.14batch/s]ministral8 judged by qwen8 shard 2:  62%|██████▎   | 20/32 [00:17<00:10,  1.15batch/s]ministral8 judged by qwen8 shard 2:  69%|██████▉   | 22/32 [00:19<00:08,  1.14batch/s]ministral8 judged by qwen8 shard 2:  75%|███████▌  | 24/32 [00:21<00:07,  1.14batch/s]ministral8 judged by qwen8 shard 2:  81%|████████▏ | 26/32 [00:23<00:05,  1.06batch/s]ministral8 judged by qwen8 shard 2:  88%|████████▊ | 28/32 [00:25<00:03,  1.06batch/s]ministral8 judged by qwen8 shard 2:  94%|█████████▍| 30/32 [00:27<00:01,  1.08batch/s]ministral8 judged by qwen8 shard 2: 100%|██████████| 32/32 [00:28<00:00,  1.19batch/s]ministral8 judged by qwen8 shard 2: 100%|██████████| 32/32 [00:28<00:00,  1.12batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=ministral8 judge=qwen8 shard=00002 rows=66968
+ministral8 judged by qwen8 shard 3:   0%|          | 0/32 [00:00<?, ?batch/s]ministral8 judged by qwen8 shard 3:   6%|▋         | 2/32 [00:01<00:26,  1.13batch/s]ministral8 judged by qwen8 shard 3:  12%|█▎        | 4/32 [00:03<00:24,  1.15batch/s]ministral8 judged by qwen8 shard 3:  19%|█▉        | 6/32 [00:05<00:22,  1.14batch/s]ministral8 judged by qwen8 shard 3:  25%|██▌       | 8/32 [00:06<00:20,  1.15batch/s]ministral8 judged by qwen8 shard 3:  31%|███▏      | 10/32 [00:08<00:19,  1.15batch/s]ministral8 judged by qwen8 shard 3:  38%|███▊      | 12/32 [00:10<00:17,  1.13batch/s]ministral8 judged by qwen8 shard 3:  44%|████▍     | 14/32 [00:12<00:16,  1.12batch/s]ministral8 judged by qwen8 shard 3:  50%|█████     | 16/32 [00:14<00:14,  1.13batch/s]ministral8 judged by qwen8 shard 3:  56%|█████▋    | 18/32 [00:16<00:12,  1.10batch/s]ministral8 judged by qwen8 shard 3:  62%|██████▎   | 20/32 [00:17<00:10,  1.10batch/s]ministral8 judged by qwen8 shard 3:  69%|██████▉   | 22/32 [00:20<00:09,  1.04batch/s]ministral8 judged by qwen8 shard 3:  75%|███████▌  | 24/32 [00:21<00:07,  1.07batch/s]ministral8 judged by qwen8 shard 3:  81%|████████▏ | 26/32 [00:23<00:05,  1.08batch/s]ministral8 judged by qwen8 shard 3:  88%|████████▊ | 28/32 [00:25<00:03,  1.10batch/s]ministral8 judged by qwen8 shard 3:  94%|█████████▍| 30/32 [00:27<00:01,  1.09batch/s]ministral8 judged by qwen8 shard 3: 100%|██████████| 32/32 [00:28<00:00,  1.22batch/s]ministral8 judged by qwen8 shard 3: 100%|██████████| 32/32 [00:28<00:00,  1.13batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=ministral8 judge=qwen8 shard=00003 rows=66690
+ministral8 judged by qwen8 shard 4:   0%|          | 0/32 [00:00<?, ?batch/s]ministral8 judged by qwen8 shard 4:   6%|▋         | 2/32 [00:01<00:26,  1.12batch/s]ministral8 judged by qwen8 shard 4:  12%|█▎        | 4/32 [00:03<00:24,  1.12batch/s]ministral8 judged by qwen8 shard 4:  19%|█▉        | 6/32 [00:05<00:23,  1.12batch/s]ministral8 judged by qwen8 shard 4:  25%|██▌       | 8/32 [00:07<00:21,  1.12batch/s]ministral8 judged by qwen8 shard 4:  31%|███▏      | 10/32 [00:08<00:19,  1.11batch/s]ministral8 judged by qwen8 shard 4:  38%|███▊      | 12/32 [00:10<00:17,  1.12batch/s]ministral8 judged by qwen8 shard 4:  44%|████▍     | 14/32 [00:12<00:15,  1.14batch/s]ministral8 judged by qwen8 shard 4:  50%|█████     | 16/32 [00:14<00:14,  1.12batch/s]ministral8 judged by qwen8 shard 4:  56%|█████▋    | 18/32 [00:16<00:12,  1.12batch/s]ministral8 judged by qwen8 shard 4:  62%|██████▎   | 20/32 [00:17<00:10,  1.13batch/s]ministral8 judged by qwen8 shard 4:  69%|██████▉   | 22/32 [00:19<00:08,  1.13batch/s]ministral8 judged by qwen8 shard 4:  75%|███████▌  | 24/32 [00:21<00:07,  1.07batch/s]ministral8 judged by qwen8 shard 4:  81%|████████▏ | 26/32 [00:23<00:05,  1.09batch/s]ministral8 judged by qwen8 shard 4:  88%|████████▊ | 28/32 [00:25<00:03,  1.08batch/s]ministral8 judged by qwen8 shard 4:  94%|█████████▍| 30/32 [00:27<00:01,  1.11batch/s]ministral8 judged by qwen8 shard 4: 100%|██████████| 32/32 [00:28<00:00,  1.22batch/s]ministral8 judged by qwen8 shard 4: 100%|██████████| 32/32 [00:28<00:00,  1.13batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=ministral8 judge=qwen8 shard=00004 rows=66954
+ministral8 judged by qwen8 shard 5:   0%|          | 0/32 [00:00<?, ?batch/s]ministral8 judged by qwen8 shard 5:   6%|▋         | 2/32 [00:01<00:26,  1.12batch/s]ministral8 judged by qwen8 shard 5:  12%|█▎        | 4/32 [00:03<00:25,  1.08batch/s]ministral8 judged by qwen8 shard 5:  19%|█▉        | 6/32 [00:05<00:23,  1.09batch/s]ministral8 judged by qwen8 shard 5:  25%|██▌       | 8/32 [00:07<00:21,  1.10batch/s]ministral8 judged by qwen8 shard 5:  31%|███▏      | 10/32 [00:08<00:19,  1.13batch/s]ministral8 judged by qwen8 shard 5:  38%|███▊      | 12/32 [00:10<00:18,  1.11batch/s]ministral8 judged by qwen8 shard 5:  44%|████▍     | 14/32 [00:12<00:16,  1.11batch/s]ministral8 judged by qwen8 shard 5:  50%|█████     | 16/32 [00:14<00:14,  1.14batch/s]ministral8 judged by qwen8 shard 5:  56%|█████▋    | 18/32 [00:16<00:12,  1.14batch/s]ministral8 judged by qwen8 shard 5:  62%|██████▎   | 20/32 [00:17<00:10,  1.15batch/s]ministral8 judged by qwen8 shard 5:  69%|██████▉   | 22/32 [00:19<00:08,  1.13batch/s]ministral8 judged by qwen8 shard 5:  75%|███████▌  | 24/32 [00:21<00:07,  1.11batch/s]ministral8 judged by qwen8 shard 5:  81%|████████▏ | 26/32 [00:23<00:05,  1.11batch/s]ministral8 judged by qwen8 shard 5:  88%|████████▊ | 28/32 [00:25<00:03,  1.11batch/s]ministral8 judged by qwen8 shard 5:  94%|█████████▍| 30/32 [00:27<00:01,  1.07batch/s]ministral8 judged by qwen8 shard 5: 100%|██████████| 32/32 [00:28<00:00,  1.22batch/s]ministral8 judged by qwen8 shard 5: 100%|██████████| 32/32 [00:28<00:00,  1.13batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=ministral8 judge=qwen8 shard=00005 rows=66310
+ministral8 judged by qwen8 shard 6:   0%|          | 0/32 [00:00<?, ?batch/s]ministral8 judged by qwen8 shard 6:   6%|▋         | 2/32 [00:01<00:27,  1.10batch/s]ministral8 judged by qwen8 shard 6:  12%|█▎        | 4/32 [00:03<00:24,  1.14batch/s]ministral8 judged by qwen8 shard 6:  19%|█▉        | 6/32 [00:05<00:23,  1.13batch/s]ministral8 judged by qwen8 shard 6:  25%|██▌       | 8/32 [00:06<00:20,  1.16batch/s]ministral8 judged by qwen8 shard 6:  31%|███▏      | 10/32 [00:08<00:18,  1.17batch/s]ministral8 judged by qwen8 shard 6:  38%|███▊      | 12/32 [00:10<00:17,  1.16batch/s]ministral8 judged by qwen8 shard 6:  44%|████▍     | 14/32 [00:12<00:15,  1.13batch/s]ministral8 judged by qwen8 shard 6:  50%|█████     | 16/32 [00:14<00:14,  1.11batch/s]ministral8 judged by qwen8 shard 6:  56%|█████▋    | 18/32 [00:16<00:12,  1.09batch/s]ministral8 judged by qwen8 shard 6:  62%|██████▎   | 20/32 [00:17<00:10,  1.10batch/s]ministral8 judged by qwen8 shard 6:  69%|██████▉   | 22/32 [00:19<00:09,  1.09batch/s]ministral8 judged by qwen8 shard 6:  75%|███████▌  | 24/32 [00:21<00:07,  1.03batch/s]ministral8 judged by qwen8 shard 6:  81%|████████▏ | 26/32 [00:23<00:05,  1.01batch/s]ministral8 judged by qwen8 shard 6:  88%|████████▊ | 28/32 [00:25<00:03,  1.04batch/s]ministral8 judged by qwen8 shard 6:  94%|█████████▍| 30/32 [00:27<00:01,  1.06batch/s]ministral8 judged by qwen8 shard 6: 100%|██████████| 32/32 [00:28<00:00,  1.19batch/s]ministral8 judged by qwen8 shard 6: 100%|██████████| 32/32 [00:28<00:00,  1.11batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=ministral8 judge=qwen8 shard=00006 rows=66121
+ministral8 judged by qwen8 shard 7:   0%|          | 0/32 [00:00<?, ?batch/s]ministral8 judged by qwen8 shard 7:   6%|▋         | 2/32 [00:01<00:26,  1.13batch/s]ministral8 judged by qwen8 shard 7:  12%|█▎        | 4/32 [00:03<00:26,  1.06batch/s]ministral8 judged by qwen8 shard 7:  19%|█▉        | 6/32 [00:05<00:23,  1.11batch/s]ministral8 judged by qwen8 shard 7:  25%|██▌       | 8/32 [00:07<00:21,  1.12batch/s]ministral8 judged by qwen8 shard 7:  31%|███▏      | 10/32 [00:09<00:19,  1.10batch/s]ministral8 judged by qwen8 shard 7:  38%|███▊      | 12/32 [00:10<00:17,  1.12batch/s]ministral8 judged by qwen8 shard 7:  44%|████▍     | 14/32 [00:12<00:16,  1.11batch/s]ministral8 judged by qwen8 shard 7:  50%|█████     | 16/32 [00:14<00:14,  1.10batch/s]ministral8 judged by qwen8 shard 7:  56%|█████▋    | 18/32 [00:16<00:12,  1.09batch/s]ministral8 judged by qwen8 shard 7:  62%|██████▎   | 20/32 [00:18<00:11,  1.08batch/s]ministral8 judged by qwen8 shard 7:  69%|██████▉   | 22/32 [00:20<00:09,  1.09batch/s]ministral8 judged by qwen8 shard 7:  75%|███████▌  | 24/32 [00:21<00:07,  1.09batch/s]ministral8 judged by qwen8 shard 7:  81%|████████▏ | 26/32 [00:23<00:05,  1.11batch/s]ministral8 judged by qwen8 shard 7:  88%|████████▊ | 28/32 [00:25<00:03,  1.06batch/s]ministral8 judged by qwen8 shard 7:  94%|█████████▍| 30/32 [00:27<00:01,  1.09batch/s]ministral8 judged by qwen8 shard 7: 100%|██████████| 32/32 [00:28<00:00,  1.24batch/s]ministral8 judged by qwen8 shard 7: 100%|██████████| 32/32 [00:28<00:00,  1.12batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=ministral8 judge=qwen8 shard=00007 rows=67052
+ministral8 judged by qwen8 shard 8:   0%|          | 0/32 [00:00<?, ?batch/s]ministral8 judged by qwen8 shard 8:   6%|▋         | 2/32 [00:01<00:25,  1.17batch/s]ministral8 judged by qwen8 shard 8:  12%|█▎        | 4/32 [00:03<00:24,  1.13batch/s]ministral8 judged by qwen8 shard 8:  19%|█▉        | 6/32 [00:05<00:23,  1.12batch/s]ministral8 judged by qwen8 shard 8:  25%|██▌       | 8/32 [00:07<00:21,  1.12batch/s]ministral8 judged by qwen8 shard 8:  31%|███▏      | 10/32 [00:08<00:19,  1.11batch/s]ministral8 judged by qwen8 shard 8:  38%|███▊      | 12/32 [00:10<00:17,  1.11batch/s]ministral8 judged by qwen8 shard 8:  44%|████▍     | 14/32 [00:12<00:16,  1.10batch/s]ministral8 judged by qwen8 shard 8:  50%|█████     | 16/32 [00:14<00:14,  1.12batch/s]ministral8 judged by qwen8 shard 8:  56%|█████▋    | 18/32 [00:16<00:12,  1.13batch/s]ministral8 judged by qwen8 shard 8:  62%|██████▎   | 20/32 [00:17<00:10,  1.11batch/s]ministral8 judged by qwen8 shard 8:  69%|██████▉   | 22/32 [00:19<00:08,  1.11batch/s]ministral8 judged by qwen8 shard 8:  75%|███████▌  | 24/32 [00:21<00:07,  1.12batch/s]ministral8 judged by qwen8 shard 8:  81%|████████▏ | 26/32 [00:23<00:05,  1.13batch/s]ministral8 judged by qwen8 shard 8:  88%|████████▊ | 28/32 [00:25<00:03,  1.08batch/s]ministral8 judged by qwen8 shard 8:  94%|█████████▍| 30/32 [00:27<00:01,  1.09batch/s]ministral8 judged by qwen8 shard 8: 100%|██████████| 32/32 [00:28<00:00,  1.22batch/s]ministral8 judged by qwen8 shard 8: 100%|██████████| 32/32 [00:28<00:00,  1.13batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=ministral8 judge=qwen8 shard=00008 rows=67125
+ministral8 judged by qwen8 shard 9:   0%|          | 0/32 [00:00<?, ?batch/s]ministral8 judged by qwen8 shard 9:   6%|▋         | 2/32 [00:01<00:26,  1.13batch/s]ministral8 judged by qwen8 shard 9:  12%|█▎        | 4/32 [00:03<00:24,  1.14batch/s]ministral8 judged by qwen8 shard 9:  19%|█▉        | 6/32 [00:05<00:23,  1.12batch/s]ministral8 judged by qwen8 shard 9:  25%|██▌       | 8/32 [00:07<00:21,  1.10batch/s]ministral8 judged by qwen8 shard 9:  31%|███▏      | 10/32 [00:08<00:19,  1.11batch/s]ministral8 judged by qwen8 shard 9:  38%|███▊      | 12/32 [00:10<00:17,  1.13batch/s]ministral8 judged by qwen8 shard 9:  44%|████▍     | 14/32 [00:12<00:15,  1.13batch/s]ministral8 judged by qwen8 shard 9:  50%|█████     | 16/32 [00:14<00:14,  1.13batch/s]ministral8 judged by qwen8 shard 9:  56%|█████▋    | 18/32 [00:16<00:12,  1.12batch/s]ministral8 judged by qwen8 shard 9:  62%|██████▎   | 20/32 [00:17<00:10,  1.12batch/s]ministral8 judged by qwen8 shard 9:  69%|██████▉   | 22/32 [00:19<00:08,  1.12batch/s]ministral8 judged by qwen8 shard 9:  75%|███████▌  | 24/32 [00:21<00:07,  1.14batch/s]ministral8 judged by qwen8 shard 9:  81%|████████▏ | 26/32 [00:23<00:05,  1.08batch/s]ministral8 judged by qwen8 shard 9:  88%|████████▊ | 28/32 [00:25<00:03,  1.06batch/s]ministral8 judged by qwen8 shard 9:  94%|█████████▍| 30/32 [00:27<00:01,  1.06batch/s]ministral8 judged by qwen8 shard 9: 100%|██████████| 32/32 [00:28<00:00,  1.22batch/s]ministral8 judged by qwen8 shard 9: 100%|██████████| 32/32 [00:28<00:00,  1.13batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=ministral8 judge=qwen8 shard=00009 rows=66031
+ministral8 judged by qwen8 shard 10:   0%|          | 0/32 [00:00<?, ?batch/s]ministral8 judged by qwen8 shard 10:   6%|▋         | 2/32 [00:01<00:27,  1.09batch/s]ministral8 judged by qwen8 shard 10:  12%|█▎        | 4/32 [00:03<00:26,  1.05batch/s]ministral8 judged by qwen8 shard 10:  19%|█▉        | 6/32 [00:05<00:24,  1.08batch/s]ministral8 judged by qwen8 shard 10:  25%|██▌       | 8/32 [00:07<00:21,  1.12batch/s]ministral8 judged by qwen8 shard 10:  31%|███▏      | 10/32 [00:08<00:19,  1.14batch/s]ministral8 judged by qwen8 shard 10:  38%|███▊      | 12/32 [00:10<00:18,  1.11batch/s]ministral8 judged by qwen8 shard 10:  44%|████▍     | 14/32 [00:12<00:16,  1.11batch/s]ministral8 judged by qwen8 shard 10:  50%|█████     | 16/32 [00:14<00:14,  1.11batch/s]ministral8 judged by qwen8 shard 10:  56%|█████▋    | 18/32 [00:16<00:12,  1.10batch/s]ministral8 judged by qwen8 shard 10:  62%|██████▎   | 20/32 [00:18<00:10,  1.11batch/s]ministral8 judged by qwen8 shard 10:  69%|██████▉   | 22/32 [00:19<00:08,  1.13batch/s]ministral8 judged by qwen8 shard 10:  75%|███████▌  | 24/32 [00:21<00:07,  1.11batch/s]ministral8 judged by qwen8 shard 10:  81%|████████▏ | 26/32 [00:23<00:05,  1.12batch/s]ministral8 judged by qwen8 shard 10:  88%|████████▊ | 28/32 [00:25<00:03,  1.06batch/s]ministral8 judged by qwen8 shard 10:  94%|█████████▍| 30/32 [00:27<00:01,  1.07batch/s]ministral8 judged by qwen8 shard 10: 100%|██████████| 32/32 [00:28<00:00,  1.21batch/s]ministral8 judged by qwen8 shard 10: 100%|██████████| 32/32 [00:28<00:00,  1.12batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=ministral8 judge=qwen8 shard=00010 rows=66837
+ministral8 judged by qwen8 shard 11:   0%|          | 0/32 [00:00<?, ?batch/s]ministral8 judged by qwen8 shard 11:   6%|▋         | 2/32 [00:01<00:25,  1.17batch/s]ministral8 judged by qwen8 shard 11:  12%|█▎        | 4/32 [00:03<00:24,  1.14batch/s]ministral8 judged by qwen8 shard 11:  19%|█▉        | 6/32 [00:05<00:23,  1.11batch/s]ministral8 judged by qwen8 shard 11:  25%|██▌       | 8/32 [00:07<00:21,  1.10batch/s]ministral8 judged by qwen8 shard 11:  31%|███▏      | 10/32 [00:08<00:19,  1.11batch/s]ministral8 judged by qwen8 shard 11:  38%|███▊      | 12/32 [00:10<00:17,  1.12batch/s]ministral8 judged by qwen8 shard 11:  44%|████▍     | 14/32 [00:12<00:16,  1.12batch/s]ministral8 judged by qwen8 shard 11:  50%|█████     | 16/32 [00:14<00:14,  1.10batch/s]ministral8 judged by qwen8 shard 11:  56%|█████▋    | 18/32 [00:16<00:12,  1.11batch/s]ministral8 judged by qwen8 shard 11:  62%|██████▎   | 20/32 [00:17<00:10,  1.12batch/s]ministral8 judged by qwen8 shard 11:  69%|██████▉   | 22/32 [00:19<00:09,  1.10batch/s]ministral8 judged by qwen8 shard 11:  75%|███████▌  | 24/32 [00:21<00:07,  1.11batch/s]ministral8 judged by qwen8 shard 11:  81%|████████▏ | 26/32 [00:23<00:05,  1.13batch/s]ministral8 judged by qwen8 shard 11:  88%|████████▊ | 28/32 [00:25<00:03,  1.12batch/s]ministral8 judged by qwen8 shard 11:  94%|█████████▍| 30/32 [00:27<00:01,  1.02batch/s]ministral8 judged by qwen8 shard 11: 100%|██████████| 32/32 [00:28<00:00,  1.16batch/s]ministral8 judged by qwen8 shard 11: 100%|██████████| 32/32 [00:28<00:00,  1.12batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=ministral8 judge=qwen8 shard=00011 rows=65983
+ministral8 judged by qwen8 shard 12:   0%|          | 0/32 [00:00<?, ?batch/s]ministral8 judged by qwen8 shard 12:   6%|▋         | 2/32 [00:01<00:28,  1.06batch/s]ministral8 judged by qwen8 shard 12:  12%|█▎        | 4/32 [00:03<00:26,  1.04batch/s]ministral8 judged by qwen8 shard 12:  19%|█▉        | 6/32 [00:05<00:24,  1.05batch/s]ministral8 judged by qwen8 shard 12:  25%|██▌       | 8/32 [00:07<00:22,  1.06batch/s]ministral8 judged by qwen8 shard 12:  31%|███▏      | 10/32 [00:09<00:20,  1.06batch/s]ministral8 judged by qwen8 shard 12:  38%|███▊      | 12/32 [00:11<00:18,  1.10batch/s]ministral8 judged by qwen8 shard 12:  44%|████▍     | 14/32 [00:12<00:16,  1.09batch/s]ministral8 judged by qwen8 shard 12:  50%|█████     | 16/32 [00:14<00:14,  1.10batch/s]ministral8 judged by qwen8 shard 12:  56%|█████▋    | 18/32 [00:16<00:12,  1.13batch/s]ministral8 judged by qwen8 shard 12:  62%|██████▎   | 20/32 [00:18<00:10,  1.10batch/s]ministral8 judged by qwen8 shard 12:  69%|██████▉   | 22/32 [00:20<00:09,  1.10batch/s]ministral8 judged by qwen8 shard 12:  75%|███████▌  | 24/32 [00:22<00:07,  1.10batch/s]ministral8 judged by qwen8 shard 12:  81%|████████▏ | 26/32 [00:23<00:05,  1.12batch/s]ministral8 judged by qwen8 shard 12:  88%|████████▊ | 28/32 [00:25<00:03,  1.14batch/s]ministral8 judged by qwen8 shard 12:  94%|█████████▍| 30/32 [00:27<00:01,  1.15batch/s]ministral8 judged by qwen8 shard 12: 100%|██████████| 32/32 [00:28<00:00,  1.30batch/s]ministral8 judged by qwen8 shard 12: 100%|██████████| 32/32 [00:28<00:00,  1.14batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=ministral8 judge=qwen8 shard=00012 rows=66813
+ministral8 judged by qwen8 shard 13:   0%|          | 0/32 [00:00<?, ?batch/s]ministral8 judged by qwen8 shard 13:   3%|▎         | 1/32 [00:01<00:35,  1.13s/batch]ministral8 judged by qwen8 shard 13:   9%|▉         | 3/32 [00:02<00:27,  1.05batch/s]ministral8 judged by qwen8 shard 13:  16%|█▌        | 5/32 [00:04<00:25,  1.06batch/s]ministral8 judged by qwen8 shard 13:  22%|██▏       | 7/32 [00:06<00:23,  1.08batch/s]ministral8 judged by qwen8 shard 13:  28%|██▊       | 9/32 [00:08<00:21,  1.09batch/s]ministral8 judged by qwen8 shard 13:  34%|███▍      | 11/32 [00:10<00:19,  1.09batch/s]ministral8 judged by qwen8 shard 13:  41%|████      | 13/32 [00:12<00:17,  1.09batch/s]ministral8 judged by qwen8 shard 13:  47%|████▋     | 15/32 [00:13<00:15,  1.09batch/s]ministral8 judged by qwen8 shard 13:  53%|█████▎    | 17/32 [00:15<00:13,  1.10batch/s]ministral8 judged by qwen8 shard 13:  59%|█████▉    | 19/32 [00:17<00:12,  1.07batch/s]ministral8 judged by qwen8 shard 13:  66%|██████▌   | 21/32 [00:19<00:10,  1.08batch/s]ministral8 judged by qwen8 shard 13:  72%|███████▏  | 23/32 [00:21<00:08,  1.07batch/s]ministral8 judged by qwen8 shard 13:  78%|███████▊  | 25/32 [00:23<00:06,  1.09batch/s]ministral8 judged by qwen8 shard 13:  84%|████████▍ | 27/32 [00:25<00:04,  1.08batch/s]ministral8 judged by qwen8 shard 13:  91%|█████████ | 29/32 [00:26<00:02,  1.08batch/s]ministral8 judged by qwen8 shard 13:  97%|█████████▋| 31/32 [00:29<00:00,  1.03batch/s]ministral8 judged by qwen8 shard 13: 100%|██████████| 32/32 [00:29<00:00,  1.09batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=ministral8 judge=qwen8 shard=00013 rows=66466
+ministral8 judged by qwen8 shard 14:   0%|          | 0/32 [00:00<?, ?batch/s]ministral8 judged by qwen8 shard 14:   6%|▋         | 2/32 [00:01<00:27,  1.09batch/s]ministral8 judged by qwen8 shard 14:  12%|█▎        | 4/32 [00:03<00:25,  1.11batch/s]ministral8 judged by qwen8 shard 14:  19%|█▉        | 6/32 [00:05<00:24,  1.06batch/s]ministral8 judged by qwen8 shard 14:  25%|██▌       | 8/32 [00:07<00:21,  1.10batch/s]ministral8 judged by qwen8 shard 14:  31%|███▏      | 10/32 [00:09<00:19,  1.11batch/s]ministral8 judged by qwen8 shard 14:  38%|███▊      | 12/32 [00:10<00:18,  1.10batch/s]ministral8 judged by qwen8 shard 14:  44%|████▍     | 14/32 [00:12<00:16,  1.10batch/s]ministral8 judged by qwen8 shard 14:  50%|█████     | 16/32 [00:14<00:14,  1.09batch/s]ministral8 judged by qwen8 shard 14:  56%|█████▋    | 18/32 [00:16<00:12,  1.11batch/s]ministral8 judged by qwen8 shard 14:  62%|██████▎   | 20/32 [00:18<00:10,  1.11batch/s]ministral8 judged by qwen8 shard 14:  69%|██████▉   | 22/32 [00:20<00:09,  1.10batch/s]ministral8 judged by qwen8 shard 14:  75%|███████▌  | 24/32 [00:21<00:07,  1.11batch/s]ministral8 judged by qwen8 shard 14:  81%|████████▏ | 26/32 [00:23<00:05,  1.11batch/s]ministral8 judged by qwen8 shard 14:  88%|████████▊ | 28/32 [00:25<00:03,  1.10batch/s]ministral8 judged by qwen8 shard 14:  94%|█████████▍| 30/32 [00:27<00:01,  1.01batch/s]ministral8 judged by qwen8 shard 14: 100%|██████████| 32/32 [00:29<00:00,  1.13batch/s]ministral8 judged by qwen8 shard 14: 100%|██████████| 32/32 [00:29<00:00,  1.10batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=ministral8 judge=qwen8 shard=00014 rows=66314
+ministral8 judged by qwen8 shard 15:   0%|          | 0/32 [00:00<?, ?batch/s]ministral8 judged by qwen8 shard 15:   6%|▋         | 2/32 [00:01<00:27,  1.08batch/s]ministral8 judged by qwen8 shard 15:  12%|█▎        | 4/32 [00:03<00:25,  1.11batch/s]ministral8 judged by qwen8 shard 15:  19%|█▉        | 6/32 [00:05<00:23,  1.11batch/s]ministral8 judged by qwen8 shard 15:  25%|██▌       | 8/32 [00:07<00:21,  1.11batch/s]ministral8 judged by qwen8 shard 15:  31%|███▏      | 10/32 [00:09<00:19,  1.10batch/s]ministral8 judged by qwen8 shard 15:  38%|███▊      | 12/32 [00:10<00:18,  1.09batch/s]ministral8 judged by qwen8 shard 15:  44%|████▍     | 14/32 [00:12<00:16,  1.07batch/s]ministral8 judged by qwen8 shard 15:  50%|█████     | 16/32 [00:14<00:14,  1.08batch/s]ministral8 judged by qwen8 shard 15:  56%|█████▋    | 18/32 [00:16<00:12,  1.09batch/s]ministral8 judged by qwen8 shard 15:  62%|██████▎   | 20/32 [00:18<00:11,  1.08batch/s]ministral8 judged by qwen8 shard 15:  69%|██████▉   | 22/32 [00:20<00:09,  1.06batch/s]ministral8 judged by qwen8 shard 15:  75%|███████▌  | 24/32 [00:22<00:07,  1.07batch/s]ministral8 judged by qwen8 shard 15:  81%|████████▏ | 26/32 [00:24<00:05,  1.02batch/s]ministral8 judged by qwen8 shard 15:  88%|████████▊ | 28/32 [00:26<00:03,  1.03batch/s]ministral8 judged by qwen8 shard 15:  94%|█████████▍| 30/32 [00:27<00:01,  1.07batch/s]ministral8 judged by qwen8 shard 15: 100%|██████████| 32/32 [00:29<00:00,  1.21batch/s]ministral8 judged by qwen8 shard 15: 100%|██████████| 32/32 [00:29<00:00,  1.10batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=ministral8 judge=qwen8 shard=00015 rows=66782
+ministral8 judged by qwen8 shard 16:   0%|          | 0/32 [00:00<?, ?batch/s]ministral8 judged by qwen8 shard 16:   6%|▋         | 2/32 [00:01<00:27,  1.11batch/s]ministral8 judged by qwen8 shard 16:  12%|█▎        | 4/32 [00:03<00:25,  1.10batch/s]ministral8 judged by qwen8 shard 16:  19%|█▉        | 6/32 [00:05<00:23,  1.12batch/s]ministral8 judged by qwen8 shard 16:  25%|██▌       | 8/32 [00:07<00:22,  1.08batch/s]ministral8 judged by qwen8 shard 16:  31%|███▏      | 10/32 [00:09<00:20,  1.07batch/s]ministral8 judged by qwen8 shard 16:  38%|███▊      | 12/32 [00:11<00:18,  1.07batch/s]ministral8 judged by qwen8 shard 16:  44%|████▍     | 14/32 [00:12<00:16,  1.09batch/s]ministral8 judged by qwen8 shard 16:  50%|█████     | 16/32 [00:14<00:14,  1.09batch/s]ministral8 judged by qwen8 shard 16:  56%|█████▋    | 18/32 [00:16<00:12,  1.08batch/s]ministral8 judged by qwen8 shard 16:  62%|██████▎   | 20/32 [00:18<00:11,  1.08batch/s]ministral8 judged by qwen8 shard 16:  69%|██████▉   | 22/32 [00:20<00:09,  1.10batch/s]ministral8 judged by qwen8 shard 16:  75%|███████▌  | 24/32 [00:21<00:07,  1.11batch/s]ministral8 judged by qwen8 shard 16:  81%|████████▏ | 26/32 [00:24<00:05,  1.04batch/s]ministral8 judged by qwen8 shard 16:  88%|████████▊ | 28/32 [00:25<00:03,  1.08batch/s]ministral8 judged by qwen8 shard 16:  94%|█████████▍| 30/32 [00:27<00:01,  1.06batch/s]ministral8 judged by qwen8 shard 16: 100%|██████████| 32/32 [00:28<00:00,  1.22batch/s]ministral8 judged by qwen8 shard 16: 100%|██████████| 32/32 [00:28<00:00,  1.11batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=ministral8 judge=qwen8 shard=00016 rows=65971
+ministral8 judged by qwen8 shard 17:   0%|          | 0/32 [00:00<?, ?batch/s]ministral8 judged by qwen8 shard 17:   6%|▋         | 2/32 [00:01<00:25,  1.16batch/s]ministral8 judged by qwen8 shard 17:  12%|█▎        | 4/32 [00:03<00:25,  1.10batch/s]ministral8 judged by qwen8 shard 17:  19%|█▉        | 6/32 [00:05<00:23,  1.11batch/s]ministral8 judged by qwen8 shard 17:  25%|██▌       | 8/32 [00:07<00:21,  1.10batch/s]ministral8 judged by qwen8 shard 17:  31%|███▏      | 10/32 [00:09<00:19,  1.11batch/s]ministral8 judged by qwen8 shard 17:  38%|███▊      | 12/32 [00:10<00:17,  1.13batch/s]ministral8 judged by qwen8 shard 17:  44%|████▍     | 14/32 [00:12<00:16,  1.08batch/s]ministral8 judged by qwen8 shard 17:  50%|█████     | 16/32 [00:14<00:14,  1.08batch/s]ministral8 judged by qwen8 shard 17:  56%|█████▋    | 18/32 [00:16<00:13,  1.07batch/s]ministral8 judged by qwen8 shard 17:  62%|██████▎   | 20/32 [00:18<00:11,  1.07batch/s]ministral8 judged by qwen8 shard 17:  69%|██████▉   | 22/32 [00:20<00:09,  1.08batch/s]ministral8 judged by qwen8 shard 17:  75%|███████▌  | 24/32 [00:22<00:07,  1.03batch/s]ministral8 judged by qwen8 shard 17:  81%|████████▏ | 26/32 [00:24<00:05,  1.05batch/s]ministral8 judged by qwen8 shard 17:  88%|████████▊ | 28/32 [00:25<00:03,  1.06batch/s]ministral8 judged by qwen8 shard 17:  94%|█████████▍| 30/32 [00:27<00:01,  1.07batch/s]ministral8 judged by qwen8 shard 17: 100%|██████████| 32/32 [00:28<00:00,  1.21batch/s]ministral8 judged by qwen8 shard 17: 100%|██████████| 32/32 [00:28<00:00,  1.10batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=ministral8 judge=qwen8 shard=00017 rows=66329
+ministral8 judged by qwen8 shard 18:   0%|          | 0/32 [00:00<?, ?batch/s]ministral8 judged by qwen8 shard 18:   6%|▋         | 2/32 [00:01<00:29,  1.03batch/s]ministral8 judged by qwen8 shard 18:  12%|█▎        | 4/32 [00:03<00:26,  1.05batch/s]ministral8 judged by qwen8 shard 18:  19%|█▉        | 6/32 [00:05<00:24,  1.07batch/s]ministral8 judged by qwen8 shard 18:  25%|██▌       | 8/32 [00:07<00:21,  1.10batch/s]ministral8 judged by qwen8 shard 18:  31%|███▏      | 10/32 [00:09<00:19,  1.11batch/s]ministral8 judged by qwen8 shard 18:  38%|███▊      | 12/32 [00:10<00:17,  1.14batch/s]ministral8 judged by qwen8 shard 18:  44%|████▍     | 14/32 [00:12<00:16,  1.12batch/s]ministral8 judged by qwen8 shard 18:  50%|█████     | 16/32 [00:14<00:14,  1.10batch/s]ministral8 judged by qwen8 shard 18:  56%|█████▋    | 18/32 [00:16<00:12,  1.09batch/s]ministral8 judged by qwen8 shard 18:  62%|██████▎   | 20/32 [00:18<00:11,  1.09batch/s]ministral8 judged by qwen8 shard 18:  69%|██████▉   | 22/32 [00:20<00:09,  1.08batch/s]ministral8 judged by qwen8 shard 18:  75%|███████▌  | 24/32 [00:22<00:07,  1.08batch/s]ministral8 judged by qwen8 shard 18:  81%|████████▏ | 26/32 [00:23<00:05,  1.11batch/s]ministral8 judged by qwen8 shard 18:  88%|████████▊ | 28/32 [00:25<00:03,  1.12batch/s]ministral8 judged by qwen8 shard 18:  94%|█████████▍| 30/32 [00:27<00:01,  1.07batch/s]ministral8 judged by qwen8 shard 18: 100%|██████████| 32/32 [00:28<00:00,  1.20batch/s]ministral8 judged by qwen8 shard 18: 100%|██████████| 32/32 [00:28<00:00,  1.12batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=ministral8 judge=qwen8 shard=00018 rows=67022
+ministral8 judged by qwen8 shard 19:   0%|          | 0/32 [00:00<?, ?batch/s]ministral8 judged by qwen8 shard 19:   6%|▋         | 2/32 [00:01<00:26,  1.11batch/s]ministral8 judged by qwen8 shard 19:  12%|█▎        | 4/32 [00:03<00:24,  1.14batch/s]ministral8 judged by qwen8 shard 19:  19%|█▉        | 6/32 [00:05<00:23,  1.09batch/s]ministral8 judged by qwen8 shard 19:  25%|██▌       | 8/32 [00:07<00:22,  1.09batch/s]ministral8 judged by qwen8 shard 19:  31%|███▏      | 10/32 [00:09<00:20,  1.07batch/s]ministral8 judged by qwen8 shard 19:  38%|███▊      | 12/32 [00:10<00:18,  1.09batch/s]ministral8 judged by qwen8 shard 19:  44%|████▍     | 14/32 [00:12<00:16,  1.09batch/s]ministral8 judged by qwen8 shard 19:  50%|█████     | 16/32 [00:14<00:14,  1.09batch/s]ministral8 judged by qwen8 shard 19:  56%|█████▋    | 18/32 [00:16<00:12,  1.11batch/s]ministral8 judged by qwen8 shard 19:  62%|██████▎   | 20/32 [00:18<00:10,  1.10batch/s]ministral8 judged by qwen8 shard 19:  69%|██████▉   | 22/32 [00:20<00:09,  1.08batch/s]ministral8 judged by qwen8 shard 19:  75%|███████▌  | 24/32 [00:21<00:07,  1.08batch/s]ministral8 judged by qwen8 shard 19:  81%|████████▏ | 26/32 [00:24<00:05,  1.03batch/s]ministral8 judged by qwen8 shard 19:  88%|████████▊ | 28/32 [00:26<00:03,  1.04batch/s]ministral8 judged by qwen8 shard 19:  94%|█████████▍| 30/32 [00:27<00:01,  1.06batch/s]ministral8 judged by qwen8 shard 19: 100%|██████████| 32/32 [00:28<00:00,  1.21batch/s]ministral8 judged by qwen8 shard 19: 100%|██████████| 32/32 [00:28<00:00,  1.11batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=ministral8 judge=qwen8 shard=00019 rows=67196
+CROSS_FAMILY_COMPLETE target=ministral8 judge=qwen8 output=/workspace/korean_speculative_decoding/results/rebuttal/cross_family/ministral8/qwen8
+{
+  "seed": 20261125,
+  "bootstrap_replicates": 500,
+  "max_prompts": 5000,
+  "results": [
+    {
+      "pair": "Q2",
+      "source_target": "qwen4",
+      "draft": "qwen06",
+      "cross_family_judge": "ministral8",
+      "same_family_outside_judge": "qwen17",
+      "documents_requested": 5000,
+      "verified_k4_positions": 535028,
+      "verified_k4_documents": 5000,
+      "joined_positions": 430489,
+      "join_coverage": 0.8046,
+      "join_coverage_by_position_type": {
+        "excluded": 0.793,
+        "fused": 0.8813,
+        "internal": 0.8035,
+        "morph_onset": 0.7801,
+        "word_onset": 0.833
+      },
+      "duplicate_judge_offsets_dropped": 0,
+      "rejection_rate_all_verified_proposals": 0.17048,
+      "rejection_rate_joined_subset": 0.18734,
+      "auc_cross_family_judge_margin": 0.5035,
+      "auc_target_margin_on_joined_subset": 0.8897,
+      "auc_same_family_outside_judge": 0.8919,
+      "auc_boundary_label": 0.6044,
+      "spearman_target_judge_margin": 0.0107,
+      "ratios_on_cross_family_joined_subset": {
+        "morph/int": {
+          "judge_margin": {
+            "raw": 2.119,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              2.05,
+              2.2
+            ],
+            "decile_matched": 2.119,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              2.04,
+              2.2
+            ],
+            "absolute_bin_matched": 2.12,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              2.05,
+              2.19
+            ]
+          },
+          "target_margin": {
+            "raw": 2.119,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              2.05,
+              2.2
+            ],
+            "decile_matched": 0.994,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              0.97,
+              1.02
+            ],
+            "absolute_bin_matched": 1.003,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              0.98,
+              1.03
+            ]
+          }
+        },
+        "word/int": {
+          "judge_margin": {
+            "raw": 3.189,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              3.09,
+              3.29
+            ],
+            "decile_matched": 3.19,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              3.1,
+              3.3
+            ],
+            "absolute_bin_matched": 3.19,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              3.09,
+              3.31
+            ]
+          },
+          "target_margin": {
+            "raw": 3.189,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              3.08,
+              3.29
+            ],
+            "decile_matched": 1.219,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              1.19,
+              1.25
+            ],
+            "absolute_bin_matched": 1.226,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              1.2,
+              1.25
+            ]
+          }
+        },
+        "fused/split": {
+          "judge_margin": {
+            "raw": 1.421,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.37,
+              1.47
+            ],
+            "decile_matched": 1.422,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              1.37,
+              1.47
+            ],
+            "absolute_bin_matched": 1.422,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              1.37,
+              1.47
+            ]
+          },
+          "target_margin": {
+            "raw": 1.421,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.37,
+              1.47
+            ],
+            "decile_matched": 0.947,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              0.92,
+              0.97
+            ],
+            "absolute_bin_matched": 0.952,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              0.93,
+              0.97
+            ]
+          }
+        }
+      },
+      "internal_alignment_rows_in_join": 101372,
+      "excluded_alignment_rows_in_join": 105734
+    },
+    {
+      "pair": "Q5",
+      "source_target": "qwen8",
+      "draft": "qwen06",
+      "cross_family_judge": "ministral8",
+      "same_family_outside_judge": "qwen4",
+      "documents_requested": 5000,
+      "verified_k4_positions": 536089,
+      "verified_k4_documents": 5000,
+      "joined_positions": 429972,
+      "join_coverage": 0.8021,
+      "join_coverage_by_position_type": {
+        "excluded": 0.7819,
+        "fused": 0.9228,
+        "internal": 0.8066,
+        "morph_onset": 0.7807,
+        "word_onset": 0.8312
+      },
+      "duplicate_judge_offsets_dropped": 0,
+      "rejection_rate_all_verified_proposals": 0.19281,
+      "rejection_rate_joined_subset": 0.21213,
+      "auc_cross_family_judge_margin": 0.5019,
+      "auc_target_margin_on_joined_subset": 0.8735,
+      "auc_same_family_outside_judge": 0.879,
+      "auc_boundary_label": 0.6045,
+      "spearman_target_judge_margin": 0.0078,
+      "ratios_on_cross_family_joined_subset": {
+        "morph/int": {
+          "judge_margin": {
+            "raw": 2.017,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.96,
+              2.09
+            ],
+            "decile_matched": 2.017,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              1.96,
+              2.08
+            ],
+            "absolute_bin_matched": 2.017,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              1.95,
+              2.09
+            ]
+          },
+          "target_margin": {
+            "raw": 2.017,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.95,
+              2.08
+            ],
+            "decile_matched": 0.972,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              0.95,
+              0.99
+            ],
+            "absolute_bin_matched": 0.975,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              0.95,
+              1.0
+            ]
+          }
+        },
+        "word/int": {
+          "judge_margin": {
+            "raw": 3.06,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              2.97,
+              3.15
+            ],
+            "decile_matched": 3.06,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              2.97,
+              3.16
+            ],
+            "absolute_bin_matched": 3.06,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              2.96,
+              3.17
+            ]
+          },
+          "target_margin": {
+            "raw": 3.06,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              2.97,
+              3.16
+            ],
+            "decile_matched": 1.205,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              1.18,
+              1.23
+            ],
+            "absolute_bin_matched": 1.206,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              1.18,
+              1.24
+            ]
+          }
+        },
+        "fused/split": {
+          "judge_margin": {
+            "raw": 1.401,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.36,
+              1.45
+            ],
+            "decile_matched": 1.402,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              1.36,
+              1.45
+            ],
+            "absolute_bin_matched": 1.401,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              1.36,
+              1.44
+            ]
+          },
+          "target_margin": {
+            "raw": 1.401,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.36,
+              1.45
+            ],
+            "decile_matched": 0.973,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              0.95,
+              1.0
+            ],
+            "absolute_bin_matched": 0.974,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              0.95,
+              1.0
+            ]
+          }
+        }
+      },
+      "internal_alignment_rows_in_join": 100664,
+      "excluded_alignment_rows_in_join": 108811
+    },
+    {
+      "pair": "M1",
+      "source_target": "ministral8",
+      "draft": "ministral3",
+      "cross_family_judge": "qwen8",
+      "same_family_outside_judge": null,
+      "documents_requested": 5000,
+      "verified_k4_positions": 529609,
+      "verified_k4_documents": 5000,
+      "joined_positions": 512461,
+      "join_coverage": 0.9676,
+      "join_coverage_by_position_type": {
+        "excluded": 0.9676,
+        "fused": 0.8928,
+        "internal": 0.9304,
+        "morph_onset": 0.9878,
+        "word_onset": 0.9876
+      },
+      "duplicate_judge_offsets_dropped": 0,
+      "rejection_rate_all_verified_proposals": 0.12121,
+      "rejection_rate_joined_subset": 0.12389,
+      "auc_cross_family_judge_margin": 0.5257,
+      "auc_target_margin_on_joined_subset": 0.9132,
+      "auc_same_family_outside_judge": null,
+      "auc_boundary_label": 0.589,
+      "spearman_target_judge_margin": 0.0648,
+      "ratios_on_cross_family_joined_subset": {
+        "morph/int": {
+          "judge_margin": {
+            "raw": 1.954,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.88,
+              2.03
+            ],
+            "decile_matched": 1.933,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              1.86,
+              2.0
+            ],
+            "absolute_bin_matched": 1.932,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              1.86,
+              2.0
+            ]
+          },
+          "target_margin": {
+            "raw": 1.954,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.89,
+              2.03
+            ],
+            "decile_matched": 0.967,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              0.94,
+              0.99
+            ],
+            "absolute_bin_matched": 0.96,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              0.94,
+              0.99
+            ]
+          }
+        },
+        "word/int": {
+          "judge_margin": {
+            "raw": 3.029,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              2.93,
+              3.15
+            ],
+            "decile_matched": 2.99,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              2.88,
+              3.1
+            ],
+            "absolute_bin_matched": 2.987,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              2.87,
+              3.1
+            ]
+          },
+          "target_margin": {
+            "raw": 3.029,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              2.93,
+              3.14
+            ],
+            "decile_matched": 1.195,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              1.17,
+              1.22
+            ],
+            "absolute_bin_matched": 1.181,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              1.15,
+              1.21
+            ]
+          }
+        },
+        "fused/split": {
+          "judge_margin": {
+            "raw": 1.526,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.48,
+              1.58
+            ],
+            "decile_matched": 1.522,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              1.47,
+              1.57
+            ],
+            "absolute_bin_matched": 1.517,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              1.47,
+              1.57
+            ]
+          },
+          "target_margin": {
+            "raw": 1.526,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.47,
+              1.58
+            ],
+            "decile_matched": 0.947,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              0.93,
+              0.97
+            ],
+            "absolute_bin_matched": 0.958,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              0.94,
+              0.98
+            ]
+          }
+        }
+      },
+      "internal_alignment_rows_in_join": 118440,
+      "excluded_alignment_rows_in_join": 117714
+    }
+  ]
+}

@@ -30,6 +30,11 @@ from src.rebuttal.adaptive_sd import (
     greedy_target_only,
     speculative_greedy_adaptive,
 )
+from src.rebuttal.static_compiled_sd import (
+    clear_compiled_models,
+    greedy_target_only_static,
+    speculative_greedy_static,
+)
 from src.rebuttal.runtime import write_gpu_metadata
 
 
@@ -124,14 +129,15 @@ def _fixed_optimum(data: pd.DataFrame, dev_ids: set[int], cost: float) -> tuple[
     return k, float(score)
 
 
-def _make_policies(data: pd.DataFrame, dev_ids: set[int], cost: float, skipped: set[int]):
+def _make_policies(data: pd.DataFrame, dev_ids: set[int], cost: float, skipped: set[int],
+                   include_k1: bool = False):
     margin, _ = _choose_threshold(data, dev_ids, cost, "margin", data.mD.to_numpy(), True)
     entropy, _ = _choose_threshold(data, dev_ids, cost, "entropy", data.HD.to_numpy(), False)
     top1_signal = np.exp(data.d_lp1.to_numpy())
     top1, _ = _choose_threshold(data, dev_ids, cost, "top1_probability", top1_signal, True)
     k_opt, _ = _fixed_optimum(data, dev_ids, cost)
     policies: dict[str, tuple[Any, float | int | None]] = {"target_only": (None, None)}
-    fixed_ks = [2, 4, 6, 8]
+    fixed_ks = ([1, 2, 4, 6, 8] if include_k1 else [2, 4, 6, 8])
     if k_opt not in fixed_ks:
         fixed_ks.append(k_opt)
     for k in fixed_ks:
@@ -183,7 +189,16 @@ def _replay_by_doc(data: pd.DataFrame, docs: list[int], policies: dict[str, tupl
     return result
 
 
-def _run_policy(draft_model, target_model, doc: pd.Series, policy, eos_token_id: int | None):
+def _run_policy(draft_model, target_model, doc: pd.Series, policy, eos_token_id: int | None,
+                backend: str = "dynamic", compile_mode: str = "reduce-overhead"):
+    if backend == "static-compiled":
+        if policy is None:
+            return greedy_target_only_static(
+                target_model, list(map(int, doc.prompt_ids)), MAX_NEW_TOKENS, eos_token_id,
+                compile_steps=True, compile_mode=compile_mode)
+        return speculative_greedy_static(
+            draft_model, target_model, list(map(int, doc.prompt_ids)), MAX_NEW_TOKENS,
+            eos_token_id, policy, max_block=16, compile_steps=True, compile_mode=compile_mode)
     if policy is None:
         return greedy_target_only(target_model, list(map(int, doc.prompt_ids)), MAX_NEW_TOKENS, eos_token_id)
     return speculative_greedy_adaptive(
@@ -197,10 +212,11 @@ def _run_policy(draft_model, target_model, doc: pd.Series, policy, eos_token_id:
     )
 
 
-def _seconds_for_call(draft_model, target_model, doc, policy, eos_token_id):
+def _seconds_for_call(draft_model, target_model, doc, policy, eos_token_id,
+                      backend: str = "dynamic", compile_mode: str = "reduce-overhead"):
     torch.cuda.synchronize()
     started = time.perf_counter()
-    result = _run_policy(draft_model, target_model, doc, policy, eos_token_id)
+    result = _run_policy(draft_model, target_model, doc, policy, eos_token_id, backend, compile_mode)
     torch.cuda.synchronize()
     seconds = time.perf_counter() - started
     generated, counters = result
@@ -337,6 +353,14 @@ def main() -> int:
     parser.add_argument("--max-hours", type=float, default=4.0)
     parser.add_argument("--bootstrap-reps", type=int, default=1000)
     parser.add_argument("--output-root", type=Path, default=ROOT / "results/rebuttal/wallclock")
+    parser.add_argument("--backend", choices=("dynamic", "static-compiled"), default="dynamic")
+    parser.add_argument("--compile-mode", choices=("reduce-overhead", "default"), default="reduce-overhead")
+    parser.add_argument("--streamed-models", action="store_true",
+                        help="Load pinned weights by shard to support pairs larger than /dev/shm")
+    parser.add_argument("--cost-ratio-file", type=Path,
+                        help="Override the latency cost-ratio CSV used for replay threshold selection")
+    parser.add_argument("--only-policies", nargs="+",
+                        help="Restrict the run to these named policies (for a same-GPU dynamic comparator)")
     args = parser.parse_args()
     config = load_config(args.config)
     if args.pair not in config.get("pairs", {}):
@@ -356,11 +380,18 @@ def main() -> int:
     if not len(docs):
         raise RuntimeError("No test documents with 128 continuation tokens and eos_hit=False")
     dev_ids = _selection_dev(continuations)
-    pair_latency_path = ROOT / "results/rebuttal/latency/cost_ratio.csv"
+    if args.cost_ratio_file is not None:
+        pair_latency_path = args.cost_ratio_file if args.cost_ratio_file.is_absolute() else ROOT / args.cost_ratio_file
+    elif args.backend == "static-compiled":
+        pair_latency_path = ROOT / "results/rebuttal/latency_opt/cost_ratio_opt.csv"
+    else:
+        pair_latency_path = ROOT / "results/rebuttal/latency/cost_ratio.csv"
     if not pair_latency_path.is_file():
         raise FileNotFoundError(f"Run T1a latency probes first: {pair_latency_path}")
     costs = pd.read_csv(pair_latency_path)
     cost_rows = costs[costs.pair == args.pair]
+    if "target_verify_tokens" in cost_rows.columns:
+        cost_rows = cost_rows[cost_rows.target_verify_tokens == 17]
     if cost_rows.empty:
         raise RuntimeError(f"No measured cost ratio for pair {args.pair}; run its T1a family probe")
     measured_cost = float(cost_rows.iloc[0].c_measured)
@@ -368,7 +399,16 @@ def main() -> int:
     replay_docs = set(docs.pool_index.astype(int))
     replay_pools = set(valid.pool_index.astype(int)) | dev_ids
     pair_data = pair_data[pair_data.doc.isin(replay_pools)].reset_index(drop=True)
-    policies, threshold_specs, fixed_opt = _make_policies(pair_data, dev_ids, measured_cost, set(args.skip_fixed_k))
+    policies, threshold_specs, fixed_opt = _make_policies(
+        pair_data, dev_ids, measured_cost, set(args.skip_fixed_k),
+        include_k1=(args.backend == "static-compiled"
+                    or bool(args.only_policies and "fixed_k_1" in args.only_policies)))
+    if args.only_policies:
+        missing = set(args.only_policies) - set(policies)
+        if missing:
+            parser.error(f"unknown or unavailable policies: {sorted(missing)}")
+        policies = {name: policies[name] for name in args.only_policies}
+        threshold_specs = {name: value for name, value in threshold_specs.items() if name in policies}
 
     output_root = args.output_root if args.output_root.is_absolute() else ROOT / args.output_root
     # Use the completed Q5 pilot to project its main-run budget. If the
@@ -433,20 +473,40 @@ def main() -> int:
         "skipped_fixed_k": sorted(args.skip_fixed_k),
         "policy_names": list(policies),
     }
+    if args.backend != "dynamic" or args.streamed_models:
+        identity.update({"backend": args.backend,
+                         "compile_mode": args.compile_mode if args.backend == "static-compiled" else None,
+                         "streamed_models": args.streamed_models or args.backend == "static-compiled"})
     metadata_path = output_dir / "run_metadata.json"
     if metadata_path.exists():
         old = json.loads(metadata_path.read_text(encoding="utf-8"))
         if old.get("details", {}).get("run_identity") != identity:
             raise RuntimeError("Existing wall-clock run identity differs; use a fresh output directory")
+    metadata_details = {"run_identity": identity, "max_hours": args.max_hours,
+                       "bootstrap_reps": args.bootstrap_reps}
+    if args.backend != "dynamic" or args.streamed_models:
+        metadata_details.update({"backend": args.backend, "compile_mode": args.compile_mode})
     write_gpu_metadata(
         metadata_path,
         job="wallclock_pilot" if args.pilot else "wallclock_main",
         require_idle=True,
-        details={"run_identity": identity, "max_hours": args.max_hours, "bootstrap_reps": args.bootstrap_reps},
+        details=metadata_details,
     )
 
-    draft_model = load_model(config, draft_key)
-    target_model = load_model(config, target_key)
+    if args.streamed_models or args.backend == "static-compiled":
+        from huggingface_hub import HfApi
+        from huggingface_hub.utils import get_token
+        from scripts.rebuttal.score_cross_family_judge import _load_streamed_model
+
+        token = get_token()
+        if not token:
+            raise RuntimeError("Hugging Face token is unavailable; set HF_TOKEN from /workspace/hf_token")
+        api = HfApi(token=token)
+        draft_model, _, _ = _load_streamed_model(config, draft_key, api, token)
+        target_model, _, _ = _load_streamed_model(config, target_key, api, token)
+    else:
+        draft_model = load_model(config, draft_key)
+        target_model = load_model(config, target_key)
     for model in (draft_model, target_model):
         model.eval()
     torch.cuda.synchronize()
@@ -457,7 +517,8 @@ def main() -> int:
         for policy_name in policy_names:
             policy = policies[policy_name][0]
             for _, doc in warmup_docs.iterrows():
-                _run_policy(draft_model, target_model, doc, policy, eos_token_id)
+                _run_policy(draft_model, target_model, doc, policy, eos_token_id,
+                            args.backend, args.compile_mode)
             print(f"WALLCLOCK_WARMUP_COMPLETE pair={args.pair} policy={policy_name} docs={len(warmup_docs)}", flush=True)
         torch.cuda.synchronize()
 
@@ -480,7 +541,8 @@ def main() -> int:
                     for policy_name in order:
                         policy = policies[policy_name][0]
                         generated, counters, elapsed = _seconds_for_call(
-                            draft_model, target_model, doc, policy, eos_token_id
+                            draft_model, target_model, doc, policy, eos_token_id,
+                            args.backend, args.compile_mode
                         )
                         stored = list(map(int, doc.continuation_ids))
                         baseline_output = None
@@ -536,6 +598,7 @@ def main() -> int:
     else:
         raise RuntimeError("No completed wall-clock document blocks")
     del draft_model, target_model
+    clear_compiled_models()
     torch.cuda.empty_cache()
     return 0
 

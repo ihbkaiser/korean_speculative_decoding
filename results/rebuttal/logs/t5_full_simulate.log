@@ -1,0 +1,5 @@
+SIM pair=IT_Q2 k=1 prompts=5000 eligible=297773 reject=115504 rate=0.387893
+SIM pair=IT_Q2 k=2 prompts=5000 eligible=386932 reject=147584 rate=0.381421
+SIM pair=IT_Q2 k=4 prompts=5000 eligible=446860 reject=170178 rate=0.380831
+SIM pair=IT_Q2 k=8 prompts=5000 eligible=470474 reject=177628 rate=0.377551
+SIM pair=IT_Q2 k=16 prompts=5000 eligible=476088 reject=178759 rate=0.375475

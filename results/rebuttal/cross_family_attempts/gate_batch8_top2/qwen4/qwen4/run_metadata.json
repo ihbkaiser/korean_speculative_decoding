@@ -1,0 +1,41 @@
+{
+  "stage": "cross_family_judge_scoring",
+  "source_target": "qwen4",
+  "judge": "qwen4",
+  "source_model_id": "Qwen/Qwen3-4B-Base",
+  "source_revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+  "judge_model_id": "Qwen/Qwen3-4B-Base",
+  "judge_revision": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+  "split": "all",
+  "prompt_count": 200,
+  "prompt_ids_sha256": "4b4a5f7e801745cdef079e4d8765c382debd148ca12918f3c2ec6246340f973c",
+  "batch_size": 8,
+  "seed": 20261125,
+  "source_boundary_audit": {
+    "audit_documents": 100,
+    "positions_total": 12588,
+    "special_token_positions_skipped": 3,
+    "positions_with_valid_prefix": 11723,
+    "valid_prefix_share": 0.9312837623133142,
+    "positions_compared_to_alignment": 11723,
+    "exact_offset_agreements": 11626,
+    "agreement": 0.9917256674912565
+  },
+  "source_token_count": 25179,
+  "judge_token_count": 50498,
+  "model_storage_mode": "local_checkpoint",
+  "completed_shards": [
+    {
+      "shard": 0,
+      "document_count": 200,
+      "scored_position_count": 47001,
+      "actual_batch_sizes": [
+        8
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0
+    }
+  ],
+  "status": "COMPLETE",
+  "judge_snapshot": "/dev/shm/naacl_models/Qwen--Qwen3-4B-Base/906bfd4b4dc7f14ee4320094d8b41684abff8539"
+}

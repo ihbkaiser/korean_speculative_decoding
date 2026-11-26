@@ -87,7 +87,12 @@ def select_prompts(config: dict[str, Any], split: str) -> list[dict[str, Any]]:
     from .table1_data import load_prompt_pool
 
     pool_path = ROOT / config["data"]["prompts"]
-    rows = load_prompt_pool(pool_path)
+    rows = load_prompt_pool(
+        pool_path,
+        allow_identical_raw_text_hashes=bool(
+            config["data"].get("allow_identical_raw_text_hashes", False)
+        ),
+    )
     if split == "all":
         selected = rows[:40_000]
     elif split == "common":

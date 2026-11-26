@@ -1,0 +1,96 @@
+Q1 13.23 | lowest decile: 0.445 [0.0, 0.38]
+    raw              {'morph/int': 2.34, 'word/int': 3.03, 'fused/split': 1.67}
+    target deciles   {'morph/int': 1.0, 'word/int': 1.22, 'fused/split': 0.96}
+    target abs bins  {'morph/int': 1.0, 'word/int': 1.23, 'fused/split': 0.96}
+    draft deciles    {'morph/int': 1.0, 'word/int': 1.22, 'fused/split': 0.95}
+    draft abs bins   {'morph/int': 1.01, 'word/int': 1.22, 'fused/split': 0.95}
+    both deciles     {'morph/int': 0.98, 'word/int': 1.15, 'fused/split': 0.94}
+    both abs bins    {'morph/int': 0.99, 'word/int': 1.16, 'fused/split': 0.95}
+Q2 16.84 | lowest decile: 0.372 [0.0, 0.38]
+    raw              {'morph/int': 2.3, 'word/int': 3.02, 'fused/split': 1.62}
+    target deciles   {'morph/int': 0.99, 'word/int': 1.26, 'fused/split': 0.94}
+    target abs bins  {'morph/int': 0.99, 'word/int': 1.26, 'fused/split': 0.94}
+    draft deciles    {'morph/int': 0.99, 'word/int': 1.24, 'fused/split': 0.94}
+    draft abs bins   {'morph/int': 0.99, 'word/int': 1.24, 'fused/split': 0.94}
+    both deciles     {'morph/int': 0.96, 'word/int': 1.16, 'fused/split': 0.93}
+    both abs bins    {'morph/int': 0.97, 'word/int': 1.17, 'fused/split': 0.93}
+Q4 13.16 | lowest decile: 0.439 [0.0, 0.38]
+    raw              {'morph/int': 2.37, 'word/int': 3.18, 'fused/split': 1.53}
+    target deciles   {'morph/int': 0.97, 'word/int': 1.23, 'fused/split': 0.89}
+    target abs bins  {'morph/int': 0.98, 'word/int': 1.24, 'fused/split': 0.89}
+    draft deciles    {'morph/int': 0.97, 'word/int': 1.21, 'fused/split': 0.89}
+    draft abs bins   {'morph/int': 0.98, 'word/int': 1.22, 'fused/split': 0.89}
+    both deciles     {'morph/int': 0.96, 'word/int': 1.16, 'fused/split': 0.89}
+    both abs bins    {'morph/int': 0.97, 'word/int': 1.17, 'fused/split': 0.89}
+Q5 19.07 | lowest decile: 0.336 [0.0, 0.38]
+    raw              {'morph/int': 2.21, 'word/int': 2.93, 'fused/split': 1.58}
+    target deciles   {'morph/int': 0.96, 'word/int': 1.25, 'fused/split': 0.95}
+    target abs bins  {'morph/int': 0.97, 'word/int': 1.25, 'fused/split': 0.95}
+    draft deciles    {'morph/int': 0.98, 'word/int': 1.24, 'fused/split': 0.94}
+    draft abs bins   {'morph/int': 0.99, 'word/int': 1.24, 'fused/split': 0.94}
+    both deciles     {'morph/int': 0.94, 'word/int': 1.15, 'fused/split': 0.93}
+    both abs bins    {'morph/int': 0.95, 'word/int': 1.15, 'fused/split': 0.93}
+Q6 14.92 | lowest decile: 0.4 [0.0, 0.38]
+    raw              {'morph/int': 2.3, 'word/int': 3.11, 'fused/split': 1.48}
+    target deciles   {'morph/int': 0.94, 'word/int': 1.21, 'fused/split': 0.88}
+    target abs bins  {'morph/int': 0.95, 'word/int': 1.22, 'fused/split': 0.88}
+    draft deciles    {'morph/int': 0.96, 'word/int': 1.21, 'fused/split': 0.87}
+    draft abs bins   {'morph/int': 0.96, 'word/int': 1.21, 'fused/split': 0.87}
+    both deciles     {'morph/int': 0.93, 'word/int': 1.14, 'fused/split': 0.88}
+    both abs bins    {'morph/int': 0.94, 'word/int': 1.15, 'fused/split': 0.88}
+Q3 11.63 | lowest decile: 0.472 [0.0, 0.38]
+    raw              {'morph/int': 2.21, 'word/int': 3.06, 'fused/split': 1.4}
+    target deciles   {'morph/int': 0.88, 'word/int': 1.13, 'fused/split': 0.83}
+    target abs bins  {'morph/int': 0.89, 'word/int': 1.14, 'fused/split': 0.83}
+    draft deciles    {'morph/int': 0.9, 'word/int': 1.13, 'fused/split': 0.82}
+    draft abs bins   {'morph/int': 0.91, 'word/int': 1.14, 'fused/split': 0.82}
+    both deciles     {'morph/int': 0.89, 'word/int': 1.09, 'fused/split': 0.83}
+    both abs bins    {'morph/int': 0.9, 'word/int': 1.1, 'fused/split': 0.84}
+G2 2.22 | lowest decile: 0.781 [0.0, 4.25]
+    raw              {'morph/int': 1.62, 'word/int': 3.7, 'fused/split': 1.0}
+    target deciles   {'morph/int': 1.45, 'word/int': 1.72, 'fused/split': 0.55}
+    target abs bins  {'morph/int': 1.53, 'word/int': 1.79, 'fused/split': 0.71}
+    draft deciles    {'morph/int': 0.76, 'word/int': 1.24, 'fused/split': 0.49}
+    draft abs bins   {'morph/int': 0.79, 'word/int': 1.07, 'fused/split': 0.62}
+    both deciles     {'morph/int': 0.84, 'word/int': 1.0, 'fused/split': 0.48}
+    both abs bins    {'morph/int': 0.92, 'word/int': 1.02, 'fused/split': 0.69}
+G1 1.88 | lowest decile: 0.822 [0.0, 4.25]
+    raw              {'morph/int': 1.34, 'word/int': 3.41, 'fused/split': 0.88}
+    target deciles   {'morph/int': 1.24, 'word/int': 1.59, 'fused/split': 0.49}
+    target abs bins  {'morph/int': 1.33, 'word/int': 1.65, 'fused/split': 0.65}
+    draft deciles    {'morph/int': 0.86, 'word/int': 1.28, 'fused/split': 0.49}
+    draft abs bins   {'morph/int': 0.89, 'word/int': 1.13, 'fused/split': 0.66}
+    both deciles     {'morph/int': 0.86, 'word/int': 1.01, 'fused/split': 0.45}
+    both abs bins    {'morph/int': 0.96, 'word/int': 1.07, 'fused/split': 0.7}
+M1 12.05 | lowest decile: 0.464 [0.0, 0.31]
+    raw              {'morph/int': 2.01, 'word/int': 3.15, 'fused/split': 1.55}
+    target deciles   {'morph/int': 0.96, 'word/int': 1.21, 'fused/split': 0.94}
+    target abs bins  {'morph/int': 0.96, 'word/int': 1.2, 'fused/split': 0.95}
+    draft deciles    {'morph/int': 0.95, 'word/int': 1.2, 'fused/split': 0.93}
+    draft abs bins   {'morph/int': 0.95, 'word/int': 1.19, 'fused/split': 0.93}
+    both deciles     {'morph/int': 0.96, 'word/int': 1.14, 'fused/split': 0.93}
+    both abs bins    {'morph/int': 0.95, 'word/int': 1.13, 'fused/split': 0.94}
+Q7 20.86 | lowest decile: 0.313 [0.0, 0.31]
+    raw              {'morph/int': 2.17, 'word/int': 2.88, 'fused/split': 1.57}
+    target deciles   {'morph/int': 0.96, 'word/int': 1.25, 'fused/split': 0.95}
+    target abs bins  {'morph/int': 0.96, 'word/int': 1.25, 'fused/split': 0.95}
+    draft deciles    {'morph/int': 0.98, 'word/int': 1.24, 'fused/split': 0.94}
+    draft abs bins   {'morph/int': 0.98, 'word/int': 1.24, 'fused/split': 0.94}
+    both deciles     {'morph/int': 0.93, 'word/int': 1.15, 'fused/split': 0.93}
+    both abs bins    {'morph/int': 0.93, 'word/int': 1.15, 'fused/split': 0.92}
+Q8 16.5 | lowest decile: 0.37 [0.0, 0.38]
+    raw              {'morph/int': 2.3, 'word/int': 3.14, 'fused/split': 1.49}
+    target deciles   {'morph/int': 0.94, 'word/int': 1.22, 'fused/split': 0.89}
+    target abs bins  {'morph/int': 0.94, 'word/int': 1.23, 'fused/split': 0.89}
+    draft deciles    {'morph/int': 0.95, 'word/int': 1.22, 'fused/split': 0.87}
+    draft abs bins   {'morph/int': 0.95, 'word/int': 1.22, 'fused/split': 0.87}
+    both deciles     {'morph/int': 0.92, 'word/int': 1.14, 'fused/split': 0.88}
+    both abs bins    {'morph/int': 0.93, 'word/int': 1.15, 'fused/split': 0.88}
+Q9 13.68 | lowest decile: 0.422 [0.0, 0.38]
+    raw              {'morph/int': 2.26, 'word/int': 3.16, 'fused/split': 1.42}
+    target deciles   {'morph/int': 0.89, 'word/int': 1.17, 'fused/split': 0.84}
+    target abs bins  {'morph/int': 0.89, 'word/int': 1.17, 'fused/split': 0.84}
+    draft deciles    {'morph/int': 0.91, 'word/int': 1.18, 'fused/split': 0.83}
+    draft abs bins   {'morph/int': 0.91, 'word/int': 1.19, 'fused/split': 0.83}
+    both deciles     {'morph/int': 0.89, 'word/int': 1.11, 'fused/split': 0.85}
+    both abs bins    {'morph/int': 0.9, 'word/int': 1.12, 'fused/split': 0.85}

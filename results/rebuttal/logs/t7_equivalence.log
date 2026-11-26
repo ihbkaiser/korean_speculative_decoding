@@ -1,0 +1,49 @@
+EQUIV_LOAD model=qwen06
+STREAM_WEIGHT_START model=qwen06 shard=1/1 name=model.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen06 shard=1/1
+EQUIV_LOAD model=qwen4
+STREAM_WEIGHT_START model=qwen4 shard=1/3 name=model-00001-of-00003.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen4 shard=1/3
+STREAM_WEIGHT_START model=qwen4 shard=2/3 name=model-00002-of-00003.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen4 shard=2/3
+STREAM_WEIGHT_START model=qwen4 shard=3/3 name=model-00003-of-00003.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen4 shard=3/3
+COMPILE_MODE_FALLBACK from=reduce-overhead to=default error=RuntimeError: Q2/target_only: static exact=0.6600 is below dynamic repeat agreement 1.0000
+EQUIV_LOAD model=qwen06
+STREAM_WEIGHT_START model=qwen06 shard=1/1 name=model.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen06 shard=1/1
+EQUIV_LOAD model=qwen4
+STREAM_WEIGHT_START model=qwen4 shard=1/3 name=model-00001-of-00003.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen4 shard=1/3
+STREAM_WEIGHT_START model=qwen4 shard=2/3 name=model-00002-of-00003.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen4 shard=2/3
+STREAM_WEIGHT_START model=qwen4 shard=3/3 name=model-00003-of-00003.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen4 shard=3/3
+Traceback (most recent call last):
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/validate_static_compiled.py", line 163, in main
+    parser.add_argument("--pairs", nargs="+", choices=("Q2", "Q5"), default=("Q2", "Q5"))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/validate_static_compiled.py", line 114, in _run_pair
+    if generated[index] != reference[index]), common)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Q2/target_only: static exact=0.6600 is below dynamic repeat agreement 1.0000
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/validate_static_compiled.py", line 181, in <module>
+    results = [_run_pair(pair, mode, args, config, api, get_token()) for pair in args.pairs]
+                 ^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/validate_static_compiled.py", line 174, in main
+    details={"pairs": args.pairs, "documents": args.documents,
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/validate_static_compiled.py", line 114, in _run_pair
+    if generated[index] != reference[index]), common)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Q2/target_only: static exact=0.0600 is below dynamic repeat agreement 1.0000

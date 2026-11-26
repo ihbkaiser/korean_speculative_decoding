@@ -36,6 +36,7 @@ from src.naacl_experiment import (
     select_prompts,
     sha256_file,
 )
+from src.rebuttal.runtime import write_gpu_metadata
 
 
 def _continuation_files(root: Path, target: str, split: str) -> list[Path]:
@@ -395,6 +396,13 @@ def main() -> int:
         pending.append((shard_index, shard_prompts, shard_path))
     if not pending:
         atomic_json(metadata_path, {**metadata, "completed_shards": [previous_shards[i] for i, _ in shard_inputs], "status": "COMPLETE"})
+        if model_spec.get("family") == "Qwen3-IT":
+            write_gpu_metadata(
+                metadata_path,
+                job="teacher_forced_scoring",
+                details={"model": args.model, "target": args.target, "role": args.role, "split": args.split},
+                merge_existing=True,
+            )
         print(f"TF_COMPLETE model={args.model} target={args.target} shards={len(shard_inputs)} (resumed)", flush=True)
         return 0
 
@@ -438,6 +446,13 @@ def main() -> int:
     del body, head, model
     cleanup_cuda(torch)
     atomic_json(metadata_path, {**metadata, "completed_shards": [previous_shards[i] for i, _ in shard_inputs], "status": "COMPLETE"})
+    if model_spec.get("family") == "Qwen3-IT":
+        write_gpu_metadata(
+            metadata_path,
+            job="teacher_forced_scoring",
+            details={"model": args.model, "target": args.target, "role": args.role, "split": args.split},
+            merge_existing=True,
+        )
     print(f"TF_COMPLETE model={args.model} target={args.target} files={len(list(destination.glob('shard-*.parquet')))}", flush=True)
     return 0
 

@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/cpu/expD_uniform_matching.py", line 8, in <module>
+    from ksdlib import *
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/cpu/ksdlib.py", line 4, in <module>
+    import numpy as np, pandas as pd
+ModuleNotFoundError: No module named 'pandas'

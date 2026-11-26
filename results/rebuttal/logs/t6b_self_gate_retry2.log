@@ -1,0 +1,17 @@
+SOURCE_BOUNDARY_AUDIT target=qwen4 {"audit_documents": 100, "positions_total": 12588, "special_token_positions_skipped": 3, "positions_with_valid_prefix": 11723, "valid_prefix_share": 0.9312837623133142, "positions_compared_to_alignment": 11723, "exact_offset_agreements": 11626, "agreement": 0.9917256674912565}
+STREAM_WEIGHT_START model=qwen4 shard=1/3 name=model-00001-of-00003.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen4 shard=1/3
+STREAM_WEIGHT_START model=qwen4 shard=2/3 name=model-00002-of-00003.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen4 shard=2/3
+STREAM_WEIGHT_START model=qwen4 shard=3/3 name=model-00003-of-00003.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen4 shard=3/3
+Traceback (most recent call last):
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 539, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 517, in main
+    model, model_path, storage_mode = _load_streamed_model(config, args.judge, api, token)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 123, in _load_streamed_model
+    raise RuntimeError(f"Checkpoint for {key} is missing {len(missing)} model keys: {sorted(missing)[:12]}")
+RuntimeError: Checkpoint for qwen4 is missing 1 model keys: ['lm_head.weight']

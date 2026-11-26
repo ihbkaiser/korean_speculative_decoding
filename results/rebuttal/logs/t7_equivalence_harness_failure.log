@@ -1,0 +1,55 @@
+EQUIV_LOAD model=qwen06
+STREAM_WEIGHT_START model=qwen06 shard=1/1 name=model.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen06 shard=1/1
+EQUIV_LOAD model=qwen4
+STREAM_WEIGHT_START model=qwen4 shard=1/3 name=model-00001-of-00003.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen4 shard=1/3
+STREAM_WEIGHT_START model=qwen4 shard=2/3 name=model-00002-of-00003.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen4 shard=2/3
+STREAM_WEIGHT_START model=qwen4 shard=3/3 name=model-00003-of-00003.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen4 shard=3/3
+COMPILE_MODE_FALLBACK from=reduce-overhead to=default error=KeyError: 'target'
+EQUIV_LOAD model=qwen06
+STREAM_WEIGHT_START model=qwen06 shard=1/1 name=model.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen06 shard=1/1
+EQUIV_LOAD model=qwen4
+STREAM_WEIGHT_START model=qwen4 shard=1/3 name=model-00001-of-00003.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen4 shard=1/3
+STREAM_WEIGHT_START model=qwen4 shard=2/3 name=model-00002-of-00003.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen4 shard=2/3
+STREAM_WEIGHT_START model=qwen4 shard=3/3 name=model-00003-of-00003.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen4 shard=3/3
+Traceback (most recent call last):
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/validate_static_compiled.py", line 163, in main
+    results = [_run_pair(pair, mode, args, config, api, get_token()) for pair in args.pairs]
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/validate_static_compiled.py", line 87, in _run_pair
+    result = _decode(model_rows, doc, policy, eos, mode, static=False)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/validate_static_compiled.py", line 48, in _decode
+    return greedy_target_only(model["target"], list(map(int, doc.prompt_ids)), 128, eos)
+                              ~~~~~^^^^^^^^^^
+KeyError: 'target'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/validate_static_compiled.py", line 181, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/validate_static_compiled.py", line 174, in main
+    results = [_run_pair(pair, mode, args, config, api, get_token()) for pair in args.pairs]
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/validate_static_compiled.py", line 87, in _run_pair
+    result = _decode(model_rows, doc, policy, eos, mode, static=False)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/validate_static_compiled.py", line 48, in _decode
+    return greedy_target_only(model["target"], list(map(int, doc.prompt_ids)), 128, eos)
+                              ~~~~~^^^^^^^^^^
+KeyError: 'target'

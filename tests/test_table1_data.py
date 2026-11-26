@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+import pandas as pd
+
 from src.table1_data import (
     build_prompt_pool,
     document_hangul_ratio,
+    load_prompt_pool,
     normalize_document_text,
 )
 
@@ -38,3 +41,25 @@ def test_pool_rejects_insufficient_eligible_documents():
         assert "eligible" in str(exc)
     else:
         raise AssertionError("Expected insufficient pool to fail")
+
+
+def test_loader_requires_explicit_opt_in_for_identical_rendered_prompts(tmp_path):
+    path = tmp_path / "prompts.parquet"
+    text = "<|im_start|>user\n한국어<|im_end|>"
+    pd.DataFrame(
+        [
+            {"doc_id": "doc-a", "raw_text_hash": "same-hash", "text": text},
+            {"doc_id": "doc-b", "raw_text_hash": "same-hash", "text": text},
+        ]
+    ).to_parquet(path, index=False)
+
+    try:
+        load_prompt_pool(path)
+    except AssertionError as exc:
+        assert "duplicate raw_text_hash" in str(exc)
+    else:
+        raise AssertionError("Expected duplicate prompt hashes to be rejected by default")
+
+    rows = load_prompt_pool(path, allow_identical_raw_text_hashes=True)
+
+    assert [row["doc_id"] for row in rows] == ["doc-a", "doc-b"]

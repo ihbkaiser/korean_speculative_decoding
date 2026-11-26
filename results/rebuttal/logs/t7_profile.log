@@ -1,0 +1,49 @@
+PROFILE_MODEL_START model=qwen06
+STREAM_WEIGHT_START model=qwen06 shard=1/1 name=model.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen06 shard=1/1
+USDT:2026-11-26 20:25:00 18132:18132 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-11-26 20:25:00 18132:18132 SyncActivityProfilerHandler.cpp:46] profiler_stop
+PROFILE_ROW model=qwen06 op=single_token wall_ms=22.189 gpu_ms=5.501 host_ms=16.688
+USDT:2026-11-26 20:25:01 18132:18132 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-11-26 20:25:02 18132:18132 SyncActivityProfilerHandler.cpp:46] profiler_stop
+PROFILE_ROW model=qwen06 op=verify_5 wall_ms=33.852 gpu_ms=6.902 host_ms=26.950
+USDT:2026-11-26 20:25:03 18132:18132 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-11-26 20:25:03 18132:18132 SyncActivityProfilerHandler.cpp:46] profiler_stop
+PROFILE_ROW model=qwen06 op=verify_17 wall_ms=32.917 gpu_ms=7.814 host_ms=25.104
+PROFILE_MODEL_START model=qwen4
+STREAM_WEIGHT_START model=qwen4 shard=1/3 name=model-00001-of-00003.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen4 shard=1/3
+STREAM_WEIGHT_START model=qwen4 shard=2/3 name=model-00002-of-00003.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen4 shard=2/3
+STREAM_WEIGHT_START model=qwen4 shard=3/3 name=model-00003-of-00003.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen4 shard=3/3
+USDT:2026-11-26 20:25:49 18132:18132 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-11-26 20:25:49 18132:18132 SyncActivityProfilerHandler.cpp:46] profiler_stop
+PROFILE_ROW model=qwen4 op=single_token wall_ms=37.603 gpu_ms=14.825 host_ms=22.777
+USDT:2026-11-26 20:25:51 18132:18132 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-11-26 20:25:51 18132:18132 SyncActivityProfilerHandler.cpp:46] profiler_stop
+PROFILE_ROW model=qwen4 op=verify_5 wall_ms=43.586 gpu_ms=16.275 host_ms=27.312
+USDT:2026-11-26 20:25:53 18132:18132 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-11-26 20:25:53 18132:18132 SyncActivityProfilerHandler.cpp:46] profiler_stop
+PROFILE_ROW model=qwen4 op=verify_17 wall_ms=44.461 gpu_ms=17.541 host_ms=26.920
+PROFILE_MODEL_START model=qwen8
+STREAM_WEIGHT_START model=qwen8 shard=1/5 name=model-00001-of-00005.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen8 shard=1/5
+STREAM_WEIGHT_START model=qwen8 shard=2/5 name=model-00002-of-00005.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen8 shard=2/5
+STREAM_WEIGHT_START model=qwen8 shard=3/5 name=model-00003-of-00005.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen8 shard=3/5
+STREAM_WEIGHT_START model=qwen8 shard=4/5 name=model-00004-of-00005.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen8 shard=4/5
+STREAM_WEIGHT_START model=qwen8 shard=5/5 name=model-00005-of-00005.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen8 shard=5/5
+USDT:2026-11-26 20:27:21 18132:18132 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-11-26 20:27:21 18132:18132 SyncActivityProfilerHandler.cpp:46] profiler_stop
+PROFILE_ROW model=qwen8 op=single_token wall_ms=39.730 gpu_ms=23.392 host_ms=16.339
+USDT:2026-11-26 20:27:23 18132:18132 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-11-26 20:27:23 18132:18132 SyncActivityProfilerHandler.cpp:46] profiler_stop
+PROFILE_ROW model=qwen8 op=verify_5 wall_ms=45.474 gpu_ms=24.849 host_ms=20.625
+USDT:2026-11-26 20:27:26 18132:18132 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-11-26 20:27:26 18132:18132 SyncActivityProfilerHandler.cpp:46] profiler_stop
+PROFILE_ROW model=qwen8 op=verify_17 wall_ms=44.505 gpu_ms=28.078 host_ms=16.427
+OVERHEAD_PROFILE_COMPLETE rows=13 output=/workspace/korean_speculative_decoding/results/rebuttal/wallclock_opt/overhead.csv

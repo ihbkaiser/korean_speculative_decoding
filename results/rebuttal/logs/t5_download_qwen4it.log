@@ -1,0 +1,7 @@
+MODEL_STORAGE root=/dev/shm/naacl_models free_gib=11.51 requested_weight_gib=7.49
+MODEL qwen4it repo=Qwen/Qwen3-4B revision=1cfa9a7208912126459214e8b04321603b3df60c gated=False weight_gib=7.49 shards=3
+DOWNLOAD_START qwen4it files=13 gated=False
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Fetching 13 files:  85%|████████▍ | 11/13 [00:01<00:00,  5.64it/s]Fetching 13 files:  92%|█████████▏| 12/13 [00:19<00:02,  2.16s/it]Fetching 13 files: 100%|██████████| 13/13 [00:25<00:00,  2.69s/it]Fetching 13 files: 100%|██████████| 13/13 [00:25<00:00,  1.95s/it]
+DOWNLOAD_COMPLETE qwen4it local_path=/dev/shm/naacl_models/Qwen--Qwen3-4B/1cfa9a7208912126459214e8b04321603b3df60c
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 8135.31it/s]
+SMOKE_LOAD_OK qwen4it Qwen/Qwen3-4B@1cfa9a7208912126459214e8b04321603b3df60c on NVIDIA GeForce RTX 3090

@@ -1,0 +1,25 @@
+{
+  "job": "static_compiled_equivalence_gate",
+  "started_utc": "2026-11-26T23:16:06.425095+00:00",
+  "torch": "2.14.1+cu132",
+  "transformers": "5.19.0",
+  "torch_cuda_runtime": "13.2",
+  "cuda_available": true,
+  "gpu_name": "NVIDIA GeForce RTX 3090",
+  "nvidia_smi": "Thu Nov 26 23:16:06 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 595.99.02              Driver Version: 595.99.02      CUDA Version: 13.2     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  NVIDIA GeForce RTX 3090        On  |   00000000:25:00.0 Off |                  N/A |\n|  0%   29C    P5             19W /  350W |       4MiB /  24576MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|  No running processes found                                                             |\n+-----------------------------------------------------------------------------------------+\n",
+  "nvidia_smi_compute_apps": "",
+  "details": {
+    "pairs_requested": [
+      "Q2",
+      "Q5"
+    ],
+    "documents_per_pair": 50,
+    "compile_modes_attempted": [
+      "reduce-overhead",
+      "default"
+    ],
+    "outcome": "Q2 target-only static exact match 0.66 then 0.06 versus 1.00 dynamic repeat; gate failed; no timing run.",
+    "source_log": "results/rebuttal/logs/t7_equivalence.log",
+    "metadata_capture_note": "Recaptured after the run; the initial shared metadata file was later replaced by diagnostic runs."
+  }
+}

@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 528, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 489, in main
+    audit = _boundary_audit(docs, alignment)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 259, in _boundary_audit
+    raise RuntimeError(f"Source tokenizer boundaries disagree with the alignment table: {result}")
+RuntimeError: Source tokenizer boundaries disagree with the alignment table: {'audit_documents': 100, 'positions_total': 12591, 'positions_with_valid_prefix': 11726, 'valid_prefix_share': 0.9313001350170756, 'positions_compared_to_alignment': 11726, 'exact_offset_agreements': 11626, 'agreement': 0.9914719426914549}

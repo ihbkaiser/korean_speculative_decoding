@@ -1,0 +1,15 @@
+SOURCE_BOUNDARY_AUDIT target=qwen4 {"audit_documents": 100, "positions_total": 12588, "special_token_positions_skipped": 3, "positions_with_valid_prefix": 11723, "valid_prefix_share": 0.9312837623133142, "positions_compared_to_alignment": 11723, "exact_offset_agreements": 11626, "agreement": 0.9917256674912565}
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files:  11%|█         | 1/9 [00:00<00:03,  2.27it/s]Fetching 9 files:  78%|███████▊  | 7/9 [00:00<00:00, 12.22it/s]Fetching 9 files: 100%|██████████| 9/9 [00:01<00:00,  9.29it/s]Fetching 9 files: 100%|██████████| 9/9 [00:01<00:00,  8.84it/s]
+SOURCE_BOUNDARY_AUDIT target=qwen8 {"audit_documents": 100, "positions_total": 12560, "special_token_positions_skipped": 3, "positions_with_valid_prefix": 11690, "valid_prefix_share": 0.9307324840764332, "positions_compared_to_alignment": 11690, "exact_offset_agreements": 11667, "agreement": 0.9980325064157399}
+Fetching 11 files:   0%|          | 0/11 [00:00<?, ?it/s]Fetching 11 files:   9%|▉         | 1/11 [00:00<00:04,  2.17it/s]Fetching 11 files:  27%|██▋       | 3/11 [00:00<00:01,  5.78it/s]Fetching 11 files:  55%|█████▍    | 6/11 [00:00<00:00, 10.85it/s]Fetching 11 files:  82%|████████▏ | 9/11 [00:01<00:00, 10.24it/s]Fetching 11 files: 100%|██████████| 11/11 [00:01<00:00,  5.09it/s]Fetching 11 files: 100%|██████████| 11/11 [00:01<00:00,  5.86it/s]
+Traceback (most recent call last):
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 548, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 526, in main
+    model, model_path, storage_mode = _load_streamed_model(config, args.judge, api, token)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 97, in _load_streamed_model
+    model = model_class.from_config(model_config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: type object 'Mistral3ForConditionalGeneration' has no attribute 'from_config'. Did you mean: '_from_config'?

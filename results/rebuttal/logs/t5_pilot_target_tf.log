@@ -1,0 +1,6 @@
+TF_LOAD model=qwen4it target=qwen4it role=target
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 4750.05it/s]
+TF qwen4it on qwen4it shard 0:   0%|          | 0/2 [00:00<?, ?batch/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+TF qwen4it on qwen4it shard 0:  50%|█████     | 1/2 [00:02<00:02,  2.33s/batch]TF qwen4it on qwen4it shard 0: 100%|██████████| 2/2 [00:03<00:00,  1.65s/batch]
+TF_SHARD_COMPLETE model=qwen4it shard=00000 prompts=50 tokens=5104
+TF_COMPLETE model=qwen4it target=qwen4it files=1

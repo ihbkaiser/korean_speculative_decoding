@@ -1,0 +1,290 @@
+{
+  "stage": "target_sampled_generation",
+  "model_key": "qwen8",
+  "model_id": "Qwen/Qwen3-8B-Base",
+  "revision": "49e3418fbbbca6ecbdf9608b4d22e5a407081db4",
+  "split": "common",
+  "prompt_count": 2000,
+  "prompt_ids_sha256": "bac1214c84ff3f2dfed00635cc2d1f365bdb0d7c88e1b38ca1aeb7bf68d57077",
+  "prompt_pool_sha256": "d0d316155380aac0d6aa3ade8bddd93f96579a7c88c750167c9d012162fa72eb",
+  "max_prompt_tokens": 128,
+  "max_new_tokens": 128,
+  "dtype": "bfloat16",
+  "attention_backend": "sdpa",
+  "requested_batch_size": 48,
+  "seed": 20261125,
+  "sampling": {
+    "do_sample": true,
+    "temperature": 1.0,
+    "top_p": 1.0,
+    "top_k": 0,
+    "typical_p": 1.0,
+    "min_p": 0.0,
+    "epsilon_cutoff": 0.0,
+    "eta_cutoff": 0.0,
+    "repetition_penalty": 1.0,
+    "no_repeat_ngram_size": 0,
+    "renormalize_logits": false
+  },
+  "transformers": "5.19.0",
+  "torch": "2.14.1+cu132",
+  "gpu": "NVIDIA GeForce RTX 3090",
+  "actual_batch_sizes": [
+    1,
+    2,
+    3,
+    4,
+    46,
+    48
+  ],
+  "model_storage_mode": "streamed_shards_to_cpu",
+  "model_path": "/dev/shm/cross_family_models/Qwen--Qwen3-8B-Base/49e3418fbbbca6ecbdf9608b4d22e5a407081db4",
+  "wall_seconds": 548.1464016420068,
+  "completed_shards": [
+    {
+      "shard": 0,
+      "prompt_count": 100,
+      "continuation_token_count": 12800,
+      "actual_batch_sizes": [
+        4,
+        48
+      ]
+    },
+    {
+      "shard": 1,
+      "prompt_count": 100,
+      "continuation_token_count": 12702,
+      "actual_batch_sizes": [
+        1,
+        4,
+        48
+      ]
+    },
+    {
+      "shard": 2,
+      "prompt_count": 100,
+      "continuation_token_count": 12664,
+      "actual_batch_sizes": [
+        1,
+        4,
+        46,
+        48
+      ]
+    },
+    {
+      "shard": 3,
+      "prompt_count": 100,
+      "continuation_token_count": 12800,
+      "actual_batch_sizes": [
+        1,
+        2,
+        4,
+        46,
+        48
+      ]
+    },
+    {
+      "shard": 4,
+      "prompt_count": 100,
+      "continuation_token_count": 12800,
+      "actual_batch_sizes": [
+        1,
+        2,
+        4,
+        46,
+        48
+      ]
+    },
+    {
+      "shard": 5,
+      "prompt_count": 100,
+      "continuation_token_count": 12755,
+      "actual_batch_sizes": [
+        1,
+        2,
+        4,
+        46,
+        48
+      ]
+    },
+    {
+      "shard": 6,
+      "prompt_count": 100,
+      "continuation_token_count": 12800,
+      "actual_batch_sizes": [
+        1,
+        2,
+        4,
+        46,
+        48
+      ]
+    },
+    {
+      "shard": 7,
+      "prompt_count": 100,
+      "continuation_token_count": 12648,
+      "actual_batch_sizes": [
+        1,
+        2,
+        4,
+        46,
+        48
+      ]
+    },
+    {
+      "shard": 8,
+      "prompt_count": 100,
+      "continuation_token_count": 12756,
+      "actual_batch_sizes": [
+        1,
+        2,
+        4,
+        46,
+        48
+      ]
+    },
+    {
+      "shard": 9,
+      "prompt_count": 100,
+      "continuation_token_count": 12800,
+      "actual_batch_sizes": [
+        1,
+        2,
+        4,
+        46,
+        48
+      ]
+    },
+    {
+      "shard": 10,
+      "prompt_count": 100,
+      "continuation_token_count": 12798,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        46,
+        48
+      ]
+    },
+    {
+      "shard": 11,
+      "prompt_count": 100,
+      "continuation_token_count": 12759,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        46,
+        48
+      ]
+    },
+    {
+      "shard": 12,
+      "prompt_count": 100,
+      "continuation_token_count": 12763,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        46,
+        48
+      ]
+    },
+    {
+      "shard": 13,
+      "prompt_count": 100,
+      "continuation_token_count": 12800,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        46,
+        48
+      ]
+    },
+    {
+      "shard": 14,
+      "prompt_count": 100,
+      "continuation_token_count": 12781,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        46,
+        48
+      ]
+    },
+    {
+      "shard": 15,
+      "prompt_count": 100,
+      "continuation_token_count": 12683,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        46,
+        48
+      ]
+    },
+    {
+      "shard": 16,
+      "prompt_count": 100,
+      "continuation_token_count": 12754,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        46,
+        48
+      ]
+    },
+    {
+      "shard": 17,
+      "prompt_count": 100,
+      "continuation_token_count": 12787,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        46,
+        48
+      ]
+    },
+    {
+      "shard": 18,
+      "prompt_count": 100,
+      "continuation_token_count": 12575,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        46,
+        48
+      ]
+    },
+    {
+      "shard": 19,
+      "prompt_count": 100,
+      "continuation_token_count": 12800,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        46,
+        48
+      ]
+    }
+  ],
+  "status": "COMPLETE"
+}

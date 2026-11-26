@@ -1,0 +1,31 @@
+STREAM_WEIGHT_START model=qwen8 shard=1/5 name=model-00001-of-00005.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen8 shard=1/5
+STREAM_WEIGHT_START model=qwen8 shard=2/5 name=model-00002-of-00005.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen8 shard=2/5
+STREAM_WEIGHT_START model=qwen8 shard=3/5 name=model-00003-of-00005.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen8 shard=3/5
+STREAM_WEIGHT_START model=qwen8 shard=4/5 name=model-00004-of-00005.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen8 shard=4/5
+STREAM_WEIGHT_START model=qwen8 shard=5/5 name=model-00005-of-00005.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen8 shard=5/5
+SAMPLE_SHARD_COMPLETE target=qwen8 shard=00000 docs=100
+SAMPLE_SHARD_COMPLETE target=qwen8 shard=00001 docs=100
+SAMPLE_SHARD_COMPLETE target=qwen8 shard=00002 docs=100
+SAMPLE_SHARD_COMPLETE target=qwen8 shard=00003 docs=100
+SAMPLE_SHARD_COMPLETE target=qwen8 shard=00004 docs=100
+SAMPLE_SHARD_COMPLETE target=qwen8 shard=00005 docs=100
+SAMPLE_SHARD_COMPLETE target=qwen8 shard=00006 docs=100
+SAMPLE_SHARD_COMPLETE target=qwen8 shard=00007 docs=100
+SAMPLE_SHARD_COMPLETE target=qwen8 shard=00008 docs=100
+SAMPLE_SHARD_COMPLETE target=qwen8 shard=00009 docs=100
+SAMPLE_SHARD_COMPLETE target=qwen8 shard=00010 docs=100
+SAMPLE_SHARD_COMPLETE target=qwen8 shard=00011 docs=100
+SAMPLE_SHARD_COMPLETE target=qwen8 shard=00012 docs=100
+SAMPLE_SHARD_COMPLETE target=qwen8 shard=00013 docs=100
+SAMPLE_SHARD_COMPLETE target=qwen8 shard=00014 docs=100
+SAMPLE_SHARD_COMPLETE target=qwen8 shard=00015 docs=100
+SAMPLE_SHARD_COMPLETE target=qwen8 shard=00016 docs=100
+SAMPLE_SHARD_COMPLETE target=qwen8 shard=00017 docs=100
+SAMPLE_SHARD_COMPLETE target=qwen8 shard=00018 docs=100
+SAMPLE_SHARD_COMPLETE target=qwen8 shard=00019 docs=100
+SAMPLE_COMPLETE target=qwen8 temperature=1.0 docs=2000 output=/workspace/korean_speculative_decoding/results/rebuttal/sampled_T1/continuations/qwen8/common

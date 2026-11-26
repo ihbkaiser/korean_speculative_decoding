@@ -1,0 +1,11 @@
+SOURCE_BOUNDARY_AUDIT target=qwen4 {"audit_documents": 100, "positions_total": 12588, "special_token_positions_skipped": 3, "positions_with_valid_prefix": 11723, "valid_prefix_share": 0.9312837623133142, "positions_compared_to_alignment": 11723, "exact_offset_agreements": 11626, "agreement": 0.9917256674912565}
+CROSS_FAMILY_ALREADY_COMPLETE target=qwen4 judge=qwen4
+Traceback (most recent call last):
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 548, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 543, in main
+    _self_gate(args.source_target[0], args.judge, args.max_prompts)
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 475, in _self_gate
+    raise RuntimeError(f"Same-model T6-b consistency gate failed: {result}")
+RuntimeError: Same-model T6-b consistency gate failed: {'source_target': 'qwen4', 'judge': 'qwen4', 'documents': 200, 'continuation_positions': 25179, 'canonical_prefix_positions': 23142, 'canonical_prefix_share': 0.9190992493744787, 'argmax_compared_positions': 23142, 'argmax_agreement': 0.9833635813672111}

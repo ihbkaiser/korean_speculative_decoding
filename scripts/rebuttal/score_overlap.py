@@ -64,7 +64,7 @@ def _logit_statistics(
 
 @torch.inference_mode()
 def _score_batch(draft, target, draft_body, draft_head, target_body, target_head,
-                 rows, scales, chunk_positions=CHUNK_POSITIONS):
+                 rows, scales, chunk_positions=CHUNK_POSITIONS, store_sample_logp=False):
     device = next(target.parameters()).device
     target_pad = int(getattr(target.config, "pad_token_id", None) or 0)
     draft_pad = int(getattr(draft.config, "pad_token_id", None) or 0)
@@ -101,6 +101,20 @@ def _score_batch(draft, target, draft_body, draft_head, target_body, target_head
         target_logits = target_head(selected).float() * scales["target"]
         selected_draft = draft_hidden[positions, sequence_positions[None, :]]
         draft_logits = draft_head(selected_draft).float() * scales["draft"]
+        sampled_logp = None
+        if store_sample_logp:
+            target_labels = torch.full(
+                (len(rows), end - start), target_pad, dtype=torch.long, device=device
+            )
+            for row_index, label_ids in enumerate(labels):
+                count = max(0, min(end, len(label_ids)) - start)
+                if count:
+                    target_labels[row_index, :count] = torch.tensor(
+                        label_ids[start:start + count], dtype=torch.long, device=device
+                    )
+            sampled_logp = torch.log_softmax(target_logits, dim=-1).gather(
+                -1, target_labels.unsqueeze(-1)
+            ).squeeze(-1)
 
         # tf_score.py persists the target argmax as topk(20)[..., 0] and the
         # draft argmax as topk(2)[..., 0]. Match both tie-breaking paths.
@@ -117,7 +131,7 @@ def _score_batch(draft, target, draft_body, draft_head, target_body, target_head
             count = max(0, min(end, valid_counts[row_index]) - start)
             for offset in range(count):
                 position = start + offset
-                outputs[row_index].append({
+                record = {
                     "doc_id": str(row["doc_id"]),
                     "pool_index": int(row["pool_index"]),
                     "position": position,
@@ -132,15 +146,18 @@ def _score_batch(draft, target, draft_body, draft_head, target_body, target_head
                     "draft_top2_margin": float(d_stats["top2_margin"][row_index, offset].item()),
                     "draft_entropy": float(d_stats["entropy"][row_index, offset].item()),
                     "draft_logp_argmax": float(d_stats["logp_argmax"][row_index, offset].item()),
-                })
+                }
+                if store_sample_logp:
+                    record["target_logp_sampled_token"] = float(sampled_logp[row_index, offset].item())
+                outputs[row_index].append(record)
         del selected, selected_draft, target_logits, draft_logits, t_stats, d_stats, alpha_by_temp
     del target_hidden, draft_hidden
     return outputs
 
 
-def _score_with_backoff(models, rows, scales, batch_sizes):
+def _score_with_backoff(models, rows, scales, batch_sizes, store_sample_logp=False):
     try:
-        scored = _score_batch(*models, rows, scales)
+        scored = _score_batch(*models, rows, scales, store_sample_logp=store_sample_logp)
         batch_sizes.add(len(rows))
         return scored
     except torch.cuda.OutOfMemoryError:
@@ -149,8 +166,8 @@ def _score_with_backoff(models, rows, scales, batch_sizes):
             raise RuntimeError("Overlap scoring ran out of GPU memory at batch size 1")
         midpoint = len(rows) // 2
         return (
-            _score_with_backoff(models, rows[:midpoint], scales, batch_sizes)
-            + _score_with_backoff(models, rows[midpoint:], scales, batch_sizes)
+            _score_with_backoff(models, rows[:midpoint], scales, batch_sizes, store_sample_logp)
+            + _score_with_backoff(models, rows[midpoint:], scales, batch_sizes, store_sample_logp)
         )
 
 
@@ -179,6 +196,44 @@ def _consistency(output: pd.DataFrame, stored: pd.DataFrame, model_prefix: str) 
     return {"positions": int(len(joined)), "argmax_agreement": agreement, "median_abs_top2_margin_delta": median_delta}
 
 
+def _sampled_self_consistency(output: pd.DataFrame, refs: list[dict], models, scales, batch_sizes,
+                              original_batch_size: int) -> dict[str, Any]:
+    selected = sorted(refs, key=lambda row: int(row["pool_index"]))[:200]
+    if len(selected) != 200:
+        raise RuntimeError(f"Sampled self-consistency gate needs 200 documents; found {len(selected)}")
+    selected = list(reversed(selected))
+    selected_ids = {str(row["doc_id"]) for row in selected}
+    expected = output[output.doc_id.astype(str).isin(selected_ids)]
+    scored_rows = []
+    alternate_batch = 7 if original_batch_size != 7 else 13
+    for start in range(0, len(selected), alternate_batch):
+        rows = selected[start:start + alternate_batch]
+        scored = _score_with_backoff(models, rows, scales, batch_sizes, store_sample_logp=True)
+        scored_rows.extend(record for per_doc in scored for record in per_doc)
+    rerun = pd.DataFrame(scored_rows)
+    actual_cols = ["doc_id", "pool_index", "position", "target_argmax_id", "draft_argmax_id"]
+    rerun_cols = ["doc_id", "pool_index", "position", "target_argmax_id", "draft_argmax_id"]
+    actual = expected[actual_cols]
+    joined = actual.merge(rerun[rerun_cols], on=["doc_id", "pool_index", "position"],
+                          how="inner", suffixes=("_first", "_repeat"), validate="one_to_one")
+    if len(joined) != len(actual):
+        raise RuntimeError(f"Sampled self-consistency gate covered {len(joined)} of {len(actual)} scored positions")
+    checks = {}
+    for prefix in ("target", "draft"):
+        checks[prefix] = {
+            "positions": int(len(joined)),
+            "argmax_agreement": float((joined[f"{prefix}_argmax_id_first"] == joined[f"{prefix}_argmax_id_repeat"]).mean()),
+        }
+    return {
+        "documents": len(selected),
+        "original_batch_size": original_batch_size,
+        "rescore_batch_size": alternate_batch,
+        "rescore_order": "descending pool_index",
+        "target": checks["target"],
+        "draft": checks["draft"],
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--pair", required=True)
@@ -188,6 +243,9 @@ def main() -> int:
     parser.add_argument("--batch-size", type=int)
     parser.add_argument("--chunk-positions", type=int, default=32)
     parser.add_argument("--output-root", type=Path, default=ROOT / "results/rebuttal/overlap")
+    parser.add_argument("--sampled-root", type=Path, default=ROOT / "results/rebuttal/sampled_T1")
+    parser.add_argument("--streamed-models", action="store_true",
+                        help="Load pinned models shard-by-shard into CPU memory before moving them to CUDA")
     args = parser.parse_args()
     config = load_config(args.config)
     if args.pair not in config["pairs"]:
@@ -204,7 +262,20 @@ def main() -> int:
     if batch_size < 1:
         parser.error("batch-size must be positive")
 
-    tokenizer = load_tokenizer(config, target_key)
+    sampled_root = args.sampled_root if args.sampled_root.is_absolute() else ROOT / args.sampled_root
+    if args.continuation == "sampled":
+        from huggingface_hub import HfApi
+        from huggingface_hub.utils import get_token
+        from scripts.rebuttal.score_cross_family_judge import _ensure_snapshot
+
+        token = get_token()
+        if not token:
+            raise RuntimeError("Hugging Face token is unavailable; set HF_TOKEN from /workspace/hf_token")
+        api = HfApi(token=token)
+        tokenizer_snapshot, _, _ = _ensure_snapshot(config, target_key, api, token)
+        tokenizer = load_tokenizer(config, target_key, snapshot=tokenizer_snapshot)
+    else:
+        tokenizer = load_tokenizer(config, target_key)
     common_prompts = select_prompts(config, "common")
     reference_refs = None
     if args.continuation == "human":
@@ -234,7 +305,6 @@ def main() -> int:
     else:
         split = "common"
         prompts = common_prompts[:args.max_prompts]
-        sampled_root = ROOT / "results/rebuttal/sampled_T1"
         refs = _load_generated_refs(sampled_root, target_key, "common", prompts)
         if len(refs) != len(prompts):
             raise RuntimeError(f"Sampled references cover {len(refs)} of {len(prompts)} requested documents")
@@ -279,8 +349,18 @@ def main() -> int:
         details={"run_identity": identity},
     )
 
-    draft_model = load_model(config, draft_key)
-    target_model = load_model(config, target_key)
+    if args.continuation == "sampled" or args.streamed_models:
+        from huggingface_hub import HfApi
+        from huggingface_hub.utils import get_token
+        from scripts.rebuttal.score_cross_family_judge import _load_streamed_model
+
+        token = get_token()
+        api = HfApi(token=token)
+        draft_model, _draft_path, _draft_storage = _load_streamed_model(config, draft_key, api, token)
+        target_model, _target_path, _target_storage = _load_streamed_model(config, target_key, api, token)
+    else:
+        draft_model = load_model(config, draft_key)
+        target_model = load_model(config, target_key)
     draft_body, draft_head = _body_and_head(draft_model)
     target_body, target_head = _body_and_head(target_model)
     models = (draft_model, target_model, draft_body, draft_head, target_body, target_head)
@@ -327,7 +407,10 @@ def main() -> int:
                 group = length_groups[prompt_length]
                 for batch_start in range(0, len(group), batch_size):
                     rows = group[batch_start:batch_start + batch_size]
-                    scored = _score_with_backoff(models, rows, scales, used_batch_sizes)
+                    scored = _score_with_backoff(
+                        models, rows, scales, used_batch_sizes,
+                        store_sample_logp=(args.continuation == "sampled"),
+                    )
                     records.extend(
                         record
                         for document_rows in scored
@@ -383,26 +466,34 @@ def main() -> int:
                 group = length_groups[prompt_length]
                 for batch_start in range(0, len(group), batch_size):
                     rows = group[batch_start:batch_start + batch_size]
-                    scored = _score_with_backoff(models, rows, scales, used_batch_sizes)
+                    scored = _score_with_backoff(
+                        models, rows, scales, used_batch_sizes,
+                        store_sample_logp=(args.continuation == "sampled"),
+                    )
                     records.extend(record for document_rows in scored for record in document_rows)
             atomic_parquet(records, shard_path)
             saved_paths.append(shard_path)
             print(f"OVERLAP_SHARD_COMPLETE pair={args.pair} continuation={args.continuation} shard={shard_index:05d} positions={len(records)}", flush=True)
 
     outputs = pd.concat([pd.read_parquet(path) for path in saved_paths], ignore_index=True)
-    output_root_for_tf = output_root(config)
-    stored_split = split
-    if args.continuation == "human":
-        stored_split = "common"
-    elif args.pair == "Q2" and args.continuation == "generated":
-        stored_split = "all"
-    wanted = set(docs)
-    target_stored = _read_stored(output_root_for_tf, args.continuation, target_key, target_key, stored_split, wanted)
-    draft_stored = _read_stored(output_root_for_tf, args.continuation, target_key, draft_key, stored_split, wanted)
-    checks = {
-        "target": _consistency(outputs, target_stored, "target"),
-        "draft": _consistency(outputs, draft_stored, "draft"),
-    }
+    if args.continuation == "sampled":
+        checks = _sampled_self_consistency(
+            outputs, refs, models, scales, used_batch_sizes, batch_size
+        )
+    else:
+        output_root_for_tf = output_root(config)
+        stored_split = split
+        if args.continuation == "human":
+            stored_split = "common"
+        elif args.pair == "Q2" and args.continuation == "generated":
+            stored_split = "all"
+        wanted = set(docs)
+        target_stored = _read_stored(output_root_for_tf, args.continuation, target_key, target_key, stored_split, wanted)
+        draft_stored = _read_stored(output_root_for_tf, args.continuation, target_key, draft_key, stored_split, wanted)
+        checks = {
+            "target": _consistency(outputs, target_stored, "target"),
+            "draft": _consistency(outputs, draft_stored, "draft"),
+        }
     atomic_json(output_dir / "consistency.json", checks)
     metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
     metadata["details"].update({
@@ -411,7 +502,10 @@ def main() -> int:
         "consistency": checks,
     })
     atomic_json(metadata_path, metadata)
-    if any(value["argmax_agreement"] < 0.985 or value["median_abs_top2_margin_delta"] != 0.0 for value in checks.values()):
+    if args.continuation == "sampled":
+        if any(checks[key]["argmax_agreement"] < 0.985 for key in ("target", "draft")):
+            raise RuntimeError(f"Sampled self-consistency gate failed; inspect {output_dir / 'consistency.json'} before analysis")
+    elif any(value["argmax_agreement"] < 0.985 or value["median_abs_top2_margin_delta"] != 0.0 for value in checks.values()):
         raise RuntimeError(f"T2a consistency gate failed; inspect {output_dir / 'consistency.json'} before analysis")
     del draft_model, target_model
     cleanup_cuda(torch)

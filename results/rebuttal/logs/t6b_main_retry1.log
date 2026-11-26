@@ -1,0 +1,13 @@
+SOURCE_BOUNDARY_AUDIT target=qwen4 {"audit_documents": 100, "positions_total": 12588, "special_token_positions_skipped": 3, "positions_with_valid_prefix": 11723, "valid_prefix_share": 0.9312837623133142, "positions_compared_to_alignment": 11723, "exact_offset_agreements": 11626, "agreement": 0.9917256674912565}
+SOURCE_BOUNDARY_AUDIT target=qwen8 {"audit_documents": 100, "positions_total": 12560, "special_token_positions_skipped": 3, "positions_with_valid_prefix": 11690, "valid_prefix_share": 0.9307324840764332, "positions_compared_to_alignment": 11690, "exact_offset_agreements": 11667, "agreement": 0.9980325064157399}
+STREAM_WEIGHT_START model=ministral8 shard=1/4 name=model-00001-of-00004.safetensors
+Traceback (most recent call last):
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 553, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 531, in main
+    model, model_path, storage_mode = _load_streamed_model(config, args.judge, api, token)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 120, in _load_streamed_model
+    raise RuntimeError(f"Unexpected checkpoint keys for {key}: {incompatible.unexpected_keys[:8]}")
+RuntimeError: Unexpected checkpoint keys for ministral8: ['language_model.model.embed_tokens.weight', 'language_model.model.layers.0.input_layernorm.weight', 'language_model.model.layers.0.mlp.down_proj.weight', 'language_model.model.layers.0.mlp.gate_proj.weight', 'language_model.model.layers.0.mlp.up_proj.weight', 'language_model.model.layers.0.post_attention_layernorm.weight', 'language_model.model.layers.0.self_attn.k_proj.weight', 'language_model.model.layers.0.self_attn.o_proj.weight']

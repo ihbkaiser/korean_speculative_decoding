@@ -1,0 +1,36 @@
+SOURCE_BOUNDARY_AUDIT target=qwen4 {"audit_documents": 100, "positions_total": 12588, "special_token_positions_skipped": 3, "positions_with_valid_prefix": 11723, "valid_prefix_share": 0.9312837623133142, "positions_compared_to_alignment": 11723, "exact_offset_agreements": 11626, "agreement": 0.9917256674912565}
+SOURCE_BOUNDARY_AUDIT target=qwen8 {"audit_documents": 100, "positions_total": 12560, "special_token_positions_skipped": 3, "positions_with_valid_prefix": 11690, "valid_prefix_share": 0.9307324840764332, "positions_compared_to_alignment": 11690, "exact_offset_agreements": 11667, "agreement": 0.9980325064157399}
+STREAM_WEIGHT_START model=ministral8 shard=1/4 name=model-00001-of-00004.safetensors
+STREAM_WEIGHT_COMPLETE model=ministral8 shard=1/4
+STREAM_WEIGHT_START model=ministral8 shard=2/4 name=model-00002-of-00004.safetensors
+/venv/main/lib/python3.12/site-packages/huggingface_hub/file_download.py:773: UserWarning: Not enough free disk space to download the file. The expected file size is: 4999.80 MB. The target location /dev/shm/cross_family_models/mistralai--Ministral-3-8B-Base-2512/d4883f9b36aa2e5d775730d3fdba3d30de51a8ef/.streaming_weights/.cache/huggingface/download only has 828.13 MB free disk space.
+  warnings.warn(
+/venv/main/lib/python3.12/site-packages/huggingface_hub/file_download.py:773: UserWarning: Not enough free disk space to download the file. The expected file size is: 4999.80 MB. The target location /dev/shm/cross_family_models/mistralai--Ministral-3-8B-Base-2512/d4883f9b36aa2e5d775730d3fdba3d30de51a8ef/.streaming_weights only has 828.13 MB free disk space.
+  warnings.warn(
+Traceback (most recent call last):
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 571, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 549, in main
+    model, model_path, storage_mode = _load_streamed_model(config, args.judge, api, token)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 110, in _load_streamed_model
+    local_file = Path(hf_hub_download(
+                      ^^^^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/huggingface_hub/utils/_validators.py", line 89, in _inner_fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/huggingface_hub/utils/_http.py", line 266, in _inner
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 1026, in hf_hub_download
+    return _hf_hub_download_to_local_dir(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 1505, in _hf_hub_download_to_local_dir
+    _download_to_tmp_and_move(
+  File "/venv/main/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 2016, in _download_to_tmp_and_move
+    xet_get(
+  File "/venv/main/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 589, in xet_get
+    with session.new_file_download_group(
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Task error: File reconstruction error: IO Error: No space left on device (os error 28)

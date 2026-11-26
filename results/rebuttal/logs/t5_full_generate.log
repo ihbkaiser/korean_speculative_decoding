@@ -1,0 +1,6 @@
+GEN_START target=qwen4it split=common prompts=5000 requested_batch=48 max_new_tokens=128
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 6447.07it/s]
+GEN_SHARD_COMPLETE target=qwen4it shard=00000 prompts=2000
+GEN_SHARD_COMPLETE target=qwen4it shard=00001 prompts=2000
+GEN_SHARD_COMPLETE target=qwen4it shard=00002 prompts=1000
+GEN_COMPLETE target=qwen4it output=results/rebuttal/instruct/continuations/qwen4it/common wall_seconds=796.8

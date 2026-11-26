@@ -228,13 +228,23 @@ def freeze_prompt_pool(
     return selected
 
 
-def load_prompt_pool(path: str | Path) -> list[dict[str, Any]]:
+def load_prompt_pool(
+    path: str | Path,
+    *,
+    allow_identical_raw_text_hashes: bool = False,
+) -> list[dict[str, Any]]:
     import pandas as pd
 
     frame = pd.read_parquet(path)
     rows = frame.to_dict(orient="records")
     if len({row["doc_id"] for row in rows}) != len(rows):
         raise AssertionError("frozen prompt pool contains duplicate doc_id")
-    if len({row["raw_text_hash"] for row in rows}) != len(rows):
-        raise AssertionError("frozen prompt pool contains duplicate raw_text_hash")
+    if frame["raw_text_hash"].duplicated().any():
+        if not allow_identical_raw_text_hashes:
+            raise AssertionError("frozen prompt pool contains duplicate raw_text_hash")
+        if "text" not in frame.columns:
+            raise AssertionError("duplicate raw_text_hash values require a text column for validation")
+        text_counts = frame.groupby("raw_text_hash", dropna=False)["text"].nunique(dropna=False)
+        if (text_counts > 1).any():
+            raise AssertionError("a raw_text_hash maps to different prompt text")
     return rows

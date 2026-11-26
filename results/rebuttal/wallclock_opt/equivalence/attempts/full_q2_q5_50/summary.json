@@ -1,0 +1,31 @@
+{
+  "task": "T7-b static compiled equivalence gate",
+  "pairs_requested": [
+    "Q2",
+    "Q5"
+  ],
+  "documents_requested_per_pair": 50,
+  "compile_modes_attempted": [
+    "reduce-overhead",
+    "default"
+  ],
+  "completed_pair": "Q2",
+  "stopped_at_policy": "target_only",
+  "dynamic_repeat_exact_match_rate": {
+    "target_only": 1.0
+  },
+  "static_vs_dynamic_exact_match_rate": {
+    "reduce-overhead": 0.66,
+    "default": 0.06
+  },
+  "target_forwards_equal_blocks": "not reached (target-only fails first)",
+  "equivalence_gate_pass": false,
+  "q5_gate_assessed": false,
+  "timing_started": false,
+  "source_log": "results/rebuttal/logs/t7_equivalence.log",
+  "model_revisions": {
+    "qwen06": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+    "qwen4": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+    "qwen8": "49e3418fbbbca6ecbdf9608b4d22e5a407081db4"
+  }
+}

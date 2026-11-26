@@ -1,0 +1,35 @@
+{
+  "results": [
+    {
+      "pair": "Q2",
+      "documents": 5,
+      "pool_indices": [
+        1,
+        3,
+        5,
+        7,
+        9
+      ],
+      "margin_threshold": 2.375,
+      "compile_mode": "default",
+      "dynamic_repeat_exact_match_rate": {
+        "target_only": 1.0
+      },
+      "static_vs_dynamic_exact_match_rate": {
+        "target_only": 1.0
+      },
+      "static_target_forwards_equal_blocks": {
+        "target_only": null
+      },
+      "static_mismatch_examples": {
+        "target_only": []
+      },
+      "target_forwards_gate_pass": true,
+      "equivalence_gate_pass": true,
+      "policies": [
+        "target_only"
+      ]
+    }
+  ],
+  "all_pass": true
+}

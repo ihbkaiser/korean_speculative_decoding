@@ -1,0 +1,15 @@
+SOURCE_BOUNDARY_AUDIT target=qwen4 {"audit_documents": 100, "positions_total": 12588, "special_token_positions_skipped": 3, "positions_with_valid_prefix": 11723, "valid_prefix_share": 0.9312837623133142, "positions_compared_to_alignment": 11723, "exact_offset_agreements": 11626, "agreement": 0.9917256674912565}
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 5523.75it/s]
+qwen4 judged by qwen4 shard 0:   0%|          | 0/25 [00:00<?, ?batch/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+qwen4 judged by qwen4 shard 0:   4%|▍         | 1/25 [00:01<00:24,  1.03s/batch]qwen4 judged by qwen4 shard 0:  16%|█▌        | 4/25 [00:02<00:11,  1.89batch/s]qwen4 judged by qwen4 shard 0:  28%|██▊       | 7/25 [00:03<00:08,  2.10batch/s]qwen4 judged by qwen4 shard 0:  40%|████      | 10/25 [00:04<00:06,  2.20batch/s]qwen4 judged by qwen4 shard 0:  52%|█████▏    | 13/25 [00:06<00:05,  2.27batch/s]qwen4 judged by qwen4 shard 0:  64%|██████▍   | 16/25 [00:07<00:03,  2.30batch/s]qwen4 judged by qwen4 shard 0:  76%|███████▌  | 19/25 [00:08<00:02,  2.33batch/s]qwen4 judged by qwen4 shard 0:  88%|████████▊ | 22/25 [00:09<00:01,  2.35batch/s]qwen4 judged by qwen4 shard 0: 100%|██████████| 25/25 [00:11<00:00,  2.35batch/s]qwen4 judged by qwen4 shard 0: 100%|██████████| 25/25 [00:11<00:00,  2.24batch/s]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen4 judge=qwen4 shard=00000 rows=47001
+CROSS_FAMILY_COMPLETE target=qwen4 judge=qwen4 output=/workspace/korean_speculative_decoding/results/rebuttal/cross_family/qwen4/qwen4
+Traceback (most recent call last):
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 547, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 542, in main
+    _self_gate(args.source_target[0], args.judge, args.max_prompts)
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 474, in _self_gate
+    raise RuntimeError(f"Same-model T6-b consistency gate failed: {result}")
+RuntimeError: Same-model T6-b consistency gate failed: {'source_target': 'qwen4', 'judge': 'qwen4', 'documents': 200, 'continuation_positions': 25179, 'canonical_prefix_positions': 23147, 'canonical_prefix_share': 0.9192978275547082, 'argmax_compared_positions': 23145, 'argmax_agreement': 0.9832361201123353}

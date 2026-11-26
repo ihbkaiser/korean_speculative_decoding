@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/verify_instruct_models.py", line 156, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/verify_instruct_models.py", line 105, in main
+    "no_thinking_prompt_suffix": rendered[len(rendered.rfind("<|im_start|>assistant\n") + len("<|im_start|>assistant\n")) :],
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: object of type 'int' has no len()

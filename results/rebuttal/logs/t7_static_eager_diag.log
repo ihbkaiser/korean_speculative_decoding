@@ -1,0 +1,4 @@
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/validate_static_compiled.py", line 88
+    result = _decode(model_rows, doc, policy, eos, mode, static=False)
+    ^^^^^^
+IndentationError: expected an indented block after 'for' statement on line 87

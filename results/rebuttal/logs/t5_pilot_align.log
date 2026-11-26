@@ -1,0 +1,3 @@
+qwen4it kiwi 0:   0%|          | 0/50 [00:00<?, ?prompt/s]qwen4it kiwi 0:   2%|▏         | 1/50 [00:01<00:57,  1.17s/prompt]qwen4it kiwi 0: 100%|██████████| 50/50 [00:01<00:00, 25.15prompt/s]
+ALIGN_SHARD_COMPLETE target=qwen4it analyzer=kiwi shard=00000 rows=5104
+ALIGN_COMPLETE target=qwen4it split=common analyzer=kiwi output=results/rebuttal/instruct_pilot/aligned/kiwi/qwen4it/common

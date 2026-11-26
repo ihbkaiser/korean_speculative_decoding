@@ -1,0 +1,12 @@
+Fetching 10 files:   0%|          | 0/10 [00:00<?, ?it/s]Fetching 10 files:  10%|█         | 1/10 [00:00<00:02,  3.13it/s]Fetching 10 files:  40%|████      | 4/10 [00:00<00:00,  9.10it/s]Fetching 10 files:  70%|███████   | 7/10 [00:00<00:00, 14.43it/s]Fetching 10 files: 100%|██████████| 10/10 [00:00<00:00, 17.83it/s]Fetching 10 files: 100%|██████████| 10/10 [00:00<00:00, 13.84it/s]
+Traceback (most recent call last):
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 528, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 488, in main
+    alignment = _read_alignment(target, args.max_prompts)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 205, in _read_alignment
+    if span and len(span) == 2:
+       ^^^^
+ValueError: The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()

@@ -1,0 +1,20 @@
+PROFILE_MODEL_START model=qwen06
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files:  11%|█         | 1/9 [00:00<00:03,  2.12it/s]Fetching 9 files:  78%|███████▊  | 7/9 [00:00<00:00, 15.50it/s]Fetching 9 files: 100%|██████████| 9/9 [00:01<00:00,  8.54it/s]
+STREAM_WEIGHT_START model=qwen06 shard=1/1 name=model.safetensors
+STREAM_WEIGHT_COMPLETE model=qwen06 shard=1/1
+USDT:2026-11-26 20:18:56 17443:17443 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-11-26 20:18:56 17443:17443 SyncActivityProfilerHandler.cpp:46] profiler_stop
+Traceback (most recent call last):
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/profile_forward_overhead.py", line 172, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/profile_forward_overhead.py", line 134, in main
+    wall_ms, gpu_ms, host_ms, _ = _measure(model, ids, past, args.repeats, args.warmup)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/profile_forward_overhead.py", line 86, in _measure
+    gpu_ms = sum(float(event.self_cuda_time_total) for event in events) / 1000.0
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/profile_forward_overhead.py", line 86, in <genexpr>
+    gpu_ms = sum(float(event.self_cuda_time_total) for event in events) / 1000.0
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'FunctionEventAvg' object has no attribute 'self_cuda_time_total'. Did you mean: 'self_cpu_time_total'?

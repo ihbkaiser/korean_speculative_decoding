@@ -1,0 +1,50 @@
+{
+  "temperature": 1.0,
+  "seed": 20261125,
+  "results": [
+    {
+      "target": "qwen4",
+      "documents": 2000,
+      "continuation_length_tokens": {
+        "min": 2,
+        "p10": 128.0,
+        "median": 128.0,
+        "mean": 127.07,
+        "p90": 128.0,
+        "max": 128
+      },
+      "eos_hit_rate": 0.016,
+      "hangul_share_by_document": {
+        "median": 0.4,
+        "p10": 0.28996174863387975
+      },
+      "sampled_target_mean_nll": null,
+      "target_mean_entropy": null,
+      "relative_nll_entropy_difference": null,
+      "unfiltered_sampling_gate_pass": null,
+      "hangul_median_gate_pass": false
+    },
+    {
+      "target": "qwen8",
+      "documents": 2000,
+      "continuation_length_tokens": {
+        "min": 9,
+        "p10": 128.0,
+        "median": 128.0,
+        "mean": 127.5125,
+        "p90": 128.0,
+        "max": 128
+      },
+      "eos_hit_rate": 0.0095,
+      "hangul_share_by_document": {
+        "median": 0.5428571428571428,
+        "p10": 0.4026758476422906
+      },
+      "sampled_target_mean_nll": null,
+      "target_mean_entropy": null,
+      "relative_nll_entropy_difference": null,
+      "unfiltered_sampling_gate_pass": null,
+      "hangul_median_gate_pass": false
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "stage": "teacher_forced_scoring",
+  "continuation": "generated",
+  "target_key": "qwen4it",
+  "target_id": "Qwen/Qwen3-4B",
+  "target_revision": "1cfa9a7208912126459214e8b04321603b3df60c",
+  "scored_model_key": "qwen4it",
+  "scored_model_id": "Qwen/Qwen3-4B",
+  "scored_model_revision": "1cfa9a7208912126459214e8b04321603b3df60c",
+  "role": "target",
+  "split": "common",
+  "prompt_count": 5000,
+  "prompt_ids_sha256": "7f9f0edc33d2f2f3293d2a110885326cf08bf454bba8eaa52656876905e49101",
+  "chunk_positions": 32,
+  "requested_batch_size": 32,
+  "dtype": "bfloat16",
+  "attention_backend": "sdpa",
+  "transformers": "5.19.0",
+  "torch": "2.14.1+cu132",
+  "gpu": "NVIDIA GeForce RTX 3090",
+  "model_path": "/dev/shm/naacl_models/Qwen--Qwen3-4B/1cfa9a7208912126459214e8b04321603b3df60c",
+  "prompt_pool_sha256": "30a1bee400f9e39d93d5c2e8f3b943a3ea4859ed60d58d0e8f2d3c249e557a9d",
+  "completed_shards": [
+    {
+      "shard": 0,
+      "prompt_count": 2000,
+      "scored_token_count": 193238,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        26,
+        28,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 108.31705909498851
+    },
+    {
+      "shard": 1,
+      "prompt_count": 2000,
+      "scored_token_count": 190630,
+      "actual_batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        23,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 106.81592318697949
+    },
+    {
+      "shard": 2,
+      "prompt_count": 1000,
+      "scored_token_count": 94218,
+      "actual_batch_sizes": [
+        1,
+        2,
+        12,
+        32
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0,
+      "wall_seconds": 53.254523471026914
+    }
+  ],
+  "status": "COMPLETE",
+  "gpu_runtime": {
+    "job": "teacher_forced_scoring",
+    "started_utc": "2026-11-26T19:48:47.545089+00:00",
+    "torch": "2.14.1+cu132",
+    "transformers": "5.19.0",
+    "torch_cuda_runtime": "13.2",
+    "cuda_available": true,
+    "gpu_name": "NVIDIA GeForce RTX 3090",
+    "nvidia_smi": "Thu Nov 26 19:48:47 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 595.99.02              Driver Version: 595.99.02      CUDA Version: 13.2     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  NVIDIA GeForce RTX 3090        On  |   00000000:25:00.0 Off |                  N/A |\n| 32%   58C    P2            176W /  350W |     346MiB /  24576MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|  No running processes found                                                             |\n+-----------------------------------------------------------------------------------------+\n",
+    "nvidia_smi_compute_apps": "3076797",
+    "details": {
+      "model": "qwen4it",
+      "target": "qwen4it",
+      "role": "target",
+      "split": "common"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "stage": "target_path_morphology_alignment",
+  "continuation": "generated",
+  "target_key": "qwen4it",
+  "revision": "1cfa9a7208912126459214e8b04321603b3df60c",
+  "split": "common",
+  "analyzer": "kiwi",
+  "prompt_count": 5000,
+  "requested_prompt_count": 5000,
+  "skipped_short_document_count": 0,
+  "completed_shards": [
+    {
+      "shard": 0,
+      "prompts": 2000,
+      "aligned_rows": 193238,
+      "resumed": false
+    },
+    {
+      "shard": 1,
+      "prompts": 2000,
+      "aligned_rows": 190630,
+      "resumed": false
+    },
+    {
+      "shard": 2,
+      "prompts": 1000,
+      "aligned_rows": 94218,
+      "resumed": false
+    }
+  ],
+  "status": "COMPLETE"
+}

@@ -1,0 +1,5 @@
+The first T5 full-run launcher stopped before generation after the pilot had evicted the instruction checkpoints.
+
+FileNotFoundError: Model snapshot is missing at /dev/shm/naacl_models/Qwen--Qwen3-4B/1cfa9a7208912126459214e8b04321603b3df60c. Run scripts/download_models.py first.
+
+No full-run rows were written. The pinned Qwen3-0.6B and Qwen3-4B instruction models were re-downloaded and smoke-tested; the chained full run then completed.

@@ -1,0 +1,13 @@
+{
+  "pair": "Q2",
+  "documents": 1,
+  "pool_indices": [
+    1
+  ],
+  "policy": "target_only",
+  "dynamic_repeat_exact_match_rate": 1.0,
+  "static_vs_dynamic_exact_match_rate": 1.0,
+  "static_mode": "eager",
+  "equivalence_gate_pass": true,
+  "source_log": "results/rebuttal/logs/t7_static_eager_diag_retry.log"
+}

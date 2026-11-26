@@ -6,10 +6,16 @@
 - **T2:** Expected rejection will concentrate at target decision points, but less than under greedy verification. After matching on target margin, morpheme-onset/internal should be in 0.85–1.15 and fused/split at or below 1.0; word onsets should retain a small excess of 1.13–1.25.
 - **T3:** Rescue rate will be higher at decision points than elsewhere. Branching only at draft decision points will keep most of the tokens-per-call gain of branching everywhere while using a minority of its extra verified nodes.
 - **T4:** Disagreement will fall in condition B relative to A at every position type. The disagreement-by-margin curves will nearly coincide, matched ratios will stay near 1 in every condition, and condition and condition-by-position coefficients will be near zero after margin-bin fixed effects.
+- **T0b:** The two CPU reruns will reproduce the supplied reference JSONs to the last reported digit: G1 morpheme/internal 1.34 raw, 1.33 after target-margin absolute-bin matching, and 0.96 after matching both margins; Q2 2.30 / 0.99 / 0.97; and 67.4% of Q2 rejections in the most-confident target-margin decile at target decision points.
+- **T6-a:** The character-offset join will be valid across the two model families. The human-text cross-family judge will yield AUC 0.714 for Qwen3 0.6B→4B judged by Ministral-8B and 0.725 for Ministral 3B→8B judged by Qwen3-8B; judge-margin matching will reduce the listed position-type ratios near the supplied reference values.
+- **T6-b:** On generated text, the cross-family judge margin will predict rejection with AUC at least 0.75 while the boundary label is at most 0.62. Judge-margin-matched morpheme/internal will be 0.85–1.15 and fused/split at most 1.00; word-onset/internal will retain a larger residual than the same-family judge (1.21–1.35), up to 1.45.
+- **T5:** The instruction-tuned Qwen pair will show target-margin AUC above 0.85 and boundary-label AUC at or below 0.62; after matching both margins, morpheme/internal will be 0.85–1.15, fused/split at or below 1.05, and word/internal at or below 1.30. Margin stopping will gain at least 8% tokens per target call over fixed k=4.
+- **T8:** On target-sampled text at temperature 1.0, target-margin-matched morpheme/internal will be 0.85–1.15, fused/split at most 1.00, and word/internal at most 1.30. Target decision points will hold at least 1.15 times their position share in expected-rejection mass, and expected rejection will fall monotonically across target-margin deciles.
+- **T7:** Static compiled decoding will reduce the measured 0.6B/4B and 0.6B/8B cost ratios below 0.40. Margin stopping will be at least 1.3× faster than target-only and 7% faster than the fastest fixed k on both pairs; fixed k=4 will beat target-only, and live tokens per target call will be within 2% of replay.
 
 ## Environment and baseline
 
-Work branch: `rebuttal/experiments`. GPU: NVIDIA RTX A6000, CUDA 12.8; one GPU was idle at inspection. `/workspace` is not a persistent volume. A Hugging Face token file is available at `/workspace/hf_token`; its contents are not recorded in logs or metadata and will be used only for authorized model downloads.
+Work branch: `rebuttal/experiments`. GPU: NVIDIA RTX A6000, CUDA 12.8; one GPU was idle at inspection. `/workspace` is not a persistent volume. A Hugging Face token file is available at `/workspace/hf_token`; its contents are not recorded in logs or metadata and will be used only for authorized model downloads. The round-2 GPU experiments (T5, T6-b, T8 and any T7 work) use the NVIDIA GeForce RTX 3090 with driver 595.99.02, CUDA 13.2, torch 2.14.1+cu132 and Transformers 5.19.0. Round-1 wall-clock results remain those collected on the RTX A6000; the two rounds are reported separately and are not treated as directly comparable timings.
 
 Baseline command: `/venv/main/bin/python -m pytest -q` — **136 passed** after installing the declared dependencies. The first baseline invocation used system `pytest` and failed collection because that interpreter lacked torch, SciPy, and pandas; the repository environment was then provisioned and the baseline rerun successfully.
 
@@ -34,6 +40,214 @@ The checkout does not contain `paper/scripts/build_decision_point_tables.py` or 
 The fixed-k extension changes only the parameter-ratio rows for the Gemma pairs: G2 improves from 4.718 at k≤8 to 5.628 at k≤16, with selected k=16; G1 improves from 2.196 to 2.211, with selected k=11. The other ten pairs have identical k≤8 and k≤16 values at their parameter-ratio setting. All five rerun JSONs match their bundled reference JSONs exactly, so there are no differences larger than the shown precision. Neither paper helper script for alternative position labels nor the paper stopping simulator exists in this checkout; labels remain the supplied alignment-based re-derivation, and the simulator curve comparison was not possible. The supplied CPU policy output does not persist its dev-selected threshold values; threshold selection was still performed on the even documents, but those exact values are not recoverable from its JSON artifact.
 
 **Prediction / outcome / verdict:** The supplied references were expected to reproduce; all five outputs match exactly — **held**. The Q2 replay gives 3.4508 tokens per target call at fixed k=4; the held-out margin rule reaches 4.0387, with a bootstrap gain of 17.04% [16.86%, 17.21%]. For Q5, the independent Qwen-4B margin predicts rejection better than the boundary label (AUC 0.886 vs 0.602), and the morpheme-onset/internal ratio falls from 2.21 raw to 0.96 after matching. However, Q2 word-onset/internal remains 1.27 after matching on the non-repeated subset, while fused/split is 0.95; the result therefore does not remove every position-type association.
+
+## T0b. CPU reference reruns
+
+**Commands:** `/venv/main/bin/python -I scripts/rebuttal/cpu/expD_uniform_matching.py` and `/venv/main/bin/python -I scripts/rebuttal/cpu/expD2_confident_strata.py`, run sequentially in tmux session `t0b_retry`. Logs are `results/rebuttal/logs/t0b_uniform_retry1.log` and `results/rebuttal/logs/t0b_confident.log`; outputs are under `results/rebuttal/cpu/`. The first launch stopped at import because pandas was absent. I installed the repository analysis dependencies into `/venv/main` and reran; both scripts then completed. This is a CPU-only analysis on the RTX 3090 instance (AMD EPYC 7543 host; 6 vCPUs allocated).
+
+| Pair / statistic | Measured | Reference | Difference |
+|---|---:|---:|---:|
+| G1 morpheme/internal, raw → target-margin absolute bins → both-margin absolute bins | 1.34 → 1.33 → 0.96 | 1.34 → 1.33 → 0.96 | 0 |
+| Q2 morpheme/internal, raw → target-margin absolute bins → both-margin absolute bins | 2.30 → 0.99 → 0.97 | 2.30 → 0.99 → 0.97 | 0 |
+| Q2 most-confident target-margin decile: rejections at target decision points | 67.4% | 67.4% | 0 pp |
+
+Both output JSONs match their bundled references exactly (`expD_uniform_matching.json`: 12 rows; `expD2_confident_strata.json`: 14 rows). The prediction was held: the G1 and Q2 ratios reproduce at the reported precision, and 67.4% of Q2 rejections in the most-confident decile occur at target decision points. There were no reference differences beyond the last digit. The only deviation was the fixed environment missing pandas on the first attempt; installing the declared analysis stack resolved it without changing the scripts or inputs.
+
+## T6-a. Cross-family margins on human text
+
+**Offset audit:** `scripts/align_morphology.py:_human_references` tokenizes the source document with `add_special_tokens=False`, then takes the first 128 IDs as the prompt and the following IDs as the continuation. `src/table1_morphology.py:_make_prompt_alignment_rows` concatenates and decodes those sequences; `token_ids_to_character_offsets` maps offsets over that full decoded text from character zero, and the function copies the spans directly into `global_token_char_span`. The human path adds no chat wrapper, so both families' sequences start from the document's first token. `tokenize_with_offsets` retains the tokenizer's returned offsets unchanged; whitespace is stripped only from the separate morphology core text, not from the global character span. The offset join is therefore comparable for the shared source documents.
+
+**Command:** `/venv/main/bin/python -I scripts/rebuttal/cpu/expE_crossfamily_human.py`, run on CPU in tmux session `t6a_human`; log `results/rebuttal/logs/t6a_crossfamily_human.log`. The script also computed supplementary rows for the other Qwen3 pairs from existing human logs; it downloaded no additional judges and never used Gemma human text.
+
+| Pair | Shared-offset positions / coverage | AUC cross-family judge [95% CI] | AUC target margin [95% CI] | AUC same-family outside judge [95% CI] | AUC boundary [95% CI] |
+|---|---:|---:|---:|---:|---:|
+| Qwen3 0.6B→4B; Ministral-8B judge | 791,819 / 67.6% | 0.714 [0.712, 0.715] | 0.782 [0.781, 0.784] | Qwen3-8B: 0.745 [0.744, 0.747] | 0.583 [0.582, 0.585] |
+| Ministral 3B→8B; Qwen3-8B judge | 799,662 / 70.5% | 0.725 [0.724, 0.727] | 0.817 [0.816, 0.819] | No third-party Ministral judge in the frozen human logs | 0.573 [0.572, 0.575] |
+
+| Pair / judge | Ratio | Raw | Judge-margin deciles, matched [95% CI] | Judge-margin absolute bins, matched [95% CI] |
+|---|---|---:|---:|---:|
+| Qwen3 0.6B→4B / Ministral-8B | Morpheme/internal | 1.47 | 1.03 [1.02, 1.04] | 1.02 [1.01, 1.03] |
+|  | Word/internal | 1.91 | 1.24 [1.22, 1.25] | 1.23 [1.22, 1.24] |
+|  | Fused/split | 1.08 | 0.91 [0.90, 0.92] | 0.91 [0.90, 0.92] |
+| Ministral 3B→8B / Qwen3-8B | Morpheme/internal | 1.54 | 0.92 [0.91, 0.93] | 0.92 [0.91, 0.93] |
+|  | Word/internal | 2.09 | 1.11 [1.10, 1.12] | 1.11 [1.10, 1.13] |
+|  | Fused/split | 1.14 | 1.00 [0.98, 1.01] | 1.00 [0.99, 1.01] |
+
+The prediction was held: the cross-family margins have AUCs 0.714 and 0.725, while the boundary-label AUCs are 0.583 and 0.573. Matching on the cross-family judge margin reduces morpheme/internal to 1.03 and 0.92, and fused/split to 0.91 and 1.00; the word/internal ratios remain 1.24 and 1.11. The offset coverage and all original point estimates match `reference_out/expE_crossfamily_human.json` exactly at the stored precision; the added 500-resample document-bootstrap intervals and absolute-bin ratios are in `results/rebuttal/cpu/expE_crossfamily_human.json`. There are no differences from the reference values beyond the last digit. The only scope limitation is that the frozen human logs contain no third-party Ministral judge for M1.
+
+## T6-b. Cross-family margins on generated text
+
+**Commands:** Self-consistency gate: `/venv/main/bin/python -I scripts/rebuttal/score_cross_family_judge.py --source-target qwen4 --judge qwen4 --max-prompts 200 --batch-size 32` (the gate used the final corrected top-20 target tie-break procedure). Main scoring used `/venv/main/bin/python -I scripts/rebuttal/score_cross_family_judge.py --source-target qwen4 qwen8 --judge ministral8 --max-prompts 5000 --batch-size 8` followed by the same scorer with `--source-target ministral8 --judge qwen8 --max-prompts 5000 --batch-size 8`; CPU analysis: `/venv/main/bin/python -I scripts/rebuttal/analyze_cross_family_judge.py --max-prompts 5000`. Logs are `results/rebuttal/logs/t6b_self_gate_batch32_top20.log`, `t6b_main_retry3.log`, and `t6b_analysis_same_family.log`. Output and per-run metadata are under `results/rebuttal/cross_family/`. GPU: NVIDIA GeForce RTX 3090, driver 595.99.02, CUDA 13.2; torch 2.14.1+cu132, Transformers 5.19.0. The image’s runtime differs from the objective’s torch 2.11 version; these results record the installed runtime.
+
+Pinned revisions: Qwen3-4B Base `906bfd4b4dc7f14ee4320094d8b41684abff8539`, Qwen3-8B Base `49e3418fbbbca6ecbdf9608b4d22e5a407081db4`, Ministral-3-8B Base `d4883f9b36aa2e5d775730d3fdba3d30de51a8ef`. The source-boundary audit compared tokenizer-decoded continuation starts with `global_token_char_span[0]` on 100 documents: Qwen4 11,626/11,723 (99.17%), Qwen8 11,667/11,690 (99.80%), and Ministral8 12,377/12,377 (100%); the scorer used alignment-table offsets when valid. On the 200-document self gate, 23,142/25,179 continuation positions (91.91%) had canonical re-tokenized prefixes; target argmax agreement there was 99.0148%, above the 98.5% threshold. All judge LM-head checks passed at scale 1 with zero max absolute error.
+
+| Pair | Joined coverage | Rejection all / joined | AUC cross-family judge | AUC target margin | AUC same-family judge | AUC boundary | Spearman target/judge |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Qwen3 0.6B→4B | 430,489/535,028 (80.46%) | 0.170/0.187 | 0.503 | 0.890 | 0.892 | 0.604 | 0.011 |
+| Qwen3 0.6B→8B | 429,972/536,089 (80.21%) | 0.193/0.212 | 0.502 | 0.874 | 0.879 | 0.605 | 0.008 |
+| Ministral 3B→8B | 512,461/529,609 (96.76%) | 0.121/0.124 | 0.526 | 0.913 | — | 0.589 | 0.065 |
+
+The following ratios use joined k=4 verified proposals. Intervals are 95% document-bootstrap CIs (500 resamples); matching uses deciles or `expD_lib.EDGES` absolute bins. “Same-family” is Qwen3-1.7B for Q2 and Qwen3-4B for Q5; there is no same-family outside judge for M1.
+
+| Pair | Ratio | Raw [95% CI] | Cross-family judge deciles [95% CI] | Cross-family judge absolute bins [95% CI] | Target margin deciles [95% CI] | Same-family deciles [95% CI] |
+|---|---|---:|---:|---:|---:|---:|
+| Q2 | morph/int | 2.119 [2.05, 2.20] | 2.119 [2.04, 2.20] | 2.120 [2.05, 2.19] | 0.994 [0.97, 1.02] | 0.985 [0.96, 1.01] |
+| Q2 | word/int | 3.189 [3.09, 3.29] | 3.190 [3.10, 3.30] | 3.190 [3.09, 3.31] | 1.219 [1.19, 1.25] | 1.206 [1.18, 1.23] |
+| Q2 | fused/split | 1.421 [1.37, 1.47] | 1.422 [1.37, 1.47] | 1.422 [1.37, 1.47] | 0.947 [0.92, 0.97] | 0.943 [0.92, 0.97] |
+| Q5 | morph/int | 2.017 [1.96, 2.09] | 2.017 [1.96, 2.08] | 2.017 [1.95, 2.09] | 0.972 [0.95, 0.99] | 0.963 [0.94, 0.98] |
+| Q5 | word/int | 3.060 [2.97, 3.15] | 3.060 [2.97, 3.16] | 3.060 [2.96, 3.17] | 1.205 [1.18, 1.23] | 1.189 [1.17, 1.22] |
+| Q5 | fused/split | 1.401 [1.36, 1.45] | 1.402 [1.36, 1.45] | 1.401 [1.36, 1.44] | 0.973 [0.95, 1.00] | 0.948 [0.93, 0.97] |
+| M1 | morph/int | 1.954 [1.88, 2.03] | 1.933 [1.86, 2.00] | 1.932 [1.86, 2.00] | 0.967 [0.94, 0.99] | — |
+| M1 | word/int | 3.029 [2.93, 3.15] | 2.990 [2.88, 3.10] | 2.987 [2.87, 3.10] | 1.195 [1.17, 1.22] | — |
+| M1 | fused/split | 1.526 [1.48, 1.58] | 1.522 [1.47, 1.57] | 1.517 [1.47, 1.57] | 0.947 [0.93, 0.97] | — |
+
+**Prediction / outcome / verdict:** The prediction was not held for judge-margin discrimination or for the two primary matched ratios. The cross-family judge AUCs are 0.504, 0.502, and 0.526, far below 0.75, while boundary-label AUCs are 0.604, 0.605, and 0.589 (under 0.62). Judge-margin matched morph/internal remains 2.119, 2.017, and 1.933; fused/split is 1.422, 1.402, and 1.522, all outside the predicted ranges. Target-margin matching brings these ratios near 1, and same-family judges do too for morph/internal and fused/split in Q2/Q5; word/internal stays higher (1.206 and 1.189 under same-family matching).
+
+This generated-text experiment therefore separates two claims: the boundary label remains a weak rejection predictor, but an unrelated-family margin is also a weak predictor and does not recover the target’s ranking. The strong target-margin AUCs (0.874–0.913) and same-family AUCs (0.879–0.892 on Q2/Q5) show that the weak cross-family result is not due to absent signal in the verified labels. The same-family word/internal point estimates (1.206 and 1.189) sit near or just below the anticipated 1.21 lower bound; their intervals [1.18, 1.23] and [1.17, 1.22] straddle it. Cross-family judge matching leaves the word/internal ratio essentially at its raw value. We kept the preregistered judge/pairs and did not retune; no Gemma or additional judges were used.
+
+
+## T5. Instruction-tuned Qwen pair
+
+**Prediction (recorded before the full run):** The instruction-tuned pair should retain target-margin AUC above 0.85 and boundary-label AUC at or below 0.62; after matching on both margins, morph/internal should be 0.85–1.15, fused/split at or below 1.05, and word/internal no higher than 1.30. If target decision points cover under 5% of positions, either-model low-margin positions should contain at least 65% of rejections. Margin stopping should gain at least 8% target calls over fixed k=4.
+
+**Models and prompt pool:** Qwen/Qwen3-0.6B (instruction-tuned) `c1899de289a04d12100db370d81485cdf75e47ca`; Qwen/Qwen3-4B `1cfa9a7208912126459214e8b04321603b3df60c`. Both model cards identify chat/instruction checkpoints; tokenizer configs provide a chat template accepting `enable_thinking=False`. The ten-prompt tokenizer audit found identical vocabularies and identical rendered/input IDs. `data/rebuttal_instruct_5000.parquet` freezes the first 5,000 Q2 source prompts (pool indices 0–4,999), rendered as a Korean continuation request. The prompts have 5,000 distinct document IDs and 4,994 distinct rendered hashes: six rows repeat an identical rendered prompt. The instruct config explicitly allows identical hashes only when the underlying text is identical; the shared pool loader remains strict by default. All prompts pass the <512-token and template-token-ID assertions. The 50-document pilot completed generation, target/draft teacher forcing, alignment and simulation; ten decoded continuations were reviewed, with no reasoning block or second chat turn.
+
+**Full commands:** `python -I scripts/gen_target.py --config configs/rebuttal_instruct.yaml --target qwen4it --split common --batch-size 48 --output-dir results/rebuttal/instruct`; `python -I scripts/tf_score.py --config configs/rebuttal_instruct.yaml --model qwen4it --target qwen4it --split common --role target --output-dir results/rebuttal/instruct`; the same `tf_score.py` command with `--model qwen06it --role draft`; `python -I scripts/align_morphology.py --config configs/rebuttal_instruct.yaml --target qwen4it --split common --output-dir results/rebuttal/instruct`; `python -I scripts/simulate_sd.py --config configs/rebuttal_instruct.yaml --pair IT_Q2 --split common --block-sizes 1 2 4 8 16 --output-dir results/rebuttal/instruct`; and `/venv/main/bin/python -I scripts/rebuttal/analyze_instruct.py --config configs/rebuttal_instruct.yaml --output-dir results/rebuttal/instruct/analysis`. The stages ran sequentially in tmux `t5_full` on the RTX 3090 (driver 595.99.02, CUDA 13.2, torch 2.14.1+cu132, Transformers 5.19.0); the full generation produced 5,000 rows in 796.8 seconds. Teacher-forced head checks passed at scale 1 with zero calibration error. Both instruction checkpoints were evicted after analysis; run logs and per-stage metadata are under `results/rebuttal/`.
+
+| Continuation quality / gate | Instruct | Base Q2, same 5,000 docs |
+|---|---:|---:|
+| Length tokens: min / p10 / median / mean / p90 / max | 2 / 25.0 / 114.0 / 95.6 / 128.0 / 128 | 1 / 128.0 / 128.0 / 124.1 / 128.0 / 128 |
+| EOS rate | 0.5966 | 0.0472 |
+| Hangul share median / p10 | 0.7188 / 0.6071 | 0.6750 / 0.4594 |
+| ALIGNED token share | 0.6741 | 0.7535 |
+| Repeated 4-gram rate | 0.0512 | 0.4279 |
+| Documents with ≥64 continuation tokens | 3,907/5,000 | 4,846/5,000 |
+
+Instruct reasoning-block documents: 0; documents with a second chat turn: 0; median Hangul-share gate (≥0.6): **pass**. The 64-token subset is reported separately below.
+
+| Pair / subset | Rejection | Target DP share / rejection mass | Lowest-20% rejection mass | AUC target / draft / boundary | Either margin <1: position share / rejection mass |
+|---|---:|---:|---:|---:|---:|
+| Instruct / all | 0.3808 | 0.1907 / 0.3782 | 0.4162 | 0.8446 / 0.8399 / 0.6233 | 0.3983 / 0.7390 |
+| Instruct / ≥64 tokens | 0.3828 | 0.1931 / 0.3803 | 0.4183 | 0.8437 / 0.8381 / 0.6234 | 0.4018 / 0.7405 |
+| Base Q2 / all | 0.1705 | 0.2252 / 0.7098 | 0.6571 | 0.8957 / 0.9103 / 0.5996 | 0.3114 / 0.9282 |
+| Base Q2 / ≥64 tokens | 0.1701 | 0.2248 / 0.7102 | 0.6574 | 0.8960 / 0.9105 / 0.5997 | 0.3109 / 0.9283 |
+
+Ratio values are document-bootstrap 95% CIs (500 resamples); matching uses absolute margin bins.
+
+| Pair / subset | Ratio | Raw [95% CI] | Target margin [95% CI] | Draft margin [95% CI] | Both margins [95% CI] |
+|---|---|---:|---:|---:|---:|
+| Instruct / all | Morpheme/internal | 2.187 [2.14, 2.24] | 1.153 [1.13, 1.17] | 1.087 [1.07, 1.10] | 1.002 [0.99, 1.01] |
+| Instruct / all | Word/internal | 3.228 [3.16, 3.29] | 1.499 [1.48, 1.52] | 1.543 [1.52, 1.56] | 1.300 [1.28, 1.32] |
+| Instruct / all | Fused/split | 1.474 [1.45, 1.50] | 0.962 [0.95, 0.98] | 0.941 [0.93, 0.96] | 0.880 [0.87, 0.89] |
+| Instruct / ≥64 tokens | Morpheme/internal | 2.181 [2.13, 2.23] | 1.150 [1.13, 1.17] | 1.086 [1.07, 1.10] | 1.000 [0.99, 1.01] |
+| Instruct / ≥64 tokens | Word/internal | 3.218 [3.15, 3.29] | 1.497 [1.47, 1.52] | 1.544 [1.52, 1.57] | 1.298 [1.28, 1.32] |
+| Instruct / ≥64 tokens | Fused/split | 1.466 [1.44, 1.49] | 0.960 [0.94, 0.98] | 0.940 [0.93, 0.95] | 0.878 [0.86, 0.89] |
+| Base Q2 / all | Morpheme/internal | 2.244 [2.18, 2.32] | 0.975 [0.95, 1.00] | 0.982 [0.96, 1.00] | 0.957 [0.94, 0.98] |
+| Base Q2 / all | Word/internal | 2.920 [2.83, 3.01] | 1.232 [1.21, 1.26] | 1.221 [1.20, 1.24] | 1.154 [1.13, 1.17] |
+| Base Q2 / all | Fused/split | 1.605 [1.55, 1.66] | 0.940 [0.92, 0.96] | 0.940 [0.92, 0.96] | 0.928 [0.91, 0.95] |
+| Base Q2 / ≥64 tokens | Morpheme/internal | 2.251 [2.18, 2.32] | 0.975 [0.95, 0.99] | 0.981 [0.96, 1.00] | 0.956 [0.94, 0.97] |
+| Base Q2 / ≥64 tokens | Word/internal | 2.926 [2.84, 3.01] | 1.231 [1.21, 1.26] | 1.219 [1.20, 1.24] | 1.152 [1.13, 1.18] |
+| Base Q2 / ≥64 tokens | Fused/split | 1.610 [1.56, 1.67] | 0.941 [0.91, 0.96] | 0.940 [0.91, 0.97] | 0.928 [0.91, 0.95] |
+
+Policy replay uses even pool indices for threshold selection and odd indices for evaluation; gains are relative to fixed k=4 with paired document-bootstrap 95% CIs (500 resamples).
+
+| Pair / subset | Policy | Threshold | Draft tokens/call | Tokens/call | Gain vs k=4 [95% CI]% |
+|---|---|---:|---:|---:|---:|
+| Instruct / all | fixed_k4 | — | 3.955 | 2.329 | 0.00 [0.00, 0.00] |
+| Instruct / all | entropy | -2.732 | 3.984 | 2.398 | 2.98 [2.60, 3.38] |
+| Instruct / all | top1_probability | -1.019 | 3.884 | 2.401 | 3.11 [2.72, 3.53] |
+| Instruct / all | margin | 0.75 | 3.815 | 2.370 | 1.79 [1.41, 2.19] |
+| Instruct / ≥64 tokens | fixed_k4 | — | 3.962 | 2.327 | 0.00 [0.00, 0.00] |
+| Instruct / ≥64 tokens | entropy | -2.749 | 3.989 | 2.389 | 2.67 [2.26, 3.07] |
+| Instruct / ≥64 tokens | top1_probability | -1.026 | 3.895 | 2.393 | 2.83 [2.46, 3.22] |
+| Instruct / ≥64 tokens | margin | 0.75 | 3.810 | 2.361 | 1.47 [1.08, 1.90] |
+| Base Q2 / all | fixed_k4 | — | 3.960 | 3.429 | 0.00 [0.00, 0.00] |
+| Base Q2 / all | entropy | -2.614 | 4.010 | 3.897 | 13.65 [12.66, 14.50] |
+| Base Q2 / all | top1_probability | -0.9017 | 3.860 | 3.949 | 15.19 [14.15, 16.30] |
+| Base Q2 / all | margin | 1 | 3.963 | 4.016 | 17.12 [16.05, 18.26] |
+| Base Q2 / ≥64 tokens | fixed_k4 | — | 3.961 | 3.432 | 0.00 [0.00, 0.00] |
+| Base Q2 / ≥64 tokens | entropy | -2.611 | 4.013 | 3.901 | 13.68 [12.85, 14.60] |
+| Base Q2 / ≥64 tokens | top1_probability | -0.8998 | 3.860 | 3.953 | 15.19 [14.17, 16.15] |
+| Base Q2 / ≥64 tokens | margin | 1 | 3.969 | 4.022 | 17.21 [16.11, 18.31] |
+
+**Prediction / outcome / verdict:** The all-document target-margin AUC is 0.8446, just below 0.85, and the boundary-label AUC is 0.6233, just above 0.62; both AUC predictions missed narrowly. Both-margin matched morpheme/internal (1.002) and fused/split (0.880) meet their ranges; word/internal is exactly 1.300 at the stated ceiling, with a 95% CI extending to 1.32. Target decision points cover 19.07% of positions, so the conditional prediction for pairs with under 5% decision points does not apply; positions where either margin is below 1 nat cover 39.83% of positions and contain 73.90% of rejections. Margin stopping gains 1.79% [1.41%, 2.19%] over fixed k=4, below the predicted 8%. Overall verdict: **partly held**—the position-type ratios largely disappear after matching both margins, while rejection discrimination and the expected adaptive-policy gain are weaker than predicted. Base Q2 on the same documents has target AUC 0.896, boundary AUC 0.600, matched ratios 0.957 / 1.154 / 0.928, and a 17.12% [16.05%, 18.26%] margin-policy gain. The instruct continuations also have much lower four-gram repetition (5.12% vs 42.79%) and lower aligned-token share (67.41% vs 75.35%) than base Q2. The only launch deviation was an initial pre-generation failure due to already-evicted weights; reloading resolved it, and the complete 5,000-document run was analyzed without a second pair or prompt setting.
+
+## T8. Speculative sampling on sampled text
+
+**Prediction (recorded before the run):** At temperature 1.0, target-margin-matched morph/internal should be 0.85–1.15, fused/split at most 1.00, word/internal at most 1.30; target decision points should carry at least 1.15 times their position share in expected-rejection mass; expected rejection should decrease monotonically over target-margin deciles.
+
+**Command and setup:** `bash scripts/rebuttal/run_t8_sampled.sh` in tmux `t8_sampled`. It ran `/venv/main/bin/python -I scripts/rebuttal/gen_target_sampled.py --target qwen4 --temperature 1.0 --max-prompts 2000 --batch-size 48 --output-root results/rebuttal/sampled_T1` and the same command with `--target qwen8`, followed by `/venv/main/bin/python -I scripts/rebuttal/analyze_sampled_gates.py --sampled-root results/rebuttal/sampled_T1 --language-only`. Both 2,000-document generations completed on the RTX 3090 (driver 595.99.02; CUDA 13.2; torch 2.14.1+cu132; Transformers 5.19.0). Revisions are Qwen3-4B-Base `906bfd4b4dc7f14ee4320094d8b41603b3df60c` and Qwen3-8B-Base `49e3418fbbbca6ecbdf9608b4d22e5a407081db4`. Sampling used seed 20261125 (per-shard seed = base seed + shard index), `do_sample=true`, temperature 1, `top_p=1.0`, `top_k=0` and the other truncation/filter controls disabled. Actual batch sizes, including OOM backoff, were 1, 2, 3, 4, 46, and 48 for both targets.
+
+The language gate ran before alignment or overlap scoring. Hangul share is calculated per decoded continuation document; the gate requires median ≥0.60.
+
+| Target / pair | Documents | Length tokens: min / p10 / median / mean / p90 / max | EOS rate | Hangul share: median / p10 | Korean gate |
+|---|---:|---|---:|---:|---|
+| Qwen3-4B / Q2 | 2,000 | 2 / 128 / 128 / 127.070 / 128 / 128 | 0.0160 | 0.4000 / 0.2900 | **Fail** |
+| Qwen3-8B / Q5 | 2,000 | 9 / 128 / 128 / 127.5125 / 128 / 128 | 0.0095 | 0.5429 / 0.4027 | **Fail** |
+
+The unfiltered-sampling check comparing sampled-token mean NLL to target mean entropy was **not run**: the prescribed Hangul gate failed for both pairs (median shares 0.4000 and 0.5429, both below 0.60), so the pipeline stopped before alignment, teacher-forced overlap scoring, and analysis. Length and EOS statistics are reported above; no acceptance or position-type estimates were produced.
+
+| Prediction component | Outcome |
+|---|---|
+| Target-margin-matched morph/internal in 0.85–1.15 | Not assessed; stopped at Korean gate |
+| Target-margin-matched fused/split ≤1.00 | Not assessed; stopped at Korean gate |
+| Target-margin-matched word/internal ≤1.30 | Not assessed; stopped at Korean gate |
+| Decision-point rejection-mass / position-share ratio ≥1.15 | Not assessed; stopped at Korean gate |
+| Expected rejection falls monotonically across target-margin deciles | Not assessed; stopped at Korean gate |
+
+**Outcome / verdict:** The sampled continuations fail the Korean-language quality gate for both required pairs, so T8 stops as specified and its speculative-acceptance predictions remain untested. The samples are heavily length-capped (median 128 tokens for both targets) and terminate with EOS on 1.60% of Qwen4 and 0.95% of Qwen8 documents. Although generation explicitly disabled top-k/top-p truncation, the empirical NLL-versus-entropy gate was not measured and is therefore not claimed to pass. No morphology alignment, overlap scoring, Q5 greedy comparator, T8 acceptance table, or optional temperature-0.7 run was produced; no language filter or prompt subset was introduced to rescue the gate.
+
+## T7. Wall-clock with per-call overhead removed
+
+The preregistered prediction is recorded above. T7-a completed; the Q2 static-compiled path failed the required target-only equivalence gate in both compile modes, so T7-c timing was not run.
+
+### T7-a. Forward-overhead diagnosis
+
+**Command:** `/venv/main/bin/python -I scripts/rebuttal/profile_forward_overhead.py --models qwen06 qwen4 qwen8 --output-dir results/rebuttal/wallclock_opt` (30 timed repeats and 8 warm-ups per operation). It used one fixed 128-token prompt and cached single-token, 5-token, and 17-token forwards. GPU: NVIDIA GeForce RTX 3090, driver 595.99.02, CUDA 13.2; torch 2.14.1+cu132 and Transformers 5.19.0. Host CPU: AMD EPYC 7543; `nproc` reports 6 CPUs available to the container (host-wide `lscpu` reports 128 logical CPUs). The GPU profiler sums only CUDA-device kernel events; host time is the synchronized median wall time minus that sum. Model layers and per-layer wall time are shown with each result.
+
+| Model | Operation | Layers | Wall ms | Wall ms/layer | GPU kernel ms | Host ms | Host share |
+|---|---|---:|---:|---:|---:|---:|---:|
+| Qwen3-0.6B | Cached 1 token | 28 | 22.19 | 0.792 | 5.50 | 16.69 | 75.2% |
+| Qwen3-0.6B | Verify 5 tokens | 28 | 33.85 | 1.209 | 6.90 | 26.95 | 79.6% |
+| Qwen3-0.6B | Verify 17 tokens | 28 | 32.92 | 1.176 | 7.81 | 25.10 | 76.3% |
+| Qwen3-4B | Cached 1 token | 36 | 37.60 | 1.045 | 14.83 | 22.78 | 60.6% |
+| Qwen3-4B | Verify 5 tokens | 36 | 43.59 | 1.211 | 16.27 | 27.31 | 62.7% |
+| Qwen3-4B | Verify 17 tokens | 36 | 44.46 | 1.235 | 17.54 | 26.92 | 60.5% |
+| Qwen3-8B | Cached 1 token | 36 | 39.73 | 1.104 | 23.39 | 16.34 | 41.1% |
+| Qwen3-8B | Verify 5 tokens | 36 | 45.47 | 1.263 | 24.85 | 20.63 | 45.4% |
+| Qwen3-8B | Verify 17 tokens | 36 | 44.50 | 1.236 | 28.08 | 16.43 | 36.9% |
+
+| Pair | Target verify tokens | Wall draft/target ratio | GPU-kernel draft/target ratio |
+|---|---:|---:|---:|
+| Q2 (0.6B→4B) | 5 | 0.509 | 0.338 |
+| Q2 (0.6B→4B) | 17 | 0.499 | 0.314 |
+| Q5 (0.6B→8B) | 5 | 0.488 | 0.221 |
+| Q5 (0.6B→8B) | 17 | 0.499 | 0.196 |
+
+The old wall-clock ratios remain near 0.50 for both target widths, but the profiler's kernel-only ratios fall to 0.314 for Q2 and 0.196 for Q5 at 17-token verification. The 0.6B path spends 76–80% of measured time outside GPU kernels; the corresponding shares are 61–63% for 4B and 37–45% for 8B. This supports a substantial host-side per-call cost, while also showing that it is smaller as a fraction of the 8B forward. Deviations: the first probe stopped because this PyTorch version uses `self_device_time_total`; a preliminary rerun double-counted CPU operators and CUDA kernel events. Both attempts are preserved in `results/rebuttal/logs/`; the reported CSV is from the corrected CUDA-event-only pass. The installed torch 2.14.1 differs from the plan's torch 2.11, while Transformers 5.19.0 matches.
+
+### T7-b. Static-cache compile gate and T7-c stop
+
+**Command:** `/venv/main/bin/python -I scripts/rebuttal/validate_static_compiled.py --pairs Q2 Q5 --documents 50`, run in tmux `t7_equivalence_retry`; log `results/rebuttal/logs/t7_equivalence.log`. It tried `torch.compile(mode="reduce-overhead")` first and automatically retried with `mode="default"` after the first failure. Both models use bfloat16 and SDPA on the same RTX 3090. Pinned revisions: Qwen3-0.6B `da87bfb608c14b7cf20ba1ce41287e8de496c0cd`, Qwen3-4B `906bfd4b4dc7f14ee4320094d8b41684abff8539`, and Qwen3-8B `49e3418fbbbca6ecbdf9608b4d22e5a407081db4`. The gate stopped on Q2 target-only, before fixed-k, margin, speculative forward-count checks, or Q5.
+
+| Pair / mode | Policy | Documents | Dynamic repeat exact | Static vs dynamic exact | `target_forwards == blocks` | Gate |
+|---|---|---:|---:|---:|---|---|
+| Q2 / reduce-overhead | Target-only | 50 | 1.000 | 0.660 | Not applicable | **Fail** |
+| Q2 / default fallback | Target-only | 50 | 1.000 | 0.060 | Not applicable | **Fail** |
+
+Short target-only diagnostics localized the discrepancy to the compiled path. On the first document (pool index 1), both eager static and compiled static matched dynamic exactly. On the first five documents (pool indices 1, 3, 5, 7, 9), eager static matched 5/5, while compiled static matched 3/5. The two compiled divergences began at token 11 for pool index 3 (dynamic ID 115, static ID 231) and token 15 for pool index 9 (dynamic ID 15, static ID 13); the 50-document default-mode run matched only 3/50. We did not measure logit margins at the divergence, so these are output mismatches without a claim that they are near-tie flips. Logs and per-attempt summaries/metadata are under `results/rebuttal/logs/t7_static_*` and `results/rebuttal/wallclock_opt/equivalence/attempts/`.
+
+| Preregistered T7 prediction component | Outcome |
+|---|---|
+| Optimized 0.6B/4B and 0.6B/8B cost ratios below 0.40 | Not assessed; equivalence gate failed |
+| Margin at least 1.3× faster than target-only on both pairs | Not assessed; no timing run |
+| Margin at least 7% faster than the fastest fixed k | Not assessed; no timing run |
+| Fixed k=4 faster than target-only | Not assessed; no timing run |
+| Live tokens per target call within 2% of replay | Not assessed; no timing run |
+
+**Prediction / outcome / verdict:** T7's overhead diagnosis is supported by T7-a: the measured wall ratios remain about 0.50, while kernel-only ratios fall to 0.314 (Q2) and 0.196 (Q5) for 17-token verification, with host overhead shares of 76.3% and 36.9% respectively. The optimized path did not pass equivalence: target-only exact match was 0.660 under `reduce-overhead` and 0.060 under `default`, against 1.000 dynamic repeat agreement. Eager static matched all five diagnostic documents, while compiled static matched three of five, which points to compiler-induced output differences on the checked examples; the cause of the full-set discrepancy remains unresolved. Because the gate failed, optimized latency, cost ratios, Q5 equivalence, speculative policies, and all T7-c predictions are unassessed; no timing was taken on a non-equivalent path. **Overall verdict: T7 prediction not held by the measured evidence; T7-c not completed.**
+
+**Deviations:** The installed torch is 2.14.1 rather than the plan's 2.11; Transformers 5.19.0 matches. The first gate invocation exposed a validator model-key bug, which was fixed before retrying. The main 50-document run completed both prescribed compile-mode attempts; short one- and five-document diagnostics were then used to isolate the failure. The shared metadata destination had been reused by those diagnostics, so per-attempt metadata was reconstructed from the saved logs and captured separately; this is marked in each `run_metadata.json`.
 
 ## T1. Wall-clock speed
 
@@ -355,4 +569,8 @@ For M1, copying the continuation reduces disagreement from 26.4% to 0.15%, while
 
 ## Deviations and limitations
 
-T1c was run for Q5, Q2, and the requested O4_G1_12 pair; no M1 timing pair is in the specified priority list. The optional O1 timing pair and sampled-continuation T2b extension were left out to finish and validate the required T0–T4 work; T5 was not started because the instructions say not to start it without a request. The T4 analyses use the alignment-derived position labels available in this checkout; the paper's label-building helper is absent. `analyze_copy_context.py` emitted Pandas join deprecation and statsmodels covariance specification warnings; the CSV outputs were written successfully. M1 scoring emitted the checkpoint's non-fatal tied-embedding mapping warning, and both models passed the condition-A consistency check. Gemma T2a's batch-2 run failed the exact median-margin gate; using the frozen batch size of 32 passed, after restoring the pinned weights. No Gemma human continuation was scored, as prohibited by the runbook.
+T1c was run for Q5, Q2, and the requested O4_G1_12 pair; no M1 timing pair is in the specified priority list. The optional O1 timing pair and sampled-continuation T2b extension from round 1 were not run. In round 2, T8 stopped at its Korean-language gate, and T7-c stopped before timing because static-compiled decoding failed equivalence. The T4 analyses use the alignment-derived position labels available in this checkout; the paper's label-building helper is absent. `analyze_copy_context.py` emitted Pandas join deprecation and statsmodels covariance specification warnings; the CSV outputs were written successfully. M1 scoring emitted the checkpoint's non-fatal tied-embedding mapping warning, and both models passed the condition-A consistency check. Gemma T2a's batch-2 run failed the exact median-margin gate; using the frozen batch size of 32 passed, after restoring the pinned weights. No Gemma human continuation was scored, as prohibited by the runbook.
+
+## Round 2 final validation
+
+`/venv/main/bin/python -I -m pytest -q` passed: **157 passed in 10.42 s**. `git diff --check` and `py_compile` over the modified and new Python modules also passed. The final test log is `results/rebuttal/logs/pytest_round2_final.log`.

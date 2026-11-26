@@ -1,0 +1,251 @@
+{
+  "stage": "cross_family_judge_scoring",
+  "source_target": "qwen8",
+  "judge": "ministral8",
+  "source_model_id": "Qwen/Qwen3-8B-Base",
+  "source_revision": "49e3418fbbbca6ecbdf9608b4d22e5a407081db4",
+  "judge_model_id": "mistralai/Ministral-3-8B-Base-2512",
+  "judge_revision": "d4883f9b36aa2e5d775730d3fdba3d30de51a8ef",
+  "split": "common",
+  "prompt_count": 5000,
+  "prompt_ids_sha256": "ab4e370f5d7d64f27e4f920dd54bd8570b17271c676b2317fe8def65aeaeceef",
+  "batch_size": 8,
+  "seed": 20261125,
+  "source_boundary_audit": {
+    "audit_documents": 100,
+    "positions_total": 12560,
+    "special_token_positions_skipped": 3,
+    "positions_with_valid_prefix": 11690,
+    "valid_prefix_share": 0.9307324840764332,
+    "positions_compared_to_alignment": 11690,
+    "exact_offset_agreements": 11667,
+    "agreement": 0.9980325064157399
+  },
+  "source_token_count": 616280,
+  "judge_token_count": 1070471,
+  "model_storage_mode": "streamed_shards_to_cpu",
+  "completed_shards": [
+    {
+      "shard": 0,
+      "document_count": 250,
+      "scored_position_count": 52746,
+      "actual_batch_sizes": [
+        2,
+        8
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0
+    },
+    {
+      "shard": 1,
+      "document_count": 250,
+      "scored_position_count": 52358,
+      "actual_batch_sizes": [
+        2,
+        8
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0
+    },
+    {
+      "shard": 2,
+      "document_count": 250,
+      "scored_position_count": 51641,
+      "actual_batch_sizes": [
+        2,
+        8
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0
+    },
+    {
+      "shard": 3,
+      "document_count": 250,
+      "scored_position_count": 52628,
+      "actual_batch_sizes": [
+        2,
+        8
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0
+    },
+    {
+      "shard": 4,
+      "document_count": 250,
+      "scored_position_count": 52941,
+      "actual_batch_sizes": [
+        2,
+        8
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0
+    },
+    {
+      "shard": 5,
+      "document_count": 250,
+      "scored_position_count": 52246,
+      "actual_batch_sizes": [
+        2,
+        8
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0
+    },
+    {
+      "shard": 6,
+      "document_count": 250,
+      "scored_position_count": 52020,
+      "actual_batch_sizes": [
+        2,
+        8
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0
+    },
+    {
+      "shard": 7,
+      "document_count": 250,
+      "scored_position_count": 52894,
+      "actual_batch_sizes": [
+        2,
+        8
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0
+    },
+    {
+      "shard": 8,
+      "document_count": 250,
+      "scored_position_count": 51868,
+      "actual_batch_sizes": [
+        2,
+        8
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0
+    },
+    {
+      "shard": 9,
+      "document_count": 250,
+      "scored_position_count": 52331,
+      "actual_batch_sizes": [
+        2,
+        8
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0
+    },
+    {
+      "shard": 10,
+      "document_count": 250,
+      "scored_position_count": 52806,
+      "actual_batch_sizes": [
+        2,
+        8
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0
+    },
+    {
+      "shard": 11,
+      "document_count": 250,
+      "scored_position_count": 52277,
+      "actual_batch_sizes": [
+        2,
+        8
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0
+    },
+    {
+      "shard": 12,
+      "document_count": 250,
+      "scored_position_count": 52387,
+      "actual_batch_sizes": [
+        2,
+        8
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0
+    },
+    {
+      "shard": 13,
+      "document_count": 250,
+      "scored_position_count": 52505,
+      "actual_batch_sizes": [
+        2,
+        8
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0
+    },
+    {
+      "shard": 14,
+      "document_count": 250,
+      "scored_position_count": 51253,
+      "actual_batch_sizes": [
+        2,
+        8
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0
+    },
+    {
+      "shard": 15,
+      "document_count": 250,
+      "scored_position_count": 52897,
+      "actual_batch_sizes": [
+        2,
+        8
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0
+    },
+    {
+      "shard": 16,
+      "document_count": 250,
+      "scored_position_count": 51533,
+      "actual_batch_sizes": [
+        2,
+        8
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0
+    },
+    {
+      "shard": 17,
+      "document_count": 250,
+      "scored_position_count": 52335,
+      "actual_batch_sizes": [
+        2,
+        8
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0
+    },
+    {
+      "shard": 18,
+      "document_count": 250,
+      "scored_position_count": 52692,
+      "actual_batch_sizes": [
+        2,
+        8
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0
+    },
+    {
+      "shard": 19,
+      "document_count": 250,
+      "scored_position_count": 52391,
+      "actual_batch_sizes": [
+        2,
+        8
+      ],
+      "head_scale": 1.0,
+      "head_check_max_abs_error": 0.0
+    }
+  ],
+  "status": "COMPLETE",
+  "judge_snapshot": "/dev/shm/cross_family_models/mistralai--Ministral-3-8B-Base-2512/d4883f9b36aa2e5d775730d3fdba3d30de51a8ef"
+}

@@ -1,0 +1,15 @@
+SOURCE_BOUNDARY_AUDIT target=qwen4 {"audit_documents": 100, "positions_total": 12588, "special_token_positions_skipped": 3, "positions_with_valid_prefix": 11723, "valid_prefix_share": 0.9312837623133142, "positions_compared_to_alignment": 11723, "exact_offset_agreements": 11626, "agreement": 0.9917256674912565}
+Loading weights:   0%|          | 0/398 [00:00<?, ?it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 7194.56it/s]
+qwen4 judged by qwen4 shard 0:   0%|          | 0/7 [00:00<?, ?batch/s]TF_HEAD_CHECK_OK scale=1 max_abs_error=0
+qwen4 judged by qwen4 shard 0:  14%|█▍        | 1/7 [00:02<00:13,  2.19s/batch]qwen4 judged by qwen4 shard 0:  29%|██▊       | 2/7 [00:03<00:09,  1.88s/batch]qwen4 judged by qwen4 shard 0:  43%|████▎     | 3/7 [00:05<00:07,  1.77s/batch]qwen4 judged by qwen4 shard 0:  57%|█████▋    | 4/7 [00:07<00:05,  1.71s/batch]qwen4 judged by qwen4 shard 0:  71%|███████▏  | 5/7 [00:08<00:03,  1.70s/batch]qwen4 judged by qwen4 shard 0:  86%|████████▌ | 6/7 [00:10<00:01,  1.68s/batch]qwen4 judged by qwen4 shard 0: 100%|██████████| 7/7 [00:10<00:00,  1.55s/batch]
+CROSS_FAMILY_SHARD_COMPLETE target=qwen4 judge=qwen4 shard=00000 rows=47001
+CROSS_FAMILY_COMPLETE target=qwen4 judge=qwen4 output=/workspace/korean_speculative_decoding/results/rebuttal/cross_family_attempts/gate_batch32/qwen4/qwen4
+Traceback (most recent call last):
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 548, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 543, in main
+    _self_gate(args.source_target[0], args.judge, args.max_prompts)
+  File "/workspace/korean_speculative_decoding/scripts/rebuttal/score_cross_family_judge.py", line 475, in _self_gate
+    raise RuntimeError(f"Same-model T6-b consistency gate failed: {result}")
+RuntimeError: Same-model T6-b consistency gate failed: {'source_target': 'qwen4', 'judge': 'qwen4', 'documents': 200, 'continuation_positions': 25179, 'canonical_prefix_positions': 23142, 'canonical_prefix_share': 0.9190992493744787, 'argmax_compared_positions': 23142, 'argmax_agreement': 0.9834067928441794}

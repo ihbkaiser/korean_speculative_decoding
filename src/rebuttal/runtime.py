@@ -15,6 +15,7 @@ def write_gpu_metadata(
     job: str,
     details: dict[str, Any] | None = None,
     require_idle: bool = False,
+    merge_existing: bool = False,
 ) -> dict[str, Any]:
     """Capture package/GPU state and the literal nvidia-smi output before work starts."""
     import torch
@@ -43,7 +44,14 @@ def write_gpu_metadata(
     }
     path = Path(destination)
     path.parent.mkdir(parents=True, exist_ok=True)
+    payload: dict[str, Any] = metadata
+    if merge_existing and path.exists():
+        existing = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(existing, dict):
+            raise ValueError(f"Cannot merge GPU metadata into non-object JSON: {path}")
+        existing["gpu_runtime"] = metadata
+        payload = existing
     temporary = path.with_name(path.name + ".tmp")
-    temporary.write_text(json.dumps(metadata, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    temporary.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     temporary.replace(path)
     return metadata

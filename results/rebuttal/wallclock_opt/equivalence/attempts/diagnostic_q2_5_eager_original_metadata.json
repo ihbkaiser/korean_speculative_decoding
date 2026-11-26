@@ -1,0 +1,23 @@
+{
+  "job": "static_compiled_equivalence",
+  "started_utc": "2026-11-26T23:08:59.968988+00:00",
+  "torch": "2.14.1+cu132",
+  "transformers": "5.19.0",
+  "torch_cuda_runtime": "13.2",
+  "cuda_available": true,
+  "gpu_name": "NVIDIA GeForce RTX 3090",
+  "nvidia_smi": "Thu Nov 26 23:08:59 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 595.99.02              Driver Version: 595.99.02      CUDA Version: 13.2     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  NVIDIA GeForce RTX 3090        On  |   00000000:25:00.0 Off |                  N/A |\n| 30%   32C    P8             19W /  350W |       1MiB /  24576MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|  No running processes found                                                             |\n+-----------------------------------------------------------------------------------------+\n",
+  "nvidia_smi_compute_apps": "",
+  "details": {
+    "pairs": [
+      "Q2"
+    ],
+    "documents": 5,
+    "compile_mode": "default",
+    "model_revisions": {
+      "qwen06": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+      "qwen4": "906bfd4b4dc7f14ee4320094d8b41684abff8539",
+      "qwen8": "49e3418fbbbca6ecbdf9608b4d22e5a407081db4"
+    }
+  }
+}

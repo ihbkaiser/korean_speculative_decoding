@@ -1,0 +1,758 @@
+[
+ {
+  "pair": "Q1",
+  "rej%": 13.23,
+  "share of positions in lowest target decile with margin<1": 1.0,
+  "share of rejections in lowest target decile": 0.445,
+  "target-margin range of lowest decile (nats)": [
+   0.0,
+   0.38
+  ],
+  "raw": {
+   "morph/int": 2.34,
+   "word/int": 3.03,
+   "fused/split": 1.67
+  },
+  "target deciles": {
+   "morph/int": 1.0,
+   "morph/int coverage": 1.0,
+   "word/int": 1.22,
+   "word/int coverage": 1.0,
+   "fused/split": 0.96,
+   "fused/split coverage": 1.0
+  },
+  "target abs bins": {
+   "morph/int": 1.0,
+   "morph/int coverage": 1.0,
+   "word/int": 1.23,
+   "word/int coverage": 1.0,
+   "fused/split": 0.96,
+   "fused/split coverage": 1.0
+  },
+  "draft deciles": {
+   "morph/int": 1.0,
+   "morph/int coverage": 1.0,
+   "word/int": 1.22,
+   "word/int coverage": 1.0,
+   "fused/split": 0.95,
+   "fused/split coverage": 1.0
+  },
+  "draft abs bins": {
+   "morph/int": 1.01,
+   "morph/int coverage": 1.0,
+   "word/int": 1.22,
+   "word/int coverage": 1.0,
+   "fused/split": 0.95,
+   "fused/split coverage": 1.0
+  },
+  "both deciles": {
+   "morph/int": 0.98,
+   "morph/int coverage": 1.0,
+   "word/int": 1.15,
+   "word/int coverage": 1.0,
+   "fused/split": 0.94,
+   "fused/split coverage": 1.0
+  },
+  "both abs bins": {
+   "morph/int": 0.99,
+   "morph/int coverage": 1.0,
+   "word/int": 1.16,
+   "word/int coverage": 1.0,
+   "fused/split": 0.95,
+   "fused/split coverage": 1.0
+  }
+ },
+ {
+  "pair": "Q2",
+  "rej%": 16.84,
+  "share of positions in lowest target decile with margin<1": 1.0,
+  "share of rejections in lowest target decile": 0.372,
+  "target-margin range of lowest decile (nats)": [
+   0.0,
+   0.38
+  ],
+  "raw": {
+   "morph/int": 2.3,
+   "word/int": 3.02,
+   "fused/split": 1.62
+  },
+  "target deciles": {
+   "morph/int": 0.99,
+   "morph/int coverage": 1.0,
+   "word/int": 1.26,
+   "word/int coverage": 1.0,
+   "fused/split": 0.94,
+   "fused/split coverage": 1.0
+  },
+  "target abs bins": {
+   "morph/int": 0.99,
+   "morph/int coverage": 1.0,
+   "word/int": 1.26,
+   "word/int coverage": 1.0,
+   "fused/split": 0.94,
+   "fused/split coverage": 1.0
+  },
+  "draft deciles": {
+   "morph/int": 0.99,
+   "morph/int coverage": 1.0,
+   "word/int": 1.24,
+   "word/int coverage": 1.0,
+   "fused/split": 0.94,
+   "fused/split coverage": 1.0
+  },
+  "draft abs bins": {
+   "morph/int": 0.99,
+   "morph/int coverage": 1.0,
+   "word/int": 1.24,
+   "word/int coverage": 1.0,
+   "fused/split": 0.94,
+   "fused/split coverage": 1.0
+  },
+  "both deciles": {
+   "morph/int": 0.96,
+   "morph/int coverage": 1.0,
+   "word/int": 1.16,
+   "word/int coverage": 1.0,
+   "fused/split": 0.93,
+   "fused/split coverage": 1.0
+  },
+  "both abs bins": {
+   "morph/int": 0.97,
+   "morph/int coverage": 1.0,
+   "word/int": 1.17,
+   "word/int coverage": 1.0,
+   "fused/split": 0.93,
+   "fused/split coverage": 1.0
+  }
+ },
+ {
+  "pair": "Q4",
+  "rej%": 13.16,
+  "share of positions in lowest target decile with margin<1": 1.0,
+  "share of rejections in lowest target decile": 0.439,
+  "target-margin range of lowest decile (nats)": [
+   0.0,
+   0.38
+  ],
+  "raw": {
+   "morph/int": 2.37,
+   "word/int": 3.18,
+   "fused/split": 1.53
+  },
+  "target deciles": {
+   "morph/int": 0.97,
+   "morph/int coverage": 1.0,
+   "word/int": 1.23,
+   "word/int coverage": 1.0,
+   "fused/split": 0.89,
+   "fused/split coverage": 1.0
+  },
+  "target abs bins": {
+   "morph/int": 0.98,
+   "morph/int coverage": 1.0,
+   "word/int": 1.24,
+   "word/int coverage": 1.0,
+   "fused/split": 0.89,
+   "fused/split coverage": 1.0
+  },
+  "draft deciles": {
+   "morph/int": 0.97,
+   "morph/int coverage": 1.0,
+   "word/int": 1.21,
+   "word/int coverage": 1.0,
+   "fused/split": 0.89,
+   "fused/split coverage": 1.0
+  },
+  "draft abs bins": {
+   "morph/int": 0.98,
+   "morph/int coverage": 1.0,
+   "word/int": 1.22,
+   "word/int coverage": 1.0,
+   "fused/split": 0.89,
+   "fused/split coverage": 1.0
+  },
+  "both deciles": {
+   "morph/int": 0.96,
+   "morph/int coverage": 1.0,
+   "word/int": 1.16,
+   "word/int coverage": 1.0,
+   "fused/split": 0.89,
+   "fused/split coverage": 1.0
+  },
+  "both abs bins": {
+   "morph/int": 0.97,
+   "morph/int coverage": 1.0,
+   "word/int": 1.17,
+   "word/int coverage": 1.0,
+   "fused/split": 0.89,
+   "fused/split coverage": 1.0
+  }
+ },
+ {
+  "pair": "Q5",
+  "rej%": 19.07,
+  "share of positions in lowest target decile with margin<1": 1.0,
+  "share of rejections in lowest target decile": 0.336,
+  "target-margin range of lowest decile (nats)": [
+   0.0,
+   0.38
+  ],
+  "raw": {
+   "morph/int": 2.21,
+   "word/int": 2.93,
+   "fused/split": 1.58
+  },
+  "target deciles": {
+   "morph/int": 0.96,
+   "morph/int coverage": 1.0,
+   "word/int": 1.25,
+   "word/int coverage": 1.0,
+   "fused/split": 0.95,
+   "fused/split coverage": 1.0
+  },
+  "target abs bins": {
+   "morph/int": 0.97,
+   "morph/int coverage": 1.0,
+   "word/int": 1.25,
+   "word/int coverage": 1.0,
+   "fused/split": 0.95,
+   "fused/split coverage": 1.0
+  },
+  "draft deciles": {
+   "morph/int": 0.98,
+   "morph/int coverage": 1.0,
+   "word/int": 1.24,
+   "word/int coverage": 1.0,
+   "fused/split": 0.94,
+   "fused/split coverage": 1.0
+  },
+  "draft abs bins": {
+   "morph/int": 0.99,
+   "morph/int coverage": 1.0,
+   "word/int": 1.24,
+   "word/int coverage": 1.0,
+   "fused/split": 0.94,
+   "fused/split coverage": 1.0
+  },
+  "both deciles": {
+   "morph/int": 0.94,
+   "morph/int coverage": 1.0,
+   "word/int": 1.15,
+   "word/int coverage": 1.0,
+   "fused/split": 0.93,
+   "fused/split coverage": 1.0
+  },
+  "both abs bins": {
+   "morph/int": 0.95,
+   "morph/int coverage": 1.0,
+   "word/int": 1.15,
+   "word/int coverage": 1.0,
+   "fused/split": 0.93,
+   "fused/split coverage": 1.0
+  }
+ },
+ {
+  "pair": "Q6",
+  "rej%": 14.92,
+  "share of positions in lowest target decile with margin<1": 1.0,
+  "share of rejections in lowest target decile": 0.4,
+  "target-margin range of lowest decile (nats)": [
+   0.0,
+   0.38
+  ],
+  "raw": {
+   "morph/int": 2.3,
+   "word/int": 3.11,
+   "fused/split": 1.48
+  },
+  "target deciles": {
+   "morph/int": 0.94,
+   "morph/int coverage": 1.0,
+   "word/int": 1.21,
+   "word/int coverage": 1.0,
+   "fused/split": 0.88,
+   "fused/split coverage": 1.0
+  },
+  "target abs bins": {
+   "morph/int": 0.95,
+   "morph/int coverage": 1.0,
+   "word/int": 1.22,
+   "word/int coverage": 1.0,
+   "fused/split": 0.88,
+   "fused/split coverage": 1.0
+  },
+  "draft deciles": {
+   "morph/int": 0.96,
+   "morph/int coverage": 1.0,
+   "word/int": 1.21,
+   "word/int coverage": 1.0,
+   "fused/split": 0.87,
+   "fused/split coverage": 1.0
+  },
+  "draft abs bins": {
+   "morph/int": 0.96,
+   "morph/int coverage": 1.0,
+   "word/int": 1.21,
+   "word/int coverage": 1.0,
+   "fused/split": 0.87,
+   "fused/split coverage": 1.0
+  },
+  "both deciles": {
+   "morph/int": 0.93,
+   "morph/int coverage": 1.0,
+   "word/int": 1.14,
+   "word/int coverage": 1.0,
+   "fused/split": 0.88,
+   "fused/split coverage": 1.0
+  },
+  "both abs bins": {
+   "morph/int": 0.94,
+   "morph/int coverage": 1.0,
+   "word/int": 1.15,
+   "word/int coverage": 1.0,
+   "fused/split": 0.88,
+   "fused/split coverage": 1.0
+  }
+ },
+ {
+  "pair": "Q3",
+  "rej%": 11.63,
+  "share of positions in lowest target decile with margin<1": 1.0,
+  "share of rejections in lowest target decile": 0.472,
+  "target-margin range of lowest decile (nats)": [
+   0.0,
+   0.38
+  ],
+  "raw": {
+   "morph/int": 2.21,
+   "word/int": 3.06,
+   "fused/split": 1.4
+  },
+  "target deciles": {
+   "morph/int": 0.88,
+   "morph/int coverage": 1.0,
+   "word/int": 1.13,
+   "word/int coverage": 1.0,
+   "fused/split": 0.83,
+   "fused/split coverage": 1.0
+  },
+  "target abs bins": {
+   "morph/int": 0.89,
+   "morph/int coverage": 1.0,
+   "word/int": 1.14,
+   "word/int coverage": 1.0,
+   "fused/split": 0.83,
+   "fused/split coverage": 1.0
+  },
+  "draft deciles": {
+   "morph/int": 0.9,
+   "morph/int coverage": 1.0,
+   "word/int": 1.13,
+   "word/int coverage": 1.0,
+   "fused/split": 0.82,
+   "fused/split coverage": 1.0
+  },
+  "draft abs bins": {
+   "morph/int": 0.91,
+   "morph/int coverage": 1.0,
+   "word/int": 1.14,
+   "word/int coverage": 1.0,
+   "fused/split": 0.82,
+   "fused/split coverage": 1.0
+  },
+  "both deciles": {
+   "morph/int": 0.89,
+   "morph/int coverage": 1.0,
+   "word/int": 1.09,
+   "word/int coverage": 1.0,
+   "fused/split": 0.83,
+   "fused/split coverage": 1.0
+  },
+  "both abs bins": {
+   "morph/int": 0.9,
+   "morph/int coverage": 1.0,
+   "word/int": 1.1,
+   "word/int coverage": 1.0,
+   "fused/split": 0.84,
+   "fused/split coverage": 1.0
+  }
+ },
+ {
+  "pair": "G2",
+  "rej%": 2.22,
+  "share of positions in lowest target decile with margin<1": 0.104,
+  "share of rejections in lowest target decile": 0.781,
+  "target-margin range of lowest decile (nats)": [
+   0.0,
+   4.25
+  ],
+  "raw": {
+   "morph/int": 1.62,
+   "word/int": 3.7,
+   "fused/split": 1.0
+  },
+  "target deciles": {
+   "morph/int": 1.45,
+   "morph/int coverage": 1.0,
+   "word/int": 1.72,
+   "word/int coverage": 1.0,
+   "fused/split": 0.55,
+   "fused/split coverage": 1.0
+  },
+  "target abs bins": {
+   "morph/int": 1.53,
+   "morph/int coverage": 1.0,
+   "word/int": 1.79,
+   "word/int coverage": 1.0,
+   "fused/split": 0.71,
+   "fused/split coverage": 1.0
+  },
+  "draft deciles": {
+   "morph/int": 0.76,
+   "morph/int coverage": 1.0,
+   "word/int": 1.24,
+   "word/int coverage": 1.0,
+   "fused/split": 0.49,
+   "fused/split coverage": 1.0
+  },
+  "draft abs bins": {
+   "morph/int": 0.79,
+   "morph/int coverage": 1.0,
+   "word/int": 1.07,
+   "word/int coverage": 1.0,
+   "fused/split": 0.62,
+   "fused/split coverage": 1.0
+  },
+  "both deciles": {
+   "morph/int": 0.84,
+   "morph/int coverage": 1.0,
+   "word/int": 1.0,
+   "word/int coverage": 1.0,
+   "fused/split": 0.48,
+   "fused/split coverage": 1.0
+  },
+  "both abs bins": {
+   "morph/int": 0.92,
+   "morph/int coverage": 1.0,
+   "word/int": 1.02,
+   "word/int coverage": 1.0,
+   "fused/split": 0.69,
+   "fused/split coverage": 1.0
+  }
+ },
+ {
+  "pair": "G1",
+  "rej%": 1.88,
+  "share of positions in lowest target decile with margin<1": 0.104,
+  "share of rejections in lowest target decile": 0.822,
+  "target-margin range of lowest decile (nats)": [
+   0.0,
+   4.25
+  ],
+  "raw": {
+   "morph/int": 1.34,
+   "word/int": 3.41,
+   "fused/split": 0.88
+  },
+  "target deciles": {
+   "morph/int": 1.24,
+   "morph/int coverage": 1.0,
+   "word/int": 1.59,
+   "word/int coverage": 1.0,
+   "fused/split": 0.49,
+   "fused/split coverage": 1.0
+  },
+  "target abs bins": {
+   "morph/int": 1.33,
+   "morph/int coverage": 1.0,
+   "word/int": 1.65,
+   "word/int coverage": 1.0,
+   "fused/split": 0.65,
+   "fused/split coverage": 1.0
+  },
+  "draft deciles": {
+   "morph/int": 0.86,
+   "morph/int coverage": 1.0,
+   "word/int": 1.28,
+   "word/int coverage": 1.0,
+   "fused/split": 0.49,
+   "fused/split coverage": 1.0
+  },
+  "draft abs bins": {
+   "morph/int": 0.89,
+   "morph/int coverage": 1.0,
+   "word/int": 1.13,
+   "word/int coverage": 1.0,
+   "fused/split": 0.66,
+   "fused/split coverage": 1.0
+  },
+  "both deciles": {
+   "morph/int": 0.86,
+   "morph/int coverage": 1.0,
+   "word/int": 1.01,
+   "word/int coverage": 1.0,
+   "fused/split": 0.45,
+   "fused/split coverage": 1.0
+  },
+  "both abs bins": {
+   "morph/int": 0.96,
+   "morph/int coverage": 1.0,
+   "word/int": 1.07,
+   "word/int coverage": 1.0,
+   "fused/split": 0.7,
+   "fused/split coverage": 1.0
+  }
+ },
+ {
+  "pair": "M1",
+  "rej%": 12.05,
+  "share of positions in lowest target decile with margin<1": 1.0,
+  "share of rejections in lowest target decile": 0.464,
+  "target-margin range of lowest decile (nats)": [
+   0.0,
+   0.31
+  ],
+  "raw": {
+   "morph/int": 2.01,
+   "word/int": 3.15,
+   "fused/split": 1.55
+  },
+  "target deciles": {
+   "morph/int": 0.96,
+   "morph/int coverage": 1.0,
+   "word/int": 1.21,
+   "word/int coverage": 1.0,
+   "fused/split": 0.94,
+   "fused/split coverage": 1.0
+  },
+  "target abs bins": {
+   "morph/int": 0.96,
+   "morph/int coverage": 1.0,
+   "word/int": 1.2,
+   "word/int coverage": 1.0,
+   "fused/split": 0.95,
+   "fused/split coverage": 1.0
+  },
+  "draft deciles": {
+   "morph/int": 0.95,
+   "morph/int coverage": 1.0,
+   "word/int": 1.2,
+   "word/int coverage": 1.0,
+   "fused/split": 0.93,
+   "fused/split coverage": 1.0
+  },
+  "draft abs bins": {
+   "morph/int": 0.95,
+   "morph/int coverage": 1.0,
+   "word/int": 1.19,
+   "word/int coverage": 1.0,
+   "fused/split": 0.93,
+   "fused/split coverage": 1.0
+  },
+  "both deciles": {
+   "morph/int": 0.96,
+   "morph/int coverage": 1.0,
+   "word/int": 1.14,
+   "word/int coverage": 1.0,
+   "fused/split": 0.93,
+   "fused/split coverage": 1.0
+  },
+  "both abs bins": {
+   "morph/int": 0.95,
+   "morph/int coverage": 1.0,
+   "word/int": 1.13,
+   "word/int coverage": 1.0,
+   "fused/split": 0.94,
+   "fused/split coverage": 1.0
+  }
+ },
+ {
+  "pair": "Q7",
+  "rej%": 20.86,
+  "share of positions in lowest target decile with margin<1": 1.0,
+  "share of rejections in lowest target decile": 0.313,
+  "target-margin range of lowest decile (nats)": [
+   0.0,
+   0.31
+  ],
+  "raw": {
+   "morph/int": 2.17,
+   "word/int": 2.88,
+   "fused/split": 1.57
+  },
+  "target deciles": {
+   "morph/int": 0.96,
+   "morph/int coverage": 1.0,
+   "word/int": 1.25,
+   "word/int coverage": 1.0,
+   "fused/split": 0.95,
+   "fused/split coverage": 1.0
+  },
+  "target abs bins": {
+   "morph/int": 0.96,
+   "morph/int coverage": 1.0,
+   "word/int": 1.25,
+   "word/int coverage": 1.0,
+   "fused/split": 0.95,
+   "fused/split coverage": 1.0
+  },
+  "draft deciles": {
+   "morph/int": 0.98,
+   "morph/int coverage": 1.0,
+   "word/int": 1.24,
+   "word/int coverage": 1.0,
+   "fused/split": 0.94,
+   "fused/split coverage": 1.0
+  },
+  "draft abs bins": {
+   "morph/int": 0.98,
+   "morph/int coverage": 1.0,
+   "word/int": 1.24,
+   "word/int coverage": 1.0,
+   "fused/split": 0.94,
+   "fused/split coverage": 1.0
+  },
+  "both deciles": {
+   "morph/int": 0.93,
+   "morph/int coverage": 1.0,
+   "word/int": 1.15,
+   "word/int coverage": 1.0,
+   "fused/split": 0.93,
+   "fused/split coverage": 1.0
+  },
+  "both abs bins": {
+   "morph/int": 0.93,
+   "morph/int coverage": 1.0,
+   "word/int": 1.15,
+   "word/int coverage": 1.0,
+   "fused/split": 0.92,
+   "fused/split coverage": 1.0
+  }
+ },
+ {
+  "pair": "Q8",
+  "rej%": 16.5,
+  "share of positions in lowest target decile with margin<1": 1.0,
+  "share of rejections in lowest target decile": 0.37,
+  "target-margin range of lowest decile (nats)": [
+   0.0,
+   0.38
+  ],
+  "raw": {
+   "morph/int": 2.3,
+   "word/int": 3.14,
+   "fused/split": 1.49
+  },
+  "target deciles": {
+   "morph/int": 0.94,
+   "morph/int coverage": 1.0,
+   "word/int": 1.22,
+   "word/int coverage": 1.0,
+   "fused/split": 0.89,
+   "fused/split coverage": 1.0
+  },
+  "target abs bins": {
+   "morph/int": 0.94,
+   "morph/int coverage": 1.0,
+   "word/int": 1.23,
+   "word/int coverage": 1.0,
+   "fused/split": 0.89,
+   "fused/split coverage": 1.0
+  },
+  "draft deciles": {
+   "morph/int": 0.95,
+   "morph/int coverage": 1.0,
+   "word/int": 1.22,
+   "word/int coverage": 1.0,
+   "fused/split": 0.87,
+   "fused/split coverage": 1.0
+  },
+  "draft abs bins": {
+   "morph/int": 0.95,
+   "morph/int coverage": 1.0,
+   "word/int": 1.22,
+   "word/int coverage": 1.0,
+   "fused/split": 0.87,
+   "fused/split coverage": 1.0
+  },
+  "both deciles": {
+   "morph/int": 0.92,
+   "morph/int coverage": 1.0,
+   "word/int": 1.14,
+   "word/int coverage": 1.0,
+   "fused/split": 0.88,
+   "fused/split coverage": 1.0
+  },
+  "both abs bins": {
+   "morph/int": 0.93,
+   "morph/int coverage": 1.0,
+   "word/int": 1.15,
+   "word/int coverage": 1.0,
+   "fused/split": 0.88,
+   "fused/split coverage": 1.0
+  }
+ },
+ {
+  "pair": "Q9",
+  "rej%": 13.68,
+  "share of positions in lowest target decile with margin<1": 1.0,
+  "share of rejections in lowest target decile": 0.422,
+  "target-margin range of lowest decile (nats)": [
+   0.0,
+   0.38
+  ],
+  "raw": {
+   "morph/int": 2.26,
+   "word/int": 3.16,
+   "fused/split": 1.42
+  },
+  "target deciles": {
+   "morph/int": 0.89,
+   "morph/int coverage": 1.0,
+   "word/int": 1.17,
+   "word/int coverage": 1.0,
+   "fused/split": 0.84,
+   "fused/split coverage": 1.0
+  },
+  "target abs bins": {
+   "morph/int": 0.89,
+   "morph/int coverage": 1.0,
+   "word/int": 1.17,
+   "word/int coverage": 1.0,
+   "fused/split": 0.84,
+   "fused/split coverage": 1.0
+  },
+  "draft deciles": {
+   "morph/int": 0.91,
+   "morph/int coverage": 1.0,
+   "word/int": 1.18,
+   "word/int coverage": 1.0,
+   "fused/split": 0.83,
+   "fused/split coverage": 1.0
+  },
+  "draft abs bins": {
+   "morph/int": 0.91,
+   "morph/int coverage": 1.0,
+   "word/int": 1.19,
+   "word/int coverage": 1.0,
+   "fused/split": 0.83,
+   "fused/split coverage": 1.0
+  },
+  "both deciles": {
+   "morph/int": 0.89,
+   "morph/int coverage": 1.0,
+   "word/int": 1.11,
+   "word/int coverage": 1.0,
+   "fused/split": 0.85,
+   "fused/split coverage": 1.0
+  },
+  "both abs bins": {
+   "morph/int": 0.9,
+   "morph/int coverage": 1.0,
+   "word/int": 1.12,
+   "word/int coverage": 1.0,
+   "fused/split": 0.85,
+   "fused/split coverage": 1.0
+  }
+ }
+]
