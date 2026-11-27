@@ -4,28 +4,37 @@
 from __future__ import annotations
 
 import argparse
-import gc
 import hashlib
 import json
+import math
 import os
 import sys
 from pathlib import Path
 from typing import Any
 
+import numpy as np
 import pandas as pd
 import torch
-from huggingface_hub import HfApi, hf_hub_download, snapshot_download
+from huggingface_hub import HfApi, snapshot_download
 from huggingface_hub.utils import get_token
-from safetensors.torch import load_file
+from scipy.stats import spearmanr
 from tqdm import tqdm
-from transformers import AutoConfig, AutoModelForCausalLM
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts/rebuttal/cpu"))
 
 from scripts.tf_score import _body_and_head, _score_with_backoff
-from src.naacl_experiment import atomic_json, atomic_parquet, cleanup_cuda, load_config, load_tokenizer, model_path
+from src.naacl_experiment import (
+    atomic_json,
+    atomic_parquet,
+    cleanup_cuda,
+    load_config,
+    load_model,
+    load_tokenizer,
+    model_path,
+    require_model_snapshot,
+)
 from src.rebuttal.runtime import write_gpu_metadata
 
 SEED = 20261125
@@ -71,119 +80,6 @@ def _ensure_snapshot(config: dict, key: str, api: HfApi, token: str) -> tuple[Pa
     return path, info, weight_files
 
 
-def _load_streamed_model(config: dict, key: str, api: HfApi, token: str):
-    """Load pinned safetensors one shard at a time, keeping only the model in RAM."""
-    path, info, weight_files = _ensure_snapshot(config, key, api, token)
-    configured_path = model_path(config, key)
-    if all((configured_path / filename).is_file() for filename in weight_files):
-        model = _from_pretrained(configured_path)
-        return model, configured_path, "local_checkpoint"
-    existing = [path / filename for filename in weight_files]
-    if all(file.is_file() for file in existing):
-        model = _from_pretrained(path)
-        return model, path, "local_checkpoint"
-
-    model_config = AutoConfig.from_pretrained(path, local_files_only=True)
-    if getattr(model_config, "model_type", None) == "mistral3":
-        from transformers import Mistral3ForConditionalGeneration
-
-        model_class = Mistral3ForConditionalGeneration
-    else:
-        model_class = AutoModelForCausalLM
-    kwargs: dict[str, Any] = {"attn_implementation": config["inference"].get("attention_backend", "sdpa")}
-    major = int(__import__("transformers").__version__.split(".", 1)[0])
-    kwargs["dtype" if major >= 5 else "torch_dtype"] = torch.bfloat16
-    with torch.device("meta"):
-        # Transformers 5.19 exposes the model-class constructor as `_from_config`
-        # for Mistral3, while AutoModel classes expose `from_config`.
-        constructor = getattr(model_class, "from_config", None)
-        if constructor is None:
-            constructor = model_class._from_config
-        model = constructor(model_config, **kwargs)
-    model.to_empty(device="cpu")
-
-    loaded: set[str] = set()
-    tmp_dir = path / ".streaming_weights"
-    tmp_dir.mkdir(exist_ok=True)
-    for shard_index, filename in enumerate(weight_files):
-        print(f"STREAM_WEIGHT_START model={key} shard={shard_index + 1}/{len(weight_files)} name={filename}", flush=True)
-        local_file = Path(hf_hub_download(
-            repo_id=config["models"][key]["id"],
-            filename=filename,
-            revision=config["models"][key]["revision"],
-            token=token,
-            local_dir=tmp_dir,
-        ))
-        state = load_file(str(local_file), device="cpu")
-        if getattr(model_config, "model_type", None) == "mistral3":
-            # Ministral 3's published checkpoint uses unwrapped component
-            # prefixes; Transformers 5.19 registers those components under
-            # `model.*` in Mistral3ForConditionalGeneration.
-            remapped = {}
-            for name, value in state.items():
-                if name.startswith("language_model.model."):
-                    name = "model.language_model." + name[len("language_model.model."):]
-                elif name.startswith("language_model.lm_head."):
-                    name = name[len("language_model."):]
-                elif name.startswith("vision_tower."):
-                    name = "model." + name
-                elif name.startswith("multi_modal_projector."):
-                    name = "model." + name
-                if name in remapped:
-                    raise RuntimeError(f"Checkpoint key remap collision for {key}: {name}")
-                remapped[name] = value
-            state = remapped
-        incompatible = model.load_state_dict(state, strict=False)
-        if incompatible.unexpected_keys:
-            raise RuntimeError(f"Unexpected checkpoint keys for {key}: {incompatible.unexpected_keys[:8]}")
-        loaded.update(state.keys())
-        del state
-        local_file.unlink(missing_ok=True)
-        print(f"STREAM_WEIGHT_COMPLETE model={key} shard={shard_index + 1}/{len(weight_files)}", flush=True)
-        gc.collect()
-
-    tied_aliases: set[str] = set()
-    if model.config.tie_word_embeddings:
-        model.tie_weights()
-        input_embeddings = model.get_input_embeddings()
-        output_embeddings = model.get_output_embeddings()
-        if input_embeddings is not None and output_embeddings is not None and input_embeddings.weight is output_embeddings.weight:
-            tied_aliases.add("lm_head.weight")
-    expected = set(model.state_dict().keys())
-    missing = expected - loaded - tied_aliases
-    if missing:
-        raise RuntimeError(f"Checkpoint for {key} is missing {len(missing)} model keys: {sorted(missing)[:12]}")
-    if any(parameter.is_meta for parameter in model.parameters()):
-        raise RuntimeError(f"Checkpoint loading left meta parameters in {key}")
-    try:
-        model.config.use_cache = False
-    except Exception:
-        pass
-    model = model.to("cuda").eval()
-    cleanup_cuda(torch)
-    return model, path, "streamed_shards_to_cpu"
-
-
-def _from_pretrained(path: Path):
-    from transformers import AutoConfig
-
-    model_config = AutoConfig.from_pretrained(path, local_files_only=True)
-    if getattr(model_config, "model_type", None) == "mistral3":
-        from transformers import Mistral3ForConditionalGeneration
-
-        model_class = Mistral3ForConditionalGeneration
-    else:
-        model_class = AutoModelForCausalLM
-    major = int(__import__("transformers").__version__.split(".", 1)[0])
-    kwargs: dict[str, Any] = {
-        "low_cpu_mem_usage": True,
-        "attn_implementation": "sdpa",
-        "local_files_only": True,
-    }
-    kwargs["dtype" if major >= 5 else "torch_dtype"] = torch.bfloat16
-    return model_class.from_pretrained(path, **kwargs).to("cuda").eval()
-
-
 def _continuation_directory(target: str) -> tuple[str, str]:
     return target, "all" if target == "qwen4" else "common"
 
@@ -213,11 +109,91 @@ def _read_target_logs(target: str, limit: int) -> pd.DataFrame:
     if not files:
         raise FileNotFoundError(f"No stored target logits at {directory}")
     frame = pd.concat([
-        pd.read_parquet(file, columns=["doc_id", "pool_index", "position", "argmax_id", "target_token_id"])
+        pd.read_parquet(file, columns=["doc_id", "pool_index", "position", "argmax_id", "target_token_id", "top2_margin"])
         for file in files
     ], ignore_index=True)
     frame = frame[frame.pool_index < limit]
     return frame.sort_values(["pool_index", "position"], kind="stable").reset_index(drop=True)
+
+
+def _quantiles(values: np.ndarray) -> dict[str, float | None]:
+    values = np.asarray(values, dtype=float)
+    if not values.size or not np.isfinite(values).all():
+        return {"p10": None, "p50": None, "p90": None}
+    p10, p50, p90 = np.quantile(values, [0.10, 0.50, 0.90])
+    return {"p10": float(p10), "p50": float(p50), "p90": float(p90)}
+
+
+def _gate_b(rows: pd.DataFrame, vocabulary_size: int) -> dict[str, Any]:
+    """Evaluate the preregistered LM sanity gate without using rejection labels."""
+    required = {"entropy", "top2_margin", "is_top1"}
+    missing = required - set(rows.columns)
+    if missing:
+        raise ValueError(f"Gate B input is missing columns: {sorted(missing)}")
+    if vocabulary_size < 2:
+        raise ValueError("Gate B requires a vocabulary with at least two tokens")
+    entropy = rows["entropy"].to_numpy(dtype=float)
+    margin = rows["top2_margin"].to_numpy(dtype=float)
+    is_top1 = rows["is_top1"].to_numpy(dtype=float)
+    if not len(entropy) or not (np.isfinite(entropy).all() and np.isfinite(margin).all() and np.isfinite(is_top1).all()):
+        raise ValueError("Gate B requires nonempty finite entropy, margin, and is_top1 values")
+    threshold_high_entropy = 0.8 * math.log(vocabulary_size)
+    mean_entropy = float(entropy.mean())
+    high_entropy_share = float((entropy > threshold_high_entropy).mean())
+    top1_accuracy = float(is_top1.mean())
+    checks = {
+        "mean_entropy": mean_entropy <= 4.0,
+        "high_entropy_share": high_entropy_share <= 0.01,
+        "top1_accuracy": top1_accuracy >= 0.25,
+    }
+    return {
+        "positions": int(len(rows)),
+        "vocabulary_size": int(vocabulary_size),
+        "mean_entropy": mean_entropy,
+        "high_entropy_threshold_nats": threshold_high_entropy,
+        "high_entropy_share": high_entropy_share,
+        "top1_accuracy": top1_accuracy,
+        "entropy_quantiles": _quantiles(entropy),
+        "top2_margin_quantiles": _quantiles(margin),
+        "thresholds": {
+            "mean_entropy_max": 4.0,
+            "high_entropy_share_max": 0.01,
+            "top1_accuracy_min": 0.25,
+        },
+        "checks": checks,
+        "passed": all(checks.values()),
+    }
+
+
+def _require_complete_judge_snapshot(config: dict[str, Any], judge: str) -> Path:
+    snapshot = model_path(config, judge)
+    require_model_snapshot(snapshot)
+    manifest_path = snapshot / "naacl_download_manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if manifest.get("model_key") != judge or manifest.get("revision") != config["models"][judge]["revision"]:
+        raise RuntimeError(f"Judge download manifest does not match pinned model {judge}: {manifest_path}")
+    files = manifest.get("weight_files") or []
+    if not files:
+        raise RuntimeError(f"Judge snapshot manifest contains no weight files: {manifest_path}")
+    missing = []
+    wrong_size = []
+    for item in files:
+        path = snapshot / item["filename"]
+        if not path.is_file():
+            missing.append(item["filename"])
+        elif item.get("bytes") is not None and path.stat().st_size != int(item["bytes"]):
+            wrong_size.append(item["filename"])
+    if missing or wrong_size:
+        raise FileNotFoundError(
+            f"Judge snapshot is incomplete for {judge}: missing={missing[:8]}, size_mismatch={wrong_size[:8]}"
+        )
+    return snapshot
+
+
+def _load_standard_judge(config: dict[str, Any], judge: str):
+    snapshot = _require_complete_judge_snapshot(config, judge)
+    model = load_model(config, judge)
+    return model, snapshot, "standard_from_pretrained"
 
 
 def _read_alignment(target: str, limit: int) -> dict[tuple[int, int], int]:
@@ -334,6 +310,9 @@ def _score_source(
     alignment: dict[tuple[int, int], int],
     args,
     config,
+    storage_mode: str,
+    snapshot: Path,
+    scale_state: dict,
 ) -> dict:
     boundary_audit = _boundary_audit(docs, alignment)
     for doc in docs:
@@ -369,7 +348,8 @@ def _score_source(
         "source_boundary_audit": boundary_audit,
         "source_token_count": int(sum(len(row["continuation_ids"]) for row in docs)),
         "judge_token_count": int(sum(max(0, len(row["judge_ids"]) - 1) for row in docs)),
-        "model_storage_mode": "streamed_shards_to_cpu_or_local_checkpoint",
+        "model_storage_mode": storage_mode,
+        "judge_snapshot": str(snapshot),
     }
     completed_by_shard = {}
     if metadata_path.exists():
@@ -386,7 +366,6 @@ def _score_source(
     _manifest(metadata_path, base, list(completed_by_shard.values()), "RUNNING")
 
     shard_total = (len(docs) + SHARD_DOCS - 1) // SHARD_DOCS
-    scale_state = {"scale": None, "max_abs_error": None}
     batch_sizes: set[int] = set()
     for shard_index in range(shard_total):
         start = shard_index * SHARD_DOCS
@@ -432,6 +411,7 @@ def _score_source(
                         "top2_margin": float(score["top2_margin"]),
                         "entropy": float(score["entropy"]),
                         "argmax_id": int(score["argmax_id"]),
+                        "is_top1": int(score["argmax_id"]) == int(score["target_token_id"]),
                     })
         atomic_parquet(result_rows, shard_path)
         completed_by_shard[shard_index] = {
@@ -448,57 +428,135 @@ def _score_source(
     return {"target": target, "judge": judge, "boundary_audit": boundary_audit, "manifest": str(metadata_path)}
 
 
-def _self_gate(target: str, judge: str, limit: int) -> dict:
+def _self_gate(
+    model,
+    body,
+    head,
+    target: str,
+    judge: str,
+    tokenizer,
+    limit: int,
+    batch_size: int,
+    scale_state: dict,
+    storage_mode: str,
+    snapshot: Path,
+) -> dict:
+    """Run Gate A with the same loaded judge object that will score other text."""
     if target != judge:
-        return {}
-    scores = []
-    score_dir = OUTPUT_ROOT / target / judge
-    for file in sorted(score_dir.glob("shard-*.parquet")):
-        scores.append(pd.read_parquet(file))
-    score = pd.concat(scores, ignore_index=True) if scores else pd.DataFrame()
-    score = score[score.pool_index < limit]
+        raise ValueError("Gate A requires the judge's own frozen continuations")
+    continuation_rows = _read_continuations(target, limit)
     target_logs = _read_target_logs(target, limit)
-    continuations = {int(row["pool_index"]): row for row in _read_continuations(target, limit)}
-    tokenizer_path = _snapshot_dir(load_config(DEFAULT_CONFIG), target)
-    source_tokenizer = load_tokenizer(load_config(DEFAULT_CONFIG), target, snapshot=tokenizer_path)
-    score_by_index = {(int(r.pool_index), int(r.judge_index)): int(r.argmax_id) for r in score.itertuples(index=False)}
-    logs = {(int(r.pool_index), int(r.position)): int(r.argmax_id) for r in target_logs.itertuples(index=False)}
-    canonical = compared = agreement = total = 0
-    for pool_index, row in continuations.items():
+    stored = {
+        (int(row.pool_index), int(row.position)): row
+        for row in target_logs.itertuples(index=False)
+    }
+    canonical_map: dict[tuple[int, int], int] = {}
+    prompt_lengths: dict[int, int] = {}
+    score_rows = []
+    total_positions = 0
+    for row in continuation_rows:
+        pool_index = int(row["pool_index"])
         prompt = list(map(int, row["prompt_ids"]))
-        cont = list(map(int, row["continuation_ids"]))
-        text = _decode(source_tokenizer, prompt + cont)
-        reencoded_full = list(map(int, source_tokenizer(text, add_special_tokens=False)["input_ids"]))
-        for t in range(len(cont)):
-            total += 1
-            prefix_ids = prompt + cont[:t]
-            prefix_text = _decode(source_tokenizer, prefix_ids)
+        continuation = list(map(int, row["continuation_ids"]))
+        prompt_lengths[pool_index] = len(prompt)
+        text = _decode(tokenizer, prompt + continuation)
+        reencoded = list(map(int, tokenizer(text, add_special_tokens=False)["input_ids"]))
+        total_positions += len(continuation)
+        for t in range(len(continuation)):
+            prefix_ids = prompt + continuation[:t]
+            prefix_text = _decode(tokenizer, prefix_ids)
             if not text.startswith(prefix_text):
                 continue
             judge_index = len(prefix_ids)
-            if reencoded_full[:judge_index] != prefix_ids:
+            if reencoded[:judge_index] != prefix_ids:
                 continue
-            canonical += 1
-            judge_argmax = score_by_index.get((pool_index, judge_index))
-            stored_argmax = logs.get((pool_index, t))
-            if judge_argmax is not None and stored_argmax is not None:
-                compared += 1
-                agreement += int(judge_argmax == stored_argmax)
+            canonical_map[(pool_index, judge_index)] = t
+        score_rows.append({
+            "doc_id": str(row["doc_id"]),
+            "source_index": int(row["source_index"]),
+            "pool_index": pool_index,
+            "prompt_ids": prompt,
+            "continuation_ids": continuation,
+        })
+
+    canonical_positions = len(canonical_map)
+    compared_argmax = 0
+    matches = 0
+    new_margins = []
+    stored_margins = []
+    entropies = []
+    batch_sizes_seen: set[int] = set()
+    rows_by_prompt_length: dict[int, list[dict]] = {}
+    for row in score_rows:
+        rows_by_prompt_length.setdefault(len(row["prompt_ids"]), []).append(row)
+    for prompt_length in sorted(rows_by_prompt_length):
+        prompt_rows = rows_by_prompt_length[prompt_length]
+        for start in range(0, len(prompt_rows), batch_size):
+            batch = prompt_rows[start : start + batch_size]
+            per_doc_rows = _score_with_backoff(
+                model, body, head, batch, "target", 32, scale_state, batch_sizes_seen
+            )
+            for per_doc in per_doc_rows:
+                for score in per_doc:
+                    pool_index = int(score["pool_index"])
+                    # _score_with_backoff positions are continuation-relative;
+                    # the canonical map is keyed by the full prefix length.
+                    judge_index = prompt_lengths[pool_index] + int(score["position"])
+                    target_position = canonical_map.get((pool_index, judge_index))
+                    if target_position is None:
+                        continue
+                    target_log = stored.get((pool_index, target_position))
+                    if target_log is None:
+                        continue
+                    compared_argmax += 1
+                    matches += int(int(score["argmax_id"]) == int(target_log.argmax_id))
+                    new_margins.append(float(score["top2_margin"]))
+                    stored_margins.append(float(target_log.top2_margin))
+                    entropies.append(float(score["entropy"]))
+
+    margin_correlation = None
+    if len(new_margins) > 1:
+        correlation = float(spearmanr(new_margins, stored_margins).statistic)
+        if np.isfinite(correlation):
+            margin_correlation = correlation
+    argmax_agreement = matches / compared_argmax if compared_argmax else None
+    entropy_values = np.asarray(entropies, dtype=float)
     result = {
         "source_target": target,
         "judge": judge,
-        "documents": limit,
-        "continuation_positions": total,
-        "canonical_prefix_positions": canonical,
-        "canonical_prefix_share": canonical / total if total else float("nan"),
-        "argmax_compared_positions": compared,
-        "argmax_agreement": agreement / compared if compared else float("nan"),
+        "documents": len(continuation_rows),
+        "continuation_positions": total_positions,
+        "canonical_prefix_positions": canonical_positions,
+        "canonical_prefix_share": canonical_positions / total_positions if total_positions else None,
+        "argmax_compared_positions": compared_argmax,
+        "comparison_coverage": compared_argmax / canonical_positions if canonical_positions else None,
+        "argmax_agreement": argmax_agreement,
+        "spearman_new_vs_stored_top2_margin": margin_correlation,
+        "mean_entropy_canonical_positions": float(entropy_values.mean()) if entropy_values.size else None,
+        "entropy_quantiles": _quantiles(entropy_values),
+        "top2_margin_quantiles": _quantiles(np.asarray(new_margins, dtype=float)),
+        "model_storage_mode": storage_mode,
+        "judge_snapshot": str(snapshot),
+        "head_scale": scale_state["scale"],
+        "head_check_max_abs_error": scale_state["max_abs_error"],
+        "actual_batch_sizes": sorted(batch_sizes_seen),
+        "thresholds": {
+            "argmax_agreement_min": 0.985,
+            "spearman_new_vs_stored_top2_margin_min": 0.95,
+        },
     }
-    if compared == 0 or result["argmax_agreement"] < 0.985:
-        raise RuntimeError(f"Same-model T6-b consistency gate failed: {result}")
-    gate_path = score_dir / "consistency_gate.json"
+    result["passed"] = bool(
+        compared_argmax == canonical_positions
+        and argmax_agreement is not None
+        and argmax_agreement >= 0.985
+        and margin_correlation is not None
+        and margin_correlation >= 0.95
+    )
+    gate_path = OUTPUT_ROOT / target / judge / "consistency_gate.json"
     atomic_json(gate_path, result)
-    print("CROSS_FAMILY_SELF_GATE " + json.dumps(result, ensure_ascii=False), flush=True)
+    print("CROSS_FAMILY_CONSISTENCY_GATE " + json.dumps(result, ensure_ascii=False), flush=True)
+    if not result["passed"]:
+        raise RuntimeError(f"Gate A failed; not scoring cross-family text: {result}")
     return result
 
 
@@ -512,18 +570,34 @@ def main() -> int:
     args = parser.parse_args()
     if args.max_prompts < 1 or args.batch_size < 1:
         parser.error("--max-prompts and --batch-size must be positive")
-    if args.judge == "ministral8" and any(t not in {"qwen4", "qwen8"} for t in args.source_target):
-        parser.error("Ministral-8B is the fixed judge for Qwen3 source targets")
-    if args.judge == "qwen8" and any(t != "ministral8" for t in args.source_target):
-        parser.error("Qwen3-8B is the fixed judge for the Ministral source target")
+    allowed_targets = {
+        "ministral8": {"qwen4", "qwen8", "ministral8"},
+        "qwen8": {"ministral8", "qwen8"},
+        "qwen4": {"qwen4"},
+    }[args.judge]
+    invalid_targets = set(args.source_target) - allowed_targets
+    if invalid_targets:
+        parser.error(f"Invalid source target(s) for judge {args.judge}: {sorted(invalid_targets)}")
     config = load_config(args.config)
     token = get_token()
-    if not token:
-        raise RuntimeError("Hugging Face token is unavailable; set HF_TOKEN from /workspace/hf_token")
     api = HfApi(token=token)
 
+    # Validate the full pinned judge snapshot before any scoring begins. The
+    # task's output must come from the standard repository loader.
+    judge_snapshot = _require_complete_judge_snapshot(config, args.judge)
+    judge_tokenizer = load_tokenizer(config, args.judge, snapshot=judge_snapshot)
+    model, judge_snapshot, storage_mode = _load_standard_judge(config, args.judge)
+    body, head = _body_and_head(model)
+    scale_state = {"scale": None, "max_abs_error": None}
+
+    _self_gate(
+        model, body, head, args.judge, args.judge, judge_tokenizer, 200,
+        args.batch_size, scale_state, storage_mode, judge_snapshot,
+    )
+
+    targets_to_score = [target for target in args.source_target if target != args.judge]
     source_data = {}
-    for target in args.source_target:
+    for target in targets_to_score:
         rows = _read_continuations(target, args.max_prompts)
         target_path, _, _ = _ensure_snapshot(config, target, api, token)
         source_tokenizer = load_tokenizer(config, target, snapshot=target_path)
@@ -533,37 +607,45 @@ def main() -> int:
         source_data[target] = (docs, alignment, audit)
         print(f"SOURCE_BOUNDARY_AUDIT target={target} " + json.dumps(audit), flush=True)
 
-    judge_path, _, _ = _ensure_snapshot(config, args.judge, api, token)
-    judge_tokenizer = load_tokenizer(config, args.judge, snapshot=judge_path)
-    # Load the judge after capturing the pre-inference GPU state in every output manifest.
-    model = None
     pending = []
-    for target in args.source_target:
+    for target in targets_to_score:
         output_dir = OUTPUT_ROOT / target / args.judge
         manifest = output_dir / "run_metadata.json"
         if not manifest.exists() or json.loads(manifest.read_text(encoding="utf-8")).get("status") != "COMPLETE":
             pending.append(target)
         else:
             print(f"CROSS_FAMILY_ALREADY_COMPLETE target={target} judge={args.judge}", flush=True)
-    if pending:
-        model, model_path, storage_mode = _load_streamed_model(config, args.judge, api, token)
-        body, head = _body_and_head(model)
-        for target in pending:
-            docs, alignment, _audit = source_data[target]
-            result = _score_source(
-                target, args.judge, docs, judge_tokenizer, model, body, head,
-                alignment, args, config,
-            )
-            mpath = Path(result["manifest"])
-            data = json.loads(mpath.read_text(encoding="utf-8"))
-            data["model_storage_mode"] = storage_mode
-            data["judge_snapshot"] = str(model_path)
-            atomic_json(mpath, data)
-            print(f"CROSS_FAMILY_COMPLETE target={target} judge={args.judge} output={OUTPUT_ROOT / target / args.judge}", flush=True)
-        del body, head, model
-        cleanup_cuda(torch)
-    if len(args.source_target) == 1 and args.source_target[0] == args.judge:
-        _self_gate(args.source_target[0], args.judge, args.max_prompts)
+    for target in pending:
+        docs, alignment, _audit = source_data[target]
+        result = _score_source(
+            target, args.judge, docs, judge_tokenizer, model, body, head,
+            alignment, args, config, storage_mode, judge_snapshot, scale_state,
+        )
+        print(f"CROSS_FAMILY_COMPLETE target={target} judge={args.judge} output={OUTPUT_ROOT / target / args.judge}", flush=True)
+
+    gate_results = []
+    for target in targets_to_score:
+        output_dir = OUTPUT_ROOT / target / args.judge
+        files = sorted(output_dir.glob("shard-*.parquet"))
+        if not files:
+            raise FileNotFoundError(f"No scored rows available for Gate B: {output_dir}")
+        scored = pd.concat([pd.read_parquet(file) for file in files], ignore_index=True)
+        vocabulary_size = int(getattr(model.config, "vocab_size", len(judge_tokenizer)))
+        gate = _gate_b(scored, vocabulary_size)
+        gate.update({
+            "source_target": target,
+            "judge": args.judge,
+            "model_storage_mode": storage_mode,
+            "judge_snapshot": str(judge_snapshot),
+        })
+        atomic_json(output_dir / "sanity_gate.json", gate)
+        print("CROSS_FAMILY_SANITY_GATE " + json.dumps(gate, ensure_ascii=False), flush=True)
+        gate_results.append(gate)
+    failed = [result for result in gate_results if not result["passed"]]
+    del body, head, model
+    cleanup_cuda(torch)
+    if failed:
+        raise RuntimeError(f"Gate B failed; do not analyze these outputs: {failed}")
     return 0
 
 

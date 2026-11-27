@@ -23,7 +23,8 @@
   },
   "source_token_count": 620451,
   "judge_token_count": 1073606,
-  "model_storage_mode": "streamed_shards_to_cpu",
+  "model_storage_mode": "standard_from_pretrained",
+  "judge_snapshot": "/mnt/hdd/nhatminh/korean_speculative_decoding/.t6b-models/mistralai--Ministral-3-8B-Base-2512/d4883f9b36aa2e5d775730d3fdba3d30de51a8ef",
   "completed_shards": [
     {
       "shard": 0,
@@ -246,6 +247,5 @@
       "head_check_max_abs_error": 0.0
     }
   ],
-  "status": "COMPLETE",
-  "judge_snapshot": "/dev/shm/cross_family_models/mistralai--Ministral-3-8B-Base-2512/d4883f9b36aa2e5d775730d3fdba3d30de51a8ef"
+  "status": "COMPLETE"
 }

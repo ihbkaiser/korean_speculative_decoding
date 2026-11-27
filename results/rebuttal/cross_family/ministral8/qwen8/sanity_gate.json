@@ -1,0 +1,33 @@
+{
+  "positions": 1332462,
+  "vocabulary_size": 151936,
+  "mean_entropy": 1.6543750084387088,
+  "high_entropy_threshold_nats": 9.544971726823428,
+  "high_entropy_share": 0.0,
+  "top1_accuracy": 0.6953601678697029,
+  "entropy_quantiles": {
+    "p10": 0.014354705810546875,
+    "p50": 1.1530818939208984,
+    "p90": 4.228256034851075
+  },
+  "top2_margin_quantiles": {
+    "p10": 0.25,
+    "p50": 2.0,
+    "p90": 7.875
+  },
+  "thresholds": {
+    "mean_entropy_max": 4.0,
+    "high_entropy_share_max": 0.01,
+    "top1_accuracy_min": 0.25
+  },
+  "checks": {
+    "mean_entropy": true,
+    "high_entropy_share": true,
+    "top1_accuracy": true
+  },
+  "passed": true,
+  "source_target": "ministral8",
+  "judge": "qwen8",
+  "model_storage_mode": "standard_from_pretrained",
+  "judge_snapshot": "/mnt/hdd/nhatminh/korean_speculative_decoding/.t6b-models/Qwen--Qwen3-8B-Base/49e3418fbbbca6ecbdf9608b4d22e5a407081db4"
+}

@@ -352,7 +352,7 @@ def main() -> int:
     if args.continuation == "sampled" or args.streamed_models:
         from huggingface_hub import HfApi
         from huggingface_hub.utils import get_token
-        from scripts.rebuttal.score_cross_family_judge import _load_streamed_model
+        from scripts.rebuttal.streamed_model_loader import _load_streamed_model
 
         token = get_token()
         api = HfApi(token=token)

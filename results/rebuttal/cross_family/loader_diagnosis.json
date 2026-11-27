@@ -1,0 +1,171 @@
+{
+  "historical_commit": "939a52f",
+  "source_target": "qwen4",
+  "documents_per_model": 4,
+  "buffer_implausibility_definition": "A streamed non-persistent buffer is implausible when it differs from the same model's standard-loader initialization.",
+  "models": [
+    {
+      "model_key": "qwen06",
+      "model_id": "Qwen/Qwen3-0.6B-Base",
+      "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+      "standard_snapshot": "/mnt/hdd/nhatminh/korean_speculative_decoding/.t6b-models/Qwen--Qwen3-0.6B-Base/da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+      "streamed_snapshot": "/mnt/hdd/nhatminh/korean_speculative_decoding/.t6b-streamed-diagnosis/Qwen--Qwen3-0.6B-Base/da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+      "streamed_storage_mode": "streamed_shards_to_cpu",
+      "uncheckpointed_buffer_count": 2,
+      "uncheckpointed_buffers": [
+        {
+          "name": "model.rotary_emb.inv_freq",
+          "present_in_standard": true,
+          "present_in_streamed": true,
+          "equal_to_standard": false,
+          "streamed": {
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "finite": true,
+            "min": -2.7864168538551703e+29,
+            "max": 6.386887803522255e+28,
+            "mean": -6.406849148400126e+27,
+            "max_abs": 2.7864168538551703e+29
+          },
+          "streamed_implausible_relative_to_standard": true,
+          "streamed_nonfinite": false
+        },
+        {
+          "name": "model.rotary_emb.original_inv_freq",
+          "present_in_standard": true,
+          "present_in_streamed": true,
+          "equal_to_standard": false,
+          "streamed": {
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "finite": false,
+            "min": null,
+            "max": null,
+            "mean": null,
+            "max_abs": null
+          },
+          "streamed_implausible_relative_to_standard": true,
+          "streamed_nonfinite": true
+        }
+      ],
+      "logit_comparison_on_qwen4_generated_text": {
+        "documents": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "positions": 1024,
+        "max_abs_logit_difference": 33.734375,
+        "argmax_agreement": 0.046875,
+        "mean_entropy_standard": 2.1281248033046722,
+        "mean_entropy_streamed": 4.084263920783997
+      }
+    },
+    {
+      "model_key": "ministral3",
+      "model_id": "mistralai/Ministral-3-3B-Base-2512",
+      "revision": "6f9c4b12a95b139af68670a6713616b757923735",
+      "standard_snapshot": "/mnt/hdd/nhatminh/korean_speculative_decoding/.t6b-models/mistralai--Ministral-3-3B-Base-2512/6f9c4b12a95b139af68670a6713616b757923735",
+      "streamed_snapshot": "/mnt/hdd/nhatminh/korean_speculative_decoding/.t6b-streamed-diagnosis/mistralai--Ministral-3-3B-Base-2512/6f9c4b12a95b139af68670a6713616b757923735",
+      "streamed_storage_mode": "streamed_shards_to_cpu",
+      "streamed_weight_source": "hard-linked one shard at a time from the same pinned local snapshot",
+      "uncheckpointed_buffer_count": 4,
+      "uncheckpointed_buffers": [
+        {
+          "name": "model.language_model.rotary_emb.inv_freq",
+          "present_in_standard": true,
+          "present_in_streamed": true,
+          "equal_to_standard": false,
+          "streamed": {
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "finite": true,
+            "min": -1.2373258625695697e+36,
+            "max": 3675125132034048.0,
+            "mean": -1.1599929961589716e+35,
+            "max_abs": 1.2373258625695697e+36
+          },
+          "streamed_implausible_relative_to_standard": true,
+          "streamed_nonfinite": false
+        },
+        {
+          "name": "model.language_model.rotary_emb.original_inv_freq",
+          "present_in_standard": true,
+          "present_in_streamed": true,
+          "equal_to_standard": false,
+          "streamed": {
+            "shape": [
+              64
+            ],
+            "dtype": "torch.float32",
+            "finite": true,
+            "min": -1.2373258625695697e+36,
+            "max": 2836287685918720.0,
+            "mean": -1.3533246051124492e+35,
+            "max_abs": 1.2373258625695697e+36
+          },
+          "streamed_implausible_relative_to_standard": true,
+          "streamed_nonfinite": false
+        },
+        {
+          "name": "model.vision_tower.patch_positional_embedding.inv_freq",
+          "present_in_standard": true,
+          "present_in_streamed": true,
+          "equal_to_standard": false,
+          "streamed": {
+            "shape": [
+              32
+            ],
+            "dtype": "torch.float32",
+            "finite": true,
+            "min": -1.2336069259199015e-15,
+            "max": 0.0024908781051635742,
+            "mean": 7.783994080041908e-05,
+            "max_abs": 0.0024908781051635742
+          },
+          "streamed_implausible_relative_to_standard": true,
+          "streamed_nonfinite": false
+        },
+        {
+          "name": "model.vision_tower.patch_positional_embedding.original_inv_freq",
+          "present_in_standard": true,
+          "present_in_streamed": true,
+          "equal_to_standard": false,
+          "streamed": {
+            "shape": [
+              32
+            ],
+            "dtype": "torch.float32",
+            "finite": true,
+            "min": -1.2373651597381768e+36,
+            "max": 0.007175743579864502,
+            "mean": -7.733532248363605e+34,
+            "max_abs": 1.2373651597381768e+36
+          },
+          "streamed_implausible_relative_to_standard": true,
+          "streamed_nonfinite": false
+        }
+      ],
+      "logit_comparison_on_qwen4_generated_text": {
+        "documents": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "positions": 868,
+        "max_abs_logit_difference": 24.9296875,
+        "argmax_agreement": 0.08986175115207373,
+        "mean_entropy_standard": 2.607545632920507,
+        "mean_entropy_streamed": 6.72708481467814
+      }
+    }
+  ]
+}

@@ -77,6 +77,17 @@ The prediction was held: the cross-family margins have AUCs 0.714 and 0.725, whi
 
 ## T6-b. Cross-family margins on generated text
 
+### Invalid run of 2026-11-26 (superseded)
+
+The negative cross-family result below is invalid because all three cross-family judges used the shard-streaming loader, whose `to_empty` path left non-persistent buffers uninitialized; the Step 1 diagnosis found unequal rotary buffers, including non-finite and extreme values, and large logit errors on both Qwen3-0.6B and Ministral-3-3B. The per-buffer values and four-document logit comparisons are in `results/rebuttal/cross_family/loader_diagnosis.json`; the invalid score shards and derived summaries now live under `results/rebuttal/cross_family_invalid_20261126/`. The Qwen3-4B self-gate and T6-a human-text outputs remain in the active results tree.
+
+| Stored judge output | Entropy, mean (nats) | Top-2 margin, median | `model_storage_mode` |
+|---|---:|---:|---|
+| `qwen4/ministral8` | 11.26 | 0.172 | `streamed_shards_to_cpu` |
+| `qwen8/ministral8` | 11.26 | 0.172 | `streamed_shards_to_cpu` |
+| `ministral8/qwen8` | 5.81 | 0.375 | `streamed_shards_to_cpu` |
+| `qwen4/qwen4` (retained self-gate) | 1.77 | 2.0 | `local_checkpoint` |
+
 **Commands:** Self-consistency gate: `/venv/main/bin/python -I scripts/rebuttal/score_cross_family_judge.py --source-target qwen4 --judge qwen4 --max-prompts 200 --batch-size 32` (the gate used the final corrected top-20 target tie-break procedure). Main scoring used `/venv/main/bin/python -I scripts/rebuttal/score_cross_family_judge.py --source-target qwen4 qwen8 --judge ministral8 --max-prompts 5000 --batch-size 8` followed by the same scorer with `--source-target ministral8 --judge qwen8 --max-prompts 5000 --batch-size 8`; CPU analysis: `/venv/main/bin/python -I scripts/rebuttal/analyze_cross_family_judge.py --max-prompts 5000`. Logs are `results/rebuttal/logs/t6b_self_gate_batch32_top20.log`, `t6b_main_retry3.log`, and `t6b_analysis_same_family.log`. Output and per-run metadata are under `results/rebuttal/cross_family/`. GPU: NVIDIA GeForce RTX 3090, driver 595.99.02, CUDA 13.2; torch 2.14.1+cu132, Transformers 5.19.0. The image’s runtime differs from the objective’s torch 2.11 version; these results record the installed runtime.
 
 Pinned revisions: Qwen3-4B Base `906bfd4b4dc7f14ee4320094d8b41684abff8539`, Qwen3-8B Base `49e3418fbbbca6ecbdf9608b4d22e5a407081db4`, Ministral-3-8B Base `d4883f9b36aa2e5d775730d3fdba3d30de51a8ef`. The source-boundary audit compared tokenizer-decoded continuation starts with `global_token_char_span[0]` on 100 documents: Qwen4 11,626/11,723 (99.17%), Qwen8 11,667/11,690 (99.80%), and Ministral8 12,377/12,377 (100%); the scorer used alignment-table offsets when valid. On the 200-document self gate, 23,142/25,179 continuation positions (91.91%) had canonical re-tokenized prefixes; target argmax agreement there was 99.0148%, above the 98.5% threshold. All judge LM-head checks passed at scale 1 with zero max absolute error.
@@ -101,10 +112,89 @@ The following ratios use joined k=4 verified proposals. Intervals are 95% docume
 | M1 | word/int | 3.029 [2.93, 3.15] | 2.990 [2.88, 3.10] | 2.987 [2.87, 3.10] | 1.195 [1.17, 1.22] | — |
 | M1 | fused/split | 1.526 [1.48, 1.58] | 1.522 [1.47, 1.57] | 1.517 [1.47, 1.57] | 0.947 [0.93, 0.97] | — |
 
-**Prediction / outcome / verdict:** The prediction was not held for judge-margin discrimination or for the two primary matched ratios. The cross-family judge AUCs are 0.504, 0.502, and 0.526, far below 0.75, while boundary-label AUCs are 0.604, 0.605, and 0.589 (under 0.62). Judge-margin matched morph/internal remains 2.119, 2.017, and 1.933; fused/split is 1.422, 1.402, and 1.522, all outside the predicted ranges. Target-margin matching brings these ratios near 1, and same-family judges do too for morph/internal and fused/split in Q2/Q5; word/internal stays higher (1.206 and 1.189 under same-family matching).
+### Rerun
 
-This generated-text experiment therefore separates two claims: the boundary label remains a weak rejection predictor, but an unrelated-family margin is also a weak predictor and does not recover the target’s ranking. The strong target-margin AUCs (0.874–0.913) and same-family AUCs (0.879–0.892 on Q2/Q5) show that the weak cross-family result is not due to absent signal in the verified labels. The same-family word/internal point estimates (1.206 and 1.189) sit near or just below the anticipated 1.21 lower bound; their intervals [1.18, 1.23] and [1.17, 1.22] straddle it. Cross-family judge matching leaves the word/internal ratio essentially at its raw value. We kept the preregistered judge/pairs and did not retune; no Gemma or additional judges were used.
+**Summary.** Step 1 confirmed that shard streaming left 2/2 uncheckpointed Qwen3-0.6B buffers and 4/4 Ministral-3-3B buffers unequal to standard initialization; on four Qwen4 continuations, maximum logit differences were 33.734 and 24.930 with argmax agreement of 4.69% and 8.99%. Gate A and every Gate B check passed with standard loading. Judge-margin AUC is 0.847–0.857 on Q2, Q5, and M1; the ratio outcomes and criterion-level verdicts are below.
 
+**Loader and environment.** Both judges were loaded with `src.naacl_experiment.load_model(config, judge)` from complete pinned snapshots on the repository volume; `model_storage_mode` is `standard_from_pretrained`. The machine was an RTX 3090 with Python 3.10, PyTorch 2.6.0+cu124, and Transformers 5.19.0. The storage check found 32 GiB `/dev/shm`, no `/workspace`, about 7 GiB free on `/tmp`'s root filesystem, and about 1.4 TiB free on `/mnt/hdd`; the two full snapshots were downloaded one at a time under `.t6b-models`.
+
+| Model role | Model | Pinned revision |
+|---|---|---|
+| Q2/Q5 judge | Ministral-3-8B-Base | `d4883f9b36aa2e5d775730d3fdba3d30de51a8ef` |
+| M1 judge | Qwen3-8B-Base | `49e3418fbbbca6ecbdf9608b4d22e5a407081db4` |
+| Q2/Q4 target | Qwen3-4B-Base | `906bfd4b4dc7f14ee4320094d8b41684abff8539` |
+| Q5/Q3/Q6 target | Qwen3-8B-Base | `49e3418fbbbca6ecbdf9608b4d22e5a407081db4` |
+| M1 target | Ministral-3-8B-Base | `d4883f9b36aa2e5d775730d3fdba3d30de51a8ef` |
+
+**Commands.** Downloads and smoke loads used `.t6b-venv/bin/python -I scripts/download_models.py --model ministral8 --model-root .t6b-models --smoke-load`, then `--evict-model ministral8`, then `--model qwen8 --model-root .t6b-models --smoke-load`. The two scoring commands were `.t6b-venv/bin/python -I scripts/rebuttal/score_cross_family_judge.py --source-target qwen4 qwen8 --judge ministral8 --max-prompts 5000 --batch-size 8` and `.t6b-venv/bin/python -I scripts/rebuttal/score_cross_family_judge.py --source-target ministral8 --judge qwen8 --max-prompts 5000 --batch-size 8`; each invocation ran Gate A, scoring, and Gate B on one model object. CPU commands were `.t6b-venv/bin/python -I scripts/rebuttal/analyze_cross_family_judge.py --max-prompts 5000` and `.t6b-venv/bin/python -I scripts/rebuttal/audit_quarantined_gate_b.py`. `HF_HOME`, `NAACL_MODEL_DIR`, and `CROSS_FAMILY_MODEL_DIR` pointed to repository-local `.t6b-hf` and `.t6b-models` for model operations.
+
+**Gate A.** Gate A requires argmax agreement at least 0.985 and top-2-margin Spearman at least 0.95 on canonical re-tokenized prefixes. Both comparisons covered every canonical position.
+
+| Judge on its own frozen text | Canonical positions / continuation positions | Argmax agreement | Margin Spearman | Mean entropy | Entropy p10 / p50 / p90 | Margin p10 / p50 / p90 | Result |
+|---|---:|---:|---:|---:|---:|---:|---|
+| Ministral8 | 23,986 / 25,044 | 0.99425 | 0.99933 | 1.423 | 0.021 / 0.710 / 4.225 | 0.375 / 3.063 / 7.625 | pass |
+| Qwen8 | 23,190 / 24,893 | 0.98939 | 0.99895 | 1.264 | 0.007 / 0.644 / 3.660 | 0.250 / 3.000 / 8.625 | pass |
+
+**Gate B and quarantine audit.** Gate B requires mean entropy ≤4.0 nats, share above `0.8 × ln(vocabulary size)` ≤1%, and top-1 accuracy ≥0.25. The before/after values below use the same thresholds; old-run top-1 accuracy was recomputed by re-tokenizing each continuation with the judge tokenizer. All three quarantined outputs fail, and all three rerun outputs pass.
+
+| Source / judge | Positions | Old mean H / high-H share / top-1 | Rerun mean H / high-H share / top-1 | Old entropy p10/p50/p90; margin p10/p50/p90 | Rerun entropy p10/p50/p90; margin p10/p50/p90 |
+|---|---:|---:|---:|---|---|
+| Qwen4 / Ministral8 | 1,050,327 | 11.258 / 100% / 0.012% | 2.290 / 0.253% / 63.55% | 11.220 / 11.260 / 11.296; 0.031 / 0.172 / 0.531 | 0.056 / 1.818 / 5.309; 0.188 / 1.500 / 6.500 |
+| Qwen8 / Ministral8 | 1,046,749 | 11.258 / 100% / 0.011% | 2.319 / 0.253% / 63.22% | 11.220 / 11.260 / 11.296; 0.031 / 0.172 / 0.531 | 0.062 / 1.865 / 5.324; 0.188 / 1.500 / 6.375 |
+| Ministral8 / Qwen8 | 1,332,462 | 5.813 / 0.00015% / 11.66% | 1.654 / 0% / 69.54% | 4.462 / 6.122 / 6.650; 0.063 / 0.375 / 1.250 | 0.014 / 1.153 / 4.228; 0.250 / 2.000 / 7.875 |
+
+**Primary results (preregistered).** Join coverage is by exact document and character offset. Ratios use the shared joined subset; matching uses judge-margin deciles or `expD_lib.EDGES` absolute bins. Intervals are 95% document-bootstrap intervals with 500 resamples and seed 20261125.
+
+| Pair | Joined positions / coverage | Rejection, all / joined | AUC judge | AUC target | AUC same-family judge | AUC boundary | Spearman target/judge |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Q2: Qwen3 0.6B→4B | 430,489/535,028 (80.46%) | 0.170 / 0.187 | 0.850 | 0.890 | 0.892 | 0.604 | 0.821 |
+| Q5: Qwen3 0.6B→8B | 429,972/536,089 (80.21%) | 0.193 / 0.212 | 0.847 | 0.874 | 0.879 | 0.605 | 0.808 |
+| M1: Ministral 3B→8B | 512,461/529,609 (96.76%) | 0.121 / 0.124 | 0.857 | 0.913 | — | 0.589 | 0.839 |
+
+| Pair | Ratio | Raw [95% CI] | Judge deciles [95% CI] | Judge absolute bins [95% CI] | Target deciles [95% CI] | Same-family deciles [95% CI] |
+|---|---|---:|---:|---:|---:|---:|
+| Q2 | morph/int | 2.119 [2.05, 2.20] | 1.218 [1.19, 1.25] | 1.209 [1.18, 1.24] | 0.994 [0.97, 1.02] | 0.985 [0.96, 1.01] |
+| Q2 | word/int | 3.189 [3.09, 3.29] | 1.538 [1.50, 1.58] | 1.522 [1.49, 1.56] | 1.219 [1.19, 1.25] | 1.206 [1.18, 1.23] |
+| Q2 | fused/split | 1.421 [1.37, 1.47] | 1.077 [1.05, 1.11] | 1.079 [1.05, 1.11] | 0.947 [0.92, 0.97] | 0.943 [0.92, 0.97] |
+| Q5 | morph/int | 2.017 [1.96, 2.09] | 1.182 [1.16, 1.21] | 1.172 [1.14, 1.20] | 0.972 [0.95, 0.99] | 0.963 [0.94, 0.98] |
+| Q5 | word/int | 3.060 [2.97, 3.15] | 1.489 [1.45, 1.52] | 1.473 [1.44, 1.51] | 1.205 [1.18, 1.23] | 1.189 [1.17, 1.22] |
+| Q5 | fused/split | 1.401 [1.36, 1.45] | 1.073 [1.05, 1.10] | 1.076 [1.05, 1.10] | 0.973 [0.95, 1.00] | 0.948 [0.93, 0.97] |
+| M1 | morph/int | 1.954 [1.88, 2.03] | 0.888 [0.87, 0.91] | 0.889 [0.86, 0.91] | 0.967 [0.94, 0.99] | — |
+| M1 | word/int | 3.029 [2.93, 3.15] | 1.154 [1.12, 1.18] | 1.153 [1.12, 1.18] | 1.195 [1.17, 1.22] | — |
+| M1 | fused/split | 1.526 [1.48, 1.58] | 1.178 [1.14, 1.21] | 1.175 [1.14, 1.21] | 0.947 [0.93, 0.97] | — |
+
+**Secondary results (not preregistered).** These rows reuse the Ministral8 scores on Qwen4 text for Q4 and Qwen8 text for Q3/Q6. Each analysis is restricted to the 5,000 documents present in both the frozen pair logs and the scored source documents; no additional GPU scoring was run.
+
+| Pair | Documents | Joined positions / coverage | Rejection, all / joined | AUC judge | AUC target | AUC same-family judge | AUC boundary | Spearman target/judge |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Q4: Qwen3 1.7B→4B | 5,000 | 424,975/528,052 (80.48%) | 0.133 / 0.146 | 0.854 | 0.905 | 0.910 | 0.602 | 0.823 |
+| Q3: Qwen3 4B→8B | 5,000 | 418,629/521,752 (80.24%) | 0.118 / 0.130 | 0.849 | 0.908 | 0.914 | 0.596 | 0.810 |
+| Q6: Qwen3 1.7B→8B | 5,000 | 423,855/528,413 (80.21%) | 0.150 / 0.166 | 0.851 | 0.894 | 0.892 | 0.603 | 0.810 |
+
+| Pair | Ratio | Raw [95% CI] | Judge deciles [95% CI] | Judge absolute bins [95% CI] | Target deciles [95% CI] | Same-family deciles [95% CI] |
+|---|---|---:|---:|---:|---:|---:|
+| Q4 | morph/int | 2.128 [2.05, 2.21] | 1.200 [1.17, 1.24] | 1.185 [1.15, 1.22] | 0.969 [0.94, 0.99] | 0.972 [0.95, 1.00] |
+| Q4 | word/int | 3.350 [3.24, 3.47] | 1.563 [1.52, 1.61] | 1.537 [1.49, 1.58] | 1.208 [1.18, 1.24] | 1.202 [1.18, 1.23] |
+| Q4 | fused/split | 1.336 [1.29, 1.40] | 1.018 [0.98, 1.05] | 1.023 [0.99, 1.06] | 0.891 [0.86, 0.92] | 0.894 [0.87, 0.92] |
+| Q3 | morph/int | 1.964 [1.88, 2.05] | 1.111 [1.08, 1.15] | 1.097 [1.06, 1.13] | 0.887 [0.86, 0.91] | 0.900 [0.88, 0.93] |
+| Q3 | word/int | 3.194 [3.08, 3.32] | 1.462 [1.42, 1.50] | 1.435 [1.39, 1.48] | 1.116 [1.09, 1.14] | 1.118 [1.09, 1.14] |
+| Q3 | fused/split | 1.187 [1.13, 1.24] | 0.916 [0.88, 0.95] | 0.920 [0.89, 0.96] | 0.821 [0.79, 0.85] | 0.806 [0.78, 0.83] |
+| Q6 | morph/int | 2.075 [2.00, 2.15] | 1.183 [1.15, 1.22] | 1.170 [1.14, 1.21] | 0.945 [0.92, 0.97] | 0.952 [0.93, 0.97] |
+| Q6 | word/int | 3.252 [3.15, 3.37] | 1.515 [1.48, 1.56] | 1.492 [1.45, 1.53] | 1.178 [1.15, 1.20] | 1.183 [1.16, 1.21] |
+| Q6 | fused/split | 1.287 [1.23, 1.34] | 0.989 [0.96, 1.02] | 0.994 [0.97, 1.02] | 0.883 [0.86, 0.91] | 0.861 [0.84, 0.89] |
+
+**Prediction / outcome / verdict.** Judge-margin AUC ≥0.75 and boundary AUC ≤0.62 are both **held** for Q2, Q5, and M1. Judge-matched morph/internal in 0.85–1.15 is **not held** for Q2 (1.218) and Q5 (1.182), and **held** for M1 (0.888). Judge-matched fused/split ≤1.00 is **not held** for Q2 (1.077), Q5 (1.073), or M1 (1.178). The word/internal criterion is **not held** for Q2 (1.538 vs same-family 1.206) or Q5 (1.489 vs 1.189), because both exceed 1.45; for M1 it is **partly held** because 1.154 is below the 1.45 upper bound but below the preregistered 1.21–1.35 range, and no frozen same-family outside judge is available. The overall T6-b prediction is therefore partly held: judge discrimination and the boundary threshold hold, but both matched-ratio criteria fail on Q2/Q5 and fused/split fails on M1.
+
+**Coverage audit.** Coverage by position type is shown below. Generated coverage uses k=4 verified proposal positions as its denominator and joins judge scores by document and character offset; this is the definition behind the 96.76% M1 generated-text value. T6-a human coverage (67.6% for Q2 and 70.5% for M1) uses human-text teacher-forced positions joined to the human alignment table, so its denominator differs and the percentages are not directly comparable.
+
+| Pair | Internal | Morpheme onset | Word onset |
+|---|---:|---:|---:|
+| Q2 | 0.803 | 0.780 | 0.833 |
+| Q5 | 0.807 | 0.781 | 0.831 |
+| M1 | 0.930 | 0.988 | 0.988 |
+| Q4 (secondary, not preregistered) | 0.805 | 0.780 | 0.833 |
+| Q3 (secondary, not preregistered) | 0.808 | 0.781 | 0.831 |
+| Q6 (secondary, not preregistered) | 0.807 | 0.780 | 0.831 |
 
 ## T5. Instruction-tuned Qwen pair
 

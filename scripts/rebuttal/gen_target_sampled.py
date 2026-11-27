@@ -16,7 +16,8 @@ from tqdm import tqdm
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from scripts.rebuttal.score_cross_family_judge import _ensure_snapshot, _load_streamed_model
+from scripts.rebuttal.score_cross_family_judge import _ensure_snapshot
+from scripts.rebuttal.streamed_model_loader import _load_streamed_model
 from src.data import encode_prompt
 from src.naacl_experiment import (
     atomic_json,

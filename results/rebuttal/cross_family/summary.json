@@ -5,17 +5,18 @@
   "results": [
     {
       "pair": "Q2",
+      "analysis_scope": "preregistered",
       "source_target": "qwen4",
       "draft": "qwen06",
       "cross_family_judge": "ministral8",
       "same_family_outside_judge": "qwen17",
       "documents_requested": 5000,
+      "analysis_documents": 5000,
       "verified_k4_positions": 535028,
       "verified_k4_documents": 5000,
       "joined_positions": 430489,
       "join_coverage": 0.8046,
       "join_coverage_by_position_type": {
-        "excluded": 0.793,
         "fused": 0.8813,
         "internal": 0.8035,
         "morph_onset": 0.7801,
@@ -24,11 +25,11 @@
       "duplicate_judge_offsets_dropped": 0,
       "rejection_rate_all_verified_proposals": 0.17048,
       "rejection_rate_joined_subset": 0.18734,
-      "auc_cross_family_judge_margin": 0.5035,
+      "auc_cross_family_judge_margin": 0.8504,
       "auc_target_margin_on_joined_subset": 0.8897,
       "auc_same_family_outside_judge": 0.8919,
       "auc_boundary_label": 0.6044,
-      "spearman_target_judge_margin": 0.0107,
+      "spearman_target_judge_margin": 0.8211,
       "ratios_on_cross_family_joined_subset": {
         "morph/int": {
           "judge_margin": {
@@ -38,17 +39,17 @@
               2.05,
               2.2
             ],
-            "decile_matched": 2.119,
+            "decile_matched": 1.218,
             "decile_coverage": 1.0,
             "decile_ci95": [
-              2.04,
-              2.2
+              1.19,
+              1.25
             ],
-            "absolute_bin_matched": 2.12,
+            "absolute_bin_matched": 1.209,
             "absolute_bin_coverage": 1.0,
             "absolute_bin_ci95": [
-              2.05,
-              2.19
+              1.18,
+              1.24
             ]
           },
           "target_margin": {
@@ -80,17 +81,17 @@
               3.09,
               3.29
             ],
-            "decile_matched": 3.19,
+            "decile_matched": 1.538,
             "decile_coverage": 1.0,
             "decile_ci95": [
-              3.1,
-              3.3
+              1.5,
+              1.58
             ],
-            "absolute_bin_matched": 3.19,
+            "absolute_bin_matched": 1.522,
             "absolute_bin_coverage": 1.0,
             "absolute_bin_ci95": [
-              3.09,
-              3.31
+              1.49,
+              1.56
             ]
           },
           "target_margin": {
@@ -122,17 +123,17 @@
               1.37,
               1.47
             ],
-            "decile_matched": 1.422,
+            "decile_matched": 1.077,
             "decile_coverage": 1.0,
             "decile_ci95": [
-              1.37,
-              1.47
+              1.05,
+              1.11
             ],
-            "absolute_bin_matched": 1.422,
+            "absolute_bin_matched": 1.079,
             "absolute_bin_coverage": 1.0,
             "absolute_bin_ci95": [
-              1.37,
-              1.47
+              1.05,
+              1.11
             ]
           },
           "target_margin": {
@@ -219,22 +220,22 @@
           ]
         }
       },
-      "internal_alignment_rows_in_join": 101372,
-      "excluded_alignment_rows_in_join": 105734
+      "internal_alignment_rows_in_join": 101372
     },
     {
       "pair": "Q5",
+      "analysis_scope": "preregistered",
       "source_target": "qwen8",
       "draft": "qwen06",
       "cross_family_judge": "ministral8",
       "same_family_outside_judge": "qwen4",
       "documents_requested": 5000,
+      "analysis_documents": 5000,
       "verified_k4_positions": 536089,
       "verified_k4_documents": 5000,
       "joined_positions": 429972,
       "join_coverage": 0.8021,
       "join_coverage_by_position_type": {
-        "excluded": 0.7819,
         "fused": 0.9228,
         "internal": 0.8066,
         "morph_onset": 0.7807,
@@ -243,11 +244,11 @@
       "duplicate_judge_offsets_dropped": 0,
       "rejection_rate_all_verified_proposals": 0.19281,
       "rejection_rate_joined_subset": 0.21213,
-      "auc_cross_family_judge_margin": 0.5019,
+      "auc_cross_family_judge_margin": 0.8468,
       "auc_target_margin_on_joined_subset": 0.8735,
       "auc_same_family_outside_judge": 0.879,
       "auc_boundary_label": 0.6045,
-      "spearman_target_judge_margin": 0.0078,
+      "spearman_target_judge_margin": 0.8082,
       "ratios_on_cross_family_joined_subset": {
         "morph/int": {
           "judge_margin": {
@@ -257,17 +258,17 @@
               1.96,
               2.09
             ],
-            "decile_matched": 2.017,
+            "decile_matched": 1.182,
             "decile_coverage": 1.0,
             "decile_ci95": [
-              1.96,
-              2.08
+              1.16,
+              1.21
             ],
-            "absolute_bin_matched": 2.017,
+            "absolute_bin_matched": 1.172,
             "absolute_bin_coverage": 1.0,
             "absolute_bin_ci95": [
-              1.95,
-              2.09
+              1.14,
+              1.2
             ]
           },
           "target_margin": {
@@ -299,17 +300,17 @@
               2.97,
               3.15
             ],
-            "decile_matched": 3.06,
+            "decile_matched": 1.489,
             "decile_coverage": 1.0,
             "decile_ci95": [
-              2.97,
-              3.16
+              1.45,
+              1.52
             ],
-            "absolute_bin_matched": 3.06,
+            "absolute_bin_matched": 1.473,
             "absolute_bin_coverage": 1.0,
             "absolute_bin_ci95": [
-              2.96,
-              3.17
+              1.44,
+              1.51
             ]
           },
           "target_margin": {
@@ -341,17 +342,17 @@
               1.36,
               1.45
             ],
-            "decile_matched": 1.402,
+            "decile_matched": 1.073,
             "decile_coverage": 1.0,
             "decile_ci95": [
-              1.36,
-              1.45
+              1.05,
+              1.1
             ],
-            "absolute_bin_matched": 1.401,
+            "absolute_bin_matched": 1.076,
             "absolute_bin_coverage": 1.0,
             "absolute_bin_ci95": [
-              1.36,
-              1.44
+              1.05,
+              1.1
             ]
           },
           "target_margin": {
@@ -438,22 +439,22 @@
           ]
         }
       },
-      "internal_alignment_rows_in_join": 100664,
-      "excluded_alignment_rows_in_join": 108811
+      "internal_alignment_rows_in_join": 100664
     },
     {
       "pair": "M1",
+      "analysis_scope": "preregistered",
       "source_target": "ministral8",
       "draft": "ministral3",
       "cross_family_judge": "qwen8",
       "same_family_outside_judge": null,
       "documents_requested": 5000,
+      "analysis_documents": 5000,
       "verified_k4_positions": 529609,
       "verified_k4_documents": 5000,
       "joined_positions": 512461,
       "join_coverage": 0.9676,
       "join_coverage_by_position_type": {
-        "excluded": 0.9676,
         "fused": 0.8928,
         "internal": 0.9304,
         "morph_onset": 0.9878,
@@ -462,11 +463,11 @@
       "duplicate_judge_offsets_dropped": 0,
       "rejection_rate_all_verified_proposals": 0.12121,
       "rejection_rate_joined_subset": 0.12389,
-      "auc_cross_family_judge_margin": 0.5257,
+      "auc_cross_family_judge_margin": 0.8571,
       "auc_target_margin_on_joined_subset": 0.9132,
       "auc_same_family_outside_judge": null,
       "auc_boundary_label": 0.589,
-      "spearman_target_judge_margin": 0.0648,
+      "spearman_target_judge_margin": 0.839,
       "ratios_on_cross_family_joined_subset": {
         "morph/int": {
           "judge_margin": {
@@ -476,17 +477,17 @@
               1.88,
               2.03
             ],
-            "decile_matched": 1.933,
+            "decile_matched": 0.888,
             "decile_coverage": 1.0,
             "decile_ci95": [
-              1.86,
-              2.0
+              0.87,
+              0.91
             ],
-            "absolute_bin_matched": 1.932,
+            "absolute_bin_matched": 0.889,
             "absolute_bin_coverage": 1.0,
             "absolute_bin_ci95": [
-              1.86,
-              2.0
+              0.86,
+              0.91
             ]
           },
           "target_margin": {
@@ -518,17 +519,17 @@
               2.93,
               3.15
             ],
-            "decile_matched": 2.99,
+            "decile_matched": 1.154,
             "decile_coverage": 1.0,
             "decile_ci95": [
-              2.88,
-              3.1
+              1.12,
+              1.18
             ],
-            "absolute_bin_matched": 2.987,
+            "absolute_bin_matched": 1.153,
             "absolute_bin_coverage": 1.0,
             "absolute_bin_ci95": [
-              2.87,
-              3.1
+              1.12,
+              1.18
             ]
           },
           "target_margin": {
@@ -560,17 +561,17 @@
               1.48,
               1.58
             ],
-            "decile_matched": 1.522,
+            "decile_matched": 1.178,
             "decile_coverage": 1.0,
             "decile_ci95": [
-              1.47,
-              1.57
+              1.14,
+              1.21
             ],
-            "absolute_bin_matched": 1.517,
+            "absolute_bin_matched": 1.175,
             "absolute_bin_coverage": 1.0,
             "absolute_bin_ci95": [
-              1.47,
-              1.57
+              1.14,
+              1.21
             ]
           },
           "target_margin": {
@@ -596,8 +597,664 @@
         }
       },
       "ratios_on_same_family_joined_subset": null,
-      "internal_alignment_rows_in_join": 118440,
-      "excluded_alignment_rows_in_join": 117714
+      "internal_alignment_rows_in_join": 118440
+    },
+    {
+      "pair": "Q4",
+      "analysis_scope": "secondary, not preregistered",
+      "source_target": "qwen4",
+      "draft": "qwen17",
+      "cross_family_judge": "ministral8",
+      "same_family_outside_judge": "qwen17",
+      "documents_requested": 5000,
+      "analysis_documents": 5000,
+      "verified_k4_positions": 528052,
+      "verified_k4_documents": 5000,
+      "joined_positions": 424975,
+      "join_coverage": 0.8048,
+      "join_coverage_by_position_type": {
+        "fused": 0.8797,
+        "internal": 0.8047,
+        "morph_onset": 0.7799,
+        "word_onset": 0.8326
+      },
+      "duplicate_judge_offsets_dropped": 0,
+      "rejection_rate_all_verified_proposals": 0.13288,
+      "rejection_rate_joined_subset": 0.14642,
+      "auc_cross_family_judge_margin": 0.8536,
+      "auc_target_margin_on_joined_subset": 0.9052,
+      "auc_same_family_outside_judge": 0.91,
+      "auc_boundary_label": 0.6022,
+      "spearman_target_judge_margin": 0.8225,
+      "ratios_on_cross_family_joined_subset": {
+        "morph/int": {
+          "judge_margin": {
+            "raw": 2.128,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              2.05,
+              2.21
+            ],
+            "decile_matched": 1.2,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              1.17,
+              1.24
+            ],
+            "absolute_bin_matched": 1.185,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              1.15,
+              1.22
+            ]
+          },
+          "target_margin": {
+            "raw": 2.128,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              2.05,
+              2.22
+            ],
+            "decile_matched": 0.969,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              0.94,
+              0.99
+            ],
+            "absolute_bin_matched": 0.98,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              0.95,
+              1.01
+            ]
+          }
+        },
+        "word/int": {
+          "judge_margin": {
+            "raw": 3.35,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              3.24,
+              3.47
+            ],
+            "decile_matched": 1.563,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              1.52,
+              1.61
+            ],
+            "absolute_bin_matched": 1.537,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              1.49,
+              1.58
+            ]
+          },
+          "target_margin": {
+            "raw": 3.35,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              3.23,
+              3.48
+            ],
+            "decile_matched": 1.208,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              1.18,
+              1.24
+            ],
+            "absolute_bin_matched": 1.217,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              1.19,
+              1.25
+            ]
+          }
+        },
+        "fused/split": {
+          "judge_margin": {
+            "raw": 1.336,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.29,
+              1.4
+            ],
+            "decile_matched": 1.018,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              0.98,
+              1.05
+            ],
+            "absolute_bin_matched": 1.023,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              0.99,
+              1.06
+            ]
+          },
+          "target_margin": {
+            "raw": 1.336,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.28,
+              1.39
+            ],
+            "decile_matched": 0.891,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              0.86,
+              0.92
+            ],
+            "absolute_bin_matched": 0.898,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              0.87,
+              0.92
+            ]
+          }
+        }
+      },
+      "ratios_on_same_family_joined_subset": {
+        "morph/int": {
+          "raw": 2.128,
+          "raw_coverage": 1.0,
+          "raw_ci95": [
+            2.05,
+            2.21
+          ],
+          "decile_matched": 0.972,
+          "decile_coverage": 1.0,
+          "decile_ci95": [
+            0.95,
+            1.0
+          ],
+          "absolute_bin_matched": 0.983,
+          "absolute_bin_coverage": 1.0,
+          "absolute_bin_ci95": [
+            0.96,
+            1.01
+          ]
+        },
+        "word/int": {
+          "raw": 3.35,
+          "raw_coverage": 1.0,
+          "raw_ci95": [
+            3.23,
+            3.48
+          ],
+          "decile_matched": 1.202,
+          "decile_coverage": 1.0,
+          "decile_ci95": [
+            1.18,
+            1.23
+          ],
+          "absolute_bin_matched": 1.213,
+          "absolute_bin_coverage": 1.0,
+          "absolute_bin_ci95": [
+            1.19,
+            1.25
+          ]
+        },
+        "fused/split": {
+          "raw": 1.336,
+          "raw_coverage": 1.0,
+          "raw_ci95": [
+            1.28,
+            1.39
+          ],
+          "decile_matched": 0.894,
+          "decile_coverage": 1.0,
+          "decile_ci95": [
+            0.87,
+            0.92
+          ],
+          "absolute_bin_matched": 0.889,
+          "absolute_bin_coverage": 1.0,
+          "absolute_bin_ci95": [
+            0.86,
+            0.92
+          ]
+        }
+      },
+      "internal_alignment_rows_in_join": 100319
+    },
+    {
+      "pair": "Q3",
+      "analysis_scope": "secondary, not preregistered",
+      "source_target": "qwen8",
+      "draft": "qwen4",
+      "cross_family_judge": "ministral8",
+      "same_family_outside_judge": "qwen4",
+      "documents_requested": 5000,
+      "analysis_documents": 5000,
+      "verified_k4_positions": 521752,
+      "verified_k4_documents": 5000,
+      "joined_positions": 418629,
+      "join_coverage": 0.8024,
+      "join_coverage_by_position_type": {
+        "fused": 0.9219,
+        "internal": 0.8078,
+        "morph_onset": 0.7808,
+        "word_onset": 0.8313
+      },
+      "duplicate_judge_offsets_dropped": 0,
+      "rejection_rate_all_verified_proposals": 0.11752,
+      "rejection_rate_joined_subset": 0.13012,
+      "auc_cross_family_judge_margin": 0.8487,
+      "auc_target_margin_on_joined_subset": 0.9079,
+      "auc_same_family_outside_judge": 0.9138,
+      "auc_boundary_label": 0.5963,
+      "spearman_target_judge_margin": 0.81,
+      "ratios_on_cross_family_joined_subset": {
+        "morph/int": {
+          "judge_margin": {
+            "raw": 1.964,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.88,
+              2.05
+            ],
+            "decile_matched": 1.111,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              1.08,
+              1.15
+            ],
+            "absolute_bin_matched": 1.097,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              1.06,
+              1.13
+            ]
+          },
+          "target_margin": {
+            "raw": 1.964,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.89,
+              2.04
+            ],
+            "decile_matched": 0.887,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              0.86,
+              0.91
+            ],
+            "absolute_bin_matched": 0.896,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              0.87,
+              0.92
+            ]
+          }
+        },
+        "word/int": {
+          "judge_margin": {
+            "raw": 3.194,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              3.08,
+              3.32
+            ],
+            "decile_matched": 1.462,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              1.42,
+              1.5
+            ],
+            "absolute_bin_matched": 1.435,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              1.39,
+              1.48
+            ]
+          },
+          "target_margin": {
+            "raw": 3.194,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              3.08,
+              3.31
+            ],
+            "decile_matched": 1.116,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              1.09,
+              1.14
+            ],
+            "absolute_bin_matched": 1.124,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              1.1,
+              1.15
+            ]
+          }
+        },
+        "fused/split": {
+          "judge_margin": {
+            "raw": 1.187,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.13,
+              1.24
+            ],
+            "decile_matched": 0.916,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              0.88,
+              0.95
+            ],
+            "absolute_bin_matched": 0.92,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              0.89,
+              0.96
+            ]
+          },
+          "target_margin": {
+            "raw": 1.187,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.13,
+              1.24
+            ],
+            "decile_matched": 0.821,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              0.79,
+              0.85
+            ],
+            "absolute_bin_matched": 0.825,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              0.8,
+              0.86
+            ]
+          }
+        }
+      },
+      "ratios_on_same_family_joined_subset": {
+        "morph/int": {
+          "raw": 1.964,
+          "raw_coverage": 1.0,
+          "raw_ci95": [
+            1.89,
+            2.05
+          ],
+          "decile_matched": 0.9,
+          "decile_coverage": 1.0,
+          "decile_ci95": [
+            0.88,
+            0.93
+          ],
+          "absolute_bin_matched": 0.911,
+          "absolute_bin_coverage": 1.0,
+          "absolute_bin_ci95": [
+            0.89,
+            0.94
+          ]
+        },
+        "word/int": {
+          "raw": 3.194,
+          "raw_coverage": 1.0,
+          "raw_ci95": [
+            3.08,
+            3.32
+          ],
+          "decile_matched": 1.118,
+          "decile_coverage": 1.0,
+          "decile_ci95": [
+            1.09,
+            1.14
+          ],
+          "absolute_bin_matched": 1.128,
+          "absolute_bin_coverage": 1.0,
+          "absolute_bin_ci95": [
+            1.1,
+            1.16
+          ]
+        },
+        "fused/split": {
+          "raw": 1.187,
+          "raw_coverage": 1.0,
+          "raw_ci95": [
+            1.14,
+            1.24
+          ],
+          "decile_matched": 0.806,
+          "decile_coverage": 1.0,
+          "decile_ci95": [
+            0.78,
+            0.83
+          ],
+          "absolute_bin_matched": 0.807,
+          "absolute_bin_coverage": 1.0,
+          "absolute_bin_ci95": [
+            0.78,
+            0.84
+          ]
+        }
+      },
+      "internal_alignment_rows_in_join": 98368
+    },
+    {
+      "pair": "Q6",
+      "analysis_scope": "secondary, not preregistered",
+      "source_target": "qwen8",
+      "draft": "qwen17",
+      "cross_family_judge": "ministral8",
+      "same_family_outside_judge": "qwen4",
+      "documents_requested": 5000,
+      "analysis_documents": 5000,
+      "verified_k4_positions": 528413,
+      "verified_k4_documents": 5000,
+      "joined_positions": 423855,
+      "join_coverage": 0.8021,
+      "join_coverage_by_position_type": {
+        "fused": 0.924,
+        "internal": 0.8072,
+        "morph_onset": 0.7801,
+        "word_onset": 0.8312
+      },
+      "duplicate_judge_offsets_dropped": 0,
+      "rejection_rate_all_verified_proposals": 0.15034,
+      "rejection_rate_joined_subset": 0.16623,
+      "auc_cross_family_judge_margin": 0.8514,
+      "auc_target_margin_on_joined_subset": 0.894,
+      "auc_same_family_outside_judge": 0.892,
+      "auc_boundary_label": 0.6026,
+      "spearman_target_judge_margin": 0.8098,
+      "ratios_on_cross_family_joined_subset": {
+        "morph/int": {
+          "judge_margin": {
+            "raw": 2.075,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              2.0,
+              2.15
+            ],
+            "decile_matched": 1.183,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              1.15,
+              1.22
+            ],
+            "absolute_bin_matched": 1.17,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              1.14,
+              1.21
+            ]
+          },
+          "target_margin": {
+            "raw": 2.075,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              2.0,
+              2.15
+            ],
+            "decile_matched": 0.945,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              0.92,
+              0.97
+            ],
+            "absolute_bin_matched": 0.951,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              0.93,
+              0.97
+            ]
+          }
+        },
+        "word/int": {
+          "judge_margin": {
+            "raw": 3.252,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              3.15,
+              3.37
+            ],
+            "decile_matched": 1.515,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              1.48,
+              1.56
+            ],
+            "absolute_bin_matched": 1.492,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              1.45,
+              1.53
+            ]
+          },
+          "target_margin": {
+            "raw": 3.252,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              3.15,
+              3.36
+            ],
+            "decile_matched": 1.178,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              1.15,
+              1.2
+            ],
+            "absolute_bin_matched": 1.182,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              1.15,
+              1.21
+            ]
+          }
+        },
+        "fused/split": {
+          "judge_margin": {
+            "raw": 1.287,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.23,
+              1.34
+            ],
+            "decile_matched": 0.989,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              0.96,
+              1.02
+            ],
+            "absolute_bin_matched": 0.994,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              0.97,
+              1.02
+            ]
+          },
+          "target_margin": {
+            "raw": 1.287,
+            "raw_coverage": 1.0,
+            "raw_ci95": [
+              1.24,
+              1.33
+            ],
+            "decile_matched": 0.883,
+            "decile_coverage": 1.0,
+            "decile_ci95": [
+              0.86,
+              0.91
+            ],
+            "absolute_bin_matched": 0.882,
+            "absolute_bin_coverage": 1.0,
+            "absolute_bin_ci95": [
+              0.85,
+              0.91
+            ]
+          }
+        }
+      },
+      "ratios_on_same_family_joined_subset": {
+        "morph/int": {
+          "raw": 2.075,
+          "raw_coverage": 1.0,
+          "raw_ci95": [
+            2.0,
+            2.15
+          ],
+          "decile_matched": 0.952,
+          "decile_coverage": 1.0,
+          "decile_ci95": [
+            0.93,
+            0.97
+          ],
+          "absolute_bin_matched": 0.954,
+          "absolute_bin_coverage": 1.0,
+          "absolute_bin_ci95": [
+            0.93,
+            0.98
+          ]
+        },
+        "word/int": {
+          "raw": 3.252,
+          "raw_coverage": 1.0,
+          "raw_ci95": [
+            3.15,
+            3.36
+          ],
+          "decile_matched": 1.183,
+          "decile_coverage": 1.0,
+          "decile_ci95": [
+            1.16,
+            1.21
+          ],
+          "absolute_bin_matched": 1.183,
+          "absolute_bin_coverage": 1.0,
+          "absolute_bin_ci95": [
+            1.16,
+            1.21
+          ]
+        },
+        "fused/split": {
+          "raw": 1.287,
+          "raw_coverage": 1.0,
+          "raw_ci95": [
+            1.24,
+            1.33
+          ],
+          "decile_matched": 0.861,
+          "decile_coverage": 1.0,
+          "decile_ci95": [
+            0.84,
+            0.89
+          ],
+          "absolute_bin_matched": 0.863,
+          "absolute_bin_coverage": 1.0,
+          "absolute_bin_ci95": [
+            0.84,
+            0.89
+          ]
+        }
+      },
+      "internal_alignment_rows_in_join": 99372
     }
   ]
 }

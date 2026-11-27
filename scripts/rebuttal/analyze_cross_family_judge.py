@@ -27,6 +27,9 @@ PAIRS = {
     "Q2": ("qwen4", "qwen06", "ministral8", "qwen17"),
     "Q5": ("qwen8", "qwen06", "ministral8", "qwen4"),
     "M1": ("ministral8", "ministral3", "qwen8", None),
+    "Q4": ("qwen4", "qwen17", "ministral8", "qwen17"),
+    "Q3": ("qwen8", "qwen4", "ministral8", "qwen4"),
+    "Q6": ("qwen8", "qwen17", "ministral8", "qwen4"),
 }
 CONTRASTS = {
     "morph/int": ("morph_onset", "internal", "ptype"),
@@ -65,11 +68,17 @@ def _join_judge(frame: pd.DataFrame, target: str, judge: str) -> tuple[pd.DataFr
     judge_rows = judge_rows[judge_rows.pool_index < 5000].rename(columns={
         "pool_index": "doc", "top2_margin": "m_judge", "entropy": "H_judge",
     })
+    scored_documents = sorted(judge_rows.doc.astype(int).unique().tolist())
     duplicates = int(judge_rows.duplicated(["doc", "cstart"]).sum())
     judge_rows = judge_rows.drop_duplicates(["doc", "cstart"], keep="first")
     joined = frame.merge(judge_rows[["doc", "cstart", "m_judge", "H_judge", "argmax_id"]],
                          on=["doc", "cstart"], how="left", validate="many_to_one")
-    return joined, {"judge_rows": int(len(judge_rows)), "duplicate_doc_offsets_dropped": duplicates}
+    return joined, {
+        "judge_rows": int(len(judge_rows)),
+        "scored_documents": scored_documents,
+        "scored_document_count": len(scored_documents),
+        "duplicate_doc_offsets_dropped": duplicates,
+    }
 
 
 def _contrast_mask(frame: pd.DataFrame, column: str) -> np.ndarray:
@@ -116,7 +125,7 @@ def _auc(y: np.ndarray, score: np.ndarray) -> float | None:
     return float(roc_auc_score(y, score))
 
 
-def _analyze(pair: str, limit: int) -> dict:
+def _analyze(pair: str, limit: int, *, secondary: bool = False) -> dict:
     target, draft, judge, same_family = PAIRS[pair]
     frame = load_pair("generated", target, draft)
     frame = frame[frame.doc < limit].sort_values(["doc", "pos"], kind="stable").reset_index(drop=True)
@@ -134,9 +143,16 @@ def _analyze(pair: str, limit: int) -> dict:
     frame["aclass"] = frame.aclass.fillna("OTHER")
     frame = frame[frame.verified_k4].reset_index(drop=True)
     frame, join_meta = _join_judge(frame, target, judge)
+    if secondary:
+        scored_docs = set(join_meta.pop("scored_documents"))
+        shared_docs = set(frame.doc.astype(int).unique()) & scored_docs
+        if not shared_docs:
+            raise RuntimeError(f"No shared scored documents for secondary pair {pair}")
+        frame = frame[frame.doc.isin(shared_docs)].reset_index(drop=True)
 
-    total_type = frame.groupby("ptype", dropna=False).size()
-    joined_type = frame[frame.m_judge.notna()].groupby("ptype", dropna=False).size()
+    position_type_frame = frame[frame.ptype != "excluded"]
+    total_type = position_type_frame.groupby("ptype", dropna=False).size()
+    joined_type = position_type_frame[position_type_frame.m_judge.notna()].groupby("ptype", dropna=False).size()
     coverage_by_type = {
         str(key): round(float(joined_type.get(key, 0) / value), 4)
         for key, value in total_type.items()
@@ -183,11 +199,13 @@ def _analyze(pair: str, limit: int) -> dict:
 
     return {
         "pair": pair,
+        "analysis_scope": "secondary, not preregistered" if secondary else "preregistered",
         "source_target": target,
         "draft": draft,
         "cross_family_judge": judge,
         "same_family_outside_judge": same_family,
         "documents_requested": limit,
+        "analysis_documents": int(frame.doc.nunique()),
         "verified_k4_positions": int(len(frame)),
         "verified_k4_documents": int(frame.doc.nunique()),
         "joined_positions": int(len(joined)),
@@ -204,7 +222,6 @@ def _analyze(pair: str, limit: int) -> dict:
         "ratios_on_cross_family_joined_subset": ratio_summary,
         "ratios_on_same_family_joined_subset": same_family_ratio_summary,
         "internal_alignment_rows_in_join": int((joined.ptype == "internal").sum()),
-        "excluded_alignment_rows_in_join": int((joined.ptype == "excluded").sum()),
     }
 
 
@@ -212,26 +229,38 @@ def _markdown(results: list[dict]) -> str:
     lines = [
         "# T6-b: cross-family judge on generated text",
         "",
-        "All statistics use proposals verified under k=4 and the first 5,000 common documents.",
+        "All statistics use proposals verified under k=4 and the first 5,000 frozen documents.",
         "Ratios are morpheme-onset/internal, word-onset/internal, and fused/split.",
         "Matched rows use judge or target margin deciles, plus judge absolute bins from `expD_lib.EDGES`.",
         "Intervals are 95% document-bootstrap intervals (500 resamples; seed 20261125).",
         "",
-        "| Pair | Shared-offset coverage | Rejection, all / joined | AUC judge | AUC target | AUC boundary | AUC same-family judge |",
-        "|---|---:|---:|---:|---:|---:|---:|",
+        "| Scope | Pair | Documents | Shared-offset positions / coverage | Rejection, all / joined | AUC judge | AUC target | AUC boundary | AUC same-family judge | Spearman target/judge |",
+        "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for row in results:
-        same = "—" if row["auc_same_family_outside_judge"] is None else f"{row['auc_same_family_outside_judge']:.3f}"
+        label = row["pair"]
+        fmt = lambda value: "—" if value is None else f"{value:.3f}"
+        same = fmt(row["auc_same_family_outside_judge"])
         lines.append(
-            f"| {row['pair']} | {row['join_coverage']:.3f} | "
+            f"| {row['analysis_scope']} | {label} | {row['analysis_documents']} | "
+            f"{row['joined_positions']:,}/{row['verified_k4_positions']:,} ({row['join_coverage']:.3f}) | "
             f"{row['rejection_rate_all_verified_proposals']:.3f} / {row['rejection_rate_joined_subset']:.3f} | "
-            f"{row['auc_cross_family_judge_margin']:.3f} | {row['auc_target_margin_on_joined_subset']:.3f} | "
-            f"{row['auc_boundary_label']:.3f} | {same} |"
+            f"{fmt(row['auc_cross_family_judge_margin'])} | {fmt(row['auc_target_margin_on_joined_subset'])} | "
+            f"{fmt(row['auc_boundary_label'])} | {same} | {fmt(row['spearman_target_judge_margin'])} |"
+        )
+    lines.extend(["", "## Offset coverage by position type", "", "| Scope | Pair | Internal | Morpheme onset | Word onset |", "|---|---|---:|---:|---:|"])
+    for row in results:
+        label = row["pair"]
+        coverage = row["join_coverage_by_position_type"]
+        lines.append(
+            f"| {row['analysis_scope']} | {label} | {coverage.get('internal', 0.0):.3f} | "
+            f"{coverage.get('morph_onset', 0.0):.3f} | {coverage.get('word_onset', 0.0):.3f} |"
         )
     lines.extend(["", "## Position-type ratios", ""])
     for row in results:
+        label = row["pair"] if row["analysis_scope"] == "preregistered" else f"{row['pair']} (secondary, not preregistered)"
         lines.extend([
-            f"### {row['pair']} ({row['source_target']} judged by {row['cross_family_judge']})",
+            f"### {label} ({row['source_target']} judged by {row['cross_family_judge']}; n={row['analysis_documents']})",
             "",
             "| Contrast | Raw [95% CI] | Cross-family decile [95% CI] | Cross-family absolute bin [95% CI] | Same-family decile [95% CI] | Target decile [95% CI] |",
             "|---|---:|---:|---:|---:|---:|",
@@ -262,6 +291,7 @@ def main() -> int:
     if args.max_prompts < 1:
         parser.error("--max-prompts must be positive")
     results = [_analyze(pair, args.max_prompts) for pair in ("Q2", "Q5", "M1")]
+    results.extend(_analyze(pair, args.max_prompts, secondary=True) for pair in ("Q4", "Q3", "Q6"))
     out = args.output_dir.resolve()
     out.mkdir(parents=True, exist_ok=True)
     payload = {

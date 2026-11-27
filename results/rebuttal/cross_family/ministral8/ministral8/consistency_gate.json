@@ -1,0 +1,37 @@
+{
+  "source_target": "ministral8",
+  "judge": "ministral8",
+  "documents": 200,
+  "continuation_positions": 25044,
+  "canonical_prefix_positions": 23986,
+  "canonical_prefix_share": 0.9577543523398818,
+  "argmax_compared_positions": 23986,
+  "comparison_coverage": 1.0,
+  "argmax_agreement": 0.9942466438755941,
+  "spearman_new_vs_stored_top2_margin": 0.9993329356081793,
+  "mean_entropy_canonical_positions": 1.4230279370422987,
+  "entropy_quantiles": {
+    "p10": 0.021445274353027344,
+    "p50": 0.7096595764160156,
+    "p90": 4.225493431091309
+  },
+  "top2_margin_quantiles": {
+    "p10": 0.375,
+    "p50": 3.0625,
+    "p90": 7.625
+  },
+  "model_storage_mode": "standard_from_pretrained",
+  "judge_snapshot": "/mnt/hdd/nhatminh/korean_speculative_decoding/.t6b-models/mistralai--Ministral-3-8B-Base-2512/d4883f9b36aa2e5d775730d3fdba3d30de51a8ef",
+  "head_scale": 1.0,
+  "head_check_max_abs_error": 0.0,
+  "actual_batch_sizes": [
+    1,
+    4,
+    8
+  ],
+  "thresholds": {
+    "argmax_agreement_min": 0.985,
+    "spearman_new_vs_stored_top2_margin_min": 0.95
+  },
+  "passed": true
+}

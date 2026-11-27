@@ -1,0 +1,217 @@
+{
+  "pairs": [
+    {
+      "source_target": "qwen4",
+      "judge": "ministral8",
+      "before_invalid_run": {
+        "positions": 1050327,
+        "vocabulary_size": 131072,
+        "mean_entropy": 11.258039989548086,
+        "high_entropy_threshold_nats": 9.426801655615256,
+        "high_entropy_share": 1.0,
+        "top1_accuracy": 0.00011805847131417168,
+        "entropy_quantiles": {
+          "p10": 11.219694137573242,
+          "p50": 11.259655952453613,
+          "p90": 11.296324157714844
+        },
+        "top2_margin_quantiles": {
+          "p10": 0.03125,
+          "p50": 0.171875,
+          "p90": 0.53125
+        },
+        "thresholds": {
+          "mean_entropy_max": 4.0,
+          "high_entropy_share_max": 0.01,
+          "top1_accuracy_min": 0.25
+        },
+        "checks": {
+          "mean_entropy": false,
+          "high_entropy_share": false,
+          "top1_accuracy": false
+        },
+        "passed": false,
+        "source_target": "qwen4",
+        "judge": "ministral8",
+        "model_storage_mode": "streamed_shards_to_cpu",
+        "judge_snapshot": "/dev/shm/cross_family_models/mistralai--Ministral-3-8B-Base-2512/d4883f9b36aa2e5d775730d3fdba3d30de51a8ef",
+        "top1_accuracy_recomputed_from_retokenized_text": true
+      },
+      "after_rerun": {
+        "positions": 1050327,
+        "vocabulary_size": 131072,
+        "mean_entropy": 2.2903688910461177,
+        "high_entropy_threshold_nats": 9.426801655615256,
+        "high_entropy_share": 0.002532544626578199,
+        "top1_accuracy": 0.6354649551996664,
+        "entropy_quantiles": {
+          "p10": 0.056172561645507824,
+          "p50": 1.818216323852539,
+          "p90": 5.309484672546387
+        },
+        "top2_margin_quantiles": {
+          "p10": 0.1875,
+          "p50": 1.5,
+          "p90": 6.5
+        },
+        "thresholds": {
+          "mean_entropy_max": 4.0,
+          "high_entropy_share_max": 0.01,
+          "top1_accuracy_min": 0.25
+        },
+        "checks": {
+          "mean_entropy": true,
+          "high_entropy_share": true,
+          "top1_accuracy": true
+        },
+        "passed": true,
+        "source_target": "qwen4",
+        "judge": "ministral8",
+        "model_storage_mode": "standard_from_pretrained",
+        "judge_snapshot": "/mnt/hdd/nhatminh/korean_speculative_decoding/.t6b-models/mistralai--Ministral-3-8B-Base-2512/d4883f9b36aa2e5d775730d3fdba3d30de51a8ef"
+      }
+    },
+    {
+      "source_target": "qwen8",
+      "judge": "ministral8",
+      "before_invalid_run": {
+        "positions": 1046749,
+        "vocabulary_size": 131072,
+        "mean_entropy": 11.258065796888419,
+        "high_entropy_threshold_nats": 9.426801655615256,
+        "high_entropy_share": 1.0,
+        "top1_accuracy": 0.00011368532475311655,
+        "entropy_quantiles": {
+          "p10": 11.21967601776123,
+          "p50": 11.259690284729004,
+          "p90": 11.296355247497559
+        },
+        "top2_margin_quantiles": {
+          "p10": 0.03125,
+          "p50": 0.171875,
+          "p90": 0.53125
+        },
+        "thresholds": {
+          "mean_entropy_max": 4.0,
+          "high_entropy_share_max": 0.01,
+          "top1_accuracy_min": 0.25
+        },
+        "checks": {
+          "mean_entropy": false,
+          "high_entropy_share": false,
+          "top1_accuracy": false
+        },
+        "passed": false,
+        "source_target": "qwen8",
+        "judge": "ministral8",
+        "model_storage_mode": "streamed_shards_to_cpu",
+        "judge_snapshot": "/dev/shm/cross_family_models/mistralai--Ministral-3-8B-Base-2512/d4883f9b36aa2e5d775730d3fdba3d30de51a8ef",
+        "top1_accuracy_recomputed_from_retokenized_text": true
+      },
+      "after_rerun": {
+        "positions": 1046749,
+        "vocabulary_size": 131072,
+        "mean_entropy": 2.319338907212315,
+        "high_entropy_threshold_nats": 9.426801655615256,
+        "high_entropy_share": 0.0025326033270631257,
+        "top1_accuracy": 0.6321802074804944,
+        "entropy_quantiles": {
+          "p10": 0.0617218017578125,
+          "p50": 1.864522933959961,
+          "p90": 5.323870086669925
+        },
+        "top2_margin_quantiles": {
+          "p10": 0.1875,
+          "p50": 1.5,
+          "p90": 6.375
+        },
+        "thresholds": {
+          "mean_entropy_max": 4.0,
+          "high_entropy_share_max": 0.01,
+          "top1_accuracy_min": 0.25
+        },
+        "checks": {
+          "mean_entropy": true,
+          "high_entropy_share": true,
+          "top1_accuracy": true
+        },
+        "passed": true,
+        "source_target": "qwen8",
+        "judge": "ministral8",
+        "model_storage_mode": "standard_from_pretrained",
+        "judge_snapshot": "/mnt/hdd/nhatminh/korean_speculative_decoding/.t6b-models/mistralai--Ministral-3-8B-Base-2512/d4883f9b36aa2e5d775730d3fdba3d30de51a8ef"
+      }
+    },
+    {
+      "source_target": "ministral8",
+      "judge": "qwen8",
+      "before_invalid_run": {
+        "positions": 1332462,
+        "vocabulary_size": 151936,
+        "mean_entropy": 5.81289565481842,
+        "high_entropy_threshold_nats": 9.544971726823428,
+        "high_entropy_share": 1.5009808910122766e-06,
+        "top1_accuracy": 0.11659469463294263,
+        "entropy_quantiles": {
+          "p10": 4.461536312103272,
+          "p50": 6.122481346130371,
+          "p90": 6.649621772766114
+        },
+        "top2_margin_quantiles": {
+          "p10": 0.0625,
+          "p50": 0.375,
+          "p90": 1.25
+        },
+        "thresholds": {
+          "mean_entropy_max": 4.0,
+          "high_entropy_share_max": 0.01,
+          "top1_accuracy_min": 0.25
+        },
+        "checks": {
+          "mean_entropy": false,
+          "high_entropy_share": true,
+          "top1_accuracy": false
+        },
+        "passed": false,
+        "source_target": "ministral8",
+        "judge": "qwen8",
+        "model_storage_mode": "streamed_shards_to_cpu",
+        "judge_snapshot": "/dev/shm/cross_family_models/Qwen--Qwen3-8B-Base/49e3418fbbbca6ecbdf9608b4d22e5a407081db4",
+        "top1_accuracy_recomputed_from_retokenized_text": true
+      },
+      "after_rerun": {
+        "positions": 1332462,
+        "vocabulary_size": 151936,
+        "mean_entropy": 1.6543750084387088,
+        "high_entropy_threshold_nats": 9.544971726823428,
+        "high_entropy_share": 0.0,
+        "top1_accuracy": 0.6953601678697029,
+        "entropy_quantiles": {
+          "p10": 0.014354705810546875,
+          "p50": 1.1530818939208984,
+          "p90": 4.228256034851075
+        },
+        "top2_margin_quantiles": {
+          "p10": 0.25,
+          "p50": 2.0,
+          "p90": 7.875
+        },
+        "thresholds": {
+          "mean_entropy_max": 4.0,
+          "high_entropy_share_max": 0.01,
+          "top1_accuracy_min": 0.25
+        },
+        "checks": {
+          "mean_entropy": true,
+          "high_entropy_share": true,
+          "top1_accuracy": true
+        },
+        "passed": true,
+        "source_target": "ministral8",
+        "judge": "qwen8",
+        "model_storage_mode": "standard_from_pretrained",
+        "judge_snapshot": "/mnt/hdd/nhatminh/korean_speculative_decoding/.t6b-models/Qwen--Qwen3-8B-Base/49e3418fbbbca6ecbdf9608b4d22e5a407081db4"
+      }
+    }
+  ]
+}

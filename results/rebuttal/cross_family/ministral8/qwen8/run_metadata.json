@@ -23,7 +23,8 @@
   },
   "source_token_count": 625374,
   "judge_token_count": 1435496,
-  "model_storage_mode": "streamed_shards_to_cpu",
+  "model_storage_mode": "standard_from_pretrained",
+  "judge_snapshot": "/mnt/hdd/nhatminh/korean_speculative_decoding/.t6b-models/Qwen--Qwen3-8B-Base/49e3418fbbbca6ecbdf9608b4d22e5a407081db4",
   "completed_shards": [
     {
       "shard": 0,
@@ -246,6 +247,5 @@
       "head_check_max_abs_error": 0.0
     }
   ],
-  "status": "COMPLETE",
-  "judge_snapshot": "/dev/shm/cross_family_models/Qwen--Qwen3-8B-Base/49e3418fbbbca6ecbdf9608b4d22e5a407081db4"
+  "status": "COMPLETE"
 }

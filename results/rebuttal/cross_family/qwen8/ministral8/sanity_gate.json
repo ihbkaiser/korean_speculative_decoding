@@ -1,0 +1,33 @@
+{
+  "positions": 1046749,
+  "vocabulary_size": 131072,
+  "mean_entropy": 2.319338907212315,
+  "high_entropy_threshold_nats": 9.426801655615256,
+  "high_entropy_share": 0.0025326033270631257,
+  "top1_accuracy": 0.6321802074804944,
+  "entropy_quantiles": {
+    "p10": 0.0617218017578125,
+    "p50": 1.864522933959961,
+    "p90": 5.323870086669925
+  },
+  "top2_margin_quantiles": {
+    "p10": 0.1875,
+    "p50": 1.5,
+    "p90": 6.375
+  },
+  "thresholds": {
+    "mean_entropy_max": 4.0,
+    "high_entropy_share_max": 0.01,
+    "top1_accuracy_min": 0.25
+  },
+  "checks": {
+    "mean_entropy": true,
+    "high_entropy_share": true,
+    "top1_accuracy": true
+  },
+  "passed": true,
+  "source_target": "qwen8",
+  "judge": "ministral8",
+  "model_storage_mode": "standard_from_pretrained",
+  "judge_snapshot": "/mnt/hdd/nhatminh/korean_speculative_decoding/.t6b-models/mistralai--Ministral-3-8B-Base-2512/d4883f9b36aa2e5d775730d3fdba3d30de51a8ef"
+}

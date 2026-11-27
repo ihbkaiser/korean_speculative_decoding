@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from scripts.rebuttal.profile_forward_overhead import _prompt
-from scripts.rebuttal.score_cross_family_judge import _load_streamed_model
+from scripts.rebuttal.streamed_model_loader import _load_streamed_model
 from src.naacl_experiment import atomic_json, load_config
 from src.rebuttal.runtime import write_gpu_metadata
 from src.rebuttal.static_compiled_sd import _call, _set_logical_length, clear_compiled_models, _compiled
